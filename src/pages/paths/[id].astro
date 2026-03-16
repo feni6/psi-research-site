@@ -16,7 +16,12 @@ export function getStaticPaths() {
 
 const { id } = Astro.params;
 const { content } = Astro.props;
-const html = marked(content);
+// Auto-link catalog IDs: [catalog ID: xxx] → linked to /paper/xxx
+const linkedContent = content.replace(
+  /\[catalog ID: ([^\]]+)\]/g,
+  (_, id) => `[📄 ${id}](/paper/${id.trim()})`
+);
+const html = marked(linkedContent);
 const title = content.split('\n')[0].replace(/^#\s*/, '').trim();
 ---
 
