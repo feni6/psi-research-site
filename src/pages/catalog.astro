@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+import catalog from '../data/catalog.json';
+
+const papers = catalog.papers.sort((a: any, b: any) => (b.year || 0) - (a.year || 0));
+const domains = [...new Set(papers.map((p: any) => p.psi_domain).filter(Boolean))].sort();
+const folders = [...new Set(papers.map((p: any) => p.folder).filter(Boolean))].sort();
+---
+
+<Layout title="Catalog">
+  <h1 class="text-3xl font-bold mb-2">Paper Catalog</h1>
+  <p class="text-slate-400 mb-6">{papers.length} papers across {domains.length} research domains</p>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-3 mb-8" id="filters">
+    <select id="domain-filter" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm">
+      <option value="">All Domains</option>
+      {domains.map((d: string) => (
+        <option value={d}>{d.replace(/_/g, ' ')}</option>
+      ))}
+    </select>
+    <input 
+      type="text" 
+      id="search" 
+      placeholder="Search papers..." 
+      class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm flex-1 min-w-[200px]"
+    />
+  </div>
+
+  <!-- Paper list -->
+  <div id="paper-list" class="space-y-3">
+    {papers.map((paper: any) => (
+      <div 
+        class="paper-card bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-500/30 transition"
+        data-domain={paper.psi_domain}
+        data-title={paper.title?.toLowerCase()}
+        data-authors={paper.authors?.join(' ').toLowerCase()}
+        data-year={paper.year}
+        data-folder={paper.folder}
+      >
+        <div class="flex justify-between items-start gap-4">
+          <div class="flex-1">
+            <h3 class="font-semibold text-slate-200 mb-1">{paper.title}</h3>
+            <p class="text-slate-500 text-sm mb-2">
+              {paper.authors?.slice(0, 3).join(', ')}{paper.authors?.length > 3 ? ' et al.' : ''} 
+              ({paper.year}) — <span class="text-slate-400">{paper.journal}</span>
+            </p>
+            {paper.abstract && (
+              <p class="text-slate-400 text-sm line-clamp-2">{paper.abstract}</p>
+            )}
+          </div>
+          <div class="flex flex-col items-end gap-1 shrink-0">
+            <span class="text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded capitalize">
+              {paper.psi_domain?.replace(/_/g, ' ')}
+            </span>
+            {paper.folder === '10_Skeptical_and_Critical' && (
+              <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">Skeptical</span>
+            )}
+            {paper.doi && (
+              <a href={`https://doi.org/${paper.doi}`} target="_blank" class="text-xs text-slate-500 hover:text-amber-400">DOI ↗</a>
+            )}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <script>
+    const domainFilter = document.getElementById('domain-filter') as HTMLSelectElement;
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const cards = document.querySelectorAll('.paper-card');
+
+    function filterCards() {
+      const domain = domainFilter.value;
+      const query = searchInput.value.toLowerCase();
+      cards.forEach((card) => {
+        const el = card as HTMLElement;
+        const matchDomain = !domain || el.dataset.domain === domain;
+        const matchSearch = !query || 
+          el.dataset.title?.includes(query) || 
+          el.dataset.authors?.includes(query);
+        el.style.display = matchDomain && matchSearch ? 'block' : 'none';
+      });
+    }
+
+    domainFilter.addEventListener('change', filterCards);
+    searchInput.addEventListener('input', filterCards);
+
+    // Handle URL params
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('domain')) {
+      domainFilter.value = params.get('domain') || '';
+      filterCards();
+    }
+  </script>
+</Layout>

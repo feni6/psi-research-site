@@ -1,0 +1,45 @@
+---
+import '../styles/global.css'
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "A curated, epistemically responsible collection of 354 peer-reviewed papers on psi research" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="bg-slate-950 text-slate-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | Psi Research Library</title>
+  </head>
+  <body class="min-h-screen">
+    <nav class="border-b border-slate-800 px-6 py-4">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <a href="/" class="text-xl font-bold text-amber-400 hover:text-amber-300 transition">
+          🔬 Psi Research Library
+        </a>
+        <div class="flex gap-6 text-sm">
+          <a href="/" class="hover:text-amber-400 transition">Home</a>
+          <a href="/catalog" class="hover:text-amber-400 transition">Catalog</a>
+          <a href="/controversies" class="hover:text-amber-400 transition">Controversies</a>
+          <a href="/paths" class="hover:text-amber-400 transition">Reading Paths</a>
+          <a href="/timeline" class="hover:text-amber-400 transition">Timeline</a>
+          <a href="/method" class="hover:text-amber-400 transition">Methodology</a>
+        </div>
+      </div>
+    </nav>
+    <main class="max-w-7xl mx-auto px-6 py-8">
+      <slot />
+    </main>
+    <footer class="border-t border-slate-800 px-6 py-6 mt-12 text-center text-slate-500 text-sm">
+      <p>Psi Research Library — 354 papers, both sides of every debate.</p>
+      <p class="mt-1">Built with epistemic transparency. <a href="/method" class="text-amber-400 hover:underline">Read the methodology</a>.</p>
+    </footer>
+  </body>
+</html>
