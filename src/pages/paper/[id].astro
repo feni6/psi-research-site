@@ -1,0 +1,179 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import catalog from '../../data/catalog.json';
+
+export function getStaticPaths() {
+  return catalog.papers.map((paper: any) => ({
+    params: { id: paper.id },
+    props: { paper },
+  }));
+}
+
+const { paper } = Astro.props;
+// related_papers is a dict like { "critiques": ["id1"], "extends": ["id2"] }
+const relatedPapersRaw = paper.related_papers || {};
+const relatedEntries: { type: string; paper: any }[] = [];
+if (typeof relatedPapersRaw === 'object' && !Array.isArray(relatedPapersRaw)) {
+  for (const [relType, ids] of Object.entries(relatedPapersRaw)) {
+    if (Array.isArray(ids)) {
+      for (const id of ids as string[]) {
+        const found = catalog.papers.find((p: any) => p.id === id);
+        if (found) relatedEntries.push({ type: relType, paper: found });
+      }
+    }
+  }
+}
+const relatedPapers = relatedEntries;
+
+const folderLabels: Record<string, string> = {
+  '01_Meta-Analyses': 'Meta-Analyses',
+  '02_Telepathy': 'Telepathy',
+  '03_Precognition': 'Precognition',
+  '04_Remote_Viewing': 'Remote Viewing',
+  '05_Psychokinesis': 'Psychokinesis',
+  '06_Healing_and_Intention': 'Healing & Intention',
+  '07_Mediumship_and_Survival': 'Mediumship & Survival',
+  '08_NDE_and_OBE': 'NDE & OBE',
+  '09_Methodology_and_Theory': 'Methodology & Theory',
+  '10_Skeptical_and_Critical': 'Skeptical & Critical',
+  '11_Autism_and_Nonverbal': 'Autism & Nonverbal',
+  '12_Books_and_Overviews': 'Books & Overviews',
+  '13_Podcast_References': 'Podcast References',
+};
+---
+
+<Layout title={paper.title} description={paper.abstract}>
+  <nav class="text-sm text-slate-500 mb-6">
+    <a href="/catalog" class="hover:text-amber-400">← Back to Catalog</a>
+  </nav>
+
+  <article class="max-w-4xl">
+    <h1 class="text-2xl font-bold text-slate-100 mb-3">{paper.title}</h1>
+    
+    <p class="text-slate-400 mb-4">
+      {paper.authors?.join(', ')} ({paper.year})
+    </p>
+
+    <!-- Tags -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      <span class="text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded capitalize">
+        {paper.psi_domain?.replace(/_/g, ' ')}
+      </span>
+      <span class="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded">
+        {folderLabels[paper.folder] || paper.folder}
+      </span>
+      {paper.folder === '10_Skeptical_and_Critical' && (
+        <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">Skeptical/Critical</span>
+      )}
+      {paper.tags?.map((tag: string) => (
+        <span class="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded">{tag}</span>
+      ))}
+    </div>
+
+    <!-- Journal & DOI -->
+    <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+        <div>
+          <span class="text-slate-500">Journal:</span>
+          <span class="text-slate-300 ml-2">{paper.journal}</span>
+        </div>
+        {paper.doi && (
+          <div>
+            <span class="text-slate-500">DOI:</span>
+            <a href={`https://doi.org/${paper.doi}`} target="_blank" class="text-amber-400 hover:underline ml-2">{paper.doi} ↗</a>
+          </div>
+        )}
+        {paper.source_url && (
+          <div>
+            <span class="text-slate-500">Source:</span>
+            <a href={paper.source_url} target="_blank" class="text-amber-400 hover:underline ml-2">Open Access ↗</a>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Abstract -->
+    {paper.abstract && (
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-slate-200 mb-2">Abstract</h2>
+        <p class="text-slate-300 leading-relaxed">{paper.abstract}</p>
+      </section>
+    )}
+
+    <!-- Notes -->
+    {paper.notes && (
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-slate-200 mb-2">Curator's Notes</h2>
+        <p class="text-slate-400 leading-relaxed">{paper.notes}</p>
+      </section>
+    )}
+
+    <!-- Methodology -->
+    {paper.methodology && (
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-slate-200 mb-3">Methodology</h2>
+        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            {paper.methodology.sample_size != null && (
+              <div>
+                <span class="text-slate-500 block">Sample Size</span>
+                <span class="text-slate-200 font-mono">{paper.methodology.sample_size}</span>
+              </div>
+            )}
+            {paper.methodology.effect_size != null && (
+              <div>
+                <span class="text-slate-500 block">Effect Size</span>
+                <span class="text-slate-200 font-mono">{paper.methodology.effect_size}</span>
+              </div>
+            )}
+            {paper.methodology.confidence_interval != null && (
+              <div>
+                <span class="text-slate-500 block">Confidence Interval</span>
+                <span class="text-slate-200 font-mono">{paper.methodology.confidence_interval}</span>
+              </div>
+            )}
+            {paper.methodology.bayes_factor != null && (
+              <div>
+                <span class="text-slate-500 block">Bayes Factor</span>
+                <span class="text-slate-200 font-mono">{paper.methodology.bayes_factor}</span>
+              </div>
+            )}
+            {paper.methodology.blinding != null && (
+              <div>
+                <span class="text-slate-500 block">Blinding</span>
+                <span class="text-slate-200">{paper.methodology.blinding}</span>
+              </div>
+            )}
+            {paper.methodology.pre_registration != null && (
+              <div>
+                <span class="text-slate-500 block">Pre-registration</span>
+                <span class={paper.methodology.pre_registration ? 'text-green-400' : 'text-slate-400'}>
+                  {paper.methodology.pre_registration ? 'Yes' : 'No'}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Related Papers -->
+    {relatedPapers.length > 0 && (
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-slate-200 mb-3">Related Papers</h2>
+        <div class="space-y-2">
+          {relatedPapers.map((rp) => (
+            <a href={`/paper/${rp.paper.id}`} class="block bg-slate-900 border border-slate-800 rounded-lg p-3 hover:border-amber-500/30 transition text-sm">
+              <span class="text-xs bg-slate-700 text-slate-400 px-1.5 py-0.5 rounded mr-2 capitalize">{rp.type.replace(/_/g, ' ')}</span>
+              <span class="text-slate-200">{rp.paper.title}</span>
+              <span class="text-slate-500 ml-2">({rp.paper.year})</span>
+              {rp.paper.folder === '10_Skeptical_and_Critical' && (
+                <span class="text-xs bg-red-500/20 text-red-400 px-1.5 py-0.5 rounded ml-2">Skeptical</span>
+              )}
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+</Layout>

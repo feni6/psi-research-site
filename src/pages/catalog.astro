@@ -30,8 +30,9 @@ const folders = [...new Set(papers.map((p: any) => p.folder).filter(Boolean))].s
   <!-- Paper list -->
   <div id="paper-list" class="space-y-3">
     {papers.map((paper: any) => (
-      <div 
-        class="paper-card bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-500/30 transition"
+      <a 
+        href={`/paper/${paper.id}`}
+        class="paper-card block bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-500/30 transition"
         data-domain={paper.psi_domain}
         data-title={paper.title?.toLowerCase()}
         data-authors={paper.authors?.join(' ').toLowerCase()}
@@ -61,7 +62,7 @@ const folders = [...new Set(papers.map((p: any) => p.folder).filter(Boolean))].s
             )}
           </div>
         </div>
-      </div>
+      </a>
     ))}
   </div>
 
