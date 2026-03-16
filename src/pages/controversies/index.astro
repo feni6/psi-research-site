@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const dir = path.join(process.cwd(), 'src/data/controversies');
+const files = fs.readdirSync(dir).filter(f => f.match(/^\d{2}_/) && f.endsWith('.md'));
+const controversies = files.map(f => {
+  const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+  const id = f.replace('.md', '');
+  const title = content.split('\n')[0].replace(/^#\s*\d+\.\s*/, '').trim();
+  // Extract current status
+  const statusMatch = content.match(/\*\*Current status:\*\*\s*(.*?)(?:\n\n|$)/s);
+  const status = statusMatch ? statusMatch[1].slice(0, 200) + '...' : '';
+  const proCount = (content.match(/\*\*Pro:\*\*([\s\S]*?)\*\*Con:\*\*/)?.[1]?.match(/^- /gm) || []).length;
+  const conCount = (content.match(/\*\*Con:\*\*([\s\S]*?)(\*\*Current|$)/)?.[1]?.match(/^- /gm) || []).length;
+  return { id, title, status, proCount, conCount, num: f.slice(0, 2) };
+}).sort((a, b) => a.num.localeCompare(b.num));
+---
+
+<Layout title="Controversies">
+  <h1 class="text-3xl font-bold mb-2">Controversy Maps</h1>
+  <p class="text-slate-400 mb-8">14 debates with papers cited on both sides. Every controversy shows the strongest arguments for and against.</p>
+  
+  <div class="space-y-4">
+    {controversies.map((c) => (
+      <a href={`/controversies/${c.id}`} class="block bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-amber-500/30 transition">
+        <div class="flex items-start gap-4">
+          <span class="text-amber-400 font-mono text-sm bg-amber-500/10 px-2 py-1 rounded shrink-0">{c.num}</span>
+          <div class="flex-1">
+            <h3 class="font-bold text-slate-200 mb-1">{c.title}</h3>
+            <div class="flex gap-4 text-sm mb-2">
+              <span class="text-green-400">{c.proCount} supporting papers</span>
+              <span class="text-red-400">{c.conCount} critical papers</span>
+            </div>
+            {c.status && <p class="text-slate-500 text-sm line-clamp-2">{c.status}</p>}
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+</Layout>

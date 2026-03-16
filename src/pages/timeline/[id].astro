@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { marked } from 'marked';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export function getStaticPaths() {
+  const dir = path.join(process.cwd(), 'src/data/timeline');
+  const files = fs.readdirSync(dir).filter(f => f.startsWith('era_') && f.endsWith('.md'));
+  return files.map(f => {
+    const id = f.replace('.md', '');
+    const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+    return { params: { id }, props: { content } };
+  });
+}
+
+const { id } = Astro.params;
+const { content } = Astro.props;
+const html = marked(content);
+const title = content.split('\n')[0].replace(/^#\s*/, '').trim();
+---
+
+<Layout title={title}>
+  <nav class="text-sm text-slate-500 mb-6">
+    <a href="/timeline" class="hover:text-amber-400">← Timeline</a>
+  </nav>
+  <article class="prose prose-invert prose-amber max-w-4xl" set:html={html} />
+</Layout>

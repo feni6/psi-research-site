@@ -1,0 +1,481 @@
+{
+  "description": "Replication chains tracking how key psi findings have been tested, replicated, critiqued, and meta-analyzed. Only references paper IDs that exist in _CATALOG.json.",
+  "last_updated": "2026-02-25",
+  "total_chains": 7,
+  "chains": [
+    {
+      "chain_id": "bem_feeling_future",
+      "label": "Bem's Feeling the Future (Precognition)",
+      "original": {
+        "id": "bem_2011_feeling",
+        "year": 2011,
+        "description": "Nine experiments published in JPSP reporting evidence for retroactive influence on cognition and affect, with effect sizes around d = 0.22."
+      },
+      "direct_replications": [
+        {
+          "id": "ritchie_2012_failing_future",
+          "result": "failure",
+          "description": "Three independent attempts to replicate Bem's retroactive facilitation of recall, all null results."
+        },
+        {
+          "id": "galak_2012_correcting",
+          "result": "failure",
+          "description": "Seven replication attempts across multiple labs, none found significant precognition effects."
+        },
+        {
+          "id": "maier_2014_no_precognition",
+          "result": "failure",
+          "description": "Pre-registered replication of Bem's retroactive priming paradigm yielding null results."
+        },
+        {
+          "id": "savva_2014_retro_priming",
+          "result": "success",
+          "description": "Successful replication of retroactive priming from Bem's Experiment 9, with a significant effect in the predicted direction."
+        }
+      ],
+      "conceptual_replications": [],
+      "meta_analyses": [
+        {
+          "id": "bem_2015_feeling",
+          "description": "Meta-analysis of 90 experiments from 33 laboratories worldwide, reporting an overall significant effect (p = 1.2e-10, Hedges' g = 0.09)."
+        }
+      ],
+      "critiques": [
+        {
+          "id": "rouder_2013_bayes_factor_esp",
+          "description": "Bayesian reanalysis of Bem's data arguing that the evidence for ESP is weak and sensitive to prior specification."
+        },
+        {
+          "id": "houran_2018_crossexamining",
+          "description": "Critical commentary examining methodological and statistical concerns with Bem's precognition claims."
+        },
+        {
+          "id": "rabeyron_2020_most",
+          "description": "Argues that most psi research findings, including Bem's, suffer from systemic methodological problems."
+        },
+        {
+          "id": "francis_2012_publication_bias",
+          "description": "Publication bias analysis suggesting Bem's nine experiments show improbably consistent significance, indicative of selective reporting."
+        }
+      ],
+      "replies_and_defenses": [
+        {
+          "id": "mossbridge_2018_precognition",
+          "description": "Defends precognition as a form of prospection, contextualizing Bem's findings within a broader theoretical framework."
+        },
+        {
+          "id": "schooler_2018_entertaining",
+          "description": "Advocates for an open-minded but rigorous approach to anomalous findings like Bem's, emphasizing the value of pre-registration."
+        }
+      ],
+      "verdict_summary": "Bem's 2011 paper ignited a major replication debate. Individual direct replications mostly failed, but Bem's 2015 meta-analysis of 90 experiments claims a small but significant aggregate effect. Critics point to publication bias, questionable analytic flexibility, and Bayesian reanalyses favoring the null. The controversy helped catalyze the broader replication crisis discussion in psychology."
+    },
+    {
+      "chain_id": "ganzfeld_telepathy",
+      "label": "Ganzfeld Telepathy",
+      "original": {
+        "id": "honorton_1989_future",
+        "year": 1989,
+        "description": "Meta-analysis of forced-choice precognition experiments establishing a baseline for anomalous information transfer under sensory restriction."
+      },
+      "direct_replications": [
+        {
+          "id": "bem_1994_does",
+          "result": "success",
+          "description": "Autoganzfeld experiments at Psychophysical Research Laboratories reporting hit rates of 32% (MCE = 25%), published in Psychological Bulletin."
+        },
+        {
+          "id": "milton_1999_does",
+          "result": "failure",
+          "description": "Meta-analysis of 30 post-Bem ganzfeld studies finding no significant overall effect, challenging the replicability of ganzfeld psi."
+        },
+        {
+          "id": "storm_2001_does",
+          "result": "mixed",
+          "description": "Reanalysis and commentary on Milton & Wiseman's meta-analysis, arguing that methodological inclusion criteria affected the conclusion."
+        }
+      ],
+      "conceptual_replications": [],
+      "meta_analyses": [
+        {
+          "id": "storm_2010_metaanalysis",
+          "description": "Meta-analysis of free-response studies 1992-2008 reporting a significant overall effect across ganzfeld and non-ganzfeld paradigms."
+        },
+        {
+          "id": "storm_2020_metaanalysis",
+          "description": "Updated cumulative meta-analysis of ganzfeld studies extending the evidence base through 2019."
+        },
+        {
+          "id": "tressoldi_2024_ganzfeld_meta",
+          "description": "Most recent ganzfeld meta-analysis examining the accumulated evidence with modern meta-analytic methods."
+        }
+      ],
+      "critiques": [
+        {
+          "id": "hyman_1994_anomaly",
+          "description": "Detailed critique of the autoganzfeld experiments, raising concerns about randomization, sensory leakage, and statistical methods."
+        },
+        {
+          "id": "hyman_2010_meta_analysis_conceals",
+          "description": "Argues that meta-analytic aggregation in ganzfeld research conceals important methodological heterogeneity and systematic biases."
+        }
+      ],
+      "replies_and_defenses": [],
+      "verdict_summary": "The ganzfeld telepathy paradigm is one of the most extensively debated in parapsychology. Proponents cite a hit rate consistently above chance (around 32% vs. 25% MCE) across multiple meta-analyses spanning decades. Critics argue that methodological quality varies widely, that meta-analytic aggregation masks heterogeneity, and that the effect has not replicated consistently in stringent protocols. The debate between Hyman (skeptic) and Honorton/Bem (proponents) set the template for skeptic-proponent dialogue in psi research."
+    },
+    {
+      "chain_id": "presentiment_paa",
+      "label": "Presentiment / Predictive Anticipatory Activity (PAA)",
+      "original": {
+        "id": "radin_2004_electrodermal",
+        "year": 2004,
+        "description": "Reports electrodermal presentiment responses preceding randomly selected emotional vs. calm stimuli."
+      },
+      "direct_replications": [
+        {
+          "id": "spottiswoode_2003_skin",
+          "result": "success",
+          "description": "Independent replication finding significant skin conductance pre-stimulus responses, with artifact analysis ruling out conventional explanations."
+        },
+        {
+          "id": "mccraty_2004_electrophysiological",
+          "result": "success",
+          "description": "Reports electrophysiological evidence for intuition, with cardiac and brain measures showing pre-stimulus differentiation."
+        },
+        {
+          "id": "radin_2011_electrocortical",
+          "result": "success",
+          "description": "EEG-based presentiment study finding electrocortical activity differences prior to unpredictable stimuli."
+        },
+        {
+          "id": "tressoldi_2011_your",
+          "result": "success",
+          "description": "Uses eye-tracking and pupillometry to test predictive anticipatory activity, finding evidence of pre-stimulus differentiation."
+        }
+      ],
+      "conceptual_replications": [],
+      "meta_analyses": [
+        {
+          "id": "mossbridge_2012_predictive",
+          "description": "Comprehensive meta-analysis of 26 presentiment studies finding a significant overall effect (ES = 0.21, p = 5.7e-8) for physiological anticipation of unpredictable stimuli."
+        },
+        {
+          "id": "duggan_2018_paa_update",
+          "description": "Updated review and analysis of predictive anticipatory activity research extending the evidence beyond Mossbridge et al. (2012)."
+        }
+      ],
+      "critiques": [
+        {
+          "id": "mossbridge_2014_predicting",
+          "description": "Critical self-analysis by the meta-analysis authors examining potential artifacts and alternative explanations for PAA findings."
+        },
+        {
+          "id": "schwarzkopf_2014_should",
+          "description": "Argues that the presentiment literature has methodological issues that should have been anticipated, including expectation artifacts and analysis flexibility."
+        }
+      ],
+      "replies_and_defenses": [],
+      "verdict_summary": "Presentiment research reports that the body shows physiological responses (skin conductance, heart rate, EEG) seconds before randomly selected future emotional stimuli. Mossbridge et al.'s 2012 meta-analysis of 26 studies found a small but significant effect. However, critics like Schwarzkopf argue that subtle methodological artifacts (stimulus predictability, physiological baseline issues, analysis choices) may explain the results. The authors themselves published a critical analysis acknowledging some concerns while defending the core finding."
+    },
+    {
+      "chain_id": "double_slit_pk",
+      "label": "Double-Slit PK / Consciousness and Quantum Systems",
+      "original": {
+        "id": "radin_2012_consciousness",
+        "year": 2012,
+        "description": "Reports that human observation directed toward a double-slit optical apparatus shifts the interference pattern in a manner consistent with consciousness-related wave function collapse."
+      },
+      "direct_replications": [
+        {
+          "id": "radin_2019_double_slit",
+          "result": "success",
+          "description": "Follow-up double-slit experiment with improved controls, reporting continued evidence for consciousness-correlated fringe shifts."
+        },
+        {
+          "id": "radin_2021_psychophysical",
+          "result": "success",
+          "description": "Further double-slit replication with additional methodological refinements, reporting significant results."
+        },
+        {
+          "id": "radin_2025_observer",
+          "result": "success",
+          "description": "Most recent double-slit experiment testing observer influence on quantum interference patterns."
+        }
+      ],
+      "conceptual_replications": [
+        {
+          "id": "radin_2008_testing",
+          "description": "Earlier experiment testing nonlocal observation as a source of influence on a physical system, conceptual precursor to the double-slit line."
+        }
+      ],
+      "meta_analyses": [],
+      "critiques": [],
+      "theory": [
+        {
+          "id": "josephson_1991_biological",
+          "description": "Nobel laureate's theoretical paper on biological utilisation of quantum nonlocality, providing theoretical grounding for consciousness-quantum interactions."
+        },
+        {
+          "id": "kauffman_2023_quantum",
+          "description": "Theoretical exploration of quantum aspects of the brain-mind relationship, relevant to interpreting double-slit PK findings."
+        },
+        {
+          "id": "bierman_2003_does",
+          "description": "Theoretical paper examining whether consciousness collapses the wave packet, directly relevant to the double-slit paradigm."
+        }
+      ],
+      "replies_and_defenses": [],
+      "verdict_summary": "Radin's double-slit experiments represent a novel PK paradigm claiming that directed mental attention can modulate quantum interference patterns. All published replications come from Radin's own lab or close collaborators, showing consistent positive results from 2012 through 2025. Independent replication by skeptical or unaffiliated labs remains the critical missing piece. Theoretical support comes from interpretations linking consciousness to quantum measurement, though these remain controversial in mainstream physics."
+    },
+    {
+      "chain_id": "dmils_eeg_correlations",
+      "label": "DMILS / EEG Correlations Between Distant Subjects",
+      "original": {
+        "id": "duane_1965_extrasensory",
+        "year": 1965,
+        "description": "Pioneering study reporting EEG induction between identical twins without sensory contact, published in Science."
+      },
+      "direct_replications": [
+        {
+          "id": "grinberg-zylberbaum_1994_einsteinpodolskyrosen",
+          "result": "success",
+          "description": "Reports transferred electrical potentials between brains of paired subjects, invoking quantum EPR analogy."
+        },
+        {
+          "id": "wackermann_2003_correlations",
+          "result": "success",
+          "description": "Reports significant correlations between EEG activities of two spatially separated subjects."
+        },
+        {
+          "id": "standish_2003_evidence",
+          "result": "success",
+          "description": "fMRI evidence of correlated functional signals between distant human brains."
+        },
+        {
+          "id": "standish_2004_electroencephalographic",
+          "result": "success",
+          "description": "EEG evidence of correlated event-related signals between brains of spatially and sensory isolated subjects."
+        },
+        {
+          "id": "radin_2004_event",
+          "result": "success",
+          "description": "Reports event-related EEG correlations between isolated human subjects."
+        },
+        {
+          "id": "achterberg_2005_evidence",
+          "result": "success",
+          "description": "fMRI analysis finding correlations between distant intentionality and brain function in recipients."
+        },
+        {
+          "id": "richards_2005_replicable",
+          "result": "success",
+          "description": "Reports replicable fMRI evidence of anomalous correlations between distant brains."
+        },
+        {
+          "id": "ambach_2008_correlations",
+          "result": "success",
+          "description": "Replication study finding EEG correlations between two spatially separated subjects."
+        },
+        {
+          "id": "moulton_2008_using",
+          "result": "failure",
+          "description": "fMRI study finding no evidence for anomalous sending of information, a null result from a well-powered design."
+        }
+      ],
+      "conceptual_replications": [
+        {
+          "id": "schlitz_2006_two_minds",
+          "description": "Skeptic-proponent collaborative study (Schlitz & Wiseman) examining DMILS in a jointly designed protocol."
+        },
+        {
+          "id": "wiseman_1997_experimenter",
+          "description": "Study examining experimenter effects in remote staring detection, finding differential results by experimenter."
+        }
+      ],
+      "meta_analyses": [
+        {
+          "id": "schmidt_2004_distant",
+          "description": "Two meta-analyses covering distant intentionality and the feeling of being stared at, finding small but significant overall effects."
+        },
+        {
+          "id": "radin_2005_sense",
+          "description": "Preliminary meta-analysis of the sense of being stared at, reporting a significant overall effect."
+        }
+      ],
+      "critiques": [],
+      "replies_and_defenses": [],
+      "verdict_summary": "The DMILS (Direct Mental Interaction with Living Systems) and distant EEG correlation literature shows a pattern of mostly positive findings across multiple labs and neuroimaging modalities (EEG, fMRI). However, Moulton & Kosslyn's 2008 well-powered fMRI study found null results. The Schlitz-Wiseman collaboration revealed experimenter effects, where the proponent experimenter obtained positive results and the skeptic obtained null results under the same protocol. Meta-analyses report small but significant overall effects. The field is marked by the challenge of distinguishing genuine anomalous correlations from subtle artifacts in neuroimaging data."
+    },
+    {
+      "chain_id": "global_consciousness_rng",
+      "label": "Global Consciousness / Random Number Generator (RNG) Effects",
+      "original": {
+        "id": "jahn_1982_persistent",
+        "year": 1982,
+        "description": "Foundational paper from the PEAR Lab documenting the persistent paradox of psychic phenomena in human-machine interactions."
+      },
+      "direct_replications": [
+        {
+          "id": "jahn_1997_correlations",
+          "result": "success",
+          "description": "Reports correlations in random binary sequences with pre-stated intentions from the PEAR Lab's extensive database."
+        },
+        {
+          "id": "schmidt_1987_strange",
+          "result": "success",
+          "description": "Documents the strange properties of psychokinesis, reporting anomalous deviations in random systems."
+        },
+        {
+          "id": "nelson_2002_correlations",
+          "result": "success",
+          "description": "Global Consciousness Project report of correlations in continuous random data with major global events."
+        },
+        {
+          "id": "nelson_2011_effects",
+          "result": "success",
+          "description": "Extended GCP analysis reporting effects of mass consciousness on changes in random data over a decade of data collection."
+        },
+        {
+          "id": "maier_2020_preregistered",
+          "result": "mixed",
+          "description": "Pre-registered RNG experiment testing mind-matter interaction, with mixed results."
+        }
+      ],
+      "conceptual_replications": [
+        {
+          "id": "bancel_2017_searching",
+          "description": "Seventeen-year analysis searching for global consciousness effects in the GCP data."
+        },
+        {
+          "id": "bancel_2017_global_consciousness",
+          "description": "Companion analysis examining global consciousness patterns in the GCP network."
+        },
+        {
+          "id": "radin_2023_anomalous",
+          "description": "Reports anomalous entropic effects in physical systems, extending the RNG paradigm."
+        },
+        {
+          "id": "radin_2025_years",
+          "description": "Comprehensive analysis of New Year's Eve data as a case study in the GCP dataset."
+        },
+        {
+          "id": "walach_2020_evidence",
+          "description": "Reports evidence for anomalistic correlations between human mind and physical random systems."
+        },
+        {
+          "id": "holmberg_2020_stock",
+          "description": "Examines potential correlations between RNG/GCP data and stock market behavior."
+        }
+      ],
+      "meta_analyses": [
+        {
+          "id": "radin_1989_evidence",
+          "description": "Early meta-analysis presenting evidence for consciousness-related anomalies in random physical systems."
+        },
+        {
+          "id": "radin_1991_effects",
+          "description": "Meta-analysis of the effects of consciousness on the fall of dice, finding a small but significant overall effect."
+        },
+        {
+          "id": "bosch_2006_examining",
+          "description": "Critical meta-analysis examining psychokinesis and human-RNG interaction, finding that the effect largely disappears when controlling for methodological quality and selective reporting."
+        }
+      ],
+      "critiques": [
+        {
+          "id": "bosch_2006_examining",
+          "description": "Argues that the RNG-PK effect is attributable to publication bias and methodological weaknesses rather than genuine anomalous influence."
+        }
+      ],
+      "replies_and_defenses": [
+        {
+          "id": "radin_2006_reexamining",
+          "description": "Direct reply to Bosch et al., challenging their methodological critique and arguing that the RNG-PK effect survives correction for publication bias."
+        }
+      ],
+      "verdict_summary": "The RNG/PK literature spans from the PEAR Lab's foundational work through the Global Consciousness Project's 20+ years of continuous data collection. Proponent meta-analyses (Radin 1989, 1991) report small but significant effects of mental intention on random systems. The critical Bosch et al. (2006) meta-analysis argued the effect disappears with quality controls, prompting Radin's (2006) rebuttal. The GCP has accumulated a large dataset showing statistical deviations during major global events, but the post-hoc nature of event selection and the flexibility in analysis windows remain points of contention. Pre-registered tests (Maier 2020) have shown mixed results."
+    },
+    {
+      "chain_id": "distant_healing_intention",
+      "label": "Distant Healing / Intention",
+      "original": {
+        "id": "astin_2000_efficacy",
+        "year": 2000,
+        "description": "Systematic review of randomized trials examining the efficacy of distant healing, finding 57% of trials showing positive treatment effects."
+      },
+      "direct_replications": [
+        {
+          "id": "leibovici_2001_effects",
+          "result": "success",
+          "description": "Reports significant effects of retroactive intercessory prayer on patient outcomes in a controlled trial."
+        },
+        {
+          "id": "krucoff_2001_integrative",
+          "result": "success",
+          "description": "MANTRA pilot study finding that noetic therapies showed a trend toward reduced adverse outcomes in cardiac patients."
+        },
+        {
+          "id": "radin_2004_possible",
+          "result": "success",
+          "description": "Reports possible effects of healing intention on cell cultures and truly random events."
+        },
+        {
+          "id": "krucoff_2005_music",
+          "result": "failure",
+          "description": "MANTRA II full-scale randomized study finding no significant benefit of noetic therapies as adjuncts to cardiac intervention."
+        },
+        {
+          "id": "benson_2006_therapeutic",
+          "result": "failure",
+          "description": "Largest intercessory prayer RCT (STEP), finding no effect of prayer on cardiac bypass outcomes and a possible nocebo effect in patients who knew they were receiving prayer."
+        },
+        {
+          "id": "radin_2006_doubleblind",
+          "result": "success",
+          "description": "Double-blind study of intentional chocolate effects, reporting positive results for intention-treated samples."
+        },
+        {
+          "id": "radin_2008_effects",
+          "result": "success",
+          "description": "Reports effects of distant intention on water crystal formation, extending the healing intention paradigm."
+        },
+        {
+          "id": "schlitz_2012_distant",
+          "result": "success",
+          "description": "Exploratory study investigating distant healing effects on surgical wound recovery."
+        }
+      ],
+      "conceptual_replications": [
+        {
+          "id": "roe_2015_distant_healing",
+          "description": "Later study examining distant healing effects in a controlled setting."
+        },
+        {
+          "id": "beseme_2018_transcriptional",
+          "description": "Investigates transcriptional effects of intention, extending healing intention to molecular biology measures."
+        },
+        {
+          "id": "delorme_2016_meditation_bioassay",
+          "description": "Uses a meditation bioassay to test intention effects on biological systems."
+        },
+        {
+          "id": "yu_2024_effects",
+          "description": "Studies the effects of intentionally treated water, a recent extension of the distant intention paradigm."
+        }
+      ],
+      "meta_analyses": [
+        {
+          "id": "masters_2007_prayer",
+          "description": "Meta-analysis of prayer and health studies finding limited evidence for distant intercessory prayer effects on clinical outcomes."
+        },
+        {
+          "id": "schmidt_2012_help",
+          "description": "Meta-analysis of distant intention experiments finding a small but significant overall effect across studies."
+        }
+      ],
+      "critiques": [],
+      "replies_and_defenses": [],
+      "verdict_summary": "Distant healing and intention research shows a split pattern. Early studies and smaller trials tended to report positive findings, but the two largest and most rigorous clinical trials (Krucoff 2005 MANTRA II, Benson 2006 STEP) found null or negative results. Meta-analyses diverge: Masters (2007) found limited evidence for prayer healing, while Schmidt (2012) found a small significant effect for distant intention more broadly. Laboratory studies using non-clinical measures (cell cultures, water crystals, bioassays) have shown more consistent positive results but are smaller in scale. The field illustrates the tension between small positive laboratory findings and null large-scale clinical trials."
+    }
+  ]
+}
