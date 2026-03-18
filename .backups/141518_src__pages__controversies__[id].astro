@@ -164,7 +164,7 @@ function createPaperPill(catalogId: string): string {
   const title = paper ? paper.title : catalogId;
   // Escape quotes for HTML attribute
   const safeTitle = title.replace(/"/g, '&quot;');
-  return `<a href="/paper/${catalogId}" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer focus:ring-2 focus:ring-amber-400 focus:outline-none" title="${safeTitle}"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>${catalogId}</a>`;
+  return `<a href="/paper/${catalogId}" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer" title="${safeTitle}"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>${catalogId}</a>`;
 }
 
 function processContent(text: string): string {
@@ -262,7 +262,7 @@ if (controversyPaperIds.size > 0) {
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
         <h1 class="text-3xl md:text-4xl font-bold text-slate-100">{title}</h1>
         <div class="flex items-center gap-2 text-slate-500 text-sm">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
           <span>{readTime} min read</span>
@@ -314,11 +314,11 @@ if (controversyPaperIds.size > 0) {
         {keyQuestion && (
           <div class="mt-6 pt-6 border-t border-slate-800">
             <div class="flex items-start gap-3">
-              <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
               <div>
-                <h3 class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-1">Key Question</h3>
+                <h2 class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-1">Key Question</h2>
                 <p class="text-slate-300 text-lg leading-relaxed italic font-serif">"{keyQuestion}"</p>
               </div>
             </div>
@@ -338,15 +338,15 @@ if (controversyPaperIds.size > 0) {
     <!-- Jump To Navigation -->
     <div class="sticky top-4 z-20 mb-10">
       <div class="bg-slate-950/90 backdrop-blur-sm border border-slate-800 rounded-lg p-2 flex flex-wrap gap-2 shadow-xl">
-        <a href="#overview" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">Overview</a>
+        <a href="#overview" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors">Overview</a>
         {(proCount > 0 || conCount > 0) && (
           <>
-            <a href="#evidence" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">Evidence</a>
-            <a href="#papers" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">Key Papers</a>
+            <a href="#evidence" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors">Evidence</a>
+            <a href="#papers" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors">Key Papers</a>
           </>
         )}
         {relatedPaths.length > 0 && (
-          <a href="#related" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">Related Paths</a>
+          <a href="#related" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors">Related Paths</a>
         )}
       </div>
     </div>
@@ -355,7 +355,7 @@ if (controversyPaperIds.size > 0) {
     {sections.status && (
       <div id="overview" class="bg-slate-900/50 border border-slate-800 rounded-lg p-6 mb-10">
         <h3 class="text-sm font-bold text-amber-500 uppercase tracking-wider mb-3 flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
           Current Consensus
@@ -389,45 +389,26 @@ if (controversyPaperIds.size > 0) {
             {proCount > 0 ? (
               <div class="space-y-4" id="papers">
                 {proPapers.map((paper, idx) => (
-                  paper.catalogId ? (
-                    <a 
-                      href={`/paper/${paper.catalogId}`}
-                      class="block group bg-slate-900 border border-slate-800 border-l-4 border-l-green-600 rounded-r-lg p-5 hover:bg-slate-800 hover:border-l-green-400 hover:shadow-lg hover:shadow-green-900/10 transition-all duration-200 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-                    >
-                      <div class="flex justify-between items-start mb-2">
-                        <div class="flex items-center gap-2">
-                          {paper.year && (
-                            <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
-                          )}
-                          {paper.catalogId && (
-                            <span class="text-xs font-bold text-amber-500 uppercase tracking-wider">{paper.catalogId}</span>
-                          )}
-                        </div>
-                        <svg class="w-4 h-4 text-slate-600 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
+                  <a 
+                    href={paper.catalogId ? `/paper/${paper.catalogId}` : '#'}
+                    class="block group bg-slate-900 border border-slate-800 border-l-4 border-l-green-600 rounded-r-lg p-5 hover:bg-slate-800 hover:border-l-green-400 hover:shadow-lg hover:shadow-green-900/10 transition-all duration-200"
+                  >
+                    <div class="flex justify-between items-start mb-2">
+                      <div class="flex items-center gap-2">
+                        {paper.year && (
+                          <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
+                        )}
+                        {paper.catalogId && (
+                          <span class="text-xs font-bold text-amber-500 uppercase tracking-wider">{paper.catalogId}</span>
+                        )}
                       </div>
-                      <h4 class="text-slate-200 font-medium mb-2 group-hover:text-green-300 transition-colors line-clamp-2">{paper.fullTitle}</h4>
-                      <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">{paper.description}</p>
-                    </a>
-                  ) : (
-                    <div class="block bg-slate-900 border border-slate-800 border-l-4 border-l-slate-600 rounded-r-lg p-5">
-                      <div class="flex justify-between items-start mb-2">
-                        <div class="flex items-center gap-2">
-                          {paper.year && (
-                            <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
-                          )}
-                          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Not in Catalog</span>
-                        </div>
-                        <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
-                        </svg>
-                      </div>
-                      <h4 class="text-slate-200 font-medium mb-2 line-clamp-2">{paper.fullTitle}</h4>
-                      <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">{paper.description}</p>
-                      <p class="text-xs text-slate-500 mt-2 italic">Paper not yet added to catalog</p>
+                      <svg class="w-4 h-4 text-slate-600 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                      </svg>
                     </div>
-                  )
+                    <h4 class="text-slate-200 font-medium mb-2 group-hover:text-green-300 transition-colors line-clamp-2">{paper.fullTitle}</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">{paper.description}</p>
+                  </a>
                 ))}
               </div>
             ) : (
@@ -447,45 +428,26 @@ if (controversyPaperIds.size > 0) {
             {conCount > 0 ? (
               <div class="space-y-4">
                 {conPapers.map((paper, idx) => (
-                  paper.catalogId ? (
-                    <a 
-                      href={`/paper/${paper.catalogId}`}
-                      class="block group bg-slate-900 border border-slate-800 border-l-4 border-l-red-600 rounded-r-lg p-5 hover:bg-slate-800 hover:border-l-red-400 hover:shadow-lg hover:shadow-red-900/10 transition-all duration-200 focus:ring-2 focus:ring-amber-400 focus:outline-none"
-                    >
-                      <div class="flex justify-between items-start mb-2">
-                        <div class="flex items-center gap-2">
-                          {paper.year && (
-                            <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
-                          )}
-                          {paper.catalogId && (
-                            <span class="text-xs font-bold text-amber-500 uppercase tracking-wider">{paper.catalogId}</span>
-                          )}
-                        </div>
-                        <svg class="w-4 h-4 text-slate-600 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
+                  <a 
+                    href={paper.catalogId ? `/paper/${paper.catalogId}` : '#'}
+                    class="block group bg-slate-900 border border-slate-800 border-l-4 border-l-red-600 rounded-r-lg p-5 hover:bg-slate-800 hover:border-l-red-400 hover:shadow-lg hover:shadow-red-900/10 transition-all duration-200"
+                  >
+                    <div class="flex justify-between items-start mb-2">
+                      <div class="flex items-center gap-2">
+                        {paper.year && (
+                          <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
+                        )}
+                        {paper.catalogId && (
+                          <span class="text-xs font-bold text-amber-500 uppercase tracking-wider">{paper.catalogId}</span>
+                        )}
                       </div>
-                      <h4 class="text-slate-200 font-medium mb-2 group-hover:text-red-300 transition-colors line-clamp-2">{paper.fullTitle}</h4>
-                      <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">{paper.description}</p>
-                    </a>
-                  ) : (
-                    <div class="block bg-slate-900 border border-slate-800 border-l-4 border-l-slate-600 rounded-r-lg p-5">
-                      <div class="flex justify-between items-start mb-2">
-                        <div class="flex items-center gap-2">
-                          {paper.year && (
-                            <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
-                          )}
-                          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Not in Catalog</span>
-                        </div>
-                        <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
-                        </svg>
-                      </div>
-                      <h4 class="text-slate-200 font-medium mb-2 line-clamp-2">{paper.fullTitle}</h4>
-                      <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">{paper.description}</p>
-                      <p class="text-xs text-slate-500 mt-2 italic">Paper not yet added to catalog</p>
+                      <svg class="w-4 h-4 text-slate-600 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                      </svg>
                     </div>
-                  )
+                    <h4 class="text-slate-200 font-medium mb-2 group-hover:text-red-300 transition-colors line-clamp-2">{paper.fullTitle}</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">{paper.description}</p>
+                  </a>
                 ))}
               </div>
             ) : (
@@ -503,7 +465,7 @@ if (controversyPaperIds.size > 0) {
     {relatedPaths.length > 0 && (
       <div id="related" class="mt-16 pt-10 border-t border-slate-800 scroll-mt-24">
         <h2 class="text-xl font-bold text-slate-200 mb-6 flex items-center gap-2">
-          <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
           </svg>
           Continue Learning
@@ -512,11 +474,11 @@ if (controversyPaperIds.size > 0) {
           {relatedPaths.map((path) => (
             <a 
               href={`/paths/${path.slug}`}
-              class="group block bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-500/50 hover:bg-slate-800 transition-all duration-200 focus:ring-2 focus:ring-amber-400 focus:outline-none"
+              class="group block bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-500/50 hover:bg-slate-800 transition-all duration-200"
             >
               <div class="flex items-center gap-3">
                 <div class="p-2 bg-slate-800 rounded-md group-hover:bg-amber-500/10 transition-colors">
-                  <svg class="w-5 h-5 text-slate-400 group-hover:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg class="w-5 h-5 text-slate-400 group-hover:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                   </svg>
                 </div>
@@ -534,8 +496,8 @@ if (controversyPaperIds.size > 0) {
     <!-- Prev/Next Navigation -->
     <div class="mt-20 pt-8 border-t border-slate-800 flex justify-between items-center">
       {prevControversy ? (
-        <a href={`/controversies/${prevControversy.slug}`} class="group flex items-center gap-3 text-slate-400 hover:text-amber-400 transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none rounded-md p-2 -m-2">
-          <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <a href={`/controversies/${prevControversy.slug}`} class="group flex items-center gap-3 text-slate-400 hover:text-amber-400 transition-colors">
+          <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
           </svg>
           <div class="text-right">
@@ -546,12 +508,12 @@ if (controversyPaperIds.size > 0) {
       ) : <div></div>}
 
       {nextControversy ? (
-        <a href={`/controversies/${nextControversy.slug}`} class="group flex items-center gap-3 text-slate-400 hover:text-amber-400 transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none rounded-md p-2 -m-2">
+        <a href={`/controversies/${nextControversy.slug}`} class="group flex items-center gap-3 text-slate-400 hover:text-amber-400 transition-colors">
           <div class="text-left">
             <div class="text-xs uppercase tracking-wider font-bold text-slate-600 group-hover:text-amber-500/70">Next</div>
             <div class="text-sm font-medium truncate max-w-[200px]">{nextControversy.title}</div>
           </div>
-          <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
           </svg>
         </a>
