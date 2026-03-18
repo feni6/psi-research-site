@@ -1,0 +1,345 @@
+<!-- src/layouts/Layout.astro -->
+---
+import '../styles/global.css'
+
+interface Props {
+  title: string;
+  description?: string;
+  jsonLd?: string;
+  ogImage?: string;
+  ogType?: string;
+}
+
+const { title, description = "A curated, epistemically responsible collection of peer-reviewed papers on psi research", jsonLd, ogImage, ogType } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+// Main Navigation Links
+const mainNavLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/catalog', label: 'Catalog' },
+  { href: '/controversies', label: 'Controversies' },
+  { href: '/paths', label: 'Reading Paths' },
+  { href: '/search', label: 'Search' },
+];
+
+// Dropdown "More" Links
+const moreNavLinks = [
+  { href: '/timeline', label: '📅 Timeline' },
+  { href: '/replications', label: '🔄 Replications' },
+  { href: '/stats', label: '📊 Stats' },
+  { href: '/trends', label: '📈 Trends' },
+  { href: '/glossary', label: '📖 Glossary' },
+  { href: '/network', label: '🔗 Network' },
+  { href: '/authors', label: '✍️ Authors' },
+  { href: '/journals', label: '📰 Journals' },
+  { href: '/wishlist', label: '📝 Wishlist' },
+  { href: '/method', label: '🔬 Methodology' },
+  { href: '/guide', label: '🗺️ Guide' },
+  { href: '/compare', label: '⚖️ Compare' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+
+function getLinkClasses(href: string): string {
+  const base = 'transition text-sm';
+  return isActive(href) ? `${base} text-amber-400 border-b-2 border-amber-400` : `${base} hover:text-amber-400`;
+}
+
+function getMobileLinkClasses(href: string): string {
+  const base = 'block py-2 text-base transition';
+  return isActive(href) ? `${base} text-amber-400 font-semibold` : `${base} text-slate-300 hover:text-amber-400 hover:bg-slate-800/50 px-2 rounded`;
+}
+---
+
+<!doctype html>
+<html lang="en" class="bg-slate-950 text-slate-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    
+    <!-- OpenGraph Meta Tags -->
+    <meta property="og:title" content={title + ' | Psi Research Library'} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType || 'website'} />
+    <meta property="og:site_name" content="Psi Research Library" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title + ' | Psi Research Library'} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | Psi Research Library</title>
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+    
+    <!-- Theme Initialization Script (Prevents FOUC) -->
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+        }
+      })();
+    </script>
+
+    
+  </head>
+  <body class="min-h-screen flex flex-col font-sans">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-amber-500 focus:text-slate-950 focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold">
+      Skip to main content
+    </a>
+    <nav class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4 py-4">
+        
+        <!-- Top Row: Logo + Mobile Toggle + Desktop Theme Toggle -->
+        <div class="flex justify-between items-center">
+          <a href="/" class="text-xl font-bold text-amber-400 hover:text-amber-300 transition">Psi Research Library</a>
+          
+          <div class="flex items-center gap-4">
+            <!-- Desktop Theme Toggle -->
+            <button id="theme-toggle" class="hidden md:block" aria-label="Toggle dark mode" title="Toggle theme">
+              <span class="block dark:hidden">🌙</span>
+              <span class="hidden dark:block">☀️</span>
+            </button>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-amber-400 focus:outline-none p-2" aria-label="Toggle menu" aria-expanded="false">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex justify-center mt-4">
+          <ul class="flex flex-wrap justify-center gap-6 items-center">
+            {mainNavLinks.map((link) => (
+              <li>
+                <a href={link.href} class={getLinkClasses(link.href)}>{link.label}</a>
+              </li>
+            ))}
+            
+            <!-- More Dropdown -->
+            <li class="relative">
+              <button 
+                id="more-menu-btn" 
+                class="transition text-sm hover:text-amber-400 flex items-center gap-1 focus:outline-none"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                More <span>▾</span>
+              </button>
+              
+              <div 
+                id="more-menu-dropdown" 
+                class="hidden absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-md shadow-lg py-2 z-50"
+              >
+                {moreNavLinks.map((link) => (
+                  <a 
+                    href={link.href} 
+                    class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-amber-400 transition"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 border-t border-slate-800 pt-4">
+          <div class="flex flex-col gap-2">
+            <!-- Mobile Theme Toggle (Inside Menu) -->
+            <button id="mobile-theme-toggle" class="flex items-center gap-2 py-2 px-2 text-slate-300 hover:text-amber-400 hover:bg-slate-800/50 rounded mb-2">
+              <span>🎨</span> Toggle Theme
+            </button>
+
+            {mainNavLinks.map((link) => (
+              <a href={link.href} class={getMobileLinkClasses(link.href)}>{link.label}</a>
+            ))}
+            
+            <div class="border-t border-slate-800 my-2"></div>
+            <span class="text-xs text-slate-500 uppercase tracking-wider px-2 py-1">More</span>
+            {moreNavLinks.map((link) => (
+              <a href={link.href} class={getMobileLinkClasses(link.href)}>{link.label}</a>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </nav>
+    <main id="main-content" class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
+      <slot />
+    </main>
+    <footer class="border-t border-slate-800 bg-slate-900/50 py-12">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <!-- Column 1: Explore -->
+          <div>
+            <h4 class="text-slate-200 font-semibold mb-4 text-lg">Explore</h4>
+            <ul class="space-y-2 text-slate-400">
+              <li><a href="/catalog" class="hover:text-amber-400 transition">Catalog</a></li>
+              <li><a href="/controversies" class="hover:text-amber-400 transition">Controversies</a></li>
+              <li><a href="/paths" class="hover:text-amber-400 transition">Reading Paths</a></li>
+              <li><a href="/timeline" class="hover:text-amber-400 transition">Timeline</a></li>
+            </ul>
+          </div>
+          <!-- Column 2: Tools -->
+          <div>
+            <h4 class="text-slate-200 font-semibold mb-4 text-lg">Tools</h4>
+            <ul class="space-y-2 text-slate-400">
+              <li><a href="/search" class="hover:text-amber-400 transition">Search</a></li>
+              <li><a href="/stats" class="hover:text-amber-400 transition">Stats</a></li>
+              <li><a href="/trends" class="hover:text-amber-400 transition">Trends</a></li>
+              <li><a href="/network" class="hover:text-amber-400 transition">Network</a></li>
+              <li><a href="/authors" class="hover:text-amber-400 transition">Authors</a></li>
+              <li><a href="/journals" class="hover:text-amber-400 transition">Journals</a></li>
+              <li><a href="/glossary" class="hover:text-amber-400 transition">Glossary</a></li>
+              <li><a href="/guide" class="hover:text-amber-400 transition">Guide</a></li>
+              <li><a href="/compare" class="hover:text-amber-400 transition">Compare</a></li>
+            </ul>
+          </div>
+          <!-- Column 3: About -->
+          <div>
+            <h4 class="text-slate-200 font-semibold mb-4 text-lg">About</h4>
+            <ul class="space-y-2 text-slate-400">
+              <li><a href="/about" class="hover:text-amber-400 transition">About</a></li>
+              <li><a href="/method" class="hover:text-amber-400 transition">Methodology</a></li>
+              <li><a href="/wishlist" class="hover:text-amber-400 transition">Wishlist</a></li>
+              <li><a href="/llms.txt" class="hover:text-amber-400 transition">llms.txt</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+          <p>&copy; {new Date().getFullYear()} Psi Research Library — Built with epistemic care</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full bg-amber-500 text-slate-950 shadow-lg flex items-center justify-center hover:bg-amber-400 transition-all opacity-0 pointer-events-none" aria-label="Back to top">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+    </button>
+
+    <script>
+      // Theme Toggle Logic
+      const toggleBtn = document.getElementById('theme-toggle');
+      const mobileToggleBtn = document.getElementById('mobile-theme-toggle');
+      const html = document.documentElement;
+      const sunIcon = '☀️';
+      const moonIcon = '🌙';
+
+      function updateIcon() {
+        const isLight = html.getAttribute('data-theme') === 'light';
+        if (toggleBtn) {
+          toggleBtn.innerHTML = isLight ? `<span class="block dark:hidden">🌙</span><span class="hidden dark:block">☀️</span>` : `<span class="block dark:hidden">🌙</span><span class="hidden dark:block">☀️</span>`;
+          // Simplified for Astro script scope: just text content if using text, but we used spans
+          // Let's rely on CSS classes for the icons inside the button
+          const sun = toggleBtn.querySelector('.dark\\:block');
+          const moon = toggleBtn.querySelector('.dark\\:hidden');
+          if(isLight) {
+             if(sun) sun.classList.remove('hidden');
+             if(moon) moon.classList.add('hidden');
+          } else {
+             if(sun) sun.classList.add('hidden');
+             if(moon) moon.classList.remove('hidden');
+          }
+        }
+      }
+
+      function toggleTheme() {
+        const isLight = html.getAttribute('data-theme') === 'light';
+        if (isLight) {
+          html.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          html.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+        }
+        updateIcon();
+      }
+
+      // Initialize icon based on current state
+      updateIcon();
+
+      if (toggleBtn) toggleBtn.addEventListener('click', toggleTheme);
+      if (mobileToggleBtn) mobileToggleBtn.addEventListener('click', toggleTheme);
+
+      // Dropdown Menu Logic
+      const moreBtn = document.getElementById('more-menu-btn');
+      const moreDropdown = document.getElementById('more-menu-dropdown');
+
+      if (moreBtn && moreDropdown) {
+        moreBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isHidden = moreDropdown.classList.contains('hidden');
+          if (isHidden) {
+            moreDropdown.classList.remove('hidden');
+            moreBtn.setAttribute('aria-expanded', 'true');
+          } else {
+            moreDropdown.classList.add('hidden');
+            moreBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!moreBtn.contains(e.target as Node) && !moreDropdown.contains(e.target as Node)) {
+            moreDropdown.classList.add('hidden');
+            moreBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      // Mobile Menu Logic
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+          const isHidden = mobileMenu.classList.contains('hidden');
+          if (isHidden) {
+            mobileMenu.classList.remove('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'true');
+          } else {
+            mobileMenu.classList.add('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close mobile menu when a link is clicked
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // Back to Top Logic
+      const topBtn = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          topBtn.classList.remove('opacity-0', 'pointer-events-none');
+          topBtn.classList.add('opacity-100');
+        } else {
+          topBtn.classList.add('opacity-0', 'pointer-events-none');
+          topBtn.classList.remove('opacity-100');
+        }
+      });
+      topBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+  </body>
+</html>
