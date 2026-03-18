@@ -50,7 +50,7 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
     <!-- Header & Breadcrumb -->
     <div class="space-y-4">
       <nav class="text-sm text-slate-400">
-        <a href="/" class="hover:text-amber-400 transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">Home</a>
+        <a href="/" class="hover:text-amber-400 transition-colors">Home</a>
         <span class="mx-2">/</span>
         <span class="text-amber-400 font-medium">Authors</span>
       </nav>
@@ -66,8 +66,7 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
         type="text" 
         id="authorSearch"
         placeholder="Filter by author name..." 
-        aria-label="Filter authors by name"
-        class="w-full bg-slate-900 border border-slate-700 rounded-lg py-3 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all"
+        class="w-full bg-slate-900 border border-slate-700 rounded-lg py-3 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
         oninput="filterAuthors()"
       />
       <div class="absolute right-3 top-3.5 text-slate-500 pointer-events-none">
@@ -93,8 +92,7 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
           return (
             <a 
               href={`/author/${authorId}`}
-              aria-label={`View papers by ${name}, ${data.count} papers`}
-              class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-400/50 hover:bg-slate-900/80 transition-all group block focus:ring-2 focus:ring-amber-400 focus:outline-none"
+              class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-400/50 hover:bg-slate-900/80 transition-all group block"
             >
               <div class="flex items-center justify-between mb-2">
                 <div class="text-amber-400 text-2xl font-bold">{data.count}</div>
@@ -116,11 +114,11 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
     </section>
 
     <!-- Alphabet Jump Links -->
-    <nav class="flex flex-wrap gap-2 justify-center md:justify-start" role="navigation" aria-label="Alphabetical navigation">
+    <nav class="flex flex-wrap gap-2 justify-center md:justify-start" aria-label="Alphabetical navigation">
       {activeLetters.map(letter => (
         <a 
           href={`#letter-${letter}`}
-          class="w-8 h-8 flex items-center justify-center rounded bg-slate-900 border border-slate-800 text-slate-400 hover:bg-amber-400 hover:text-slate-950 hover:border-amber-400 transition-all font-mono text-sm font-bold focus:ring-2 focus:ring-amber-400 focus:outline-none"
+          class="w-8 h-8 flex items-center justify-center rounded bg-slate-900 border border-slate-800 text-slate-400 hover:bg-amber-400 hover:text-slate-950 hover:border-amber-400 transition-all font-mono text-sm font-bold"
         >
           {letter}
         </a>
@@ -145,14 +143,14 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
                 const anchorId = `author-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
                 return (
                   <details class="author-card group bg-slate-900/50 border border-slate-800 rounded-lg overflow-hidden transition-all hover:border-slate-700" data-name={name.toLowerCase()}>
-                    <summary class="p-4 flex items-center justify-between cursor-pointer list-none focus:ring-2 focus:ring-amber-400 focus:outline-none" id={anchorId}>
+                    <summary class="p-4 flex items-center justify-between cursor-pointer list-none" id={anchorId}>
                       <div class="flex items-center space-x-4">
                         <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 font-bold border border-slate-700 group-hover:border-amber-400/50 transition-colors">
                           {name.charAt(0)}
                         </div>
                         <div>
                           <h4 class="text-lg font-semibold">
-                            <a href={`/author/${authorId}`} aria-label={`View papers by ${name}, ${data.count} papers`} class="text-slate-200 hover:text-amber-400 transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">
+                            <a href={`/author/${authorId}`} class="text-slate-200 hover:text-amber-400 transition-colors">
                               {name}
                             </a>
                           </h4>
@@ -170,12 +168,12 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
 
                     <!-- Expandable Paper List -->
                     <div class="bg-slate-950 border-t border-slate-800/50">
-                      <ul class="divide-y divide-slate-800/50" role="list">
+                      <ul class="divide-y divide-slate-800/50">
                         {data.papers.sort((a, b) => b.year - a.year).map(paper => (
-                          <li class="p-4 hover:bg-slate-900 transition-colors" role="listitem">
+                          <li class="p-4 hover:bg-slate-900 transition-colors">
                             <div class="flex justify-between items-start gap-4">
                               <div>
-                                <a href={`/paper/${paper.id}`} class="text-slate-300 hover:text-amber-400 font-medium transition-colors line-clamp-2 focus:ring-2 focus:ring-amber-400 focus:outline-none">
+                                <a href={`/paper/${paper.id}`} class="text-slate-300 hover:text-amber-400 font-medium transition-colors line-clamp-2">
                                   {paper.title}
                                 </a>
                                 <div class="text-xs text-slate-500 mt-1 font-mono">ID: {paper.id}</div>
