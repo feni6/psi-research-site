@@ -242,6 +242,7 @@ function getDomainIcon(d: string): string {
           <option value="title-asc">Title (A-Z)</option>
           <option value="title-desc">Title (Z-A)</option>
           <option value="domain">Domain</option>
+          <option value="effect-size">By Effect Size</option>
           <option value="sample-size">By Sample Size</option>
         </select>
         <div class="pointer-events-none absolute right-3 top-3 text-amber-500">
@@ -265,7 +266,7 @@ function getDomainIcon(d: string): string {
   <!-- Paper Grid -->
   <div id="paper-list" class="grid grid-cols-1 gap-4 mt-6">
     {papers.map((paper: any) => (
-      <div class="paper-card group relative bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 flex gap-4" data-domain={paper.psi_domain} data-folder={paper.folder} data-year={paper.year} data-prereg={getPreRegStatus(paper)} data-blinding={getBlindingStatus(paper)} data-doi={getDoiStatus(paper)} data-title={paper.title.toLowerCase()} data-authors={paper.authors.join(' ').toLowerCase()} data-abstract={paper.abstract.toLowerCase()} data-sample-size={paper.methodology?.n || 0}>
+      <div class="paper-card group relative bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 flex gap-4" data-domain={paper.psi_domain} data-folder={paper.folder} data-year={paper.year} data-prereg={getPreRegStatus(paper)} data-blinding={getBlindingStatus(paper)} data-doi={getDoiStatus(paper)} data-title={paper.title.toLowerCase()} data-authors={paper.authors.join(' ').toLowerCase()} data-abstract={paper.abstract.toLowerCase()} data-effect-size={paper.results?.effect_size || 0} data-sample-size={paper.results?.sample_size || 0}>
         
         <!-- Domain Icon Square -->
         <div class={`flex-shrink-0 w-10 h-10 rounded flex items-center justify-center text-lg bg-gradient-to-br ${getDomainGradient(paper.psi_domain)}`}>
@@ -288,8 +289,11 @@ function getDomainIcon(d: string): string {
           <p class="text-slate-300 text-sm mb-4 line-clamp-3">{paper.abstract}</p>
           <div class="flex flex-wrap gap-2 mb-4">
             <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">{paper.psi_domain.replace(/_/g, ' ')}</span>
-            {paper.methodology?.n != null && paper.methodology?.n > 0 && (
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">N = {paper.methodology.n}</span>
+            {paper.results?.effect_size !== undefined && (
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">d = {paper.results.effect_size}</span>
+            )}
+            {paper.results?.sample_size !== undefined && (
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">N = {paper.results.sample_size}</span>
             )}
           </div>
           <div class="flex items-center justify-between pt-3 border-t border-slate-800">
@@ -390,6 +394,7 @@ function getDomainIcon(d: string): string {
         if (sortMode === 'title-asc') return a.dataset.title!.localeCompare(b.dataset.title!);
         if (sortMode === 'title-desc') return b.dataset.title!.localeCompare(a.dataset.title!);
         if (sortMode === 'domain') return (a.dataset.domain || '').localeCompare(b.dataset.domain || '');
+        if (sortMode === 'effect-size') return parseFloat(b.dataset.effectSize!) - parseFloat(a.dataset.effectSize!);
         if (sortMode === 'sample-size') return parseInt(b.dataset.sampleSize!) - parseInt(a.dataset.sampleSize!);
         return 0;
       });
