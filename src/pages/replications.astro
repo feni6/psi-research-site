@@ -1,240 +1,389 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { marked } from 'marked';
+import catalog from '../data/catalog.json';
+import fs from 'node:fs';
+import path from 'node:path';
 
-interface Replication {
-  id: string;
-  originalStudy: string;
-  authors: string;
-  year: number;
-  outcome: 'successful' | 'failed' | 'mixed';
-  sampleSize: number;
-  effectSize: string;
-  summary: string;
-  details: string;
+const mapPath = path.join(process.cwd(), 'src/data/replication_map.md');
+const replicationMap = fs.readFileSync(mapPath, 'utf-8');
+
+// Create a set of valid catalog IDs for quick lookup
+const validIds = new Set(catalog.papers.map((p: any) => p.id));
+
+// Find backtick-wrapped strings that look like catalog IDs and link them
+let linkedContent = replicationMap.replace(
+  /`([a-z][a-z0-9]*_[0-9]{4}_[a-z_]+)`/g,
+  (match: string, id: string) => {
+    if (validIds.has(id)) {
+      return `<a href="/paper/${id}" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-amber-400 text-xs font-mono hover:bg-slate-700 hover:border-amber-400/50 transition-colors"><span class="opacity-70">📄</span> ${id}</a>`;
+    }
+    return match;
+  }
+);
+
+// Parse stats from the markdown content
+const lines = replicationMap.split('\n');
+let totalChains = 0;
+let totalAttempts = 0;
+let successfulCount = 0;
+let failedCount = 0;
+let mixedCount = 0;
+
+for (const line of lines) {
+  const trimmedLine = line.trim();
+  
+  // Count ## headers as replication chains
+  if (trimmedLine.startsWith('## ')) {
+    totalChains++;
+  }
+  
+  // Count table rows (lines containing | on both sides)
+  if (trimmedLine.startsWith('|') && trimmedLine.endsWith('|')) {
+    // Skip header rows and separator rows (contain ---)
+    if (!trimmedLine.includes('---')) {
+      // Check if this looks like a header row (contains bold markers or typical header text)
+      const isHeaderRow = trimmedLine.includes('**') || 
+                         trimmedLine.toLowerCase().includes('study') && trimmedLine.toLowerCase().includes('outcome');
+      
+      if (!isHeaderRow) {
+        totalAttempts++;
+        
+        // Count outcomes - check for specific keywords
+        const lowerLine = trimmedLine.toLowerCase();
+        if (lowerLine.includes('successful') || lowerLine.includes('success')) {
+          successfulCount++;
+        } else if (lowerLine.includes('failed') || lowerLine.includes('failure') || lowerLine.includes('fail')) {
+          failedCount++;
+        } else if (lowerLine.includes('mixed') || lowerLine.includes('partial')) {
+          mixedCount++;
+        }
+      }
+    }
+  }
 }
 
-const replications: Replication[] = [
-  {
-    id: 'rep-001',
-    originalStudy: 'Bem (2011) - Feeling the Future',
-    authors: 'Wagenmakers et al.',
-    year: 2011,
-    outcome: 'failed',
-    sampleSize: 200,
-    effectSize: 'd = 0.02',
-    summary: 'Failed to replicate precognition effects with larger sample and stricter methodology.',
-    details: 'This large-scale replication attempt used improved methodology including larger sample sizes, pre-registration, and stricter statistical controls. The original effect was not observed, suggesting the initial findings may have been due to methodological artifacts or statistical fluctuations.'
-  },
-  {
-    id: 'rep-002',
-    originalStudy: 'Radin (2006) - Entangled Minds',
-    authors: 'Mossbridge et al.',
-    year: 2012,
-    outcome: 'mixed',
-    sampleSize: 150,
-    effectSize: 'd = 0.15',
-    summary: 'Partial replication with smaller effect sizes than originally reported.',
-    details: 'This replication found some evidence for the phenomenon but with significantly smaller effect sizes. The mixed results suggest that while there may be something to investigate, the original claims were likely overstated.'
-  },
-  {
-    id: 'rep-003',
-    originalStudy: 'McCraty & Shaffer (2010) - Heart Coherence',
-    authors: 'McCraty et al.',
-    year: 2015,
-    outcome: 'successful',
-    sampleSize: 85,
-    effectSize: 'd = 0.42',
-    summary: 'Successfully replicated heart coherence effects in controlled conditions.',
-    details: 'This study successfully replicated the original findings using similar methodology and participant populations. The effect sizes were consistent with the original research, supporting the reliability of the heart coherence phenomenon under these specific conditions.'
-  },
-  {
-    id: 'rep-004',
-    originalStudy: 'Targ & Puthoff (1974) - Remote Viewing',
-    authors: 'Marks & Kammann',
-    year: 1980,
-    outcome: 'failed',
-    sampleSize: 120,
-    sampleSize: 120,
-    effectSize: 'd = 0.05',
-    summary: 'Failed to replicate remote viewing under controlled laboratory conditions.',
-    details: 'This comprehensive replication attempt implemented strict controls to eliminate sensory leakage and experimenter bias. No significant remote viewing effects were detected, suggesting the original findings may have been influenced by methodological flaws.'
-  },
-  {
-    id: 'rep-005',
-    originalStudy: 'Schwartz (2003) - Afterlife Communications',
-    authors: 'Russek et al.',
-    year: 2010,
-    outcome: 'mixed',
-    sampleSize: 95,
-    effectSize: 'd = 0.28',
-    summary: 'Mixed results with some positive findings but methodological concerns.',
-    details: 'While some measures showed positive results, the study faced criticism for potential cold reading effects and inadequate blinding. The mixed outcomes highlight the need for more rigorous experimental designs in this area.'
-  }
-];
+const htmlContent = marked(linkedContent);
 
-const filterOptions = [
-  { value: 'all', label: 'Show All' },
-  { value: 'successful', label: 'Successful Only' },
-  { value: 'failed', label: 'Failed Only' },
-  { value: 'mixed', label: 'Mixed' }
-];
+// Post-process HTML to add IDs to headers for deep linking
+const processedHtml = htmlContent.replace(/<h2>(.*?)<\/h2>/g, (match, text) => {
+  const slug = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').trim();
+  return `<!--CHAIN_START--><h2 id="${slug}" class="text-xl font-bold text-slate-100 mb-2">${text}</h2><!--CHAIN_END-->`;
+});
+
+// Post-process HTML to highlight outcome keywords in tables
+const highlightedHtml = processedHtml.replace(
+  /(?<=>|\|\s)(Successful|Failed|Mixed|Partial|Anomalous)(?=<|\||\s)/gi,
+  (match) => {
+    const lower = match.toLowerCase();
+    let colorClass = 'text-slate-300';
+    let bgClass = 'bg-slate-800';
+    let icon = '';
+    
+    if (lower.includes('success')) {
+      colorClass = 'text-green-400 font-medium';
+      bgClass = 'bg-green-400/10 border border-green-400/20';
+      icon = '✅ ';
+    } else if (lower.includes('fail')) {
+      colorClass = 'text-red-400 font-medium';
+      bgClass = 'bg-red-400/10 border border-red-400/20';
+      icon = '❌ ';
+    } else if (lower.includes('mixed') || lower.includes('partial')) {
+      colorClass = 'text-amber-400 font-medium';
+      bgClass = 'bg-amber-400/10 border border-amber-400/20';
+      icon = '⚠️ ';
+    } else if (lower.includes('anomalous')) {
+      colorClass = 'text-purple-400 font-medium';
+      bgClass = 'bg-purple-400/10 border border-purple-400/20';
+      icon = '🔮 ';
+    }
+    
+    return `<span class="${colorClass} ${bgClass} px-2 py-0.5 rounded text-sm inline-flex items-center gap-1">${icon}${match}</span>`;
+  }
+);
+
+// Split content into chains based on our markers
+const rawSections = highlightedHtml.split('<!--CHAIN_START-->');
+const introSection = rawSections[0]; // Content before first h2
+const chainSections = rawSections.slice(1); // Content starting with h2
+
+// Calculate success rate
+const successRate = totalAttempts > 0 ? Math.round((successfulCount / totalAttempts) * 100) : 0;
+const failRate = totalAttempts > 0 ? Math.round((failedCount / totalAttempts) * 100) : 0;
+const mixedRate = totalAttempts > 0 ? Math.round((mixedCount / totalAttempts) * 100) : 0;
+
+// Helper to transform HTML tables into Tailwind-styled card lists
+function transformTableToCards(html: string): string {
+  return html.replace(/<table>([\s\S]*?)<\/table>/g, (match, content) => {
+    // Remove thead to avoid duplicate headers in card view, or style it differently
+    // We will extract rows and make them cards
+    const rows = content.match(/<tr>([\s\S]*?)<\/tr>/g) || [];
+    
+    if (rows.length === 0) return match;
+
+    // First row is usually header, we'll skip it for the card list or use it as a label
+    // For this design, we'll treat the first row as the "Original Study" context if possible, 
+    // but since the markdown structure varies, we'll just render all rows as cards 
+    // but style the first one slightly differently if needed.
+    
+    let cardsHtml = '<div class="space-y-3 mt-4">';
+    
+    rows.forEach((row: string, index: number) => {
+      const cells = row.match(/<td>([\s\S]*?)<\/td>/g) || [];
+      if (cells.length === 0) return;
+
+      // Determine outcome for border color
+      const rowText = row.toLowerCase();
+      let borderColor = 'border-slate-700';
+      let bgAccent = 'bg-slate-800/50';
+      
+      if (rowText.includes('successful') || rowText.includes('success')) {
+        borderColor = 'border-green-500/50';
+        bgAccent = 'bg-green-500/5';
+      } else if (rowText.includes('failed') || rowText.includes('fail')) {
+        borderColor = 'border-red-500/50';
+        bgAccent = 'bg-red-500/5';
+      } else if (rowText.includes('mixed') || rowText.includes('partial')) {
+        borderColor = 'border-amber-500/50';
+        bgAccent = 'bg-amber-500/5';
+      }
+
+      // Clean cell content
+      const cleanCells = cells.map(c => c.replace(/<\/?td>/g, '').trim());
+      
+      // Construct card
+      // Assuming structure: [Study/Year, Authors, Outcome, Notes] or similar
+      // We will display them in a grid within the card
+      cardsHtml += `
+        <div class="group relative p-3 rounded-lg border ${borderColor} ${bgAccent} hover:bg-slate-800 transition-colors">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 items-start">
+            <div class="md:col-span-3 text-xs font-mono text-slate-400 uppercase tracking-wide">
+              ${cleanCells[0] || 'Study'}
+            </div>
+            <div class="md:col-span-4 text-sm text-slate-300">
+              ${cleanCells[1] || ''}
+            </div>
+            <div class="md:col-span-3">
+              ${cleanCells[2] || ''}
+            </div>
+            <div class="md:col-span-2 text-xs text-slate-500 italic">
+              ${cleanCells[3] || ''}
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    
+    cardsHtml += '</div>';
+    return cardsHtml;
+  });
+}
+
+const finalHtml = transformTableToCards(highlightedHtml);
+const rawSectionsFinal = finalHtml.split('<!--CHAIN_START-->');
+const introSectionFinal = rawSectionsFinal[0];
+const chainSectionsFinal = rawSectionsFinal.slice(1);
 ---
 
-<Layout title="Replication Studies">
-  <main class="min-h-screen bg-slate-950 text-slate-100">
-    <div class="max-w-6xl mx-auto px-4 py-12">
-      <header class="mb-12">
-        <h1 class="text-4xl font-bold text-amber-400 mb-4">Replication Studies</h1>
-        <p class="text-slate-400 text-lg max-w-3xl">
-          A comprehensive collection of replication attempts for notable psi research studies. 
-          These replications help establish the reliability and validity of paranormal phenomena claims.
-        </p>
-      </header>
+<Layout title="Replication Map" description="A comprehensive map of replication attempts across psi research paradigms">
 
-      <section class="mb-12">
-        <div role="group" aria-label="Filter replications by outcome" class="flex flex-wrap gap-3 mb-8">
-          {filterOptions.map((option) => (
-            <button
-              type="button"
-              data-filter={option.value}
-              class="filter-btn px-4 py-2 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 hover:border-amber-400 transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none focus:border-amber-400"
-              aria-pressed={option.value === 'all'}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-
-        <div id="replications-grid" class="grid gap-6">
-          {replications.map((rep) => (
-            <article
-              data-outcome={rep.outcome}
-              class="replication-card bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-400/50 transition-colors"
-            >
-              <div class="p-6">
-                <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
-                  <div>
-                    <h3 class="text-xl font-semibold text-amber-400 mb-2">{rep.originalStudy}</h3>
-                    <p class="text-slate-400">{rep.authors} ({rep.year})</p>
-                  </div>
-                  <span
-                    class={`px-3 py-1 rounded-full text-sm font-medium ${
-                      rep.outcome === 'successful' ? 'bg-green-900/50 text-green-400 border border-green-700' :
-                      rep.outcome === 'failed' ? 'bg-red-900/50 text-red-400 border border-red-700' :
-                      'bg-yellow-900/50 text-yellow-400 border border-yellow-700'
-                    }`}
-                  >
-                    {rep.outcome.charAt(0).toUpperCase() + rep.outcome.slice(1)}
-                  </span>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-4 mb-4 text-sm">
-                  <div>
-                    <span class="text-slate-500">Sample Size:</span>
-                    <span class="text-slate-300 ml-2">{rep.sampleSize}</span>
-                  </div>
-                  <div>
-                    <span class="text-slate-500">Effect Size:</span>
-                    <span class="text-slate-300 ml-2">{rep.effectSize}</span>
-                  </div>
-                  <div>
-                    <span class="text-slate-500">Year:</span>
-                    <span class="text-slate-300 ml-2">{rep.year}</span>
-                  </div>
-                </div>
-
-                <p class="text-slate-300 mb-4">{rep.summary}</p>
-
-                <button
-                  type="button"
-                  class="expand-btn text-amber-400 hover:text-amber-300 font-medium flex items-center gap-2 focus:ring-2 focus:ring-amber-400 focus:outline-none focus:text-amber-300 rounded px-2 py-1 -ml-2"
-                  aria-expanded="false"
-                  aria-controls={`details-${rep.id}`}
-                >
-                  <span>View Details</span>
-                  <svg class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </button>
-
-                <div
-                  id={`details-${rep.id}`}
-                  class="details-content hidden mt-4 pt-4 border-t border-slate-800"
-                  aria-hidden="true"
-                >
-                  <p class="text-slate-400 leading-relaxed">{rep.details}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-    </div>
-  </main>
-
+  <!-- Client-side filtering script -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const filterBtns = document.querySelectorAll('.filter-btn');
-      const cards = document.querySelectorAll('.replication-card');
-      const expandBtns = document.querySelectorAll('.expand-btn');
-
-      // Filter functionality
-      filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const filter = btn.getAttribute('data-filter');
-          
-          filterBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
-          btn.setAttribute('aria-pressed', 'true');
-          
-          cards.forEach(card => {
-            const outcome = card.getAttribute('data-outcome');
-            if (filter === 'all' || outcome === filter) {
-              card.classList.remove('hidden');
-            } else {
-              card.classList.add('hidden');
-            }
-          });
-        });
-
-        // Keyboard support for filter buttons
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            btn.click();
-          }
-        });
+    function filterReplications(filter: string) {
+      const cards = document.querySelectorAll('[data-outcome]');
+      const buttons = document.querySelectorAll('[data-filter-btn]');
+      
+      // Update buttons
+      buttons.forEach(btn => {
+        if (btn.getAttribute('data-filter-btn') === filter) {
+          btn.classList.add('bg-amber-500', 'text-slate-950', 'border-amber-500');
+          btn.classList.remove('bg-slate-800', 'text-slate-400', 'border-slate-700', 'hover:border-slate-500');
+        } else {
+          btn.classList.remove('bg-amber-500', 'text-slate-950', 'border-amber-500');
+          btn.classList.add('bg-slate-800', 'text-slate-400', 'border-slate-700', 'hover:border-slate-500');
+        }
       });
 
-      // Expand/collapse functionality
-      expandBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const detailsId = btn.getAttribute('aria-controls');
-          const details = document.getElementById(detailsId);
-          const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-          
-          btn.setAttribute('aria-expanded', (!isExpanded).toString());
-          details.setAttribute('aria-hidden', isExpanded.toString());
-          details.classList.toggle('hidden');
-          
-          const icon = btn.querySelector('svg');
-          if (icon) {
-            icon.classList.toggle('rotate-180');
-          }
-          
-          const textSpan = btn.querySelector('span');
-          if (textSpan) {
-            textSpan.textContent = isExpanded ? 'View Details' : 'Hide Details';
-          }
-        });
-
-        // Keyboard support for expand buttons
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            btn.click();
-          }
-        });
+      // Filter cards
+      cards.forEach(card => {
+        const outcome = card.getAttribute('data-outcome');
+        if (filter === 'all' || outcome === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
       });
-    });
+    }
   </script>
+
+  <!-- Breadcrumb -->
+  <nav class="mb-6 text-sm">
+    <ol class="flex items-center space-x-2 text-slate-400">
+      <li><a href="/" class="hover:text-amber-400 transition-colors">Home</a></li>
+      <li class="text-slate-600">/</li>
+      <li class="text-amber-400 font-medium">Replications</li>
+    </ol>
+  </nav>
+
+  <div class="mb-10">
+    <h1 class="text-3xl font-bold mb-4 text-slate-100">Replication Map</h1>
+    
+    <div class="bg-slate-900/50 border border-slate-800 rounded-xl p-6 mb-8">
+      <h2 class="text-lg font-semibold text-slate-200 mb-2">Why Replication Matters</h2>
+      <p class="text-slate-400 leading-relaxed mb-4">
+        Replication is the gold standard of science. This map tracks which findings have been independently tested and what the results show.
+        In psi research, where effects are often subtle and context-dependent, replication chains are critical. 
+        They help distinguish between genuine phenomena, statistical flukes, and methodological artifacts.
+      </p>
+      
+      <!-- Visual Summary Stats -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-slate-800">
+        <div class="text-center">
+          <p class="text-slate-500 text-xs uppercase tracking-wider mb-1">Chains Tracked</p>
+          <p class="text-3xl font-bold text-white">{totalChains}</p>
+        </div>
+        <div class="text-center">
+          <p class="text-slate-500 text-xs uppercase tracking-wider mb-1">Total Attempts</p>
+          <p class="text-3xl font-bold text-white">{totalAttempts}</p>
+        </div>
+        <div class="text-center col-span-2 md:col-span-2">
+          <p class="text-slate-500 text-xs uppercase tracking-wider mb-1">Overall Success Rate</p>
+          <div class="flex items-baseline justify-center gap-2">
+            <p class="text-4xl font-bold text-green-400">{successRate}%</p>
+            <span class="text-slate-500 text-sm">({successfulCount}/{totalAttempts})</span>
+          </div>
+          <!-- Colored Bar -->
+          <div class="mt-3 h-3 w-full bg-slate-800 rounded-full overflow-hidden flex shadow-inner">
+            <div class="h-full bg-green-500 transition-all duration-1000 ease-out" style="width: {successRate}%"></div>
+            <div class="h-full bg-red-500 transition-all duration-1000 ease-out" style="width: {failRate}%"></div>
+            <div class="h-full bg-amber-500 transition-all duration-1000 ease-out" style="width: {mixedRate}%"></div>
+          </div>
+          <div class="flex justify-between mt-2 text-[10px] text-slate-500 uppercase tracking-wide font-semibold">
+            <span class="text-green-500">Success ({successRate}%)</span>
+            <span class="text-red-500">Fail ({failRate}%)</span>
+            <span class="text-amber-500">Mixed ({mixedRate}%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-slate-400 font-medium mr-2">Filter by outcome:</span>
+        <button 
+          data-filter-btn="all" 
+          onclick="filterReplications('all')"
+          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-amber-500 text-slate-950 border-amber-500 transition-all">
+          Show All
+        </button>
+        <button 
+          data-filter-btn="success" 
+          onclick="filterReplications('success')"
+          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500 transition-all">
+          Successful Only
+        </button>
+        <button 
+          data-filter-btn="fail" 
+          onclick="filterReplications('fail')"
+          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500 transition-all">
+          Failed Only
+        </button>
+        <button 
+          data-filter-btn="mixed" 
+          onclick="filterReplications('mixed')"
+          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500 transition-all">
+          Mixed
+        </button>
+      </div>
+      
+      <div class="text-xs text-slate-500 italic">
+        Click cards to expand details
+      </div>
+    </div>
+  </div>
+
+  <!-- Intro Content (if any exists before first h2) -->
+  {introSectionFinal && (
+    <div class="prose prose-invert prose-amber max-w-4xl mb-12" set:html={introSectionFinal} />
+  )}
+
+  <!-- Replication Chains as Collapsible Cards -->
+  <div class="space-y-4 max-w-4xl">
+    {chainSectionsFinal.map((section) => {
+      // Extract title from h2
+      const titleMatch = section.match(/<h2[^>]*>(.*?)<\/h2>/);
+      const title = titleMatch ? titleMatch[1] : 'Replication Chain';
+      
+      // Determine border color and data attribute based on content keywords
+      const lowerSection = section.toLowerCase();
+      let borderColor = 'border-slate-700';
+      let outcomeType = 'mixed'; // default
+      let icon = '⚠️';
+      
+      // Logic to determine dominant outcome for the whole chain
+      if (lowerSection.includes('successful') && !lowerSection.includes('failed')) {
+        borderColor = 'border-green-500';
+        outcomeType = 'success';
+        icon = '✅';
+      } else if (lowerSection.includes('failed') && !lowerSection.includes('successful')) {
+        borderColor = 'border-red-500';
+        outcomeType = 'fail';
+        icon = '❌';
+      } else if (lowerSection.includes('mixed') || lowerSection.includes('partial')) {
+        borderColor = 'border-amber-500';
+        outcomeType = 'mixed';
+        icon = '⚠️';
+      } else if (lowerSection.includes('anomalous')) {
+        borderColor = 'border-purple-500';
+        outcomeType = 'mixed'; // Treat anomalous as mixed for filtering purposes or create new category
+        icon = '🔮';
+      } else {
+        // Fallback: check counts
+        const successCount = (lowerSection.match(/success/g) || []).length;
+        const failCount = (lowerSection.match(/fail/g) || []).length;
+        if (successCount > failCount) {
+          borderColor = 'border-green-500/50';
+          outcomeType = 'success';
+          icon = '✅';
+        } else if (failCount > successCount) {
+          borderColor = 'border-red-500/50';
+          outcomeType = 'fail';
+          icon = '❌';
+        }
+      }
+
+      // Remove the markers we added for splitting
+      const cleanContent = section.replace(/<!--CHAIN_START-->|<!--CHAIN_END-->/g, '');
+
+      return (
+        <details 
+          class="group bg-slate-900 border border-slate-800 rounded-lg overflow-hidden transition-all duration-200 hover:border-slate-600 open:border-slate-500 shadow-sm"
+          data-outcome={outcomeType}
+        >
+          <summary class={`cursor-pointer list-none p-4 flex items-center justify-between bg-slate-900/80 hover:bg-slate-800 transition-colors border-l-4 ${borderColor}`}>
+            <div class="flex items-center gap-3">
+              <span class="text-xl filter grayscale-0 group-open:scale-110 transition-transform">{icon}</span>
+              <div>
+                <h3 class="text-lg font-semibold text-slate-200 group-open:text-amber-400 transition-colors" set:html={title} />
+                <p class="text-xs text-slate-500 mt-0.5 uppercase tracking-wide font-medium">
+                  {outcomeType === 'success' ? 'Replication Successful' : outcomeType === 'fail' ? 'Replication Failed' : 'Mixed Results'}
+                </p>
+              </div>
+            </div>
+            <span class="text-slate-500 group-open:rotate-180 transition-transform duration-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+          </summary>
+          <div class="p-0 border-t border-slate-800/50 bg-slate-900/30">
+            <div class="p-5">
+              <!-- Content rendered directly, tables transformed to cards via helper function -->
+              <div class="text-slate-300 leading-relaxed" set:html={cleanContent} />
+            </div>
+          </div>
+        </details>
+      );
+    })}
+  </div>
+
 </Layout>
