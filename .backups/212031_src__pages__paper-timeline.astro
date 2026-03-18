@@ -1,0 +1,126 @@
+---
+import Layout from '../layouts/Layout.astro';
+import catalog from '../data/catalog.json';
+
+// 1. Group papers by year
+const papersByYear: Record<number, any[]> = {};
+catalog.papers.forEach((p: any) => {
+  if (p.year) {
+    if (!papersByYear[p.year]) papersByYear[p.year] = [];
+    papersByYear[p.year].push(p);
+  }
+});
+
+const years = Object.keys(papersByYear).map(Number).sort((a, b) => b - a); // Sort descending (newest first)
+
+// 2. Domain Color Mapping
+const domainColors: Record<string, string> = {
+  'Parapsychology': 'bg-blue-500 hover:bg-blue-400 border-blue-400',
+  'Physics': 'bg-purple-500 hover:bg-purple-400 border-purple-400',
+  'Consciousness': 'bg-emerald-500 hover:bg-emerald-400 border-emerald-400',
+  'Neuroscience': 'bg-rose-500 hover:bg-rose-400 border-rose-400',
+  'Quantum': 'bg-cyan-500 hover:bg-cyan-400 border-cyan-400',
+  'History': 'bg-amber-600 hover:bg-amber-500 border-amber-500',
+  'Methodology': 'bg-slate-500 hover:bg-slate-400 border-slate-400',
+};
+
+const getDomainStyle = (domain: string) => {
+  return domainColors[domain] || 'bg-slate-600 hover:bg-slate-500 border-slate-500';
+};
+
+// Extract unique domains for legend
+const uniqueDomains = Array.from(new Set(catalog.papers.map((p: any) => p.domain).filter(Boolean)));
+---
+
+<Layout title="Paper Timeline" description="Visual chronology of 354 research papers">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    
+    <!-- Header & Breadcrumb -->
+    <div class="mb-12">
+      <nav class="flex items-center text-sm text-slate-400 mb-4 space-x-2">
+        <a href="/" class="hover:text-amber-400 transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-amber-400 font-medium">Paper Timeline</span>
+      </nav>
+      <h1 class="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
+        Research <span class="text-amber-400">Chronology</span>
+      </h1>
+      <p class="text-slate-400 max-w-2xl text-lg">
+        A visual history of psi research, plotting {catalog.papers.length} papers across decades. 
+        Hover over dots to see titles, click to read.
+      </p>
+    </div>
+
+    <!-- Legend -->
+    <div class="mb-12 flex flex-wrap gap-4 p-4 bg-slate-900/50 rounded-lg border border-slate-800">
+      <span class="text-slate-400 text-sm font-semibold uppercase tracking-wider mr-2 self-center">Domains:</span>
+      {uniqueDomains.map(domain => (
+        <div class="flex items-center space-x-2">
+          <div class={`w-3 h-3 rounded-full ${getDomainStyle(domain).split(' ')[0]}`}></div>
+          <span class="text-slate-300 text-sm">{domain}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Timeline Container -->
+    <div class="relative border-l-2 border-slate-800 ml-4 md:ml-6 space-y-12 pb-12">
+      
+      {years.map((year) => {
+        const papers = papersByYear[year];
+        const count = papers.length;
+        // Dynamic sizing: more papers = slightly more vertical space
+        const rowHeightClass = count > 15 ? 'min-h-[120px]' : count > 8 ? 'min-h-[100px]' : 'min-h-[80px]';
+
+        return (
+          <div class={`relative pl-8 md:pl-12 group ${rowHeightClass}`}>
+            
+            {/* Timeline Node (Dot on the line) */}
+            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-950 border-2 border-amber-500 shadow-[0_0_10px_rgba(251,191,36,0.3)] z-10"></div>
+            
+            {/* Year Label */}
+            <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-6 mb-4">
+              <h3 class="text-2xl font-bold text-amber-400 font-mono w-24 flex-shrink-0">
+                {year}
+              </h3>
+              <span class="text-slate-500 text-sm uppercase tracking-widest font-semibold">
+                {count} {count === 1 ? 'Paper' : 'Papers'} Published
+              </span>
+            </div>
+
+            {/* Paper Dots Grid */}
+            <div class="flex flex-wrap gap-3 content-start">
+              {papers.map((paper: any) => {
+                // Fallback slug generation if not present
+                // Use paper.id for links
+                const domainStyle = getDomainStyle(paper.domain || 'Methodology');
+                
+                return (
+                  <a 
+                    href={`/paper/${paper.id}`}
+                    title={`${paper.title} (${paper.year})`}
+                    class="group/dot relative flex items-center justify-center transition-transform duration-200 hover:scale-125 hover:z-20 focus:outline-none focus:ring-2 focus:ring-amber-400 rounded-full"
+                  >
+                    <div class={`w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-slate-950 shadow-sm ${domainStyle}`}></div>
+                    
+                    {/* Tooltip (Visible on Hover/Focus) */}
+                    <div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-max max-w-[250px] px-3 py-2 bg-slate-800 text-slate-200 text-xs rounded shadow-xl border border-slate-700 opacity-0 group-hover/dot:opacity-100 transition-opacity pointer-events-none z-50">
+                      <p class="font-bold text-amber-400 mb-1">{paper.title}</p>
+                      <p class="text-slate-400">{paper.author}</p>
+                      {paper.domain && (
+                        <span class="inline-block mt-1 px-1.5 py-0.5 bg-slate-900 rounded text-[10px] text-slate-500">
+                          {paper.domain}
+                        </span>
+                      )}
+                      {/* Little arrow for tooltip */}
+                      <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</Layout>

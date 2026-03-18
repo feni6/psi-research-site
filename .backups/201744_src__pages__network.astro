@@ -1,0 +1,434 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import catalog from '../data/catalog.json';
+
+// Helper to find a paper by ID
+const getPaper = (id: string) => catalog.papers.find((p: any) => p.id === id);
+
+// Relationship styling configuration
+const relationshipStyles: Record<string, { color: string; bg: string; label: string; arrow: string; border: string; text: string }> = {
+  critique: { color: 'text-red-400', bg: 'bg-red-500/20', label: 'Critique', arrow: '←', border: 'border-red-500/50', text: 'text-red-300' },
+  critiqued_by: { color: 'text-red-400', bg: 'bg-red-500/20', label: 'Critiqued By', arrow: '←', border: 'border-red-500/50', text: 'text-red-300' },
+  replication: { color: 'text-green-400', bg: 'bg-green-500/20', label: 'Replication', arrow: '→', border: 'border-green-500/50', text: 'text-green-300' },
+  replicated_by: { color: 'text-green-400', bg: 'bg-green-500/20', label: 'Replicated By', arrow: '→', border: 'border-green-500/50', text: 'text-green-300' },
+  extension: { color: 'text-blue-400', bg: 'bg-blue-500/20', label: 'Extension', arrow: '→', border: 'border-blue-500/50', text: 'text-blue-300' },
+  extended_by: { color: 'text-blue-400', bg: 'bg-blue-500/20', label: 'Extended By', arrow: '→', border: 'border-blue-500/50', text: 'text-blue-300' },
+  precursor: { color: 'text-purple-400', bg: 'bg-purple-500/20', label: 'Precursor', arrow: '←', border: 'border-purple-500/50', text: 'text-purple-300' },
+  based_on: { color: 'text-purple-400', bg: 'bg-purple-500/20', label: 'Based On', arrow: '←', border: 'border-purple-500/50', text: 'text-purple-300' },
+  default: { color: 'text-slate-400', bg: 'bg-slate-500/20', label: 'Related', arrow: '↔', border: 'border-slate-500/50', text: 'text-slate-300' }
+};
+
+const getStyle = (type: string) => {
+  const key = type.toLowerCase().replace(/\s+/g, '_');
+  return relationshipStyles[key] || relationshipStyles['default'];
+};
+
+// Domain Configuration (Icons and Colors)
+const domainConfig: Record<string, { color: string; icon: string; bg: string }> = {
+  'Telepathy': { color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: '🧠' },
+  'Clairvoyance': { color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: '👁️' },
+  'Precognition': { color: 'text-violet-400', bg: 'bg-violet-500/10', icon: '🔮' },
+  'Psychokinesis': { color: 'text-amber-400', bg: 'bg-amber-500/10', icon: '⚡' },
+  'Healing': { color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: '🌿' },
+  'Mediumship': { color: 'text-slate-400', bg: 'bg-slate-500/10', icon: '👻' },
+  'Uncategorized': { color: 'text-slate-500', bg: 'bg-slate-800/50', icon: '📁' }
+};
+
+const getDomainConfig = (domain: string) => {
+  return domainConfig[domain] || domainConfig['Uncategorized'];
+};
+
+// Group papers by domain and calculate stats
+const domainGroups: Record<string, any[]> = {};
+let totalConnectionsCount = 0;
+const paperConnectionCounts: { id: string; count: number; paper: any }[] = [];
+
+catalog.papers.forEach((paper: any) => {
+  const domain = paper.psi_domain || 'Uncategorized';
+  if (!domainGroups[domain]) domainGroups[domain] = [];
+  domainGroups[domain].push(paper);
+  
+  // Count connections
+  let count = 0;
+  if (paper.related_papers) {
+    count = Object.keys(paper.related_papers).length;
+    totalConnectionsCount += count;
+  }
+  
+  paperConnectionCounts.push({ id: paper.id, count, paper });
+});
+
+// Sort domains alphabetically, but put Uncategorized last
+const sortedDomains = Object.keys(domainGroups).sort((a, b) => {
+  if (a === 'Uncategorized') return 1;
+  if (b === 'Uncategorized') return -1;
+  return a.localeCompare(b);
+});
+
+// Get Top 5 Most Connected Papers
+const topPapers = paperConnectionCounts
+  .sort((a, b) => b.count - a.count)
+  .slice(0, 5);
+
+const totalPapers = catalog.papers.length;
+---
+
+<Layout title="Debate Network" description="Visualizing the relationships and controversies between psi research papers.">
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    
+    <!-- Breadcrumbs -->
+    <div class="mb-6">
+      <Breadcrumb 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Network', href: '/network' }
+        ]} 
+      />
+    </div>
+
+    <!-- Header & Intro -->
+    <header class="mb-10 border-b border-slate-800 pb-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div class="max-w-3xl">
+          <h1 class="text-4xl font-bold text-slate-100 mb-3 tracking-tight">Research Network</h1>
+          <p class="text-slate-400 text-lg leading-relaxed">
+            This interactive map visualizes the intellectual lineage of psi research. 
+            Trace how papers <span class="text-red-400 font-medium">critique</span> one another, 
+            how studies are <span class="text-green-400 font-medium">replicated</span>, 
+            and how theories are <span class="text-blue-400 font-medium">extended</span> over time.
+          </p>
+        </div>
+        <div class="flex gap-3 text-sm shrink-0">
+          <div class="bg-slate-900 border border-slate-800 px-5 py-3 rounded-xl shadow-sm">
+            <span class="block text-slate-500 text-xs uppercase tracking-wider font-semibold mb-1">Papers</span>
+            <span class="text-2xl font-bold text-slate-200" id="stat-papers">{totalPapers}</span>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 px-5 py-3 rounded-xl shadow-sm">
+            <span class="block text-slate-500 text-xs uppercase tracking-wider font-semibold mb-1">Links</span>
+            <span class="text-2xl font-bold text-amber-400" id="stat-connections">{totalConnectionsCount}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Most Connected Papers (Top 5) -->
+    <section class="mb-10">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="text-amber-400">★</span>
+        <h2 class="text-lg font-bold text-slate-200">Most Connected Papers</h2>
+        <span class="text-xs text-slate-500 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">Top 5 by relationship count</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+        {topPapers.map((item) => (
+          <a href={`/paper/${item.paper.id}`} class="group block bg-slate-900 border border-slate-800 hover:border-amber-500/50 rounded-lg p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-900/10">
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-2xl font-bold text-slate-700 group-hover:text-amber-500/20 transition-colors">{item.count}</span>
+              <span class="text-xs font-mono text-amber-500 bg-amber-950/30 px-1.5 py-0.5 rounded border border-amber-900/50">Links</span>
+            </div>
+            <h3 class="text-sm font-medium text-slate-300 line-clamp-2 group-hover:text-white leading-snug">
+              {item.paper.title}
+            </h3>
+            <p class="text-xs text-slate-500 mt-2 truncate">{item.paper.author}, {item.paper.year}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Controls: Search & Domain Toggles -->
+    <div class="bg-slate-900/50 border border-slate-800 rounded-xl p-5 mb-8">
+      <div class="flex flex-col lg:flex-row gap-6">
+        
+        <!-- Search Input -->
+        <div class="flex-1 relative">
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Search Network</label>
+          <div class="relative">
+            <input 
+              type="text" 
+              id="network-search"
+              placeholder="Search titles, authors, or relationship types..." 
+              class="w-full bg-slate-950 border border-slate-700 rounded-lg py-3 px-4 pl-11 text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+            />
+            <svg class="w-5 h-5 text-slate-500 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Domain Toggles -->
+        <div class="lg:w-1/2">
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Filter Domains</label>
+          <div class="flex flex-wrap gap-2" id="domain-toggles">
+            <label class="cursor-pointer select-none">
+              <input type="checkbox" value="all" checked class="peer sr-only" />
+              <span class="inline-flex items-center px-3 py-1.5 rounded-md text-xs font-medium border border-slate-700 bg-slate-800 text-slate-300 peer-checked:bg-amber-500 peer-checked:text-white peer-checked:border-amber-400 transition-all">
+                All
+              </span>
+            </label>
+            {sortedDomains.map(domain => {
+              const config = getDomainConfig(domain);
+              return (
+                <label class="cursor-pointer select-none">
+                  <input type="checkbox" value={domain} class="peer sr-only domain-checkbox" />
+                  <span class={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-slate-700 bg-slate-800 text-slate-400 peer-checked:${config.bg} peer-checked:${config.color} peer-checked:border-transparent transition-all`}>
+                    <span>{config.icon}</span>
+                    {domain}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="flex flex-wrap gap-4 mb-8 text-xs font-medium text-slate-400 bg-slate-900/30 p-3 rounded-lg border border-slate-800/50">
+      <span class="uppercase tracking-wide mr-2 text-slate-500 font-bold">Key:</span>
+      <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500"></span>Critique</div>
+      <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500"></span>Extension</div>
+      <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-500"></span>Replication</div>
+      <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-500"></span>Precursor</div>
+    </div>
+
+    <!-- Network Visualization -->
+    <div id="network-container" class="space-y-10">
+      {sortedDomains.map((domain) => {
+        const config = getDomainConfig(domain);
+        return (
+          <div class="domain-section fade-in" data-domain={domain}>
+            <!-- Domain Header -->
+            <div class="flex items-center justify-between mb-6 pb-3 border-b border-slate-800">
+              <div class="flex items-center gap-3">
+                <span class={`flex items-center justify-center w-10 h-10 rounded-lg ${config.bg} ${config.color} text-xl shadow-inner`}>
+                  {config.icon}
+                </span>
+                <h2 class="text-2xl font-bold text-slate-200">{domain}</h2>
+              </div>
+              <span class="text-xs font-mono text-slate-500 bg-slate-950 px-3 py-1.5 rounded border border-slate-800">
+                {domainGroups[domain].length} papers
+              </span>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {domainGroups[domain].map((paper: any) => {
+                const hasRelations = paper.related_papers && Object.keys(paper.related_papers).length > 0;
+                const connectionCount = hasRelations ? Object.keys(paper.related_papers).length : 0;
+                
+                return (
+                  <div class="network-node bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-slate-600 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group" 
+                       data-search-text={`${paper.title} ${paper.author} ${domain}`.toLowerCase()}>
+                    
+                    <!-- Paper Header -->
+                    <div class="mb-5 flex items-start justify-between gap-4">
+                      <a href={`/paper/${paper.id}`} class="group/title block pr-2">
+                        <h3 class="text-slate-100 font-bold text-lg leading-tight group-hover/title:text-amber-400 transition-colors">
+                          {paper.title}
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-1.5 font-medium">
+                          {paper.author} <span class="text-slate-600 mx-1">•</span> {paper.year}
+                        </p>
+                      </a>
+                      
+                      <!-- Connection Count Badge -->
+                      {hasRelations ? (
+                        <div class="flex flex-col items-end gap-1 shrink-0">
+                          <span class="text-xs font-bold text-amber-500 bg-amber-950/30 border border-amber-900/50 px-2.5 py-1 rounded-full">
+                            {connectionCount} Links
+                          </span>
+                        </div>
+                      ) : (
+                        <span class="text-xs text-slate-600 bg-slate-950 border border-slate-800 px-2 py-1 rounded">Isolated</span>
+                      )}
+                    </div>
+
+                    <!-- Connections Visualizer -->
+                    {hasRelations ? (
+                      <div class="space-y-3 bg-slate-950/30 rounded-lg p-4 border border-slate-800/50">
+                        {Object.entries(paper.related_papers).map(([relId, type]: [string, any]) => {
+                          const target = getPaper(relId);
+                          if (!target) return null;
+                          
+                          const style = getStyle(typeof type === 'string' ? type : 'default');
+                          const statusTag = typeof type === 'object' && type.status ? `[${type.status}]` : '';
+
+                          return (
+                            <div class={`network-connection relative pl-4 py-1.5 border-l-2 ${style.border} transition-colors hover:bg-slate-900 rounded-r`} 
+                                 data-search-text={`${style.label} ${target.title} ${target.author}`.toLowerCase()}>
+                              
+                              <!-- Connection Line Decorator (Dot) -->
+                              <div class={`absolute -left-[5px] top-3 w-2.5 h-2.5 rounded-full border-2 border-slate-900 ${style.bg.replace('/20', '')}`}></div>
+
+                              <div class="flex items-start gap-2.5 text-sm">
+                                <span class={`font-bold ${style.color} mt-0.5 shrink-0 text-xs`}>
+                                  {style.arrow}
+                                </span>
+                                <div class="flex-1 min-w-0">
+                                  <div class="flex items-center gap-2 mb-0.5">
+                                    <span class={`${style.text} font-bold text-[10px] uppercase tracking-wider`}>{style.label}</span>
+                                    {statusTag && <span class="text-slate-600 text-[10px] border border-slate-800 px-1 rounded bg-slate-900">{statusTag}</span>}
+                                  </div>
+                                  <a href={`/paper/${target.id}`} class="block text-slate-300 hover:text-white hover:underline decoration-slate-600 underline-offset-2 truncate">
+                                    {target.title} <span class="text-slate-600 font-mono text-xs">({target.year})</span>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div class="text-sm text-slate-600 italic py-4 text-center border border-dashed border-slate-800 rounded-lg bg-slate-950/20">
+                        No recorded connections in this dataset.
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Empty State -->
+    <div id="no-results" class="hidden text-center py-20 bg-slate-900/30 rounded-xl border border-slate-800 border-dashed">
+      <div class="text-5xl mb-6 opacity-50">🕸️</div>
+      <h3 class="text-xl font-bold text-slate-300">No matches found</h3>
+      <p class="text-slate-500 mt-2 max-w-md mx-auto">Try adjusting your search terms or selecting different domains in the filters above.</p>
+      <button onclick="document.getElementById('network-search').value=''; document.querySelectorAll('.domain-checkbox').forEach(c => c.checked = false); document.querySelector('input[value=\"all\"]').checked = true; window.dispatchEvent(new Event('input'));" class="mt-6 text-amber-400 hover:text-amber-300 text-sm font-bold uppercase tracking-wide hover:underline underline-offset-4">
+        Reset All Filters
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Client-side Filtering Script -->
+  <script>
+    const searchInput = document.getElementById('network-search');
+    const domainToggles = document.getElementById('domain-toggles');
+    const networkContainer = document.getElementById('network-container');
+    const noResults = document.getElementById('no-results');
+    const statPapers = document.getElementById('stat-papers');
+    const statConnections = document.getElementById('stat-connections');
+
+    function updateStats() {
+      let visiblePapers = 0;
+      let visibleConnections = 0;
+
+      document.querySelectorAll('.network-node:not(.hidden)').forEach(node => {
+        visiblePapers++;
+        // Count visible connections inside this node
+        const conns = node.querySelectorAll('.network-connection:not(.hidden)');
+        visibleConnections += conns.length;
+      });
+
+      statPapers.textContent = visiblePapers;
+      statConnections.textContent = visibleConnections;
+    }
+
+    function filterNetwork() {
+      const term = searchInput.value.toLowerCase().trim();
+      
+      // Get checked domains
+      const checkedBoxes = Array.from(document.querySelectorAll('#domain-toggles input:checked'));
+      const selectedValues = checkedBoxes.map(cb => cb.value);
+      const isAllSelected = selectedValues.includes('all');
+
+      let hasAnyVisibleItems = false;
+
+      document.querySelectorAll('.domain-section').forEach((section: any) => {
+        const sectionDomain = section.getAttribute('data-domain');
+        const nodes = section.querySelectorAll('.network-node');
+        let sectionHasVisibleNodes = false;
+
+        // 1. Domain Filtering
+        // If 'All' is checked, show everything. Otherwise, check if this section's domain is in the list.
+        const domainMatches = isAllSelected || selectedValues.includes(sectionDomain);
+
+        if (!domainMatches) {
+          section.classList.add('hidden');
+          return;
+        } else {
+          section.classList.remove('hidden');
+        }
+
+        nodes.forEach((node: any) => {
+          const searchText = node.getAttribute('data-search-text') || '';
+          const connections = node.querySelectorAll('.network-connection');
+          
+          // Check if paper itself matches search
+          let nodeMatches = term === '' || searchText.includes(term);
+          
+          // Check if any connection matches search
+          let connectionMatches = false;
+          connections.forEach((conn: any) => {
+            const connText = conn.getAttribute('data-search-text') || '';
+            if (term !== '' && connText.includes(term)) {
+              conn.classList.remove('hidden');
+              connectionMatches = true;
+            } else if (term === '') {
+              conn.classList.remove('hidden');
+            } else {
+              conn.classList.add('hidden');
+            }
+          });
+
+          // Show node if paper matches OR if a connection inside matches
+          if (nodeMatches || connectionMatches) {
+            node.classList.remove('hidden');
+            sectionHasVisibleNodes = true;
+            hasAnyVisibleItems = true;
+          } else {
+            node.classList.add('hidden');
+          }
+        });
+
+        // Hide section header if no papers inside match
+        if (!sectionHasVisibleNodes) {
+          section.classList.add('hidden');
+        }
+      });
+
+      // Toggle empty state
+      if (hasAnyVisibleItems) {
+        networkContainer.classList.remove('hidden');
+        noResults.classList.add('hidden');
+      } else {
+        networkContainer.classList.add('hidden');
+        noResults.classList.remove('hidden');
+      }
+
+      updateStats();
+    }
+
+    if (searchInput && domainToggles) {
+      searchInput.addEventListener('input', filterNetwork);
+      
+      // Handle checkbox logic (mutually exclusive 'All' vs specific domains)
+      const allCheckbox = domainToggles.querySelector('input[value="all"]');
+      const domainCheckboxes = domainToggles.querySelectorAll('.domain-checkbox');
+
+      allCheckbox.addEventListener('change', (e: any) => {
+        if (e.target.checked) {
+          domainCheckboxes.forEach(cb => cb.checked = false);
+        }
+        filterNetwork();
+      });
+
+      domainCheckboxes.forEach(cb => {
+        cb.addEventListener('change', (e: any) => {
+          if (e.target.checked) {
+            allCheckbox.checked = false;
+          }
+          // If all specific domains are unchecked, maybe auto-check 'All'? 
+          // For now, let's allow empty selection (shows nothing) or user can click All.
+          filterNetwork();
+        });
+      });
+      
+      // Initial run to set stats
+      filterNetwork();
+    }
+  </script>
+</Layout>

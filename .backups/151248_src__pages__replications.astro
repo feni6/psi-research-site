@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { marked } from 'marked';
+import catalog from '../data/catalog.json';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const mapPath = path.join(process.cwd(), 'src/data/replication_map.md');
+const replicationMap = fs.readFileSync(mapPath, 'utf-8');
+
+// Create a set of valid catalog IDs for quick lookup
+const validIds = new Set(catalog.papers.map((p: any) => p.id));
+
+// Find backtick-wrapped strings that look like catalog IDs and link them
+const linkedContent = replicationMap.replace(
+  /`([a-z][a-z0-9]*_[0-9]{4}_[a-z_]+)`/g,
+  (match: string, id: string) => {
+    if (validIds.has(id)) {
+      return `[📄 \`${id}\`](/paper/${id})`;
+    }
+    return match;
+  }
+);
+
+const htmlContent = marked(linkedContent);
+---
+
+<Layout title="Replication Map" description="A comprehensive map of replication attempts across psi research paradigms">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Replication Map</h1>
+    <p class="text-slate-400 mb-4">Tracks replication relationships across major psi research paradigms. Click any linked paper ID to view its details.</p>
+    <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 text-sm">
+      <p class="text-slate-300"><strong class="text-amber-400">Legend:</strong> 
+        <span class="text-green-400">Successful</span> · 
+        <span class="text-red-400">Failed</span> · 
+        <span class="text-yellow-400">Mixed</span> · 
+        <span class="text-purple-400">Anomalous</span> · 
+        <span class="text-slate-400">Partial</span>
+      </p>
+    </div>
+  </div>
+
+  <article class="prose prose-invert prose-amber max-w-4xl" set:html={htmlContent} />
+</Layout>

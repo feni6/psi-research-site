@@ -1,0 +1,253 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const KEY_QUESTIONS: Record<string, string> = {
+  '01': "Can telepathy be demonstrated under controlled conditions?",
+  '02': "Did Bem really prove precognition?",
+  '03': "Does the body anticipate unpredictable future events?",
+  '04': "Can consciousness affect quantum-level physical systems?",
+  '05': "Can prayer or distant intention promote healing?",
+  '06': "Can mediums genuinely access information from deceased persons?",
+  '07': "Do NDEs provide evidence for consciousness beyond the brain?",
+  '08': "Does collective human attention influence random systems worldwide?",
+  '09': "Can facilitator-assisted communication reveal hidden cognitive abilities?",
+  '10': "Do meta-analyses actually support the existence of psi?",
+  '11': "Can people detect when they're being stared at?",
+  '12': "Do pets genuinely anticipate their owner's return?",
+  '13': "Can people sense who's calling before answering?",
+  '14': "Do twins share a psychic connection?"
+};
+
+const GROUP_DEFINITIONS = [
+  {
+    id: 'telepathy',
+    name: 'Telepathy & Remote Perception',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>',
+    ids: ['01', '11', '12', '13', '14']
+  },
+  {
+    id: 'precognition',
+    name: 'Precognition & Presentiment',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+    ids: ['02', '03']
+  },
+  {
+    id: 'mind-matter',
+    name: 'Mind-Matter Interaction',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>',
+    ids: ['04', '08']
+  },
+  {
+    id: 'healing',
+    name: 'Healing & Survival',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>',
+    ids: ['05', '06', '07']
+  },
+  {
+    id: 'methodology',
+    name: 'Methodology & Analysis',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>',
+    ids: ['09', '10']
+  }
+];
+
+const dir = path.join(process.cwd(), 'src/data/controversies');
+const files = fs.readdirSync(dir).filter(f => f.match(/^\d{2}_/) && f.endsWith('.md'));
+
+const allControversies = files.map(f => {
+  const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+  const id = f.replace('.md', '');
+  const num = f.slice(0, 2);
+  const title = content.split('\n')[0].replace(/^#\s*\d+\.\s*/, '').trim();
+  
+  // Extract current status
+  const statusMatch = content.match(/\*\*Current status:\*\*\s*(.*?)(?:\n\n|$)/s);
+  const status = statusMatch ? statusMatch[1].slice(0, 200) + '...' : '';
+  
+  const proCount = (content.match(/\*\*Pro:\*\*([\s\S]*?)\*\*Con:\*\*/)?.[1]?.match(/^- /gm) || []).length;
+  const conCount = (content.match(/\*\*Con:\*\*([\s\S]*?)(\*\*Current|$)/)?.[1]?.match(/^- /gm) || []).length;
+  
+  return { 
+    id, 
+    num,
+    title, 
+    keyQuestion: KEY_QUESTIONS[num] || '',
+    status, 
+    proCount, 
+    conCount 
+  };
+});
+
+// Organize into groups
+const groupedControversies = GROUP_DEFINITIONS.map(group => {
+  return {
+    ...group,
+    items: allControversies.filter(c => group.ids.includes(c.num))
+  };
+});
+
+const totalControversies = allControversies.length;
+---
+
+<Layout title="Controversies">
+  <div class="mb-10">
+    <h1 class="text-3xl font-bold mb-4 text-slate-100">Controversy Maps</h1>
+    
+    <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-5 mb-6">
+      <p class="text-slate-300 leading-relaxed">
+        Controversy Maps visualize the active debates within psi research. Each map focuses on a specific claim, 
+        presenting the strongest arguments <span class="text-green-400 font-medium">supporting</span> and 
+        <span class="text-red-400 font-medium">critiquing</span> the phenomenon. Use these maps to understand 
+        where the scientific consensus lies, where anomalies persist, and which papers are central to the debate.
+      </p>
+    </div>
+    
+    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between bg-slate-900 p-4 rounded-lg border border-slate-800 shadow-sm">
+      <div class="relative w-full sm:w-96">
+        <input 
+          type="text" 
+          id="search-input"
+          placeholder="Filter by topic, question, or ID..." 
+          class="w-full bg-slate-950 border border-slate-700 rounded-md py-2.5 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition font-mono text-sm"
+        />
+      </div>
+      <div class="text-sm text-slate-400 whitespace-nowrap font-mono">
+        Showing <span id="result-count" class="text-amber-400 font-bold">{totalControversies}</span> of {totalControversies}
+      </div>
+    </div>
+  </div>
+  
+  <div class="space-y-10" id="controversy-list">
+    {groupedControversies.map((group) => (
+      <div class="controversy-group transition-opacity duration-300" data-group-id={group.id}>
+        <h2 class="text-lg font-bold text-slate-200 mb-4 flex items-center gap-3 border-l-4 border-amber-500 bg-slate-900/30 py-2.5 px-4 rounded-r-md">
+          <span class="text-amber-500 opacity-90" set:html={group.icon}></span>
+          {group.name}
+        </h2>
+        
+        <div class="grid grid-cols-1 gap-3">
+          {group.items.map((c) => (
+            <a 
+              href={`/controversies/${c.id}`} 
+              class="block bg-slate-900 border border-slate-800 rounded-md p-4 hover:border-amber-500/40 hover:bg-slate-800/60 hover:shadow-lg hover:shadow-amber-900/5 transition group controversy-item"
+              data-title={c.title.toLowerCase()}
+              data-question={c.keyQuestion.toLowerCase()}
+              data-group={group.id}
+            >
+              <div class="flex items-start gap-3">
+                <span class="text-amber-500/80 font-mono text-xs font-bold bg-amber-950/30 border border-amber-900/30 px-1.5 py-0.5 rounded shrink-0 mt-0.5 group-hover:bg-amber-900/40 group-hover:text-amber-400 transition">{c.num}</span>
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-bold text-slate-200 mb-0.5 group-hover:text-amber-400 transition text-base search-target-title" data-original={c.title}>{c.title}</h3>
+                  <p class="text-slate-500 italic text-xs mb-2.5 search-target-question" data-original={c.keyQuestion}>"{c.keyQuestion}"</p>
+                  
+                  <div class="flex flex-wrap items-center gap-2 text-xs font-medium mb-2">
+                    <span class="text-green-400 bg-green-950/40 border border-green-900/30 px-2 py-0.5 rounded flex items-center gap-1">
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                      {c.proCount} Supporting
+                    </span>
+                    <span class="text-red-400 bg-red-950/40 border border-red-900/30 px-2 py-0.5 rounded flex items-center gap-1">
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                      {c.conCount} Critical
+                    </span>
+                  </div>
+                  
+                  {c.status && <p class="text-slate-500 text-xs line-clamp-2 border-t border-slate-800/50 pt-2 mt-1">{c.status}</p>}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const resultCount = document.getElementById('result-count') as HTMLSpanElement;
+    const items = document.querySelectorAll('.controversy-item') as NodeListOf<HTMLElement>;
+    const groups = document.querySelectorAll('.controversy-group') as NodeListOf<HTMLElement>;
+
+    // Helper to escape HTML to prevent XSS when injecting highlights
+    const escapeHtml = (unsafe: string) => {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+
+    // Helper to highlight text
+    const highlightText = (element: Element, query: string) => {
+      const original = element.getAttribute('data-original');
+      if (!original) return;
+
+      if (!query) {
+        element.textContent = original;
+        return;
+      }
+
+      const regex = new RegExp(`(${query})`, 'gi');
+      const highlighted = escapeHtml(original).replace(regex, '<mark class="bg-amber-500/30 text-amber-200 rounded px-0.5">$1</mark>');
+      element.innerHTML = highlighted;
+    };
+
+    searchInput.addEventListener('input', (e) => {
+      const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      // Reset groups visibility first
+      groups.forEach(group => {
+        group.style.display = 'block';
+        group.classList.remove('opacity-50');
+      });
+
+      items.forEach(item => {
+        const title = item.dataset.title || '';
+        const question = item.dataset.question || '';
+        const groupId = item.dataset.group;
+        
+        // Get target elements for highlighting
+        const titleEl = item.querySelector('.search-target-title');
+        const questionEl = item.querySelector('.search-target-question');
+
+        const matches = title.includes(query) || question.includes(query);
+        
+        if (matches) {
+          item.style.display = 'block';
+          visibleCount++;
+          
+          // Apply highlights
+          if (titleEl) highlightText(titleEl, query);
+          if (questionEl) highlightText(questionEl, query);
+        } else {
+          item.style.display = 'none';
+          // Clear highlights
+          if (titleEl) highlightText(titleEl, '');
+          if (questionEl) highlightText(questionEl, '');
+        }
+      });
+
+      // Hide empty groups
+      groups.forEach(group => {
+        const visibleItemsInGroup = Array.from(group.querySelectorAll('.controversy-item')).filter(
+          item => item.style.display !== 'none'
+        );
+        
+        if (visibleItemsInGroup.length === 0) {
+           group.style.display = 'none';
+        } else {
+          // Dim groups that have fewer items than total when searching
+          const totalItemsInGroup = group.querySelectorAll('.controversy-item').length;
+          if (query && visibleItemsInGroup.length < totalItemsInGroup) {
+            group.classList.add('opacity-50');
+          }
+        }
+      });
+
+      resultCount.textContent = visibleCount.toString();
+    });
+  </script>
+</Layout>

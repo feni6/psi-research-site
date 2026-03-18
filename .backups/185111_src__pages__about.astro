@@ -1,0 +1,160 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="About" description="Learn about the mission, methodology, and epistemic principles of the Psi Research Library.">
+  <main class="max-w-5xl mx-auto px-4 py-12 space-y-16">
+    
+    <!-- Hero Section -->
+    <section class="text-center space-y-6">
+      <h1 class="text-4xl md:text-5xl font-bold text-white tracking-tight">
+        About the <span class="text-amber-400">Psi Research Library</span>
+      </h1>
+      <p class="text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+        A curated, machine-readable archive of peer-reviewed research on psi phenomena, built for epistemic transparency and rigorous inquiry.
+      </p>
+    </section>
+
+    <!-- Mission Statement -->
+    <section class="bg-slate-900/50 border border-slate-800 rounded-2xl p-8 md:p-10">
+      <div class="flex items-start gap-4">
+        <div class="text-4xl">🎯</div>
+        <div>
+          <h2 class="text-2xl font-semibold text-white mb-4">Our Mission</h2>
+          <p class="text-slate-300 leading-relaxed">
+            The Psi Research Library is a curated collection of peer-reviewed research on psi phenomena, built with <strong class="text-amber-400">epistemic transparency</strong>. Our goal is not to advocate for or against psi claims, but to present the evidence — both supportive and critical — in a structured, searchable format. We serve researchers, students, curious skeptics, and AI agents alike by providing a neutral ground for examining the data.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- What's Included Grid -->
+    <section>
+      <h2 class="text-2xl font-semibold text-white mb-6 flex items-center gap-2">
+        <span>📚</span> What's Included
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Card 1 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-amber-400/30 transition-colors">
+          <div class="text-amber-400 text-2xl mb-2">📄</div>
+          <h3 class="text-lg font-medium text-white mb-1">354 Papers</h3>
+          <p class="text-sm text-slate-400">Spanning 1882–2025, covering over a century of parapsychological research.</p>
+        </div>
+        <!-- Card 2 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-amber-400/30 transition-colors">
+          <div class="text-amber-400 text-2xl mb-2">🏷️</div>
+          <h3 class="text-lg font-medium text-white mb-1">13 Categories</h3>
+          <p class="text-sm text-slate-400">From meta-analyses and Ganzfeld studies to skeptical critiques and replication attempts.</p>
+        </div>
+        <!-- Card 3 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-amber-400/30 transition-colors">
+          <div class="text-amber-400 text-2xl mb-2">⚖️</div>
+          <h3 class="text-lg font-medium text-white mb-1">14 Controversy Maps</h3>
+          <p class="text-sm text-slate-400">Detailed breakdowns showing arguments for and against major debates in the field.</p>
+        </div>
+        <!-- Card 4 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-amber-400/30 transition-colors">
+          <div class="text-amber-400 text-2xl mb-2">🛤️</div>
+          <h3 class="text-lg font-medium text-white mb-1">6 Reading Paths</h3>
+          <p class="text-sm text-slate-400">Curated journeys for beginners, skeptics, researchers, and AI training.</p>
+        </div>
+        <!-- Card 5 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-amber-400/30 transition-colors">
+          <div class="text-amber-400 text-2xl mb-2">🔄</div>
+          <h3 class="text-lg font-medium text-white mb-1">Replication Tracking</h3>
+          <p class="text-sm text-slate-400">Complete tracking of replication attempts across major experimental paradigms.</p>
+        </div>
+        <!-- Card 6 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-amber-400/30 transition-colors">
+          <div class="text-amber-400 text-2xl mb-2">🤖</div>
+          <h3 class="text-lg font-medium text-white mb-1">Machine Readable</h3>
+          <p class="text-sm text-slate-400">Full JSON API and llms.txt support for seamless AI integration.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Epistemic Principles -->
+    <section class="bg-slate-900/50 border border-slate-800 rounded-2xl p-8 md:p-10">
+      <h2 class="text-2xl font-semibold text-white mb-6 flex items-center gap-2">
+        <span>🛡️</span> Epistemic Principles
+      </h2>
+      <div class="space-y-6">
+        <div class="flex gap-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-amber-400/10 flex items-center justify-center text-amber-400 font-bold">1</div>
+          <div>
+            <h3 class="text-white font-medium">Both Sides Represented</h3>
+            <p class="text-slate-400 text-sm mt-1">Every major controversy includes papers arguing <em>for</em> and <em>against</em> the phenomenon. We do not hide negative results.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-amber-400/10 flex items-center justify-center text-amber-400 font-bold">2</div>
+          <div>
+            <h3 class="text-white font-medium">Transparent Methodology</h3>
+            <p class="text-slate-400 text-sm mt-1">Full documentation of how papers were selected, processed, and categorized, including known biases in the source material.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-amber-400/10 flex items-center justify-center text-amber-400 font-bold">3</div>
+          <div>
+            <h3 class="text-white font-medium">No Hidden Agenda</h3>
+            <p class="text-slate-400 text-sm mt-1">This is an open resource, not an advocacy platform. We present the data so you can draw your own conclusions.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <div class="flex-shrink-0 w-8 h-8 rounded-full bg-amber-400/10 flex items-center justify-center text-amber-400 font-bold">4</div>
+          <div>
+            <h3 class="text-white font-medium">AI-Friendly Design</h3>
+            <p class="text-slate-400 text-sm mt-1">Structured specifically for both human browsing and machine consumption, enabling advanced analysis by LLMs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Was Built -->
+    <section class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold text-white flex items-center gap-2">
+          <span>🏗️</span> How It Was Built
+        </h2>
+        <p class="text-slate-300 leading-relaxed">
+          The library was curated using a combination of systematic literature review and AI-assisted processing. Paper metadata was extracted and structured using large language models, then rigorously validated against original sources.
+        </p>
+        <p class="text-slate-300 leading-relaxed">
+          This hybrid approach allowed us to process a vast volume of literature while maintaining high accuracy in categorization and summarization.
+        </p>
+        <a href="/method" class="inline-flex items-center text-amber-400 hover:text-amber-300 font-medium transition-colors">
+          Read the full methodology &rarr;
+        </a>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 font-mono text-xs text-slate-400 overflow-hidden">
+        <div class="flex gap-1.5 mb-4">
+          <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+        </div>
+        <p class="mb-2"><span class="text-purple-400">// Curated with epistemic transparency</span></p>
+        <p class="mb-1"><span class="text-blue-400">sources</span>: <span class="text-green-400">PubMed, PsycINFO, JPAR</span></p>
+        <p class="mb-1"><span class="text-blue-400">years</span>: <span class="text-green-400">1882 — 2025</span></p>
+        <p class="mb-1"><span class="text-blue-400">validation</span>: <span class="text-green-400">human-in-the-loop</span></p>
+        <p><span class="text-blue-400">bias_check</span>: <span class="text-green-400">enabled</span></p>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="text-center pt-8 border-t border-slate-800">
+      <h2 class="text-2xl font-bold text-white mb-6">Start Exploring</h2>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/catalog" class="px-6 py-3 bg-amber-400 text-slate-950 font-semibold rounded-lg hover:bg-amber-300 transition-colors">
+          Browse Catalog
+        </a>
+        <a href="/paths" class="px-6 py-3 bg-slate-800 text-white font-semibold rounded-lg hover:bg-slate-700 transition-colors border border-slate-700">
+          Reading Paths
+        </a>
+        <a href="/method" class="px-6 py-3 bg-slate-800 text-white font-semibold rounded-lg hover:bg-slate-700 transition-colors border border-slate-700">
+          Methodology
+        </a>
+      </div>
+    </section>
+
+  </main>
+</Layout>

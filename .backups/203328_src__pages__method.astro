@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { marked } from 'marked';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Helper to slugify heading text for IDs
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+const methodPath = path.join(process.cwd(), 'src/data/method.md');
+let content = fs.readFileSync(methodPath, 'utf-8');
+
+// 1. Extract headings for ToC (looking for ## only)
+const headingRegex = /^## (.*?)$/gm;
+const tocItems: { id: string; text: string }[] = [];
+let match;
+
+// Create a copy to scan for headings without modifying original yet
+const scanContent = content;
+while ((match = headingRegex.exec(scanContent)) !== null) {
+  const text = match[1].trim();
+  tocItems.push({
+    id: slugify(text),
+    text: text,
+  });
+}
+
+// 2. Inject IDs into markdown headers before rendering
+// We replace ## Heading with ## <span id="slug">Heading</span>
+content = content.replace(/^## (.*?)$/gm, (match, p1) => {
+  const id = slugify(p1.trim());
+  return `## <span id="${id}">${p1}</span>`;
+});
+
+const html = marked(content);
+---
+
+<Layout title="Methodology">
+  <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 mb-8">
+    <h3 class="text-amber-400 font-bold mb-2">⚠️ Transparency Notice</h3>
+    <p class="text-slate-300 text-sm">This page renders the complete, unedited <code>_METHOD.md</code> from the library repository. It documents how the library was built, including known biases and limitations.</p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+    <!-- Main Content Column -->
+    <div class="lg:col-span-9">
+      <article class="prose prose-invert prose-amber max-w-4xl" set:html={html} />
+    </div>
+
+    <!-- Sidebar ToC Column (Desktop Only) -->
+    <aside class="hidden lg:block lg:col-span-3">
+      <div class="sticky top-24 bg-slate-900 border border-slate-800 rounded-lg p-4">
+        <h4 class="text-slate-200 font-bold mb-4 text-sm uppercase tracking-wider">Contents</h4>
+        <nav>
+          <ul class="space-y-2">
+            {tocItems.map((item) => (
+              <li>
+                <a 
+                  href={`#${item.id}`} 
+                  class="text-sm text-slate-400 hover:text-amber-400 transition-colors block truncate"
+                >
+                  {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </aside>
+  </div>
+</Layout>

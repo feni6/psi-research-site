@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { marked } from 'marked';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const methodPath = path.join(process.cwd(), 'src/data/method.md');
+const content = fs.readFileSync(methodPath, 'utf-8');
+const html = marked(content);
+---
+
+<Layout title="Methodology">
+  <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 mb-8">
+    <h3 class="text-amber-400 font-bold mb-2">⚠️ Transparency Notice</h3>
+    <p class="text-slate-300 text-sm">This page renders the complete, unedited <code>_METHOD.md</code> from the library repository. It documents how the library was built, including known biases and limitations.</p>
+  </div>
+  <article class="prose prose-invert prose-amber max-w-4xl mx-auto" set:html={html} />
+</Layout>

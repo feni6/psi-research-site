@@ -1,0 +1,341 @@
+<!-- src/pages/paths/[id].astro -->
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+import catalog from '../../data/catalog.json';
+
+export function getStaticPaths() {
+  const dir = path.join(process.cwd(), 'src/data/reading_paths');
+  const files = fs.readdirSync(dir).filter(f => f.startsWith('path_') && f.endsWith('.md'));
+  return files.map(f => {
+    const id = f.replace('.md', '');
+    const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+    return { params: { id }, props: { content } };
+  });
+}
+
+const { id } = Astro.params;
+const { content } = Astro.props;
+
+// --- PARSING LOGIC ---
+
+const lines = content.split('\n');
+let title = 'Reading Path';
+let tagline = '';
+const papers: any[] = [];
+
+// State machine for parsing
+let currentPaper: any = null;
+let isParsingDescription = false;
+
+for (let i = 0; i < lines.length; i++) {
+  const line = lines[i].trim();
+  
+  // 1. Title
+  if (line.startsWith('# ') && !title) {
+    title = line.replace('# ', '').trim();
+    continue;
+  }
+
+  // 2. Tagline (First italic line)
+  if (!tagline && line.startsWith('*') && line.endsWith('*')) {
+    tagline = line.replace(/^\*|\*$/g, '').trim();
+    continue;
+  }
+
+  // 3. Paper Header (e.g., "1. **Author** -- *Title*")
+  const paperHeaderMatch = line.match(/^(\d+)([a-z])?\.\s+\*\*(.+?)\*\*\s+--\s+\*(.+?)\*/);
+  if (paperHeaderMatch) {
+    // Save previous paper if exists
+    if (currentPaper) papers.push(currentPaper);
+
+    const [, num, sub, authors, paperTitle] = paperHeaderMatch;
+    currentPaper = {
+      number: parseInt(num),
+      subNumber: sub || null,
+      authors,
+      title: paperTitle,
+      id: null,
+      description: '',
+      journal: null
+    };
+    isParsingDescription = true;
+    continue;
+  }
+
+  // 4. Paper Metadata & Description (e.g., "`id` | Description")
+  if (currentPaper && isParsingDescription && line.startsWith('`')) {
+    const metaMatch = line.match(/^`([^`]+)`\s*\|\s*(.*)/);
+    if (metaMatch) {
+      currentPaper.id = metaMatch[1];
+      const desc = metaMatch[2];
+      
+      // Extract journal if mentioned as "Published in *Journal*" or similar
+      const journalMatch = desc.match(/Published in \*([^*]+)\*/);
+      if (journalMatch) {
+        currentPaper.journal = journalMatch[1];
+      }
+      
+      currentPaper.description = desc;
+    }
+    continue;
+  }
+
+  // 5. Continuation of description (if multi-line, though sample shows single line)
+  if (currentPaper && isParsingDescription && line.length > 0 && !line.startsWith('`')) {
+     // Append to description if needed, handling markdown italics if present
+     currentPaper.description += ' ' + line;
+  }
+}
+// Push last paper
+if (currentPaper) papers.push(currentPaper);
+
+// Enrich with catalog data
+papers.forEach(p => {
+  if (p.id) {
+    const catalogEntry = catalog.papers.find((c: any) => c.id === p.id);
+    if (catalogEntry) {
+      p.year = catalogEntry.year || p.authors.match(/\((\d{4})\)/)?.[1] || 'n.d.';
+      p.domain = catalogEntry.domain || 'General';
+      p.fullAuthors = catalogEntry.authors || p.authors;
+    }
+  }
+});
+
+const paperCount = papers.length;
+const estimatedTime = Math.ceil(paperCount * 5); // 5 mins per paper
+
+// Calculate difficulty based on paper count and domain density (simplified)
+let difficulty = 'Intermediate';
+if (paperCount > 15) difficulty = 'Advanced';
+if (paperCount < 5) difficulty = 'Introductory';
+
+// Find Related Controversies
+const controversyDir = path.join(process.cwd(), 'src/data/controversies');
+const relatedControversies: { slug: string; title: string }[] = [];
+const foundIds = new Set(papers.map(p => p.id).filter(Boolean));
+
+if (fs.existsSync(controversyDir)) {
+  const controversyFiles = fs.readdirSync(controversyDir).filter(f => f.endsWith('.md'));
+  controversyFiles.forEach(file => {
+    const cPath = path.join(controversyDir, file);
+    const cContent = fs.readFileSync(cPath, 'utf-8');
+    const hasMatch = Array.from(foundIds).some(id => cContent.includes(id));
+    if (hasMatch) {
+      const titleMatch = cContent.match(/^#\s+(.*)/m);
+      relatedControversies.push({
+        slug: file.replace('.md', ''),
+        title: titleMatch ? titleMatch[1].trim() : file.replace('.md', '').replace(/-/g, ' ')
+      });
+    }
+  });
+}
+
+// Helper for transition text
+function getTransitionText(index: number, total: number) {
+  if (index === 0) return "Building on this foundation...";
+  if (index === 1 || index === 2) return "Going deeper...";
+  if (index === total - 2) return "To complete the picture...";
+  if (index === total - 1) return "And finally...";
+  return "Next...";
+}
+---
+
+<Layout title={title}>
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-slate-500 mb-8 flex items-center gap-2 font-medium">
+      <a href="/" class="hover:text-amber-400 transition-colors">Home</a>
+      <span class="text-slate-700">/</span>
+      <a href="/paths" class="hover:text-amber-400 transition-colors">Reading Paths</a>
+      <span class="text-slate-700">/</span>
+      <span class="text-slate-300 truncate">{title}</span>
+    </nav>
+
+    <!-- Header & Intro -->
+    <header class="mb-16">
+      <h1 class="text-4xl md:text-5xl font-bold text-slate-100 mb-6 tracking-tight">{title}</h1>
+      
+      <!-- Tagline Callout -->
+      {tagline && (
+        <div class="relative pl-6 py-2 mb-8 border-l-4 border-amber-500 bg-slate-900/30 rounded-r-lg">
+          <p class="text-xl md:text-2xl text-slate-300 italic font-serif leading-relaxed">
+            "{tagline}"
+          </p>
+        </div>
+      )}
+
+      <!-- Metadata Badges -->
+      <div class="flex flex-wrap gap-4 text-sm font-medium">
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-400">
+          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+          <span>{paperCount} Papers</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-400">
+          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>~{estimatedTime} min read</span>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800 text-slate-400">
+          <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          <span>{difficulty}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Timeline Container -->
+    <div class="relative">
+      <!-- Vertical Progress Line (Desktop) -->
+      <div class="absolute left-[19px] top-4 bottom-0 w-0.5 bg-slate-800 hidden md:block"></div>
+
+      <div class="space-y-12">
+        {papers.map((paper, index) => {
+          const isLast = index === papers.length - 1;
+          const isSubItem = paper.subNumber !== null;
+          const transitionText = getTransitionText(index, papers.length);
+
+          return (
+            <div class={`relative group ${isSubItem ? 'ml-0 md:ml-8 opacity-90' : ''}`}>
+              
+              <!-- Paper Number Node (Desktop) -->
+              <div class="hidden md:flex absolute left-0 top-0 w-10 h-10 rounded-full bg-slate-950 border-2 border-slate-700 text-slate-400 font-bold text-sm items-center justify-center z-10 shadow-lg shadow-slate-950 group-hover:border-amber-500 group-hover:text-amber-400 transition-colors">
+                {paper.number}{paper.subNumber}
+              </div>
+
+              <!-- Mobile Number Badge -->
+              <div class="md:hidden flex items-center gap-3 mb-3">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 border border-slate-700 text-amber-400 font-bold text-xs">
+                  {paper.number}{paper.subNumber}
+                </span>
+                <span class="text-xs font-mono text-slate-500 uppercase tracking-wider">
+                  Paper {index + 1} of {paperCount}
+                </span>
+              </div>
+
+              <!-- Paper Card -->
+              <article class={`
+                relative overflow-hidden rounded-xl border bg-slate-900/40 backdrop-blur-sm
+                transition-all duration-300 hover:shadow-xl hover:shadow-amber-900/5
+                ${isSubItem ? 'border-slate-800 ml-0 md:ml-12' : 'border-slate-700 md:border-l-4 md:border-l-amber-500/30'}
+                hover:border-amber-500/40
+              `}>
+                <div class="p-6 md:p-8">
+                  
+                  <!-- Card Header -->
+                  <div class="flex flex-col gap-3 mb-4">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-mono text-slate-500 uppercase tracking-wider hidden md:inline-block">
+                        Paper {index + 1} of {paperCount}
+                      </span>
+                      {paper.journal && (
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700">
+                          {paper.journal}
+                        </span>
+                      )}
+                    </div>
+
+                    <h3 class="text-xl md:text-2xl font-bold text-slate-100 leading-tight group-hover:text-amber-400 transition-colors">
+                      <a href={`/paper/${paper.id}`} class="focus:outline-none">
+                        {paper.title}
+                      </a>
+                    </h3>
+
+                    <div class="flex items-center gap-2 text-sm text-slate-400">
+                      <span class="font-medium text-slate-300">{paper.authors}</span>
+                      <span class="w-1 h-1 rounded-full bg-slate-600"></span>
+                      <span>{paper.year}</span>
+                    </div>
+                  </div>
+
+                  <!-- Description -->
+                  <div class="prose prose-invert prose-slate max-w-none">
+                    <p class="text-slate-300 leading-relaxed text-base md:text-lg">
+                      {paper.description}
+                    </p>
+                  </div>
+
+                  <!-- Action Link -->
+                  <div class="mt-6 pt-4 border-t border-slate-800/50 flex items-center justify-end">
+                    <a 
+                      href={`/paper/${paper.id}`}
+                      class="inline-flex items-center gap-2 text-sm font-semibold text-amber-500 hover:text-amber-400 transition-colors group/link"
+                    >
+                      Read Paper Details
+                      <svg class="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Transition Connector (Between items) -->
+              {!isLast && (
+                <div class="flex flex-col items-center justify-center py-6 md:py-8">
+                  <div class="relative flex items-center justify-center w-full">
+                    <!-- Dotted Line -->
+                    <div class="absolute top-1/2 left-0 right-0 h-px border-t-2 border-dotted border-slate-700 -z-10"></div>
+                    
+                    <!-- Arrow & Text -->
+                    <div class="bg-slate-950 px-4 z-10 flex flex-col items-center gap-1">
+                      <svg class="w-5 h-5 text-slate-600 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="animation-duration: 2s"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                      <span class="text-xs font-medium text-slate-500 uppercase tracking-widest">{transitionText}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Completion Card -->
+    <div class="mt-24 relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-amber-500/20 p-8 md:p-12 text-center">
+      <!-- Decorative Glow -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent opacity-50 blur-sm"></div>
+      
+      <div class="relative z-10">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-500/10 text-amber-500 mb-6">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <h3 class="text-3xl font-bold text-slate-100 mb-3">Path Completed</h3>
+        <p class="text-slate-400 mb-8 max-w-lg mx-auto text-lg">
+          You've navigated all {paperCount} papers in this journey. You now have a structured understanding of this specific area of psi research.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="/paths" class="w-full sm:w-auto px-8 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-amber-900/20 hover:shadow-amber-900/40 hover:-translate-y-0.5">
+            Choose Another Path
+          </a>
+          <a href="/" class="w-full sm:w-auto px-8 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-lg transition-colors border border-slate-700">
+            Return Home
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Controversies -->
+    {relatedControversies.length > 0 && (
+      <section class="mt-24 border-t border-slate-800 pt-12">
+        <h3 class="text-xl font-bold text-slate-300 mb-6 flex items-center gap-2">
+          <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          Related Debates
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {relatedControversies.map(c => (
+            <a 
+              href={`/controversies/${c.slug}`}
+              class="group flex items-center justify-between p-4 rounded-lg border border-slate-800 bg-slate-900/50 hover:border-amber-500/50 hover:bg-slate-900 transition-all"
+            >
+              <span class="text-slate-300 font-medium group-hover:text-amber-400 transition-colors line-clamp-1">
+                {c.title}
+              </span>
+              <svg class="w-4 h-4 text-slate-600 group-hover:text-amber-500 transition-colors transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+  </div>
+</Layout>

@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Sitemap: https://psi-research-library.org/sitemap.xml
 
-Sitemap: /sitemap.xml
+# Key resources for crawlers
+# /api/catalog.json - Full paper catalog with metadata
+# /llms.txt - AI agent instructions

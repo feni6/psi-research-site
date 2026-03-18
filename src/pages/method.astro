@@ -1,18 +1,897 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { marked } from 'marked';
-import fs from 'node:fs';
-import path from 'node:path';
+import catalog from '../data/catalog.json';
 
-const methodPath = path.join(process.cwd(), 'src/data/method.md');
-const content = fs.readFileSync(methodPath, 'utf-8');
-const html = marked(content);
+// --- Helper Functions ---
+
+const safeNumber = (val) => {
+  if (typeof val === 'number') return val;
+  if (typeof val === 'string') {
+    const parsed = parseFloat(val);
+    return isNaN(parsed) ? null : parsed;
+  }
+  return null;
+};
+
+const getMedian = (arr) => {
+  if (!arr || arr.length === 0) return null;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+};
+
+const formatPercent = (count, total) => {
+  if (total === 0) return '0%';
+  return ((count / total) * 100).toFixed(1) + '%';
+};
+
+// --- CSV Generation ---
+
+const escapeCsv = (field) => {
+  if (field === null || field === undefined) return '';
+  const str = String(field);
+  if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+};
+
+const csvHeaders = [
+  'id', 'title', 'first_author', 'year', 'journal', 'psi_domain', 'folder', 'doi',
+  'sample_size', 'effect_size', 'blinding', 'pre_registration'
+];
+
+const csvRows = catalog.papers.map(p => {
+  const m = p.methodology || {};
+  // Fallback for first_author if not explicitly defined, take first of authors array
+  const firstAuthor = p.first_author || (p.authors && p.authors.length > 0 ? p.authors[0] : '');
+  
+  return [
+    escapeCsv(p.id),
+    escapeCsv(p.title),
+    escapeCsv(firstAuthor),
+    escapeCsv(p.year),
+    escapeCsv(p.journal),
+    escapeCsv(p.psi_domain),
+    escapeCsv(p.folder),
+    escapeCsv(p.doi),
+    escapeCsv(m.sample_size),
+    escapeCsv(m.effect_size),
+    escapeCsv(m.blinding),
+    escapeCsv(m.pre_registration)
+  ].join(',');
+});
+
+const csvData = [csvHeaders.join(','), ...csvRows].join('\n');
+
+// --- Data Processing ---
+
+const papers = catalog.papers;
+const totalPapers = papers.length;
+
+// 1. Overview Stats
+const years = papers.map(p => p.year).filter(y => typeof y === 'number');
+const minYear = Math.min(...years);
+const maxYear = Math.max(...years);
+const uniqueDomains = new Set(papers.map(p => p.psi_domain).filter(Boolean)).size;
+const uniqueJournals = new Set(papers.map(p => p.journal).filter(Boolean)).size;
+
+// 2. Domain Breakdown
+const domainCounts = {};
+papers.forEach(p => {
+  const domain = p.psi_domain || 'Unknown';
+  domainCounts[domain] = (domainCounts[domain] || 0) + 1;
+});
+const domainStats = Object.entries(domainCounts)
+  .map(([domain, count]) => ({ domain, count, percent: formatPercent(count, totalPapers) }))
+  .sort((a, b) => b.count - a.count);
+
+// Top domain for insights
+const topDomain = domainStats[0];
+
+// 3. Methodology Quality
+let preRegTrue = 0, preRegFalse = 0, preRegNull = 0;
+let blindDouble = 0, blindSingle = 0, blindNone = 0, blindOther = 0;
+let doiCount = 0;
+const effectSizes = [];
+
+papers.forEach(p => {
+  const m = p.methodology || {};
+  
+  if (m.pre_registration === true) preRegTrue++;
+  else if (m.pre_registration === false) preRegFalse++;
+  else preRegNull++;
+
+  const blindVal = String(m.blinding || '').toLowerCase();
+  if (blindVal.includes('double')) blindDouble++;
+  else if (blindVal.includes('single')) blindSingle++;
+  else if (blindVal.includes('none') || blindVal === 'no' || blindVal === 'n/a') blindNone++;
+  else blindOther++;
+
+  if (p.doi) doiCount++;
+
+  // FIX: Parse effect_size carefully from methodology
+  const es = safeNumber(m.effect_size);
+  if (es !== null) effectSizes.push(es);
+});
+
+const effectSizeStats = effectSizes.length > 0 ? {
+  count: effectSizes.length,
+  min: Math.min(...effectSizes).toFixed(2),
+  median: getMedian(effectSizes).toFixed(2),
+  max: Math.max(...effectSizes).toFixed(2),
+  avg: (effectSizes.reduce((a, b) => a + b, 0) / effectSizes.length).toFixed(2)
+} : null;
+
+// 4. Sample Size Ranges
+const sampleSizes = papers
+  .map(p => safeNumber(p.methodology?.sample_size))
+  .filter(n => n !== null);
+
+const overallSampleStats = sampleSizes.length > 0 ? {
+  count: sampleSizes.length,
+  min: Math.min(...sampleSizes).toLocaleString(),
+  median: Math.round(getMedian(sampleSizes)).toLocaleString(),
+  medianRaw: Math.round(getMedian(sampleSizes)),
+  max: Math.max(...sampleSizes).toLocaleString()
+} : null;
+
+// Sample Size per Domain
+const domainSampleStats = {};
+papers.forEach(p => {
+  const domain = p.psi_domain || 'Unknown';
+  const size = safeNumber(p.methodology?.sample_size);
+  if (size !== null) {
+    if (!domainSampleStats[domain]) domainSampleStats[domain] = [];
+    domainSampleStats[domain].push(size);
+  }
+});
+
+const domainSampleTable = Object.entries(domainSampleStats).map(([domain, sizes]) => ({
+  domain,
+  count: sizes.length,
+  median: Math.round(getMedian(sizes)).toLocaleString(),
+  medianRaw: Math.round(getMedian(sizes))
+})).sort((a, b) => b.count - a.count);
+
+// 5. Year Distribution (Decades)
+const decadeCounts = {};
+papers.forEach(p => {
+  if (typeof p.year === 'number') {
+    const decade = Math.floor(p.year / 10) * 10;
+    decadeCounts[decade] = (decadeCounts[decade] || 0) + 1;
+  }
+});
+const sortedDecades = Object.keys(decadeCounts).map(Number).sort((a, b) => a - b);
+const maxDecadeCount = Math.max(...Object.values(decadeCounts));
+const histogramData = sortedDecades.map(decade => ({
+  decade: `${decade}s`,
+  count: decadeCounts[decade],
+  bar: '█'.repeat(Math.round((decadeCounts[decade] / maxDecadeCount) * 20))
+}));
+
+// 6. Skeptical Representation
+const skepticalCount = papers.filter(p => p.folder === '10_Skeptical_and_Critical').length;
+const skepticalPercent = formatPercent(skepticalCount, totalPapers);
+
+// 7. Publication Timeline (5-Year Bins for Visual Chart)
+const binSize = 5;
+const yearBinCounts = {};
+papers.forEach(p => {
+  if (typeof p.year === 'number') {
+    const binStart = Math.floor(p.year / binSize) * binSize;
+    yearBinCounts[binStart] = (yearBinCounts[binStart] || 0) + 1;
+  }
+});
+
+const allBins = [];
+if (years.length > 0) {
+  const startBin = Math.floor(minYear / binSize) * binSize;
+  const endBin = Math.floor(maxYear / binSize) * binSize;
+  
+  for (let b = startBin; b <= endBin; b += binSize) {
+    const count = yearBinCounts[b] || 0;
+    if (count > 0) {
+      allBins.push({
+        label: `${b}-${b + binSize - 1}`,
+        count: count
+      });
+    }
+  }
+}
+
+const maxBinCount = allBins.length > 0 ? Math.max(...allBins.map(b => b.count)) : 1;
+
+// --- Domain Comparison Stats ---
+
+const domainComparisonData = {};
+
+papers.forEach(p => {
+  const domain = p.psi_domain || 'Unknown';
+  if (!domainComparisonData[domain]) {
+    domainComparisonData[domain] = {
+      count: 0,
+      preRegTrue: 0,
+      years: [],
+      skepticalCount: 0
+    };
+  }
+
+  const data = domainComparisonData[domain];
+  data.count++;
+
+  const m = p.methodology || {};
+  if (m.pre_registration === true) {
+    data.preRegTrue++;
+  }
+
+  if (typeof p.year === 'number') {
+    data.years.push(p.year);
+  }
+
+  if (p.folder === '10_Skeptical_and_Critical') {
+    data.skepticalCount++;
+  }
+});
+
+const domainComparisonTable = Object.entries(domainComparisonData).map(([domain, data]) => {
+  const preRegRate = data.count > 0 ? (data.preRegTrue / data.count) * 100 : 0;
+  const avgYear = data.years.length > 0 
+    ? data.years.reduce((a, b) => a + b, 0) / data.years.length 
+    : null;
+
+  return {
+    domain,
+    count: data.count,
+    preRegRate,
+    avgYear,
+    skepticalCount: data.skepticalCount
+  };
+}).sort((a, b) => b.count - a.count);
+
+// Find max values for highlighting
+const maxPaperCount = Math.max(...domainComparisonTable.map(d => d.count));
+const maxPreRegRate = Math.max(...domainComparisonTable.map(d => d.preRegRate));
+
+// --- Key Insights Calculations ---
+
+// Pre-registration percentage
+const preRegPercent = formatPercent(preRegTrue, totalPapers);
+
+// Publication rate increase (compare last 5 years to first 5 years)
+const papersByYear = {};
+papers.forEach(p => {
+  if (typeof p.year === 'number') {
+    papersByYear[p.year] = (papersByYear[p.year] || 0) + 1;
+  }
+});
+
+const earlyYears = years.filter(y => y >= minYear && y < minYear + 5);
+const lateYears = years.filter(y => y > maxYear - 5 && y <= maxYear);
+
+const earlyCount = earlyYears.reduce((sum, y) => sum + (papersByYear[y] || 0), 0);
+const lateCount = lateYears.reduce((sum, y) => sum + (papersByYear[y] || 0), 0);
+
+const growthFactor = earlyCount > 0 ? (lateCount / earlyCount).toFixed(1) : 'N/A';
+
+// Most published domain
+const mostPublishedDomain = domainStats[0]?.domain || 'Unknown';
+const mostPublishedCount = domainStats[0]?.count || 0;
+
+// --- NEW: Fun Facts & Advanced Stats (FIXED) ---
+
+// 1. Unique Authors & Most Prolific (FIXED: Use p.authors array)
+const authorCounts = {};
+papers.forEach(p => {
+  // Check if authors exists and is an array
+  if (p.authors && Array.isArray(p.authors)) {
+    p.authors.forEach(author => {
+      if (author) {
+        authorCounts[author] = (authorCounts[author] || 0) + 1;
+      }
+    });
+  }
+});
+const uniqueAuthors = Object.keys(authorCounts).length;
+const sortedAuthors = Object.entries(authorCounts).sort((a, b) => b[1] - a[1]);
+const topAuthor = sortedAuthors[0] ? { name: sortedAuthors[0][0], count: sortedAuthors[0][1] } : null;
+
+// 2. Most Used Journal (FIXED: Ensure p.journal is used)
+const journalCounts = {};
+papers.forEach(p => {
+  if (p.journal) {
+    journalCounts[p.journal] = (journalCounts[p.journal] || 0) + 1;
+  }
+});
+const sortedJournals = Object.entries(journalCounts).sort((a, b) => b[1] - a[1]);
+const topJournal = sortedJournals[0] ? { name: sortedJournals[0][0], count: sortedJournals[0][1] } : null;
+
+// 3. Oldest Paper
+const oldestPaper = papers
+  .filter(p => typeof p.year === 'number')
+  .sort((a, b) => a.year - b.year)[0];
+
+// 4. Most Connected Paper (FIXED: Count entries in p.related_papers object arrays)
+const papersWithConnections = papers.map(p => {
+  let connectionCount = 0;
+  if (p.related_papers && typeof p.related_papers === 'object') {
+    // Sum lengths of all arrays in the related_papers object
+    connectionCount = Object.values(p.related_papers).reduce((sum, arr) => {
+      return sum + (Array.isArray(arr) ? arr.length : 0);
+    }, 0);
+  }
+  return { ...p, _connectionCount: connectionCount };
+});
+
+const mostConnected = papersWithConnections
+  .sort((a, b) => b._connectionCount - a._connectionCount)[0];
+
+// --- NEW: Methodology Quality Score Calculation ---
+const preRegScore = (preRegTrue / totalPapers) * 100;
+const blindScore = (blindDouble / totalPapers) * 100;
+const qualityScore = Math.round((preRegScore * 0.5) + (blindScore * 0.5));
+
+let qualityGrade = 'F';
+let qualityColor = 'text-red-500';
+let qualityBg = 'bg-red-500/10 border-red-500/20';
+
+if (qualityScore >= 90) { qualityGrade = 'A+'; qualityColor = 'text-emerald-400'; qualityBg = 'bg-emerald-500/10 border-emerald-500/20'; }
+else if (qualityScore >= 80) { qualityGrade = 'A'; qualityColor = 'text-emerald-400'; qualityBg = 'bg-emerald-500/10 border-emerald-500/20'; }
+else if (qualityScore >= 70) { qualityGrade = 'B+'; qualityColor = 'text-blue-400'; qualityBg = 'bg-blue-500/10 border-blue-500/20'; }
+else if (qualityScore >= 60) { qualityGrade = 'B'; qualityColor = 'text-blue-400'; qualityBg = 'bg-blue-500/10 border-blue-500/20'; }
+else if (qualityScore >= 50) { qualityGrade = 'C'; qualityColor = 'text-amber-400'; qualityBg = 'bg-amber-500/10 border-amber-500/20'; }
+else if (qualityScore >= 40) { qualityGrade = 'D'; qualityColor = 'text-orange-400'; qualityBg = 'bg-orange-500/10 border-orange-500/20'; }
+
+// Helper for domain colors
+const getDomainColor = (domain) => {
+  const d = domain.toLowerCase();
+  if (d.includes('telepathy')) return 'bg-purple-500 shadow-purple-500/20';
+  if (d.includes('psychokinesis') || d.includes('pk')) return 'bg-red-500 shadow-red-500/20';
+  if (d.includes('nde') || d.includes('obe')) return 'bg-cyan-500 shadow-cyan-500/20';
+  if (d.includes('precog') || d.includes('presentiment')) return 'bg-pink-500 shadow-pink-500/20';
+  if (d.includes('remote viewing') || d.includes('rv')) return 'bg-emerald-500 shadow-emerald-500/20';
+  if (d.includes('healing')) return 'bg-teal-500 shadow-teal-500/20';
+  return 'bg-amber-500 shadow-amber-500/20';
+};
+
 ---
 
-<Layout title="Methodology">
-  <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 mb-8">
-    <h3 class="text-amber-400 font-bold mb-2">⚠️ Transparency Notice</h3>
-    <p class="text-slate-300 text-sm">This page renders the complete, unedited <code>_METHOD.md</code> from the library repository. It documents how the library was built, including known biases and limitations.</p>
+<Layout title="Statistics & Methodology">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+    
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-slate-400 mb-4 animate-on-scroll opacity-0 translate-y-4">
+      <ol class="list-none p-0 inline-flex">
+        <li class="flex items-center">
+          <a href="/" class="hover:text-amber-400 transition-colors">Home</a>
+          <svg class="fill-current w-3 h-3 mx-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+          <span class="text-amber-400 font-medium">Statistics</span>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 border border-slate-700 shadow-2xl animate-on-scroll opacity-0 translate-y-4">
+      <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+      
+      <div class="relative p-8 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold text-slate-100 mb-2 tracking-tight">Library Analytics</h1>
+          <p class="text-slate-400 text-lg max-w-2xl">
+            A comprehensive data dashboard analyzing {totalPapers.toLocaleString()} papers across {uniqueDomains} domains.
+          </p>
+        </div>
+        
+        <button id="download-csv" class="group relative inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-slate-900 transition-all duration-200 bg-amber-400 rounded-xl hover:bg-amber-300 hover:shadow-lg hover:shadow-amber-500/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 focus:ring-offset-slate-900 transform hover:-translate-y-0.5">
+          <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Export CSV Data
+          <span class="ml-2 text-xs font-normal bg-slate-900/10 px-2 py-0.5 rounded-full group-hover:bg-slate-900/20">{totalPapers} papers</span>
+        </button>
+      </div>
+
+      <!-- Hero Stats Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-700/50 border-t border-slate-700/50 bg-slate-950/30 backdrop-blur-sm">
+        <div class="p-6 text-center hover:bg-slate-800/30 transition-colors">
+          <div class="text-3xl font-bold text-amber-400 count-up" data-target={totalPapers}>0</div>
+          <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Total Papers</div>
+        </div>
+        <div class="p-6 text-center hover:bg-slate-800/30 transition-colors">
+          <div class="text-3xl font-bold text-blue-400 count-up" data-target={uniqueAuthors}>0</div>
+          <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Unique Authors</div>
+        </div>
+        <div class="p-6 text-center hover:bg-slate-800/30 transition-colors">
+          <div class="text-3xl font-bold text-emerald-400 count-up" data-target={maxYear - minYear}>0</div>
+          <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Year Span</div>
+        </div>
+        <div class="p-6 text-center hover:bg-slate-800/30 transition-colors">
+          <div class="text-3xl font-bold text-purple-400">{topDomain?.domain || 'N/A'}</div>
+          <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Top Domain</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- FUN FACTS SECTION -->
+    <section class="animate-on-scroll opacity-0 translate-y-4">
+      <h2 class="text-xl font-semibold text-slate-100 mb-4 flex items-center gap-2">
+        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Did You Know?
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Oldest Paper -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+          <div class="text-xs text-slate-500 uppercase font-bold mb-1">Oldest Paper</div>
+          <div class="text-lg font-medium text-slate-200 truncate" title={oldestPaper?.title}>{oldestPaper?.title || 'N/A'}</div>
+          <div class="text-sm text-amber-400 mt-1">
+            <span class="count-up" data-target={oldestPaper?.year}>0</span> • {oldestPaper?.first_author || (oldestPaper?.authors ? oldestPaper.authors[0] : 'Unknown')}
+          </div>
+        </div>
+
+        <!-- Most Prolific Author -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
+          <div class="text-xs text-slate-500 uppercase font-bold mb-1">Most Prolific Author</div>
+          <div class="text-lg font-medium text-slate-200">{topAuthor?.name || 'N/A'}</div>
+          <div class="text-sm text-blue-400 mt-1">
+            <span class="count-up" data-target={topAuthor?.count}>0</span> papers published
+          </div>
+        </div>
+
+        <!-- Top Journal -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300">
+          <div class="text-xs text-slate-500 uppercase font-bold mb-1">Top Journal</div>
+          <div class="text-lg font-medium text-slate-200 truncate" title={topJournal?.name}>{topJournal?.name || 'N/A'}</div>
+          <div class="text-sm text-purple-400 mt-1">
+            <span class="count-up" data-target={topJournal?.count}>0</span> papers published
+          </div>
+        </div>
+
+        <!-- Avg Effect Size -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
+          <div class="text-xs text-slate-500 uppercase font-bold mb-1">Avg. Effect Size</div>
+          <div class="text-lg font-medium text-slate-200">
+            <span class="count-up" data-target={effectSizeStats?.avg} data-decimals="2">0</span>
+          </div>
+          <div class="text-sm text-emerald-400 mt-1">Across {effectSizeStats?.count} reported papers</div>
+        </div>
+
+        <!-- Most Connected -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-pink-500/30 hover:shadow-lg hover:shadow-pink-500/5 transition-all duration-300">
+          <div class="text-xs text-slate-500 uppercase font-bold mb-1">Most Connected Paper</div>
+          <div class="text-lg font-medium text-slate-200 truncate" title={mostConnected?.title}>{mostConnected?.title ? 'See Relationships' : 'No Data'}</div>
+          <div class="text-sm text-pink-400 mt-1">
+            <span class="count-up" data-target={mostConnected?._connectionCount}>0</span> direct relationships
+          </div>
+        </div>
+
+        <!-- DOI Coverage -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-orange-500/30 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300">
+          <div class="text-xs text-slate-500 uppercase font-bold mb-1">DOI Coverage</div>
+          <div class="text-lg font-medium text-slate-200">
+            <span class="count-up" data-target={doiCount}>0</span>
+          </div>
+          <div class="text-sm text-orange-400 mt-1">{doiCount} papers have a DOI</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- LEFT COLUMN (2/3 width on large screens) -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Domain Distribution (Horizontal Bars) -->
+        <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm animate-on-scroll opacity-0 translate-y-4">
+          <h2 class="text-xl font-semibold text-slate-100 mb-6">Domain Distribution</h2>
+          <div class="space-y-4">
+            {domainStats.slice(0, 8).map((stat, index) => {
+              const widthPercent = (stat.count / totalPapers) * 100;
+              const colorClass = getDomainColor(stat.domain);
+              
+              return (
+                <div class="group">
+                  <div class="flex justify-between text-sm mb-1">
+                    <span class="font-medium text-slate-300 group-hover:text-white transition-colors">{stat.domain}</span>
+                    <span class="text-slate-400">
+                      <span class="count-up" data-target={stat.count}>0</span> <span class="text-slate-600">({stat.percent})</span>
+                    </span>
+                  </div>
+                  <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+                    <div class={`${colorClass.split(' ')[0]} h-3 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(0,0,0,0.3)]`} style={`width: ${widthPercent}%`}></div>
+                  </div>
+                </div>
+              );
+            })}
+            {domainStats.length > 8 && (
+              <div class="text-center pt-2">
+                <span class="text-xs text-slate-500">+ {domainStats.length - 8} other domains</span>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <!-- Publication Timeline (Visual Chart) -->
+        <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm animate-on-scroll opacity-0 translate-y-4">
+          <h2 class="text-xl font-semibold text-slate-100 mb-6">Publication Timeline (5-Year Bins)</h2>
+          <div class="space-y-3">
+            {allBins.filter(b => b.count > 0).map(bin => (
+              <div class="flex items-center gap-4 group">
+                <span class="text-xs text-slate-500 w-20 text-right font-mono group-hover:text-amber-400 transition-colors">{bin.label}</span>
+                <div class="flex-1 bg-slate-800 rounded-full h-8 overflow-hidden relative">
+                  <div class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full transition-all duration-700 ease-out flex items-center justify-end pr-2" style={`width: ${(bin.count / maxBinCount) * 100}%`}>
+                    <span class="text-[10px] font-bold text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span class="count-up" data-target={bin.count}>0</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- Domain Comparison Table -->
+        <section class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm animate-on-scroll opacity-0 translate-y-4">
+          <div class="p-6 border-b border-slate-800">
+            <h2 class="text-xl font-semibold text-slate-100">Domain Comparison</h2>
+            <p class="text-sm text-slate-400 mt-1">Detailed metrics per psi domain. <span class="text-amber-400">★</span> indicates highest values.</p>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm text-left" id="domain-comparison-table">
+              <thead class="text-xs text-slate-400 uppercase bg-slate-950/50">
+                <tr>
+                  <th class="px-6 py-3 cursor-pointer hover:text-amber-400 transition-colors" data-sort="domain">Domain ↕</th>
+                  <th class="px-6 py-3 text-right cursor-pointer hover:text-amber-400 transition-colors" data-sort="count">Paper Count ↕</th>
+                  <th class="px-6 py-3 text-right cursor-pointer hover:text-amber-400 transition-colors" data-sort="preRegRate">Pre-Reg Rate ↕</th>
+                  <th class="px-6 py-3 text-right cursor-pointer hover:text-amber-400 transition-colors" data-sort="avgYear">Avg. Year ↕</th>
+                  <th class="px-6 py-3 text-right cursor-pointer hover:text-amber-400 transition-colors" data-sort="skepticalCount">Skeptical ↕</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800" id="domain-comparison-body">
+                {domainComparisonTable.map(stat => {
+                  const isMaxCount = stat.count === maxPaperCount;
+                  const isMaxPreReg = stat.preRegRate === maxPreRegRate;
+                  
+                  return (
+                    <tr class="hover:bg-slate-800/50 transition-colors">
+                      <td class="px-6 py-4 font-medium text-slate-200">{stat.domain}</td>
+                      <td class={`px-6 py-4 text-right font-mono ${isMaxCount ? 'text-amber-400 font-bold' : 'text-slate-400'}`}>
+                        <span class="count-up" data-target={stat.count}>0</span>
+                        {isMaxCount && <span class="ml-2 text-xs align-top">★</span>}
+                      </td>
+                      <td class={`px-6 py-4 text-right font-mono ${isMaxPreReg ? 'text-amber-400 font-bold' : 'text-slate-400'}`}>
+                        <span class="count-up" data-target={stat.preRegRate} data-suffix="%">0</span>%
+                        {isMaxPreReg && <span class="ml-2 text-xs align-top">★</span>}
+                      </td>
+                      <td class="px-6 py-4 text-right text-slate-400 font-mono">
+                        {stat.avgYear ? Math.round(stat.avgYear) : '—'}
+                      </td>
+                      <td class="px-6 py-4 text-right text-slate-400 font-mono">
+                        <span class="count-up" data-target={stat.skepticalCount}>0</span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- RIGHT COLUMN (1/3 width on large screens) -->
+      <div class="space-y-8">
+        
+        <!-- Methodology Quality -->
+        <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm animate-on-scroll opacity-0 translate-y-4">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold text-slate-100">Methodology Rigor</h2>
+            <div class={`px-3 py-1 rounded-full border text-sm font-bold ${qualityBg} ${qualityColor}`}>
+              Grade: {qualityGrade}
+            </div>
+          </div>
+          
+          <div class="space-y-6">
+            <!-- Pre-registration -->
+            <div>
+              <div class="flex justify-between text-sm mb-2">
+                <span class="text-slate-300 font-medium">Pre-Registered</span>
+                <span class="text-emerald-400 font-mono">
+                  <span class="count-up" data-target={(preRegTrue / totalPapers) * 100} data-suffix="%">0</span>%
+                </span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-3">
+                <div class="bg-emerald-500 h-3 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.4)]" style={`width: ${formatPercent(preRegTrue, totalPapers)}`}></div>
+              </div>
+              <div class="flex justify-between text-xs text-slate-500 mt-1">
+                <span>{preRegTrue} Yes</span>
+                <span>{preRegFalse} No</span>
+              </div>
+            </div>
+
+            <!-- Double Blind -->
+            <div>
+              <div class="flex justify-between text-sm mb-2">
+                <span class="text-slate-300 font-medium">Double-Blind</span>
+                <span class="text-blue-400 font-mono">
+                  <span class="count-up" data-target={(blindDouble / totalPapers) * 100} data-suffix="%">0</span>%
+                </span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-3">
+                <div class="bg-blue-500 h-3 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.4)]" style={`width: ${formatPercent(blindDouble, totalPapers)}`}></div>
+              </div>
+              <div class="flex justify-between text-xs text-slate-500 mt-1">
+                <span>{blindDouble} DB</span>
+                <span>{blindSingle} SB</span>
+                <span>{blindNone} None</span>
+              </div>
+            </div>
+
+            <!-- DOI Coverage -->
+            <div>
+              <div class="flex justify-between text-sm mb-2">
+                <span class="text-slate-300 font-medium">Has DOI</span>
+                <span class="text-amber-400 font-mono">
+                  <span class="count-up" data-target={(doiCount / totalPapers) * 100} data-suffix="%">0</span>%
+                </span>
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-3">
+                <div class="bg-amber-500 h-3 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.4)]" style={`width: ${formatPercent(doiCount, totalPapers)}`}></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Effect Size Stats -->
+          {effectSizeStats && (
+            <div class="mt-8 pt-6 border-t border-slate-800">
+              <h3 class="text-sm font-medium text-slate-300 mb-3">Effect Sizes (n={effectSizeStats.count})</h3>
+              <div class="grid grid-cols-3 gap-2">
+                <div class="bg-slate-950 rounded-lg p-3 text-center border border-slate-800">
+                  <div class="text-[10px] text-slate-500 uppercase">Min</div>
+                  <div class="text-amber-400 font-mono font-bold">
+                    <span class="count-up" data-target={effectSizeStats.min} data-decimals="2">0</span>
+                  </div>
+                </div>
+                <div class="bg-slate-950 rounded-lg p-3 text-center border border-slate-800">
+                  <div class="text-[10px] text-slate-500 uppercase">Median</div>
+                  <div class="text-amber-400 font-mono font-bold">
+                    <span class="count-up" data-target={effectSizeStats.median} data-decimals="2">0</span>
+                  </div>
+                </div>
+                <div class="bg-slate-950 rounded-lg p-3 text-center border border-slate-800">
+                  <div class="text-[10px] text-slate-500 uppercase">Max</div>
+                  <div class="text-amber-400 font-mono font-bold">
+                    <span class="count-up" data-target={effectSizeStats.max} data-decimals="2">0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+
+        <!-- Sample Size Analysis -->
+        <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm animate-on-scroll opacity-0 translate-y-4">
+          <h2 class="text-xl font-semibold text-slate-100 mb-4">Sample Size Analysis</h2>
+          
+          {overallSampleStats && (
+            <div class="mb-6 bg-slate-950 rounded-lg p-4 border border-slate-800">
+              <div class="text-xs text-slate-500 uppercase mb-1">Overall Median N</div>
+              <div class="text-2xl font-bold text-slate-200">
+                <span class="count-up" data-target={overallSampleStats.medianRaw}>0</span>
+              </div>
+              <div class="text-xs text-slate-500 mt-1">Range: {overallSampleStats.min} – {overallSampleStats.max}</div>
+            </div>
+          )}
+
+          <div class="space-y-3">
+            <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">By Domain (Median N)</h3>
+            {domainSampleTable.slice(0, 5).map(stat => (
+              <div class="flex justify-between items-center text-sm py-2 border-b border-slate-800 last:border-0">
+                <span class="text-slate-300 truncate pr-2">{stat.domain}</span>
+                <span class="font-mono text-amber-400">
+                  <span class="count-up" data-target={stat.medianRaw}>0</span>
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- Skeptical Representation -->
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-xl p-6 flex items-center justify-between shadow-lg animate-on-scroll opacity-0 translate-y-4">
+          <div>
+            <h3 class="text-lg font-medium text-slate-100">Skeptical Papers</h3>
+            <p class="text-xs text-slate-400 mt-1">Critical analysis & replication failures</p>
+          </div>
+          <div class="text-right">
+            <div class="text-3xl font-bold text-amber-400">
+              <span class="count-up" data-target={skepticalCount}>0</span>
+            </div>
+            <div class="text-xs text-slate-500">{skepticalPercent}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Decade Histogram (Full Width Bottom) -->
+    <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm animate-on-scroll opacity-0 translate-y-4">
+      <h2 class="text-xl font-semibold text-slate-100 mb-6">Publication Distribution by Decade</h2>
+      <div class="overflow-x-auto">
+        <div class="min-w-[600px] space-y-2 font-mono">
+          {histogramData.map(item => (
+            <div class="flex items-center gap-4">
+              <span class="w-16 text-right text-slate-400 font-semibold">{item.decade}</span>
+              <span class="w-10 text-right text-amber-400 font-bold">
+                <span class="count-up" data-target={item.count}>0</span>
+              </span>
+              <span class="text-amber-500/80 text-lg tracking-widest">{item.bar}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
   </div>
-  <article class="prose prose-invert prose-amber max-w-4xl mx-auto" set:html={html} />
+
+  <script define:vars={{ csvData, domainComparisonTable }}>
+    // CSV Download
+    document.getElementById('download-csv')?.addEventListener('click', () => {
+      const blob = new Blob([csvData], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'psi_research_catalog.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Sortable Table
+    const table = document.getElementById('domain-comparison-table');
+    const tbody = document.getElementById('domain-comparison-body');
+    const headers = table.querySelectorAll('th[data-sort]');
+    
+    let currentSort = { column: 'count', direction: 'desc' };
+    const tableData = JSON.parse(JSON.stringify(domainComparisonTable));
+
+    headers.forEach(header => {
+      header.addEventListener('click', () => {
+        const column = header.dataset.sort;
+        
+        // Toggle direction if same column
+        if (currentSort.column === column) {
+          currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+          currentSort.column = column;
+          currentSort.direction = column === 'domain' ? 'asc' : 'desc';
+        }
+
+        // Sort data
+        const sorted = [...tableData].sort((a, b) => {
+          let valA = a[column];
+          let valB = b[column];
+          
+          // Handle null/undefined
+          if (valA === null || valA === undefined) valA = column === 'domain' ? '' : -Infinity;
+          if (valB === null || valB === undefined) valB = column === 'domain' ? '' : -Infinity;
+          
+          if (typeof valA === 'string') {
+            return currentSort.direction === 'asc' 
+              ? valA.localeCompare(valB) 
+              : valB.localeCompare(valA);
+          }
+          
+          return currentSort.direction === 'asc' 
+            ? valA - valB 
+            : valB - valA;
+        });
+
+        // Re-render rows
+        tbody.innerHTML = sorted.map(stat => {
+          const isMaxCount = stat.count === Math.max(...tableData.map(d => d.count));
+          const isMaxPreReg = stat.preRegRate === Math.max(...tableData.map(d => d.preRegRate));
+          
+          return `
+            <tr class="hover:bg-slate-800/50 transition-colors">
+              <td class="px-6 py-4 font-medium text-slate-200">${stat.domain}</td>
+              <td class="px-6 py-4 text-right font-mono ${isMaxCount ? 'text-amber-400 font-bold' : 'text-slate-400'}">
+                ${stat.count}${isMaxCount ? '<span class="ml-2 text-xs align-top">★</span>' : ''}
+              </td>
+              <td class="px-6 py-4 text-right font-mono ${isMaxPreReg ? 'text-amber-400 font-bold' : 'text-slate-400'}">
+                ${stat.preRegRate.toFixed(1)}%${isMaxPreReg ? '<span class="ml-2 text-xs align-top">★</span>' : ''}
+              </td>
+              <td class="px-6 py-4 text-right text-slate-400 font-mono">
+                ${stat.avgYear ? Math.round(stat.avgYear) : '—'}
+              </td>
+              <td class="px-6 py-4 text-right text-slate-400 font-mono">
+                ${stat.skepticalCount}
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        // Update header indicators
+        headers.forEach(h => {
+          h.textContent = h.textContent.replace(/[↕▲▼]/g, '').trim() + ' ↕';
+        });
+        header.textContent = header.textContent.replace(/[↕▲▼]/g, '').trim() + (currentSort.direction === 'asc' ? ' ▲' : ' ▼');
+      });
+    });
+
+    // --- Scroll Animations & Number Counters ---
+
+    // 1. Fade-in Animation Observer
+    const fadeObserverOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+
+    const fadeObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, fadeObserverOptions);
+
+    document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+      fadeObserver.observe(el);
+    });
+
+    // 2. Number Counter Animation
+    const animateValue = (el, start, end, duration, decimals, suffix) => {
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        
+        // Ease out cubic
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        const currentVal = start + (end - start) * easeProgress;
+        
+        let formatted;
+        if (decimals > 0) {
+          formatted = currentVal.toFixed(decimals);
+        } else {
+          formatted = Math.round(currentVal).toLocaleString();
+        }
+        
+        el.innerHTML = formatted + suffix;
+        
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    };
+
+    const countObserverOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5 // Trigger when 50% visible
+    };
+
+    const countObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseFloat(el.dataset.target);
+          const suffix = el.dataset.suffix || '';
+          const decimals = parseInt(el.dataset.decimals) || 0;
+          
+          if (!isNaN(target)) {
+            animateValue(el, 0, target, 1500, decimals, suffix);
+          }
+          
+          observer.unobserve(el);
+        }
+      });
+    }, countObserverOptions);
+
+    document.querySelectorAll('.count-up').forEach((el) => {
+      countObserver.observe(el);
+    });
+
+  </script>
 </Layout>

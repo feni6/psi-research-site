@@ -1,0 +1,120 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const KEY_QUESTIONS: Record<string, string> = {
+  '01': "Can telepathy be demonstrated under controlled conditions?",
+  '02': "Did Bem really prove precognition?",
+  '03': "Does the body anticipate unpredictable future events?",
+  '04': "Can consciousness affect quantum-level physical systems?",
+  '05': "Can prayer or distant intention promote healing?",
+  '06': "Can mediums genuinely access information from deceased persons?",
+  '07': "Do NDEs provide evidence for consciousness beyond the brain?",
+  '08': "Does collective human attention influence random systems worldwide?",
+  '09': "Can facilitator-assisted communication reveal hidden cognitive abilities?",
+  '10': "Do meta-analyses actually support the existence of psi?",
+  '11': "Can people detect when they're being stared at?",
+  '12': "Do pets genuinely anticipate their owner's return?",
+  '13': "Can people sense who's calling before answering?",
+  '14': "Do twins share a psychic connection?"
+};
+
+const dir = path.join(process.cwd(), 'src/data/controversies');
+const files = fs.readdirSync(dir).filter(f => f.match(/^\d{2}_/) && f.endsWith('.md'));
+const controversies = files.map(f => {
+  const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+  const id = f.replace('.md', '');
+  const num = f.slice(0, 2);
+  const title = content.split('\n')[0].replace(/^#\s*\d+\.\s*/, '').trim();
+  
+  // Extract current status
+  const statusMatch = content.match(/\*\*Current status:\*\*\s*(.*?)(?:\n\n|$)/s);
+  const status = statusMatch ? statusMatch[1].slice(0, 200) + '...' : '';
+  
+  const proCount = (content.match(/\*\*Pro:\*\*([\s\S]*?)\*\*Con:\*\*/)?.[1]?.match(/^- /gm) || []).length;
+  const conCount = (content.match(/\*\*Con:\*\*([\s\S]*?)(\*\*Current|$)/)?.[1]?.match(/^- /gm) || []).length;
+  
+  return { 
+    id, 
+    num,
+    title, 
+    keyQuestion: KEY_QUESTIONS[num] || '',
+    status, 
+    proCount, 
+    conCount 
+  };
+}).sort((a, b) => a.num.localeCompare(b.num));
+---
+
+<Layout title="Controversies">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Controversy Maps</h1>
+    <p class="text-slate-400 mb-6">14 debates with papers cited on both sides. Every controversy shows the strongest arguments for and against.</p>
+    
+    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between bg-slate-900 p-4 rounded-lg border border-slate-800">
+      <div class="relative w-full sm:w-96">
+        <input 
+          type="text" 
+          id="search-input"
+          placeholder="Filter by topic or question..." 
+          class="w-full bg-slate-950 border border-slate-700 rounded-md py-2 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition"
+        />
+      </div>
+      <div class="text-sm text-slate-400 whitespace-nowrap">
+        Showing <span id="result-count" class="text-amber-400 font-bold">{controversies.length}</span> of {controversies.length} controversies
+      </div>
+    </div>
+  </div>
+  
+  <div class="space-y-4" id="controversy-list">
+    {controversies.map((c) => (
+      <a 
+        href={`/controversies/${c.id}`} 
+        class="block bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-amber-500/30 hover:bg-slate-800/50 transition group controversy-item"
+        data-title={c.title.toLowerCase()}
+        data-question={c.keyQuestion.toLowerCase()}
+      >
+        <div class="flex items-start gap-4">
+          <span class="text-amber-400 font-mono text-sm bg-amber-500/10 px-2 py-1 rounded shrink-0 group-hover:bg-amber-500/20 transition">{c.num}</span>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-slate-200 mb-1 group-hover:text-amber-400 transition">{c.title}</h3>
+            <p class="text-slate-400 italic text-sm mb-3">"{c.keyQuestion}"</p>
+            
+            <div class="flex flex-wrap gap-4 text-sm mb-3">
+              <span class="text-green-400 bg-green-900/20 px-2 py-0.5 rounded">{c.proCount} supporting papers</span>
+              <span class="text-red-400 bg-red-900/20 px-2 py-0.5 rounded">{c.conCount} critical papers</span>
+            </div>
+            
+            {c.status && <p class="text-slate-500 text-sm line-clamp-2 border-t border-slate-800 pt-2">{c.status}</p>}
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const resultCount = document.getElementById('result-count') as HTMLSpanElement;
+    const items = document.querySelectorAll('.controversy-item') as NodeListOf<HTMLElement>;
+
+    searchInput.addEventListener('input', (e) => {
+      const query = (e.target as HTMLInputElement).value.toLowerCase();
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const title = item.dataset.title || '';
+        const question = item.dataset.question || '';
+        
+        if (title.includes(query) || question.includes(query)) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      resultCount.textContent = visibleCount.toString();
+    });
+  </script>
+</Layout>

@@ -5,12 +5,12 @@ Research-based mediumship studies attempt to determine whether individuals claim
 **Pro:**
 - Beischel & Schwartz (2007) -- Anomalous information reception by mediums under blinded conditions produces accuracy rates significantly above chance [catalog ID: beischel_2007_anomalous]
 - Beischel, Boccuzzi, Biuso & Rock (2015) -- AIRII replication with 20 Windbridge Certified Research Mediums under quintuple-blind conditions (86 readings, 2009-2013): calculated item accuracy target 52.8% vs. decoy 36.6% (p = .002, d = 0.75); hits vs. misses χ² = 66.69, p < .0001; combined global scores target 2.88 vs. decoy 2.09 (p = .001, d = 0.57); forced-choice 38/58 correct (65.5%, p = .01) [catalog ID: beischel_2015_anomalous]
-- Beischel et al. (2014) -- Anomalous information reception by mediums with detailed scoring methods [catalog ID: beischel_2014_anomalous_info]
+- Beischel et al. (2014) -- Anomalous information reception by mediums with detailed scoring methods
 - Delorme et al. (2013) -- First EEG study of mediumship accuracy under double-blind conditions: 3 of 4 mediums scored significantly above chance (M5: +46.8% accuracy difference, p < 0.00005); Medium M1 showed frontal theta power correlated with accuracy (p < 0.01 cluster-corrected), decreasing monotonically with increasing accuracy across three quantile groups [catalog ID: delorme_2013_electrocortical]
 - Delorme et al. (2018) -- Intuitive assessment under blinded conditions using EEG monitoring shows both accuracy and distinctive neural signatures [catalog ID: delorme_2018_intuitive]
 - Peres et al. (2012) -- SPECT neuroimaging of 10 Brazilian psychographers (5 experienced, 5 less expert) during trance vs. control writing. Experienced mediums showed significantly lower rCBF in six brain regions during psychography, yet produced more complex written content (18.4 vs 15.4, p=0.041). Inverse correlation between text complexity and brain activation (r=0.59-0.74). Findings inconsistent with faking or role-playing, as planning-related neural circuits would need to be recruited more — not less — to compose more elaborate texts [catalog ID: peres_2012_neuroimaging_trance]
 - Kelly (2010) -- Review of evidence bearing on the survival hypothesis, including mediumistic communications [catalog ID: kelly_2010_some]
-- Kramer, Bauer & Horgelin (2012) -- Mediumship accuracy tested under controlled laboratory conditions [catalog ID: kramer_2012_mediumship_accuracy]
+- Kramer, Bauer & Horgelin (2012) -- Mediumship accuracy tested under controlled laboratory conditions
 - Wahbeh et al. (2018) -- Five full-trance channelers showed modestly significant QNG deviations during channeling vs. control periods (z = 2.250, p = 0.024); channelers scored within normal ranges on dissociation and psychotic symptom measures [catalog ID: wahbeh_2018_mixed]
 
 **Con:**

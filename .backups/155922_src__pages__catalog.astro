@@ -1,0 +1,210 @@
+---
+import Layout from '../layouts/Layout.astro';
+import catalog from '../data/catalog.json';
+
+const papers = catalog.papers.sort((a: any, b: any) => (b.year || 0) - (a.year || 0));
+const domains = [...new Set(papers.map((p: any) => p.psi_domain).filter(Boolean))].sort();
+const folders = [...new Set(papers.map((p: any) => p.folder).filter(Boolean))].sort();
+
+// Get year range for filters
+const years = papers.map((p: any) => p.year).filter(Boolean);
+const minYear = Math.min(...years);
+const maxYear = Math.max(...years);
+
+// Helper to format folder names
+function formatFolder(folder: string): string {
+  return folder.replace(/^\d+_/, '').replace(/_/g, ' ');
+}
+---
+
+<Layout title="Catalog">
+  <h1 class="text-3xl font-bold mb-2">Paper Catalog</h1>
+  <p class="text-slate-400 mb-6">{papers.length} papers across {domains.length} research domains</p>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-3 mb-4" id="filters">
+    <select id="domain-filter" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-amber-500/50 focus:outline-none">
+      <option value="">All Domains</option>
+      {domains.map((d: string) => (
+        <option value={d}>{d.replace(/_/g, ' ')}</option>
+      ))}
+    </select>
+    
+    <select id="folder-filter" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-amber-500/50 focus:outline-none">
+      <option value="">All Categories</option>
+      {folders.map((f: string) => (
+        <option value={f}>{formatFolder(f)}</option>
+      ))}
+    </select>
+    
+    <div class="flex items-center gap-2">
+      <input 
+        type="number" 
+        id="year-min" 
+        placeholder="From" 
+        min={minYear}
+        max={maxYear}
+        class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm w-20 focus:border-amber-500/50 focus:outline-none"
+      />
+      <span class="text-slate-500">–</span>
+      <input 
+        type="number" 
+        id="year-max" 
+        placeholder="To" 
+        min={minYear}
+        max={maxYear}
+        class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm w-20 focus:border-amber-500/50 focus:outline-none"
+      />
+    </div>
+    
+    <input 
+      type="text" 
+      id="search" 
+      placeholder="Search papers..." 
+      class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm flex-1 min-w-[200px] focus:border-amber-500/50 focus:outline-none"
+    />
+    
+    <button 
+      id="clear-filters" 
+      class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-300 hover:text-amber-400 transition"
+    >
+      Clear All
+    </button>
+  </div>
+
+  <!-- Result count -->
+  <div class="mb-4">
+    <span id="result-count" class="text-sm text-slate-400">Showing {papers.length} of {papers.length} papers</span>
+  </div>
+
+  <!-- Paper list -->
+  <div id="paper-list" class="space-y-3">
+    {papers.map((paper: any) => (
+      <a 
+        href={`/paper/${paper.id}`}
+        class="paper-card block bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-500/30 transition"
+        data-domain={paper.psi_domain}
+        data-folder={paper.folder}
+        data-title={paper.title?.toLowerCase()}
+        data-authors={paper.authors?.join(' ').toLowerCase()}
+        data-abstract={paper.abstract?.toLowerCase()}
+        data-year={paper.year}
+      >
+        <div class="flex justify-between items-start gap-4">
+          <div class="flex-1">
+            <h3 class="font-semibold text-slate-200 mb-1">{paper.title}</h3>
+            <p class="text-slate-500 text-sm mb-2">
+              {paper.authors?.slice(0, 3).join(', ')}{paper.authors?.length > 3 ? ' et al.' : ''} 
+              ({paper.year}) — <span class="text-slate-400">{paper.journal}</span>
+            </p>
+            {paper.abstract && (
+              <p class="text-slate-400 text-sm line-clamp-2">{paper.abstract}</p>
+            )}
+          </div>
+          <div class="flex flex-col items-end gap-1 shrink-0">
+            <span class="text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded capitalize">
+              {paper.psi_domain?.replace(/_/g, ' ')}
+            </span>
+            {paper.folder === '10_Skeptical_and_Critical' && (
+              <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">Skeptical</span>
+            )}
+            {paper.doi && (
+              <a href={`https://doi.org/${paper.doi}`} target="_blank" class="text-xs text-slate-500 hover:text-amber-400">DOI ↗</a>
+            )}
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <script>
+    const domainFilter = document.getElementById('domain-filter') as HTMLSelectElement;
+    const folderFilter = document.getElementById('folder-filter') as HTMLSelectElement;
+    const yearMinInput = document.getElementById('year-min') as HTMLInputElement;
+    const yearMaxInput = document.getElementById('year-max') as HTMLInputElement;
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const clearButton = document.getElementById('clear-filters') as HTMLButtonElement;
+    const resultCount = document.getElementById('result-count') as HTMLElement;
+    const cards = document.querySelectorAll('.paper-card');
+    const totalPapers = cards.length;
+
+    function filterCards() {
+      const domain = domainFilter.value;
+      const folder = folderFilter.value;
+      const yearMin = yearMinInput.value ? parseInt(yearMinInput.value) : null;
+      const yearMax = yearMaxInput.value ? parseInt(yearMaxInput.value) : null;
+      const query = searchInput.value.toLowerCase();
+      
+      let visibleCount = 0;
+      
+      cards.forEach((card) => {
+        const el = card as HTMLElement;
+        const cardYear = el.dataset.year ? parseInt(el.dataset.year) : null;
+        
+        const matchDomain = !domain || el.dataset.domain === domain;
+        const matchFolder = !folder || el.dataset.folder === folder;
+        const matchYear = (!yearMin || (cardYear && cardYear >= yearMin)) && 
+                          (!yearMax || (cardYear && cardYear <= yearMax));
+        const matchSearch = !query || 
+          el.dataset.title?.includes(query) || 
+          el.dataset.authors?.includes(query) ||
+          el.dataset.abstract?.includes(query);
+        
+        const isVisible = matchDomain && matchFolder && matchYear && matchSearch;
+        el.style.display = isVisible ? 'block' : 'none';
+        
+        if (isVisible) visibleCount++;
+      });
+      
+      resultCount.textContent = `Showing ${visibleCount} of ${totalPapers} papers`;
+    }
+
+    function clearFilters() {
+      domainFilter.value = '';
+      folderFilter.value = '';
+      yearMinInput.value = '';
+      yearMaxInput.value = '';
+      searchInput.value = '';
+      filterCards();
+      updateURL();
+    }
+
+    function updateURL() {
+      const params = new URLSearchParams();
+      if (domainFilter.value) params.set('domain', domainFilter.value);
+      if (folderFilter.value) params.set('folder', folderFilter.value);
+      if (yearMinInput.value) params.set('yearMin', yearMinInput.value);
+      if (yearMaxInput.value) params.set('yearMax', yearMaxInput.value);
+      if (searchInput.value) params.set('q', searchInput.value);
+      
+      const newURL = params.toString() ? `?${params.toString()}` : window.location.pathname;
+      window.history.replaceState({}, '', newURL);
+    }
+
+    domainFilter.addEventListener('change', () => { filterCards(); updateURL(); });
+    folderFilter.addEventListener('change', () => { filterCards(); updateURL(); });
+    yearMinInput.addEventListener('input', () => { filterCards(); updateURL(); });
+    yearMaxInput.addEventListener('input', () => { filterCards(); updateURL(); });
+    searchInput.addEventListener('input', () => { filterCards(); updateURL(); });
+    clearButton.addEventListener('click', clearFilters);
+
+    // Handle URL params on load
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('domain')) {
+      domainFilter.value = params.get('domain') || '';
+    }
+    if (params.get('folder')) {
+      folderFilter.value = params.get('folder') || '';
+    }
+    if (params.get('yearMin')) {
+      yearMinInput.value = params.get('yearMin') || '';
+    }
+    if (params.get('yearMax')) {
+      yearMaxInput.value = params.get('yearMax') || '';
+    }
+    if (params.get('q')) {
+      searchInput.value = params.get('q') || '';
+    }
+    filterCards();
+  </script>
+</Layout>

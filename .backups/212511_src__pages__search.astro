@@ -1,0 +1,494 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+---
+
+<Layout title="Search Library">
+  <div class="max-w-5xl mx-auto px-4 py-12">
+    
+    <!-- Header -->
+    <div class="mb-8">
+      <Breadcrumb items={[{ label: 'Search', href: '/search' }]} />
+      <h1 class="text-4xl font-bold text-slate-100 mt-4 mb-2">
+        Search the <span class="text-amber-400">Archive</span>
+      </h1>
+      <p class="text-slate-400">
+        Search across paper titles, abstracts, glossary terms, and site pages.
+      </p>
+    </div>
+
+    <!-- Search Interface -->
+    <div class="sticky top-4 z-40 mb-8">
+      <div class="relative max-w-3xl mx-auto group">
+        
+        <!-- Input Wrapper -->
+        <div class="relative bg-slate-900 border border-slate-700 rounded-xl shadow-2xl shadow-black/50 transition-all focus-within:border-amber-400/50 focus-within:ring-2 focus-within:ring-amber-400/20">
+          
+          <!-- Search Icon -->
+          <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-amber-400 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+
+          <!-- Input Field -->
+          <input 
+            type="text" 
+            id="search-input"
+            placeholder="Search papers, authors, or topics..." 
+            disabled
+            class="w-full bg-transparent text-slate-100 text-lg rounded-xl pl-12 pr-32 py-4 focus:outline-none placeholder-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            autocomplete="off"
+            spellcheck="false"
+          />
+
+          <!-- Keyboard Shortcut Hint -->
+          <div class="absolute right-4 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-2 pointer-events-none">
+            <kbd class="hidden lg:inline-block px-2 py-1 text-xs font-mono text-slate-500 bg-slate-800 border border-slate-700 rounded">Ctrl K</kbd>
+          </div>
+        </div>
+
+        <!-- Suggestions Dropdown -->
+        <div id="suggestions-dropdown" class="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl overflow-hidden hidden z-50">
+          <div class="px-4 py-2 bg-slate-950/50 border-b border-slate-800 text-xs font-mono text-slate-500 uppercase tracking-wider">
+            Quick Suggestions
+          </div>
+          <ul id="suggestions-list" class="max-h-64 overflow-y-auto">
+            <!-- Suggestions injected via JS -->
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Filter Chips -->
+      <div id="filter-container" class="max-w-3xl mx-auto mt-4 flex flex-wrap gap-2 overflow-x-auto pb-2 scrollbar-hide">
+        <!-- Chips injected via JS -->
+        <div class="h-8 w-24 bg-slate-800/50 rounded-full animate-pulse"></div>
+        <div class="h-8 w-20 bg-slate-800/50 rounded-full animate-pulse"></div>
+        <div class="h-8 w-32 bg-slate-800/50 rounded-full animate-pulse"></div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading-state" class="flex flex-col items-center justify-center py-20">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-400 mb-4"></div>
+      <p class="text-slate-400 animate-pulse font-mono text-sm">INDEXING CATALOG...</p>
+    </div>
+
+    <!-- Results Area -->
+    <div id="results-area" class="hidden">
+      
+      <!-- Stats Bar -->
+      <div class="mb-6 flex items-center justify-between border-b border-slate-800 pb-4">
+        <h2 id="result-count" class="text-slate-300 font-mono text-sm">
+          <span class="text-amber-400 font-bold">0</span> results found
+        </h2>
+        <button id="clear-filters" class="text-xs text-slate-500 hover:text-amber-400 transition-colors hidden">
+          Clear Filters
+        </button>
+      </div>
+
+      <!-- Results Grid -->
+      <div id="results-container" class="space-y-4">
+        <!-- Results injected via JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const input = document.getElementById('search-input');
+    const suggestionsDropdown = document.getElementById('suggestions-dropdown');
+    const suggestionsList = document.getElementById('suggestions-list');
+    const filterContainer = document.getElementById('filter-container');
+    const clearFiltersBtn = document.getElementById('clear-filters');
+    const container = document.getElementById('results-container');
+    const countLabel = document.getElementById('result-count');
+    const loadingState = document.getElementById('loading-state');
+    const resultsArea = document.getElementById('results-area');
+    
+    let searchIndex = [];
+    let allDomains = new Set();
+    let activeFilter = 'all';
+    let debounceTimer;
+
+    // Static pages to include in search
+    const staticPages = [
+      { type: 'page', id: 'method', title: 'Methodology', text: 'How the library was curated and scored', url: '/method' },
+      { type: 'page', id: 'replications', title: 'Replication Map', text: 'Track replication attempts across studies', url: '/replications' },
+      { type: 'page', id: 'stats', title: 'Statistics', text: 'Aggregate methodology data and success rates', url: '/stats' },
+      { type: 'page', id: 'glossary', title: 'Glossary', text: 'Definitions of key parapsychology terms', url: '/glossary' },
+    ];
+
+    // --- Helpers ---
+
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function highlightText(text, term) {
+      if (!term || !text) return text;
+      const safeTerm = escapeRegExp(term);
+      const regex = new RegExp(`(${safeTerm})`, 'gi');
+      return text.replace(regex, '<mark class="bg-amber-400/20 text-amber-300 px-0.5 rounded font-medium border-b border-amber-400/30">$1</mark>');
+    }
+
+    function getBadgeConfig(type, domain = null) {
+      if (type === 'paper' && domain) {
+        const domainLower = domain.toLowerCase();
+        if (domainLower.includes('ganzfeld')) return { label: 'Ganzfeld', class: 'bg-purple-900/30 text-purple-300 border-purple-800' };
+        if (domainLower.includes('remote')) return { label: 'Remote Viewing', class: 'bg-indigo-900/30 text-indigo-300 border-indigo-800' };
+        if (domainLower.includes('pk')) return { label: 'PK / RNG', class: 'bg-cyan-900/30 text-cyan-300 border-cyan-800' };
+        if (domainLower.includes('survival')) return { label: 'Survival', class: 'bg-rose-900/30 text-rose-300 border-rose-800' };
+        return { label: domain, class: 'bg-blue-900/30 text-blue-300 border-blue-800' };
+      }
+      
+      switch(type) {
+        case 'paper': return { label: 'Research Paper', class: 'bg-slate-800 text-slate-300 border-slate-700' };
+        case 'page': return { label: 'Documentation', class: 'bg-emerald-900/30 text-emerald-300 border-emerald-800' };
+        case 'controversy': return { label: 'Controversy', class: 'bg-red-900/30 text-red-300 border-red-800' };
+        case 'glossary': return { label: 'Term', class: 'bg-purple-900/30 text-purple-300 border-purple-800' };
+        default: return { label: type, class: 'bg-slate-800 text-slate-300 border-slate-700' };
+      }
+    }
+
+    // --- Core Logic ---
+
+    function performSearch(query) {
+      const term = query.trim().toLowerCase();
+      clearTimeout(debounceTimer);
+
+      // Hide suggestions if empty
+      if (term.length === 0) {
+        suggestionsDropdown.classList.add('hidden');
+        container.innerHTML = '';
+        container.appendChild(createEmptyState('Start typing to search the library...'));
+        countLabel.innerHTML = '<span class="text-amber-400 font-bold">0</span> results found';
+        return;
+      }
+
+      debounceTimer = setTimeout(() => {
+        // 1. Filter by Domain first
+        let filteredByDomain = searchIndex;
+        if (activeFilter !== 'all') {
+          filteredByDomain = searchIndex.filter(item => 
+            item.domain && item.domain.toLowerCase() === activeFilter.toLowerCase()
+          );
+        }
+
+        // 2. Filter by Search Term
+        const results = filteredByDomain.filter(item => {
+          const titleMatch = item.title.toLowerCase().includes(term);
+          const content = item.abstract || item.text || '';
+          const contentMatch = content.toLowerCase().includes(term);
+          const authorsMatch = item.authors ? item.authors.toLowerCase().includes(term) : false;
+          const domainMatch = item.domain ? item.domain.toLowerCase().includes(term) : false;
+          return titleMatch || contentMatch || authorsMatch || domainMatch;
+        });
+
+        // 3. Render Suggestions (Top 5 matches)
+        renderSuggestions(results.slice(0, 5), term);
+
+        // 4. Render Results
+        renderResults(results, term);
+      }, 250);
+    }
+
+    function renderSuggestions(results, term) {
+      suggestionsList.innerHTML = '';
+      
+      if (results.length === 0) {
+        suggestionsDropdown.classList.add('hidden');
+        return;
+      }
+
+      results.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'px-4 py-3 hover:bg-slate-800 cursor-pointer flex items-center gap-3 border-b border-slate-800/50 last:border-0 transition-colors';
+        
+        // Icon based on type
+        let iconSvg = '';
+        if(item.type === 'paper') {
+          iconSvg = `<svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>`;
+        } else {
+          iconSvg = `<svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+        }
+
+        li.innerHTML = `
+          ${iconSvg}
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-200 truncate">${highlightText(item.title, term)}</p>
+            <p class="text-xs text-slate-500 truncate">${item.type === 'paper' ? (item.authors || 'Unknown') : item.type}</p>
+          </div>
+          <svg class="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        `;
+
+        li.addEventListener('click', () => {
+          input.value = item.title;
+          suggestionsDropdown.classList.add('hidden');
+          performSearch(item.title);
+          // Optional: Redirect immediately
+          // window.location.href = item.url; 
+        });
+
+        suggestionsList.appendChild(li);
+      });
+
+      suggestionsDropdown.classList.remove('hidden');
+    }
+
+    function renderResults(results, term) {
+      container.innerHTML = '';
+      
+      // Update Count
+      countLabel.innerHTML = `Found <span class="text-amber-400 font-bold">${results.length}</span> result${results.length !== 1 ? 's' : ''}`;
+      
+      // Show/Hide Clear Filter Button
+      if (activeFilter !== 'all') {
+        clearFiltersBtn.classList.remove('hidden');
+      } else {
+        clearFiltersBtn.classList.add('hidden');
+      }
+
+      if (results.length === 0) {
+        container.appendChild(createEmptyState(`No results found for "<span class="text-slate-300 font-medium">${term}</span>" in ${activeFilter === 'all' ? 'all domains' : activeFilter}.`));
+        return;
+      }
+
+      results.forEach(item => {
+        const badge = getBadgeConfig(item.type, item.domain);
+        const card = document.createElement('a');
+        card.href = item.url;
+        card.className = 'group block bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-amber-400/50 hover:bg-slate-800/80 hover:shadow-lg hover:shadow-amber-900/10 transition-all duration-300 relative overflow-hidden';
+        
+        // Relevance Indicator (Visual only for now, based on match type)
+        // In a real algolia setup this would be a score. Here we just add a subtle gradient.
+        const relevanceGradient = item.type === 'paper' 
+          ? 'absolute top-0 right-0 w-24 h-24 bg-amber-400/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-amber-400/10 transition-colors' 
+          : '';
+
+        if (item.type === 'paper') {
+          let excerpt = (item.abstract || 'No abstract available.');
+          if (excerpt.length > 180) {
+            excerpt = excerpt.substring(0, 180).trim() + '...';
+          }
+          
+          const highlightedTitle = highlightText(item.title, term);
+          const highlightedExcerpt = highlightText(excerpt, term);
+          const highlightedAuthors = highlightText(item.authors || 'Unknown Authors', term);
+
+          card.innerHTML = `
+            ${relevanceGradient}
+            <div class="relative z-10 flex flex-col h-full justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium uppercase tracking-wide border ${badge.class}">
+                    ${badge.label}
+                  </span>
+                  <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">${item.year}</span>
+                </div>
+                
+                <h3 class="text-xl font-bold text-slate-100 mb-2 group-hover:text-amber-400 transition-colors leading-tight">
+                  ${highlightedTitle}
+                </h3>
+                
+                <div class="flex items-center gap-2 mb-4">
+                  <svg class="w-4 h-4 text-slate-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <p class="text-slate-400 text-sm font-mono truncate">
+                    ${highlightedAuthors}
+                  </p>
+                </div>
+
+                <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+                  ${highlightedExcerpt}
+                </p>
+              </div>
+
+              <div class="mt-6 pt-4 border-t border-slate-800 flex items-center text-amber-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+                <span>View Paper Details</span>
+                <svg class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+            </div>
+          `;
+        } else {
+          // Static Page Card
+          let excerpt = (item.text || '').substring(0, 160);
+          if ((item.text || '').length > 160) excerpt += '...';
+          
+          const highlightedTitle = highlightText(item.title, term);
+          const highlightedExcerpt = highlightText(excerpt, term);
+
+          card.innerHTML = `
+            ${relevanceGradient}
+            <div class="relative z-10 flex items-start justify-between mb-3">
+              <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded border ${badge.class}">
+                ${badge.label}
+              </span>
+              <svg class="w-5 h-5 text-slate-600 group-hover:text-amber-400 transition-colors transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-slate-100 mb-2 group-hover:text-amber-400 transition-colors">
+              ${highlightedTitle}
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              ${highlightedExcerpt}
+            </p>
+          `;
+        }
+        
+        container.appendChild(card);
+      });
+    }
+
+    function createEmptyState(message) {
+      const div = document.createElement('div');
+      div.className = 'text-center text-slate-500 py-16 border border-slate-800 rounded-xl bg-slate-900/30';
+      div.innerHTML = `
+        <svg class="w-16 h-16 text-slate-700 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-lg text-slate-400">${message}</p>
+        <p class="text-sm mt-2 text-slate-600">Try different keywords or clear filters.</p>
+      `;
+      return div;
+    }
+
+    function renderFilterChips() {
+      filterContainer.innerHTML = '';
+      
+      // Add "All" chip
+      const allChip = document.createElement('button');
+      allChip.textContent = 'All Domains';
+      allChip.className = `px-4 py-1.5 rounded-full text-xs font-medium border transition-all whitespace-nowrap ${
+        activeFilter === 'all' 
+          ? 'bg-amber-400 text-slate-950 border-amber-400' 
+          : 'bg-slate-900 text-slate-400 border-slate-700 hover:border-slate-500 hover:text-slate-200'
+      }`;
+      allChip.addEventListener('click', () => {
+        activeFilter = 'all';
+        renderFilterChips();
+        performSearch(input.value);
+      });
+      filterContainer.appendChild(allChip);
+
+      // Add Domain chips
+      allDomains.forEach(domain => {
+        const chip = document.createElement('button');
+        chip.textContent = domain;
+        const isActive = activeFilter.toLowerCase() === domain.toLowerCase();
+        chip.className = `px-4 py-1.5 rounded-full text-xs font-medium border transition-all whitespace-nowrap ${
+          isActive
+            ? 'bg-amber-400 text-slate-950 border-amber-400' 
+            : 'bg-slate-900 text-slate-400 border-slate-700 hover:border-slate-500 hover:text-slate-200'
+        }`;
+        chip.addEventListener('click', () => {
+          activeFilter = domain;
+          renderFilterChips();
+          performSearch(input.value);
+        });
+        filterContainer.appendChild(chip);
+      });
+    }
+
+    // --- Initialization ---
+
+    async function initSearch() {
+      try {
+        const response = await fetch('/api/catalog.json');
+        if (!response.ok) throw new Error('Failed to load catalog');
+        
+        const data = await response.json();
+        
+        const catalogItems = (data.papers || []).map(p => {
+          if (p.domain) allDomains.add(p.domain);
+          return {
+            type: 'paper',
+            id: p.id,
+            title: p.title,
+            authors: p.authors,
+            year: p.year,
+            domain: p.domain,
+            abstract: p.abstract,
+            url: `/paper/${p.id}`
+          };
+        });
+
+        searchIndex = [...catalogItems, ...staticPages];
+        searchIndex.sort((a, b) => a.title.localeCompare(b.title));
+
+        // Enable UI
+        loadingState.classList.add('hidden');
+        resultsArea.classList.remove('hidden');
+        input.disabled = false;
+        
+        // Render Filters
+        renderFilterChips();
+
+        // Check for URL params
+        const params = new URLSearchParams(window.location.search);
+        const initialQuery = params.get('q') || '';
+        
+        if (initialQuery) {
+          input.value = initialQuery;
+          performSearch(initialQuery);
+        } else {
+          // Show initial empty state
+          container.appendChild(createEmptyState('Start typing to search the library...'));
+        }
+
+      } catch (error) {
+        console.error('Search init error:', error);
+        loadingState.innerHTML = `
+          <p class="text-red-400">Failed to load search index. Please refresh.</p>
+        `;
+      }
+    }
+
+    // --- Event Listeners ---
+
+    input.addEventListener('input', (e) => {
+      performSearch(e.target.value);
+    });
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!input.contains(e.target) && !suggestionsDropdown.contains(e.target)) {
+        suggestionsDropdown.classList.add('hidden');
+      }
+    });
+
+    // Clear Filters Button
+    clearFiltersBtn.addEventListener('click', () => {
+      activeFilter = 'all';
+      renderFilterChips();
+      performSearch(input.value);
+    });
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Ctrl+K or Cmd+K
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        input.focus();
+        input.select();
+      }
+      // Slash key (if not in input)
+      if (e.key === '/' && document.activeElement !== input) {
+        e.preventDefault();
+        input.focus();
+      }
+      // Escape to close suggestions
+      if (e.key === 'Escape') {
+        suggestionsDropdown.classList.add('hidden');
+        input.blur();
+      }
+    });
+
+    initSearch();
+  </script>
+</Layout>

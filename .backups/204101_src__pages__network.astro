@@ -1,0 +1,219 @@
+---
+import Layout from '../layouts/Layout.astro';
+import catalog from '../data/catalog.json';
+
+// Helper to find a paper by ID
+const getPaper = (id: string) => catalog.papers.find((p: any) => p.id === id);
+
+// Relationship styling configuration
+const relationshipStyles: Record<string, { color: string; label: string; arrow: string }> = {
+  critique: { color: 'text-red-400', label: 'critiqued by', arrow: '←' },
+  critiqued_by: { color: 'text-red-400', label: 'critiqued by', arrow: '←' },
+  replication: { color: 'text-green-400', label: 'replicated by', arrow: '→' },
+  replicated_by: { color: 'text-green-400', label: 'replicated by', arrow: '→' },
+  extension: { color: 'text-blue-400', label: 'extended by', arrow: '→' },
+  extended_by: { color: 'text-blue-400', label: 'extended by', arrow: '→' },
+  precursor: { color: 'text-purple-400', label: 'based on', arrow: '←' },
+  based_on: { color: 'text-purple-400', label: 'based on', arrow: '←' },
+  default: { color: 'text-slate-400', label: 'related to', arrow: '↔' }
+};
+
+const getStyle = (type: string) => {
+  const key = type.toLowerCase().replace(/\s+/g, '_');
+  return relationshipStyles[key] || relationshipStyles['default'];
+};
+
+// Group papers by domain
+const domainGroups: Record<string, any[]> = {};
+catalog.papers.forEach((paper: any) => {
+  const domain = paper.psi_domain || 'Uncategorized';
+  if (!domainGroups[domain]) domainGroups[domain] = [];
+  domainGroups[domain].push(paper);
+});
+
+// Sort domains alphabetically
+const sortedDomains = Object.keys(domainGroups).sort();
+---
+
+<Layout title="Debate Network" description="Visualizing the relationships and controversies between psi research papers.">
+  <div class="max-w-5xl mx-auto px-4 py-8">
+    
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center text-sm text-slate-400 mb-6">
+      <a href="/" class="hover:text-amber-400 transition-colors">Home</a>
+      <span class="mx-2">/</span>
+      <span class="text-amber-400 font-medium">Paper Network</span>
+    </nav>
+
+    <!-- Header -->
+    <header class="mb-8 border-b border-slate-800 pb-6">
+      <h1 class="text-3xl font-bold text-slate-100 mb-2">Debate Network</h1>
+      <p class="text-slate-400 max-w-2xl">
+        Explore how papers relate to one another through critiques, replications, and extensions. 
+        Use the search below to filter by author, title, or relationship type.
+      </p>
+    </header>
+
+    <!-- Search Filter -->
+    <div class="mb-8 relative">
+      <input 
+        type="text" 
+        id="network-search"
+        placeholder="Search papers, authors, or connection types..." 
+        class="w-full bg-slate-900 border border-slate-700 rounded-lg py-3 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+      />
+      <svg class="w-5 h-5 text-slate-500 absolute right-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+      </svg>
+    </div>
+
+    <!-- Network Visualization -->
+    <div id="network-container" class="space-y-6">
+      {sortedDomains.map((domain) => (
+        <details open class="group bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden transition-all duration-300">
+          <summary class="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-800/50 transition-colors list-none">
+            <div class="flex items-center gap-3">
+              <span class="flex items-center justify-center w-8 h-8 rounded bg-slate-800 text-amber-400 font-bold text-sm">
+                {domain.charAt(0)}
+              </span>
+              <h2 class="text-lg font-semibold text-slate-200">{domain}</h2>
+              <span class="text-xs text-slate-500 bg-slate-950 px-2 py-0.5 rounded-full border border-slate-800">
+                {domainGroups[domain].length} papers
+              </span>
+            </div>
+            <svg class="w-5 h-5 text-slate-500 transform group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          
+          <div class="p-4 pt-0 space-y-4 border-t border-slate-800/50 mt-2">
+            {domainGroups[domain].map((paper: any) => {
+              const hasRelations = paper.related_papers && Object.keys(paper.related_papers).length > 0;
+              
+              return (
+                <div class="network-node bg-slate-950 border border-slate-800 rounded-lg p-4 hover:border-slate-700 transition-colors" data-search-text={`${paper.title} ${paper.author} ${domain}`.toLowerCase()}>
+                  <!-- Paper Header -->
+                  <div class="mb-3">
+                    <a href={`/paper/${paper.id}`} class="group flex items-start gap-2">
+                      <span class="text-amber-400 mt-1 opacity-70 group-hover:opacity-100">📄</span>
+                      <div>
+                        <h3 class="text-slate-200 font-medium group-hover:text-amber-400 transition-colors">
+                          {paper.title}
+                        </h3>
+                        <p class="text-sm text-slate-500">
+                          {paper.author} ({paper.year})
+                        </p>
+                      </div>
+                    </a>
+                  </div>
+
+                  <!-- Connections -->
+                  {hasRelations ? (
+                    <div class="pl-6 space-y-2 border-l-2 border-slate-800 ml-2">
+                      {Object.entries(paper.related_papers).map(([relId, type]: [string, any]) => {
+                        const target = getPaper(relId);
+                        if (!target) return null;
+                        
+                        const style = getStyle(typeof type === 'string' ? type : 'default');
+                        const statusTag = typeof type === 'object' && type.status ? `[${type.status}]` : '';
+
+                        return (
+                          <div class="text-sm flex items-start gap-2 network-connection" data-search-text={`${style.label} ${target.title}`.toLowerCase()}>
+                            <span class={`font-bold ${style.color} min-w-[1.5rem] text-right`}>
+                              {style.arrow}
+                            </span>
+                            <div class="flex-1">
+                              <span class={`${style.color} font-medium`}>{style.label}:</span>{' '}
+                              <a href={`/paper/${target.id}`} class="text-slate-300 hover:text-white hover:underline decoration-slate-600 underline-offset-2">
+                                {target.author} ({target.year})
+                              </a>
+                              {statusTag && <span class="text-slate-500 text-xs ml-1">{statusTag}</span>}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div class="pl-6 text-sm text-slate-600 italic">
+                      No recorded connections in this dataset.
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <!-- Empty State (Hidden by default) -->
+    <div id="no-results" class="hidden text-center py-12">
+      <div class="text-4xl mb-4">🔍</div>
+      <h3 class="text-xl font-medium text-slate-300">No matches found</h3>
+      <p class="text-slate-500">Try adjusting your search terms.</p>
+    </div>
+
+  </div>
+
+  <!-- Client-side Search Script -->
+  <script>
+    const searchInput = document.getElementById('network-search');
+    const networkContainer = document.getElementById('network-container');
+    const noResults = document.getElementById('no-results');
+    const detailsElements = document.querySelectorAll('details');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const term = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        let hasVisibleItems = false;
+
+        // Iterate through all domain sections
+        detailsElements.forEach((details) => {
+          const nodes = details.querySelectorAll('.network-node');
+          let domainHasVisibleNodes = false;
+
+          nodes.forEach((node) => {
+            const searchText = node.getAttribute('data-search-text') || '';
+            const connections = node.querySelectorAll('.network-connection');
+            let nodeMatches = searchText.includes(term);
+            
+            // If searching, check connections specifically too
+            if (term && !nodeMatches) {
+               connections.forEach(conn => {
+                 if (conn.getAttribute('data-search-text')?.includes(term)) {
+                   nodeMatches = true;
+                 }
+               });
+            }
+
+            if (term === '' || nodeMatches) {
+              node.classList.remove('hidden');
+              domainHasVisibleNodes = true;
+              hasVisibleItems = true;
+            } else {
+              node.classList.add('hidden');
+            }
+          });
+
+          // Hide the whole domain section if no papers match inside it
+          if (domainHasVisibleNodes) {
+            details.classList.remove('hidden');
+            // Optional: Auto-open details when searching
+            if (term !== '') details.open = true; 
+          } else {
+            details.classList.add('hidden');
+          }
+        });
+
+        // Toggle empty state
+        if (hasVisibleItems) {
+          networkContainer?.classList.remove('hidden');
+          noResults?.classList.add('hidden');
+        } else {
+          networkContainer?.classList.add('hidden');
+          noResults?.classList.remove('hidden');
+        }
+      });
+    }
+  </script>
+</Layout>

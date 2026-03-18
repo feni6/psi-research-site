@@ -1,0 +1,144 @@
+---
+import Layout from '../layouts/Layout.astro';
+import wishlist from '../data/wishlist.json';
+
+const pageTitle = "Wishlist: Wanted Papers";
+const breadcrumbs = [
+  { label: "Home", href: "/" },
+  { label: "Wishlist", href: "/wishlist" }
+];
+---
+
+<Layout title={pageTitle} breadcrumbs={breadcrumbs}>
+  <main class="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    
+    <!-- Header Section -->
+    <div class="mb-8 border-b border-slate-800 pb-6">
+      <h1 class="text-3xl font-bold text-amber-400 mb-2">Research Wishlist</h1>
+      <p class="text-slate-400 mb-4">
+        A curated list of <span class="text-white font-semibold">{wishlist.total_wanted}</span> papers currently missing from our library but critical for comprehensive research.
+      </p>
+      
+      <div class="flex flex-wrap gap-4 text-sm text-slate-500">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span>Last Updated: {wishlist.last_updated}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Filter -->
+    <div class="mb-6 relative">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg class="h-5 w-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+      </div>
+      <input 
+        type="text" 
+        id="searchInput"
+        placeholder="Filter by title, author, or reason needed..." 
+        class="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+      />
+      <div id="resultCount" class="absolute right-3 top-3 text-xs text-slate-500 hidden">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Contribution Callout -->
+    <div class="mb-8 bg-slate-900/50 border border-amber-400/20 rounded-lg p-4 flex gap-4 items-start">
+      <div class="flex-shrink-0 mt-1">
+        <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </div>
+      <div>
+        <h3 class="text-amber-400 font-semibold mb-1">Want to help?</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Do you have access to academic databases (JSTOR, PubMed, university libraries) or physical archives? 
+          If you can locate and digitize any of the papers listed below, please contact us. 
+          Your contribution helps preserve the history of psi research for future study.
+        </p>
+      </div>
+    </div>
+
+    <!-- Papers List -->
+    <div class="space-y-4" id="papersList">
+      {wishlist.papers_wanted.map((paper) => (
+        <article 
+          class="paper-card bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-amber-400/30 transition-colors group"
+          data-title={paper.title?.toLowerCase() || ""}
+          data-authors={((paper.authors || []).join(' ')).toLowerCase()}
+          data-reason={paper.why_needed?.toLowerCase() || ""}
+        >
+          <div class="flex justify-between items-start gap-4">
+            <div class="flex-1">
+              <h3 class="text-lg font-medium text-slate-200 group-hover:text-amber-400 transition-colors mb-1">
+                {paper.title || "Untitled"}
+              </h3>
+              <div class="text-sm text-slate-500 mb-3 flex flex-wrap gap-2 items-center">
+                <span class="font-mono text-amber-400/80">{paper.year}</span>
+                <span class="w-1 h-1 bg-slate-700 rounded-full"></span>
+                <span>{(paper.authors || []).join(', ')}</span>
+              </div>
+              <div class="bg-slate-950/50 rounded p-3 border-l-2 border-amber-400/50">
+                <p class="text-sm text-slate-400 italic">
+                  <span class="font-semibold text-slate-500 not-italic mr-1">Why needed:</span>
+                  {paper.why_needed}
+                </p>
+              </div>
+            </div>
+            <div class="flex-shrink-0">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                Missing
+              </span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Empty State (Hidden by default) -->
+    <div id="emptyState" class="hidden text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <h3 class="mt-2 text-sm font-medium text-slate-300">No papers found</h3>
+      <p class="mt-1 text-sm text-slate-500">Try adjusting your search terms.</p>
+    </div>
+
+  </main>
+
+  <script>
+    // Client-side search functionality
+    const searchInput = document.getElementById('searchInput');
+    const papersList = document.getElementById('papersList');
+    const paperCards = papersList.querySelectorAll('.paper-card');
+    const emptyState = document.getElementById('emptyState');
+    const resultCount = document.getElementById('resultCount');
+
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      let visibleCount = 0;
+
+      paperCards.forEach(card => {
+        const title = card.getAttribute('data-title');
+        const authors = card.getAttribute('data-authors');
+        const reason = card.getAttribute('data-reason');
+
+        if (title.includes(term) || authors.includes(term) || reason.includes(term)) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      // Toggle empty state
+      if (visibleCount === 0) {
+        papersList.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        resultCount.classList.add('hidden');
+      } else {
+        papersList.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        resultCount.textContent = `${visibleCount} results`;
+        resultCount.classList.remove('hidden');
+      }
+    });
+  </script>
+</Layout>

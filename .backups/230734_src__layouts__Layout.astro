@@ -1,0 +1,265 @@
+<!-- src/layouts/Layout.astro -->
+---
+import '../styles/global.css'
+
+interface Props {
+  title: string;
+  description?: string;
+  jsonLd?: string;
+}
+
+const { title, description = "A curated, epistemically responsible collection of 354 peer-reviewed papers on psi research", jsonLd } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+// Main Navigation Links
+const mainNavLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/catalog', label: 'Catalog' },
+  { href: '/controversies', label: 'Controversies' },
+  { href: '/paths', label: 'Reading Paths' },
+  { href: '/search', label: 'Search' },
+];
+
+// Dropdown "More" Links
+const moreNavLinks = [
+  { href: '/timeline', label: 'Timeline' },
+  { href: '/replications', label: 'Replications' },
+  { href: '/stats', label: 'Stats' },
+  { href: '/glossary', label: 'Glossary' },
+  { href: '/network', label: 'Network' },
+  { href: '/authors', label: 'Authors' },
+  { href: '/journals', label: 'Journals' },
+  { href: '/wishlist', label: 'Wishlist' },
+  { href: '/method', label: 'Methodology' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+
+function getLinkClasses(href: string): string {
+  const base = 'transition text-sm';
+  return isActive(href) ? `${base} text-amber-400 border-b-2 border-amber-400` : `${base} hover:text-amber-400`;
+}
+---
+
+<!doctype html>
+<html lang="en" class="bg-slate-950 text-slate-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | Psi Research Library</title>
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+    
+    <!-- Theme Initialization Script (Prevents FOUC) -->
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+        }
+      })();
+    </script>
+
+    <style>
+      /* Light Theme Overrides */
+      [data-theme="light"] {
+        --bg-body: #ffffff;
+        --text-body: #0f172a; /* slate-900 */
+        --bg-nav: #f8fafc; /* slate-50 */
+        --border-nav: #e2e8f0; /* slate-200 */
+        --bg-footer: #ffffff;
+        --border-footer: #e2e8f0; /* slate-200 */
+        --text-muted: #475569; /* slate-600 */
+        --text-subtle: #64748b; /* slate-500 */
+        --bg-card: #f8fafc; /* slate-50 */
+        --border-card: #e2e8f0; /* slate-200 */
+      }
+
+      /* Apply Light Theme Variables */
+      html[data-theme="light"] body {
+        background-color: var(--bg-body);
+        color: var(--text-body);
+      }
+
+      html[data-theme="light"] nav {
+        background-color: var(--bg-nav);
+        border-color: var(--border-nav);
+      }
+
+      html[data-theme="light"] footer {
+        background-color: var(--bg-footer);
+        border-color: var(--border-footer);
+      }
+
+      /* Text Color Adjustments for Light Mode */
+      html[data-theme="light"] .text-slate-100,
+      html[data-theme="light"] .text-slate-300 {
+        color: var(--text-body);
+      }
+
+      html[data-theme="light"] .text-slate-500 {
+        color: var(--text-subtle);
+      }
+
+      /* Card-like elements override (Common patterns) */
+      html[data-theme="light"] .bg-slate-900,
+      html[data-theme="light"] .bg-slate-950 {
+        background-color: var(--bg-card);
+      }
+
+      html[data-theme="light"] .border-slate-800 {
+        border-color: var(--border-card);
+      }
+      
+      /* Toggle Button Styles */
+      #theme-toggle {
+        background: transparent;
+        border: 1px solid currentColor;
+        border-radius: 9999px;
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 1.25rem;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+      #theme-toggle:hover {
+        background-color: rgba(251, 191, 36, 0.1); /* amber-400 low opacity */
+        border-color: #fbbf24;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col font-sans">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-amber-500 focus:text-slate-950 focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold">
+      Skip to main content
+    </a>
+    <nav class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <a href="/" class="text-xl font-bold text-amber-400 hover:text-amber-300 transition">Psi Research Library</a>
+        
+        <div class="flex flex-col md:flex-row items-center gap-6 w-full md:w-auto">
+          <ul class="flex flex-wrap justify-center gap-6 items-center">
+            {mainNavLinks.map((link) => (
+              <li>
+                <a href={link.href} class={getLinkClasses(link.href)}>{link.label}</a>
+              </li>
+            ))}
+            
+            <!-- More Dropdown -->
+            <li class="relative">
+              <button 
+                id="more-menu-btn" 
+                class="transition text-sm hover:text-amber-400 flex items-center gap-1 focus:outline-none"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                More <span>▾</span>
+              </button>
+              
+              <div 
+                id="more-menu-dropdown" 
+                class="hidden absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-md shadow-lg py-2 z-50"
+              >
+                {moreNavLinks.map((link) => (
+                  <a 
+                    href={link.href} 
+                    class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-amber-400 transition"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </li>
+          </ul>
+          
+          <button id="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+            <span class="block dark:hidden">🌙</span>
+            <span class="hidden dark:block">☀️</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <main id="main-content" class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
+      <slot />
+    </main>
+    <footer class="border-t border-slate-800 py-8 text-center text-slate-500 text-sm">
+      <div class="mb-6">
+        <h4 class="text-slate-300 font-semibold mb-3">Browse</h4>
+        <div class="flex justify-center gap-6 flex-wrap">
+          <a href="/search" class="hover:text-amber-400 transition">Search</a>
+          <a href="/authors" class="hover:text-amber-400 transition">Authors</a>
+          <a href="/journals" class="hover:text-amber-400 transition">Journals</a>
+          <a href="/glossary" class="hover:text-amber-400 transition">Glossary</a>
+          <a href="/network" class="hover:text-amber-400 transition">Network</a>
+          <a href="/wishlist" class="hover:text-amber-400 transition">Wishlist</a>
+        </div>
+      </div>
+      <p>&copy; {new Date().getFullYear()} Psi Research Library</p>
+    </footer>
+
+    <script>
+      // Theme Toggle Logic
+      const toggleBtn = document.getElementById('theme-toggle');
+      const html = document.documentElement;
+      const sunIcon = '☀️';
+      const moonIcon = '🌙';
+
+      function updateIcon() {
+        const isLight = html.getAttribute('data-theme') === 'light';
+        toggleBtn.textContent = isLight ? moonIcon : sunIcon;
+      }
+
+      // Initialize icon based on current state
+      updateIcon();
+
+      toggleBtn.addEventListener('click', () => {
+        const isLight = html.getAttribute('data-theme') === 'light';
+        
+        if (isLight) {
+          html.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          html.setAttribute('data-theme', 'light');
+          localStorage.setItem('theme', 'light');
+        }
+        
+        updateIcon();
+      });
+
+      // Dropdown Menu Logic
+      const moreBtn = document.getElementById('more-menu-btn');
+      const moreDropdown = document.getElementById('more-menu-dropdown');
+
+      if (moreBtn && moreDropdown) {
+        moreBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isHidden = moreDropdown.classList.contains('hidden');
+          if (isHidden) {
+            moreDropdown.classList.remove('hidden');
+            moreBtn.setAttribute('aria-expanded', 'true');
+          } else {
+            moreDropdown.classList.add('hidden');
+            moreBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!moreBtn.contains(e.target as Node) && !moreDropdown.contains(e.target as Node)) {
+            moreDropdown.classList.add('hidden');
+            moreBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

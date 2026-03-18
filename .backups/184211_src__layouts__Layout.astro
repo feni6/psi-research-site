@@ -1,0 +1,80 @@
+<!-- src/layouts/Layout.astro -->
+---
+import '../styles/global.css'
+
+interface Props {
+  title: string;
+  description?: string;
+  jsonLd?: string;
+}
+
+const { title, description = "A curated, epistemically responsible collection of 354 peer-reviewed papers on psi research", jsonLd } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/catalog', label: 'Catalog' },
+  { href: '/controversies', label: 'Controversies' },
+  { href: '/paths', label: 'Reading Paths' },
+  { href: '/timeline', label: 'Timeline' },
+  { href: '/replications', label: 'Replications' },
+  { href: '/glossary', label: 'Glossary' },
+  { href: '/network', label: 'Network' },
+  { href: '/method', label: 'Methodology' },
+  { href: '/wishlist', label: 'Wishlist' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+
+function getLinkClasses(href: string): string {
+  const base = 'transition text-sm';
+  return isActive(href) ? `${base} text-amber-400 border-b-2 border-amber-400` : `${base} hover:text-amber-400`;
+}
+---
+
+<!doctype html>
+<html lang="en" class="bg-slate-950 text-slate-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | Psi Research Library</title>
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+  </head>
+  <body class="min-h-screen flex flex-col font-sans">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-amber-500 focus:text-slate-950 focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold">
+      Skip to main content
+    </a>
+    <nav class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <a href="/" class="text-xl font-bold text-amber-400 hover:text-amber-300 transition">Psi Research Library</a>
+        <ul class="flex flex-wrap justify-center gap-6">
+          {navLinks.map((link) => (
+            <li>
+              <a href={link.href} class={getLinkClasses(link.href)}>{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+    <main id="main-content" class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
+      <slot />
+    </main>
+    <footer class="border-t border-slate-800 py-8 text-center text-slate-500 text-sm">
+      <div class="mb-6">
+        <h4 class="text-slate-300 font-semibold mb-3">Browse</h4>
+        <div class="flex justify-center gap-6">
+          <a href="/glossary" class="hover:text-amber-400 transition">Glossary</a>
+          <a href="/network" class="hover:text-amber-400 transition">Network</a>
+          <a href="/wishlist" class="hover:text-amber-400 transition">Wishlist</a>
+        </div>
+      </div>
+      <p>&copy; {new Date().getFullYear()} Psi Research Library</p>
+    </footer>
+  </body>
+</html>

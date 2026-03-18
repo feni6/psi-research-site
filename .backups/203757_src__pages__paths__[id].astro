@@ -1,0 +1,122 @@
+<!-- src/pages/paths/[id].astro -->
+---
+import Layout from '../../layouts/Layout.astro';
+import { marked } from 'marked';
+import fs from 'node:fs';
+import path from 'node:path';
+import catalog from '../../data/catalog.json';
+
+export function getStaticPaths() {
+  const dir = path.join(process.cwd(), 'src/data/reading_paths');
+  const files = fs.readdirSync(dir).filter(f => f.startsWith('path_') && f.endsWith('.md'));
+  return files.map(f => {
+    const id = f.replace('.md', '');
+    const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+    return { params: { id }, props: { content } };
+  });
+}
+
+const { id } = Astro.params;
+const { content } = Astro.props;
+
+// Extract all catalog IDs from the content (both [catalog ID: xxx] and `xxx` patterns)
+const catalogIdPattern = /\[catalog ID: ([^\]]+)\]|`([a-zA-Z0-9_-]+)`/g;
+const foundIds = new Set<string>();
+let match;
+
+while ((match = catalogIdPattern.exec(content)) !== null) {
+  const catalogId = (match[1] || match[2]).trim();
+  if (catalogId) {
+    foundIds.add(catalogId);
+  }
+}
+
+// Look up paper metadata for each ID from catalog
+const papersInPath = Array.from(foundIds)
+  .map(catalogId => {
+    const paper = catalog.papers.find((p: any) => p.id === catalogId);
+    if (paper) {
+      return {
+        id: paper.id,
+        title: paper.title,
+        year: paper.year,
+        domain: paper.domain || 'Unknown'
+      };
+    }
+    return null;
+  })
+  .filter(Boolean);
+
+const paperCount = papersInPath.length;
+
+// Replace catalog ID references with links (keep original format for display)
+const linkedContent = content.replace(
+  /\[catalog ID: ([^\]]+)\]/g,
+  (_, catalogId) => `[📄 ${catalogId}](/paper/${catalogId.trim()})`
+);
+
+const html = marked(linkedContent);
+const title = content.split('\n')[0].replace(/^#\s*/, '').trim();
+---
+
+<Layout title={title}>
+  <nav class="text-sm text-slate-500 mb-6">
+    <a href="/" class="hover:text-amber-400">Home</a>
+    <span class="mx-1 text-slate-600">/</span>
+    <a href="/paths" class="hover:text-amber-400">Reading Paths</a>
+    <span class="mx-1 text-slate-600">/</span>
+    <span class="text-slate-300">{title}</span>
+  </nav>
+
+  <!-- Progress Header -->
+  <div class="mb-6 flex items-center gap-3">
+    <div class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2">
+      <span class="text-amber-400 text-lg">📚</span>
+      <div>
+        <p class="text-sm text-slate-400">Papers in this path</p>
+        <p class="text-lg font-semibold text-slate-200">{paperCount} papers</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collapsible Papers Table -->
+  {paperCount > 0 && (
+    <details class="mb-8 bg-slate-900 border border-slate-700 rounded-lg overflow-hidden">
+      <summary class="cursor-pointer p-4 font-semibold text-amber-400 hover:text-amber-300 hover:bg-slate-800/50 transition-colors flex items-center justify-between">
+        <span>📋 Papers in this path</span>
+        <span class="text-slate-500 text-sm">Click to expand</span>
+      </summary>
+      <div class="p-4 pt-0 border-t border-slate-700">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-700">
+                <th class="text-left py-3 px-3 text-slate-400 font-medium">Year</th>
+                <th class="text-left py-3 px-3 text-slate-400 font-medium">Title</th>
+                <th class="text-left py-3 px-3 text-slate-400 font-medium">Domain</th>
+              </tr>
+            </thead>
+            <tbody>
+              {papersInPath.map((paper: any, index: number) => (
+                <tr class="border-b border-slate-800 hover:bg-slate-800/50 transition-colors">
+                  <td class="py-3 px-3 text-slate-500 whitespace-nowrap">{paper.year}</td>
+                  <td class="py-3 px-3">
+                    <a 
+                      href={`/paper/${paper.id}`} 
+                      class="text-amber-400 hover:text-amber-300 hover:underline transition-colors"
+                    >
+                      {paper.title}
+                    </a>
+                  </td>
+                  <td class="py-3 px-3 text-slate-400">{paper.domain}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  )}
+
+  <article class="prose prose-invert prose-amber max-w-4xl" set:html={html} />
+</Layout>

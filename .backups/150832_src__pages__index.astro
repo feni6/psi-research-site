@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import catalog from '../data/catalog.json';
+
+const papers = catalog.papers;
+const totalPapers = papers.length;
+const domains = [...new Set(papers.map((p: any) => p.psi_domain).filter(Boolean))];
+const journals = [...new Set(papers.map((p: any) => p.journal).filter(Boolean))];
+const skepticalCount = papers.filter((p: any) => p.folder === '10_Skeptical_and_Critical').length;
+const yearRange = {
+  min: Math.min(...papers.map((p: any) => p.year).filter(Boolean)),
+  max: Math.max(...papers.map((p: any) => p.year).filter(Boolean)),
+};
+---
+
+<Layout title="Home">
+  <!-- Hero -->
+  <section class="text-center py-16">
+    <h1 class="text-5xl font-bold text-amber-400 mb-4">Psi Research Library</h1>
+    <p class="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
+      A curated, epistemically responsible collection of {totalPapers} peer-reviewed papers on psi phenomena. 
+      Both sides of every debate. Transparent methodology. Machine-readable.
+    </p>
+    <div class="flex justify-center gap-4 flex-wrap">
+      <a href="/catalog" class="bg-amber-500 text-slate-950 px-6 py-3 rounded-lg font-semibold hover:bg-amber-400 transition">
+        Browse Catalog →
+      </a>
+      <a href="/paths" class="border border-amber-500 text-amber-400 px-6 py-3 rounded-lg font-semibold hover:bg-amber-500/10 transition">
+        Guided Reading Paths
+      </a>
+      <a href="/method" class="border border-slate-600 text-slate-300 px-6 py-3 rounded-lg font-semibold hover:bg-slate-800 transition">
+        How This Was Built
+      </a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="grid grid-cols-2 md:grid-cols-4 gap-4 py-8">
+    <div class="bg-slate-900 rounded-lg p-6 text-center border border-slate-800">
+      <div class="text-3xl font-bold text-amber-400">{totalPapers}</div>
+      <div class="text-slate-400 text-sm mt-1">Papers</div>
+    </div>
+    <div class="bg-slate-900 rounded-lg p-6 text-center border border-slate-800">
+      <div class="text-3xl font-bold text-amber-400">{journals.length}</div>
+      <div class="text-slate-400 text-sm mt-1">Journals</div>
+    </div>
+    <div class="bg-slate-900 rounded-lg p-6 text-center border border-slate-800">
+      <div class="text-3xl font-bold text-amber-400">{skepticalCount}</div>
+      <div class="text-slate-400 text-sm mt-1">Skeptical Papers</div>
+    </div>
+    <div class="bg-slate-900 rounded-lg p-6 text-center border border-slate-800">
+      <div class="text-3xl font-bold text-amber-400">{yearRange.min}–{yearRange.max}</div>
+      <div class="text-slate-400 text-sm mt-1">Year Range</div>
+    </div>
+  </section>
+
+  <!-- Domain overview -->
+  <section class="py-8">
+    <h2 class="text-2xl font-bold mb-6">Research Domains</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      {domains.sort().map((domain: string) => {
+        const count = papers.filter((p: any) => p.psi_domain === domain).length;
+        return (
+          <a href={`/catalog?domain=${domain}`} class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-500/50 transition">
+            <div class="font-semibold text-slate-200 capitalize">{domain.replace(/_/g, ' ')}</div>
+            <div class="text-amber-400 text-sm">{count} papers</div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- What makes this different -->
+  <section class="py-8">
+    <h2 class="text-2xl font-bold mb-6">What Makes This Different</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <h3 class="font-bold text-amber-400 mb-2">⚖️ Both Sides</h3>
+        <p class="text-slate-400 text-sm">14 controversy maps present papers on both sides of every major debate. This is not advocacy — it's structured evidence.</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <h3 class="font-bold text-amber-400 mb-2">🔍 Transparent Method</h3>
+        <p class="text-slate-400 text-sm">Complete documentation of how papers were selected, sourced, and processed — including known biases and limitations.</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
+        <h3 class="font-bold text-amber-400 mb-2">🤖 AI-Readable</h3>
+        <p class="text-slate-400 text-sm">Full JSON catalog with structured metadata, effect sizes, and cross-references. Designed for both human and machine navigation.</p>
+      </div>
+    </div>
+  </section>
+</Layout>

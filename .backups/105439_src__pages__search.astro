@@ -1,0 +1,204 @@
+---
+import Layout from '../layouts/Layout.astro';
+import catalog from '../data/catalog.json';
+
+// Build the search index on the server
+const searchIndex = [
+  // Papers from catalog
+  ...catalog.papers.map(p => ({ 
+    type: 'paper', 
+    id: p.id, 
+    title: p.title, 
+    text: p.abstract || '', 
+    url: `/paper/${p.id}` 
+  })),
+  
+  // Static Pages
+  { type: 'page', id: 'method', title: 'Methodology', text: 'How the library was curated and scored', url: '/method' },
+  { type: 'page', id: 'replications', title: 'Replication Map', text: 'Track replication attempts across studies', url: '/replications' },
+  { type: 'page', id: 'stats', title: 'Statistics', text: 'Aggregate methodology data and success rates', url: '/stats' },
+  { type: 'page', id: 'glossary', title: 'Glossary', text: 'Definitions of key parapsychology terms', url: '/glossary' },
+  
+  // Controversies (Placeholder structure based on prompt context)
+  // If you have a controversies.json, map it here similarly to papers
+];
+
+// Sort index alphabetically by title for consistency
+searchIndex.sort((a, b) => a.title.localeCompare(b.title));
+---
+
+<Layout title="Search Library">
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    
+    <!-- Header & Input -->
+    <div class="mb-12 text-center">
+      <h1 class="text-4xl font-bold text-slate-100 mb-4">
+        Search the <span class="text-amber-400">Archive</span>
+      </h1>
+      <p class="text-slate-400 mb-8">
+        Search across paper titles, abstracts, glossary terms, and site pages.
+      </p>
+      
+      <div class="relative max-w-2xl mx-auto">
+        <input 
+          type="text" 
+          id="search-input"
+          placeholder="Type to search..." 
+          class="w-full bg-slate-900 border border-slate-700 text-slate-100 text-lg rounded-lg px-6 py-4 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all shadow-lg placeholder-slate-500"
+          autocomplete="off"
+        />
+        <div class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Area -->
+    <div class="mb-6 flex items-center justify-between">
+      <h2 id="result-count" class="text-slate-400 font-mono text-sm"></h2>
+    </div>
+
+    <div id="results-container" class="space-y-4">
+      <!-- Results injected via JS -->
+      <div class="text-center text-slate-500 py-12" id="empty-state">
+        <p class="text-lg">Start typing to search the library...</p>
+        <p class="text-sm mt-2">Supports URL parameters (e.g., <code class="bg-slate-800 px-1 rounded">?q=telepathy</code>)</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script define:vars={{ searchIndex }}>
+    const input = document.getElementById('search-input');
+    const container = document.getElementById('results-container');
+    const emptyState = document.getElementById('empty-state');
+    const countLabel = document.getElementById('result-count');
+    
+    let debounceTimer;
+
+    // Helper to escape regex special characters
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    // Helper to highlight search terms safely
+    function highlightText(text, term) {
+      if (!term) return text;
+      const safeTerm = escapeRegExp(term);
+      const regex = new RegExp(`(${safeTerm})`, 'gi');
+      return text.replace(regex, '<mark class="bg-amber-400/20 text-amber-300 px-0.5 rounded font-medium">$1</mark>');
+    }
+
+    // Helper to get badge configuration
+    function getBadgeConfig(type) {
+      switch(type) {
+        case 'paper': 
+          return { label: '📄 Paper', class: 'bg-blue-900/30 text-blue-300 border-blue-800' };
+        case 'page': 
+          return { label: '📖 Page', class: 'bg-emerald-900/30 text-emerald-300 border-emerald-800' };
+        case 'controversy': 
+          return { label: '🔥 Controversy', class: 'bg-red-900/30 text-red-300 border-red-800' };
+        case 'glossary': 
+          return { label: '📚 Glossary', class: 'bg-purple-900/30 text-purple-300 border-purple-800' };
+        default: 
+          return { label: type, class: 'bg-slate-800 text-slate-300 border-slate-700' };
+      }
+    }
+
+    function performSearch(query) {
+      const term = query.trim().toLowerCase();
+      
+      // Clear previous timeout
+      clearTimeout(debounceTimer);
+
+      if (term.length === 0) {
+        container.innerHTML = '';
+        container.appendChild(emptyState);
+        emptyState.style.display = 'block';
+        countLabel.textContent = '';
+        return;
+      }
+
+      // Debounce logic
+      debounceTimer = setTimeout(() => {
+        // Filter logic
+        const results = searchIndex.filter(item => {
+          const titleMatch = item.title.toLowerCase().includes(term);
+          const textMatch = item.text.toLowerCase().includes(term);
+          return titleMatch || textMatch;
+        });
+
+        renderResults(results, query.trim());
+      }, 300);
+    }
+
+    function renderResults(results, term) {
+      container.innerHTML = '';
+      
+      // Update Count
+      countLabel.textContent = `Found ${results.length} result${results.length !== 1 ? 's' : ''} for '${term}'`;
+      
+      if (results.length === 0) {
+        container.innerHTML = `
+          <div class="text-center text-slate-500 py-12 border border-slate-800 rounded-lg bg-slate-900/50">
+            <p class="text-lg">No results found for "<span class="text-slate-300 font-medium">${term}</span>"</p>
+            <p class="text-sm mt-2">Try different keywords, check spelling, or remove filters.</p>
+          </div>
+        `;
+        return;
+      }
+
+      results.forEach(item => {
+        // Create excerpt (first 160 chars of text)
+        let excerpt = item.text.substring(0, 160);
+        if (item.text.length > 160) excerpt += '...';
+        
+        // Highlight terms in title and excerpt
+        const highlightedTitle = highlightText(item.title, term);
+        const highlightedExcerpt = highlightText(excerpt, term);
+        const badge = getBadgeConfig(item.type);
+
+        const card = document.createElement('a');
+        card.href = item.url;
+        card.className = 'block bg-slate-900 border border-slate-800 rounded-lg p-6 hover:border-amber-400/50 hover:bg-slate-800/50 transition-all group shadow-sm';
+        
+        card.innerHTML = `
+          <div class="flex items-start justify-between mb-3">
+            <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded border ${badge.class}">
+              ${badge.label}
+            </span>
+            <svg class="w-5 h-5 text-slate-600 group-hover:text-amber-400 transition-colors transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-slate-100 mb-2 group-hover:text-amber-400 transition-colors">
+            ${highlightedTitle}
+          </h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            ${highlightedExcerpt}
+          </p>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+
+    // Event Listener for Input
+    input.addEventListener('input', (e) => {
+      performSearch(e.target.value);
+    });
+
+    // Initialize from URL Parameters
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const initialQuery = params.get('q') || '';
+      
+      if (initialQuery) {
+        input.value = initialQuery;
+        performSearch(initialQuery);
+      }
+    });
+  </script>
+</Layout>

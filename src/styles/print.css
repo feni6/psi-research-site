@@ -1,0 +1,240 @@
+/* src/styles/print.css */
+@media print {
+  /* Page margins */
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+  
+  /* Hide navigation, footer, mobile menu */
+  nav, footer, #mobile-menu, #mobile-menu-btn { display: none !important; }
+  
+  /* Hide welcome banner */
+  #welcome-banner, .welcome-banner, [class*="welcome"] { display: none !important; }
+  
+  /* Hide theme toggle */
+  #theme-toggle, .theme-toggle, [class*="theme-toggle"] { display: none !important; }
+  
+  /* Hide "Mark as Read" buttons */
+  [class*="mark-read"], [class*="markAsRead"], .mark-read-btn, button[class*="read"] { display: none !important; }
+  
+  /* Hide "Surprise Me" button */
+  #surprise-me, .surprise-me, [class*="surprise"] { display: none !important; }
+  
+  /* Hide domain icon thumbnails */
+  .domain-icon, [class*="domain-icon"], .thumbnail, [class*="thumbnail"] { display: none !important; }
+  
+  /* Hide filter controls on catalog page */
+  #filters, .filters, [class*="filter"] { display: none !important; }
+  
+  /* Hide search inputs */
+  input[type="search"], input[type="text"][class*="search"] { display: none !important; }
+  
+  /* Remove dark background */
+  html, body { background: white !important; color: black !important; }
+  
+  /* Make text readable on paper */
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  
+  /* Paper titles - large bold text */
+  h1 {
+    font-size: 24pt !important;
+    font-weight: bold !important;
+    margin-bottom: 1rem !important;
+    page-break-after: avoid !important;
+  }
+  
+  h2 {
+    font-size: 18pt !important;
+    font-weight: bold !important;
+    margin-top: 1.5rem !important;
+    page-break-after: avoid !important;
+  }
+  
+  h3 {
+    font-size: 14pt !important;
+    font-weight: bold !important;
+    page-break-after: avoid !important;
+  }
+  
+  /* Abstracts - left border */
+  .abstract, [class*="abstract"], #abstract, .paper-abstract {
+    border-left: 2px solid black !important;
+    padding-left: 1rem !important;
+    margin: 1rem 0 !important;
+    font-style: italic !important;
+  }
+  
+  /* Ensure links are visible */
+  a {
+    color: #333 !important;
+    text-decoration: underline !important;
+  }
+  
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+    word-break: break-all;
+  }
+  
+  a[href^="/"]::after {
+    content: none;
+  }
+  
+  /* Cards/sections lose their dark styling */
+  [class*="bg-slate"], [class*="bg-gray"], [class*="bg-zinc"] {
+    background: white !important;
+    border-color: #ccc !important;
+  }
+  
+  [class*="text-slate"], [class*="text-amber"], [class*="text-gray"] {
+    color: #333 !important;
+  }
+  
+  /* Methodology data - clean table format */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 1rem 0 !important;
+    page-break-inside: avoid !important;
+  }
+  
+  th, td {
+    border: 1px solid #000 !important;
+    padding: 0.5rem !important;
+    text-align: left !important;
+  }
+  
+  th {
+    background: #f0f0f0 !important;
+    font-weight: bold !important;
+  }
+  
+  tr {
+    page-break-inside: avoid !important;
+  }
+  
+  /* Reading paths - numbered paper cards */
+  .reading-path-card, [class*="reading-path"], .path-card {
+    border: 1px solid #000 !important;
+    padding: 1rem !important;
+    margin: 0.5rem 0 !important;
+    page-break-inside: avoid !important;
+    counter-increment: paper-counter;
+  }
+  
+  .reading-path-card::before, [class*="reading-path"]::before, .path-card::before {
+    content: counter(paper-counter) ". ";
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  
+  /* Reset counter for each reading path section */
+  .reading-path-section, [class*="reading-path-section"] {
+    counter-reset: paper-counter;
+  }
+  
+  /* Paper page specific */
+  .prose {
+    max-width: 100% !important;
+  }
+  
+  /* Paper cards on catalog */
+  .paper-card, [class*="paper-card"] {
+    border: 1px solid #ccc !important;
+    padding: 1rem !important;
+    margin: 0.5rem 0 !important;
+    page-break-inside: avoid !important;
+  }
+  
+  /* No page breaks inside cards */
+  article, section {
+    page-break-inside: avoid !important;
+  }
+  
+  /* Prevent orphans and widows */
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  /* Ensure images print properly */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid !important;
+  }
+  
+  /* Hide decorative elements */
+  .decorative, [class*="decorative"], .icon-only, [aria-hidden="true"] {
+    display: none !important;
+  }
+  
+  /* Timeline specific */
+  .timeline-entry, [class*="timeline"] {
+    border-left: 2px solid #000 !important;
+    padding-left: 1rem !important;
+    margin: 1rem 0 !important;
+  }
+  
+  /* Controversy sections */
+  .controversy-section, [class*="controversy"] {
+    page-break-inside: avoid !important;
+    margin: 1.5rem 0 !important;
+  }
+  
+  /* Metadata sections */
+  .metadata, [class*="meta"], .paper-meta {
+    font-size: 10pt !important;
+    color: #555 !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Tags and categories */
+  .tag, [class*="tag"], .category {
+    display: inline-block !important;
+    border: 1px solid #000 !important;
+    padding: 0.2rem 0.5rem !important;
+    margin: 0.2rem !important;
+    font-size: 9pt !important;
+  }
+  
+  /* Citation info */
+  .citation, [class*="citation"] {
+    font-style: italic !important;
+    margin: 1rem 0 !important;
+    padding: 0.5rem !important;
+    border: 1px solid #ccc !important;
+  }
+  
+  /* Print-specific page breaks */
+  .page-break-before {
+    page-break-before: always !important;
+  }
+  
+  .page-break-after {
+    page-break-after: always !important;
+  }
+  
+  /* Hide print-specific elements on screen */
+  .print-only {
+    display: none !important;
+  }
+}
+
+/* Show print-only elements when printing */
+@media print {
+  .print-only {
+    display: block !important;
+  }
+  
+  /* Hide screen-only elements */
+  .screen-only, [class*="screen-only"] {
+    display: none !important;
+  }
+}

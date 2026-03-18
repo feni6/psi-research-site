@@ -1,0 +1,480 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import wishlistData from '../data/wishlist.json';
+
+const pageTitle = "Wishlist: Wanted Papers";
+
+// --- Helpers ---
+
+function categorizePaper(whyNeeded: string | undefined): string {
+  const text = (whyNeeded || "").toLowerCase();
+  if (text.includes("skeptic") || text.includes("critical")) return "Skeptical/Critical";
+  if (text.includes("replicat")) return "Replications";
+  if (text.includes("meta")) return "Meta-Analyses";
+  if (text.includes("method")) return "Methodology";
+  return "General";
+}
+
+function getPriorityClasses(priority: string): string {
+  const p = (priority || "low").toLowerCase();
+  if (p === "high") return "bg-red-500/10 text-red-400 border-red-500/20";
+  if (p === "medium") return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+  return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+}
+
+function getPriorityBadgeClasses(priority: string): string {
+  const p = (priority || "low").toLowerCase();
+  if (p === "high") return "bg-red-500 text-white";
+  if (p === "medium") return "bg-amber-500 text-slate-900";
+  return "bg-emerald-500 text-slate-900";
+}
+
+// --- Data Processing ---
+
+const allPapers = (wishlistData.papers_wanted || []);
+
+// Calculate Progress
+const acquiredPapers = allPapers.filter(p => p.status === "acquired");
+const wantedPapers = allPapers.filter(p => p.status !== "acquired");
+const totalPapers = allPapers.length;
+const progressPercent = totalPapers > 0 ? Math.round((acquiredPapers.length / totalPapers) * 100) : 0;
+
+// Process Wanted Papers
+const processedPapers = wantedPapers.map(paper => ({
+  ...paper,
+  category: categorizePaper(paper.why_needed),
+  priorityClass: getPriorityClasses(paper.priority),
+  badgeClass: getPriorityBadgeClasses(paper.priority),
+  priorityLabel: (paper.priority || "Low").toUpperCase()
+}));
+
+// Sort by Priority (High first) then Year (Newest first)
+processedPapers.sort((a, b) => {
+  const pA = (a.priority || "low").toLowerCase();
+  const pB = (b.priority || "low").toLowerCase();
+  const priorityWeight = { "high": 3, "medium": 2, "low": 1 };
+  
+  if (priorityWeight[pA] !== priorityWeight[pB]) {
+    return priorityWeight[pB] - priorityWeight[pA];
+  }
+  return (b.year || 0) - (a.year || 0);
+});
+
+// "Most Wanted": Top 24 High Priority Papers
+const mostWanted = processedPapers
+  .filter(p => (p.priority || "low").toLowerCase() === "high")
+  .slice(0, 24);
+
+// Calculate category counts
+const categoryCounts: Record<string, number> = {};
+processedPapers.forEach(p => {
+  categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1;
+});
+const categories = Object.keys(categoryCounts).sort();
+
+// Counts for tabs
+const highPriorityCount = processedPapers.filter(p => (p.priority || "low").toLowerCase() === "high").length;
+const mediumPriorityCount = processedPapers.filter(p => (p.priority || "low").toLowerCase() === "medium").length;
+const lowPriorityCount = processedPapers.length - highPriorityCount - mediumPriorityCount;
+
+---
+
+<Layout title={pageTitle}>
+  <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    
+    <!-- Header & Progress -->
+    <div class="mb-10">
+      <Breadcrumb items={[
+        { label: "Home", href: "/" },
+        { label: "Wishlist", href: "/wishlist" }
+      ]} />
+      
+      <div class="mt-6 flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-slate-800 pb-8">
+        <div class="max-w-3xl">
+          <h1 class="text-3xl md:text-4xl font-bold text-amber-400 mb-3">Research Wishlist</h1>
+          <p class="text-slate-400 text-lg leading-relaxed">
+            A curated list of <span class="text-white font-semibold">{wantedPapers.length}</span> papers currently missing from our library. 
+            These documents are critical for filling gaps in the historical record of psi research.
+          </p>
+        </div>
+        
+        <!-- Progress Card -->
+        <div class="w-full lg:w-72 bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-lg">
+          <div class="flex justify-between items-end mb-2">
+            <span class="text-sm font-medium text-slate-400">Acquisition Progress</span>
+            <span class="text-2xl font-mono font-bold text-amber-400">{progressPercent}%</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+            <div class="bg-gradient-to-r from-amber-600 to-amber-400 h-2.5 rounded-full transition-all duration-1000" style={`width: ${progressPercent}%`}></div>
+          </div>
+          <div class="flex justify-between mt-2 text-xs text-slate-500 font-mono">
+            <span>{acquiredPapers.length} Acquired</span>
+            <span>{totalPapers} Total</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Banner -->
+    <div class="mb-10 bg-gradient-to-r from-slate-900 to-slate-900/50 border border-amber-500/30 rounded-xl p-6 flex flex-col md:flex-row gap-6 items-start shadow-lg relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
+      
+      <div class="flex-shrink-0 p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
+        <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </div>
+      <div class="flex-1 z-10">
+        <h3 class="text-xl font-bold text-amber-400 mb-2">Help us find these papers</h3>
+        <p class="text-slate-300 leading-relaxed mb-4">
+          Do you have access to academic databases (JSTOR, PubMed, university libraries) or physical archives? 
+          If you can locate and digitize any of the papers listed below, your contribution helps preserve the history of psi research.
+        </p>
+        <a href="/contact" class="inline-flex items-center text-sm font-semibold text-slate-900 bg-amber-400 hover:bg-amber-300 px-4 py-2 rounded-lg transition-colors">
+          Contact Us About a Paper
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- MOST WANTED SECTION (Always Visible) -->
+    {mostWanted.length > 0 && (
+      <div class="mb-12">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="h-px flex-1 bg-slate-800"></div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            <h2 class="text-xl font-bold text-slate-200">Most Wanted (High Priority)</h2>
+          </div>
+          <div class="h-px flex-1 bg-slate-800"></div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {mostWanted.map(paper => (
+            <div class="group relative bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-red-500/40 hover:bg-slate-800/50 transition-all duration-300 flex flex-col h-full">
+              <div class="flex justify-between items-start mb-3">
+                <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year || "N/A"}</span>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500 text-white border border-red-400 shadow-sm shadow-red-900/20">HIGH PRIORITY</span>
+              </div>
+              <h3 class="text-slate-200 font-medium mb-2 group-hover:text-amber-400 transition-colors line-clamp-2 flex-grow">{paper.title}</h3>
+              <p class="text-xs text-slate-500 mb-3 line-clamp-1">{(paper.authors || []).join(', ')}</p>
+              <div class="mt-auto pt-3 border-t border-slate-800/50">
+                <p class="text-xs text-slate-400 line-clamp-3 italic">
+                  "{paper.why_needed}"
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- CONTROLS: Tabs & Search -->
+    <div class="sticky top-4 z-20 bg-slate-950/95 backdrop-blur-md border border-slate-800 rounded-xl p-4 mb-8 shadow-2xl">
+      
+      <!-- Priority Tabs -->
+      <div class="flex flex-wrap gap-2 mb-4 border-b border-slate-800 pb-4">
+        <button 
+          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-amber-400/10 border border-amber-400/50 text-amber-400"
+          data-priority="all"
+        >
+          All Papers <span class="text-slate-500 ml-1">({processedPapers.length})</span>
+        </button>
+        <button 
+          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-900 border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200"
+          data-priority="high"
+        >
+          High Priority <span class="text-slate-500 ml-1">({highPriorityCount})</span>
+        </button>
+        <button 
+          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-900 border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200"
+          data-priority="medium"
+        >
+          Medium Priority <span class="text-slate-500 ml-1">({mediumPriorityCount})</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-4">
+        <!-- Category Scrollable Tabs -->
+        <div class="flex-1 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+          <div class="flex gap-2 min-w-max" id="categoryFilters">
+            <button 
+              class="category-tab px-3 py-1.5 rounded-full text-xs font-medium border transition-all bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
+              data-category="all"
+            >
+              All Categories
+            </button>
+            {categories.map(cat => (
+              <button 
+                class="category-tab px-3 py-1.5 rounded-full text-xs font-medium border transition-all bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200"
+                data-category={cat}
+              >
+                {cat} <span class="opacity-60 ml-1">({categoryCounts[cat]})</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Search Input -->
+        <div class="w-full md:w-80 relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+          <input 
+            type="text" 
+            id="searchInput"
+            placeholder="Search title, author, reason..." 
+            class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all text-sm"
+          />
+          <div id="resultCount" class="absolute right-3 top-2.5 text-xs text-slate-500 font-mono hidden">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHOW ALL TOGGLE -->
+    <div id="showAllContainer" class="text-center mb-8">
+      <p class="text-slate-400 mb-4">
+        Showing top priorities above. The complete catalog contains {processedPapers.length} entries.
+      </p>
+      <button 
+        id="showAllBtn"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-amber-400 font-semibold rounded-lg border border-slate-700 hover:border-amber-400/50 transition-all shadow-lg hover:shadow-amber-900/20"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        Show Complete Catalog
+      </button>
+    </div>
+
+    <!-- FULL LIST CONTAINER (Hidden by default) -->
+    <div id="fullListContainer" class="hidden space-y-3">
+      
+      <!-- List Header (Desktop) -->
+      <div class="hidden md:grid grid-cols-12 gap-4 px-4 py-3 bg-slate-900/30 border-y border-slate-800 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <div class="col-span-1">Year</div>
+        <div class="col-span-1">Pri</div>
+        <div class="col-span-4">Title</div>
+        <div class="col-span-3">Authors</div>
+        <div class="col-span-3">Why Needed</div>
+      </div>
+
+      <!-- Papers List -->
+      <div id="papersList" class="space-y-3">
+        {processedPapers.map((paper) => (
+          <article 
+            class="paper-row group relative bg-slate-900/40 border border-slate-800 rounded-lg p-4 hover:border-amber-400/30 hover:bg-slate-800/60 transition-all"
+            data-category={paper.category}
+            data-priority={(paper.priority || "low").toLowerCase()}
+            data-title={(paper.title || "").toLowerCase()}
+            data-authors={((paper.authors || []) as string[]).join(' ').toLowerCase()}
+            data-reason={(paper.why_needed || "").toLowerCase()}
+          >
+            <!-- Mobile Layout (Stacked) -->
+            <div class="md:hidden space-y-3">
+              <div class="flex justify-between items-start">
+                <div class="flex gap-2">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono bg-slate-800 text-amber-400/80 border border-slate-700">
+                    {paper.year || "N/A"}
+                  </span>
+                  <span class={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold border uppercase ${paper.priorityClass}`}>
+                    {paper.priorityLabel}
+                  </span>
+                </div>
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700">
+                  {paper.category}
+                </span>
+              </div>
+              
+              <h3 class="text-base font-medium text-slate-200 group-hover:text-amber-400 transition-colors">
+                {paper.title || "Untitled"}
+              </h3>
+              
+              <div class="text-sm text-slate-500">
+                {(paper.authors || []).join(', ')}
+              </div>
+              
+              <div class="text-sm text-slate-400 bg-slate-950/50 p-3 rounded border-l-2 border-amber-400/30">
+                <span class="font-semibold text-slate-500 block text-xs uppercase mb-1">Why needed:</span>
+                {paper.why_needed || "No reason provided"}
+              </div>
+            </div>
+
+            <!-- Desktop Layout (Table-like Grid) -->
+            <div class="hidden md:grid grid-cols-12 gap-4 items-center">
+              <div class="col-span-1 text-sm font-mono text-amber-400/80">
+                {paper.year || "N/A"}
+              </div>
+              <div class="col-span-1">
+                <span class={`inline-block px-2 py-0.5 rounded text-[10px] font-bold border uppercase w-full text-center ${paper.priorityClass}`}>
+                  {paper.priorityLabel}
+                </span>
+              </div>
+              <div class="col-span-4">
+                <h3 class="text-sm font-medium text-slate-200 group-hover:text-amber-400 transition-colors line-clamp-2">
+                  {paper.title || "Untitled"}
+                </h3>
+              </div>
+              <div class="col-span-3 text-sm text-slate-400 truncate" title={(paper.authors || []).join(', ')}>
+                {(paper.authors || []).join(', ')}
+              </div>
+              <div class="col-span-3 text-sm text-slate-400 line-clamp-2" title={paper.why_needed}>
+                {paper.why_needed || "No reason provided"}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Empty State (Hidden by default) -->
+      <div id="emptyState" class="hidden text-center py-12">
+        <svg class="mx-auto h-12 w-12 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <h3 class="mt-2 text-sm font-medium text-slate-300">No papers found</h3>
+        <p class="mt-1 text-sm text-slate-500">Try adjusting your search terms or category filter.</p>
+        <button 
+          id="resetFilters"
+          class="mt-4 text-amber-400 hover:text-amber-300 text-sm font-medium underline underline-offset-4"
+        >
+          Clear all filters
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Client-side filtering functionality
+    const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+    const papersList = document.getElementById('papersList');
+    const paperRows = papersList?.querySelectorAll('.paper-row') || [];
+    const emptyState = document.getElementById('emptyState');
+    const resultCount = document.getElementById('resultCount');
+    
+    // Tabs
+    const priorityButtons = document.querySelectorAll('.priority-tab');
+    const categoryButtons = document.querySelectorAll('.category-tab');
+    
+    // Show All Logic
+    const showAllBtn = document.getElementById('showAllBtn');
+    const showAllContainer = document.getElementById('showAllContainer');
+    const fullListContainer = document.getElementById('fullListContainer');
+
+    let activePriority = 'all';
+    let activeCategory = 'all';
+    let searchTerm = '';
+
+    function updateTabStyles(buttons: NodeListOf<Element>, activeValue: string, dataAttr: string) {
+      buttons.forEach(btn => {
+        const val = btn.getAttribute(dataAttr);
+        if (val === activeValue) {
+          btn.classList.remove('bg-slate-900', 'border-slate-700', 'text-slate-400', 'bg-slate-800', 'border-slate-600', 'text-slate-300');
+          btn.classList.add('bg-amber-400/10', 'border-amber-400/50', 'text-amber-400');
+        } else {
+          btn.classList.add('bg-slate-900', 'border-slate-700', 'text-slate-400');
+          btn.classList.remove('bg-amber-400/10', 'border-amber-400/50', 'text-amber-400', 'bg-slate-800', 'border-slate-600', 'text-slate-300');
+        }
+      });
+    }
+
+    function filterPapers() {
+      let visibleCount = 0;
+
+      paperRows.forEach(row => {
+        const rowCategory = row.getAttribute('data-category');
+        const rowPriority = row.getAttribute('data-priority');
+        const title = row.getAttribute('data-title') || '';
+        const authors = row.getAttribute('data-authors') || '';
+        const reason = row.getAttribute('data-reason') || '';
+
+        const matchesPriority = activePriority === 'all' || rowPriority === activePriority;
+        const matchesCategory = activeCategory === 'all' || rowCategory === activeCategory;
+        const matchesSearch = title.includes(searchTerm) || authors.includes(searchTerm) || reason.includes(searchTerm);
+
+        if (matchesPriority && matchesCategory && matchesSearch) {
+          row.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          row.classList.add('hidden');
+        }
+      });
+
+      // Toggle empty state
+      if (visibleCount === 0) {
+        papersList?.classList.add('hidden');
+        emptyState?.classList.remove('hidden');
+        resultCount?.classList.add('hidden');
+      } else {
+        papersList?.classList.remove('hidden');
+        emptyState?.classList.add('hidden');
+        if (resultCount) {
+          resultCount.textContent = `${visibleCount} results`;
+          resultCount.classList.remove('hidden');
+        }
+      }
+    }
+
+    // Priority Tab Handlers
+    priorityButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        activePriority = btn.getAttribute('data-priority') || 'all';
+        updateTabStyles(priorityButtons, activePriority, 'data-priority');
+        filterPapers();
+      });
+    });
+
+    // Category Tab Handlers
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeCategory = btn.getAttribute('data-category') || 'all';
+        // Visual update for category tabs is slightly different (rounded pills)
+        categoryButtons.forEach(b => {
+            b.classList.remove('bg-slate-800', 'border-slate-600', 'text-slate-300');
+            b.classList.add('bg-slate-900', 'border-slate-700', 'text-slate-400');
+        });
+        btn.classList.remove('bg-slate-900', 'border-slate-700', 'text-slate-400');
+        btn.classList.add('bg-slate-800', 'border-slate-600', 'text-slate-300');
+        
+        filterPapers();
+      });
+    });
+
+    // Search Input Handler
+    searchInput?.addEventListener('input', (e) => {
+      searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+      filterPapers();
+    });
+
+    // Reset Handler
+    document.getElementById('resetFilters')?.addEventListener('click', () => {
+      activePriority = 'all';
+      activeCategory = 'all';
+      searchTerm = '';
+      if (searchInput) searchInput.value = '';
+      
+      // Reset UI
+      updateTabStyles(priorityButtons, 'all', 'data-priority');
+      categoryButtons.forEach(b => {
+        if (b.getAttribute('data-category') === 'all') {
+            b.classList.remove('bg-slate-900', 'border-slate-700', 'text-slate-400');
+            b.classList.add('bg-slate-800', 'border-slate-600', 'text-slate-300');
+        } else {
+            b.classList.add('bg-slate-900', 'border-slate-700', 'text-slate-400');
+            b.classList.remove('bg-slate-800', 'border-slate-600', 'text-slate-300');
+        }
+      });
+      
+      filterPapers();
+    });
+
+    // Show All Toggle
+    showAllBtn?.addEventListener('click', () => {
+      if (fullListContainer) {
+        fullListContainer.classList.remove('hidden');
+        // Scroll to list smoothly
+        fullListContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Hide the button container
+        if (showAllContainer) showAllContainer.classList.add('hidden');
+      }
+    });
+
+  </script>
+</Layout>

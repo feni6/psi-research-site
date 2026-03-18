@@ -1,0 +1,324 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+
+const terms = [
+  { 
+    term: "Ganzfeld", 
+    definition: "A sensory deprivation protocol used in telepathy experiments. The receiver relaxes in a mild sensory isolation environment while a sender attempts to transmit an image or video clip.",
+    link: { href: "/controversies/01_ganzfeld_telepathy", text: "Ganzfeld Telepathy", category: "Protocols" }
+  },
+  { 
+    term: "Effect Size", 
+    definition: "A quantitative measure of the magnitude of an experimental effect. Common metrics include Cohen's d, Hedges' g, and correlation coefficient r. Larger values indicate stronger effects.",
+    link: { href: "/stats", text: "Statistics", category: "Statistics" }
+  },
+  { 
+    term: "Pre-registration", 
+    definition: "The practice of publicly registering hypotheses, methods, and analysis plans before data collection begins. Prevents post-hoc hypothesis revision (HARKing) and p-hacking.",
+    link: { href: "/stats", text: "Methodology", category: "Methodology" }
+  },
+  { 
+    term: "Meta-analysis", 
+    definition: "A statistical technique that combines results from multiple studies to estimate an overall effect size. Addresses the 'file drawer problem' by aggregating evidence across experiments.",
+    link: { href: "/controversies/10_meta_debate", text: "Meta-Analysis Debate", category: "Statistics" }
+  },
+  { 
+    term: "Bayes Factor", 
+    definition: "A ratio expressing how much more likely the observed data is under one hypothesis versus another. BF &gt; 3 is considered moderate evidence; BF &gt; 10 is strong evidence.",
+    link: { href: "/stats", text: "Statistics", category: "Statistics" }
+  },
+  { 
+    term: "RNG (Random Number Generator)", 
+    definition: "A device that produces random sequences, used in psychokinesis (PK) experiments. Participants attempt to mentally influence the output toward a target value.",
+    link: { href: "/domain/psychokinesis", text: "Psychokinesis", category: "Equipment" }
+  },
+  { 
+    term: "Presentiment", 
+    definition: "The hypothesized ability of the body to anticipate future emotional events before they occur, measured via physiological responses like skin conductance or pupil dilation.",
+    link: { href: "/controversies/03_presentiment", text: "Presentiment", category: "Phenomena" }
+  },
+  { 
+    term: "DMILS", 
+    definition: "Direct Mental Interaction with Living Systems. Experiments testing whether one person's intention can influence another person's physiology at a distance.",
+    link: { href: "/domain/telepathy", text: "Telepathy", category: "Protocols" }
+  },
+  { 
+    term: "Remote Viewing", 
+    definition: "A protocol where a 'viewer' attempts to describe a distant or hidden target location using only mental impressions. Originally studied under the US government's STAR GATE program.",
+    link: { href: "/domain/remote_viewing", text: "Remote Viewing", category: "Protocols" }
+  },
+  { 
+    term: "Psi", 
+    definition: "An umbrella term for anomalous mental phenomena including telepathy, clairvoyance, precognition, and psychokinesis. From the Greek letter ψ (psi).",
+    link: { href: "/about", text: "About Psi", category: "General" }
+  },
+  { 
+    term: "File Drawer Problem", 
+    definition: "The bias introduced when studies with null results go unpublished ('filed away'), making the published literature appear more supportive of an effect than the full evidence warrants.",
+    link: { href: "/method", text: "Methodology", category: "Methodology" }
+  },
+  { 
+    term: "Double-Blind", 
+    definition: "An experimental design where neither the participant nor the experimenter knows the condition assignment during data collection. Prevents unconscious bias from influencing results.",
+    link: { href: "/stats", text: "Statistics", category: "Methodology" }
+  },
+  { 
+    term: "Replication", 
+    definition: "An attempt to reproduce the findings of an earlier study using the same or similar methods. Successful replications strengthen confidence; failures weaken it.",
+    link: { href: "/replications", text: "Replications", category: "Methodology" }
+  },
+  { 
+    term: "NDE (Near-Death Experience)", 
+    definition: "Experiences reported by people who have been close to death, often including out-of-body perceptions, tunnel vision, and encounters with deceased persons.",
+    link: { href: "/domain/nde", text: "NDE Research", category: "Phenomena" }
+  },
+  { 
+    term: "OBE (Out-of-Body Experience)", 
+    definition: "The sensation of perceiving the world from a vantage point outside one's physical body. Sometimes reported during NDEs or induced through specific meditation practices.",
+    link: { href: "/domain/nde", text: "NDE Research", category: "Phenomena" }
+  },
+];
+
+// Sort terms alphabetically
+const sortedTerms = terms.sort((a, b) => a.term.localeCompare(b.term));
+
+// Generate unique first letters for jump links
+const availableLetters = [...new Set(sortedTerms.map(t => t.term.charAt(0).toUpperCase()))].sort();
+const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+// Helper to create URL-safe IDs
+const slugify = (text: string) => {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+};
+---
+
+<Layout title="Glossary">
+  <div class="max-w-6xl mx-auto px-4 py-12 min-h-screen">
+    
+    <!-- Header Section -->
+    <div class="mb-12 text-center">
+      <Breadcrumb 
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Glossary", href: "/glossary" }
+        ]} 
+      />
+      
+      <h1 class="text-5xl font-bold text-amber-400 mb-4 tracking-tight">Research Glossary</h1>
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-8">
+        A comprehensive reference of key terms, protocols, and statistical concepts used throughout the Psi Research Library.
+      </p>
+      
+      <!-- Search & Controls -->
+      <div class="flex flex-col md:flex-row items-center justify-center gap-6 mb-8">
+        <div class="relative w-full max-w-lg group">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-slate-500 group-focus-within:text-amber-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <input 
+            type="text" 
+            id="search-input"
+            placeholder="Search terms, definitions, or categories..." 
+            class="w-full bg-slate-900/50 border border-slate-700 text-slate-200 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all shadow-lg backdrop-blur-sm"
+            autocomplete="off"
+          />
+        </div>
+        
+        <div class="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-lg px-4 py-2 shadow-sm">
+          <span class="text-2xl font-bold text-amber-400 font-mono" id="term-count">{terms.length}</span>
+          <span class="text-slate-500 text-sm font-medium uppercase tracking-wider">Terms Defined</span>
+        </div>
+      </div>
+
+      <!-- Alphabetical Jump Bar -->
+      <div class="flex flex-wrap justify-center gap-1 sm:gap-2 p-4 bg-slate-900/30 rounded-2xl border border-slate-800/50 backdrop-blur-sm max-w-4xl mx-auto">
+        {allLetters.map((letter) => {
+          const isActive = availableLetters.includes(letter);
+          return (
+            <a 
+              href={isActive ? `#letter-${letter}` : undefined}
+              class={`
+                w-9 h-9 flex items-center justify-center rounded-lg font-mono text-sm font-bold transition-all duration-200
+                ${isActive 
+                  ? 'text-slate-300 hover:text-amber-400 hover:bg-slate-800 hover:scale-110 cursor-pointer shadow-sm' 
+                  : 'text-slate-700 cursor-default opacity-50'}
+              `}
+            >
+              {letter}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Glossary Content -->
+    <div class="space-y-16" id="glossary-list">
+      {availableLetters.map((letter) => (
+        <div class="scroll-mt-32" id={`letter-${letter}`}>
+          <!-- Section Header -->
+          <div class="flex items-center gap-4 mb-8 border-b border-slate-800 pb-2">
+            <span class="text-5xl font-serif text-slate-800 italic font-bold select-none">{letter}</span>
+            <div class="h-px bg-slate-800 flex-grow"></div>
+          </div>
+          
+          <!-- Cards Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sortedTerms.filter(t => t.term.startsWith(letter)).map((item) => {
+              const id = slugify(item.term);
+              return (
+                <div 
+                  class="glossary-item group relative bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-900/10 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full"
+                  data-search={`${item.term} ${item.definition} ${item.link.category}`.toLowerCase()}
+                >
+                  <!-- Anchor Target for direct linking -->
+                  <div id={id} class="absolute -top-32"></div>
+                  
+                  <!-- Card Header -->
+                  <div class="flex justify-between items-start gap-3 mb-3">
+                    <h3 class="text-xl font-bold text-amber-400 group-hover:text-amber-300 transition-colors leading-tight">
+                      {item.term}
+                    </h3>
+                    <a 
+                      href={`#${id}`} 
+                      class="opacity-0 group-hover:opacity-100 text-slate-600 hover:text-amber-400 transition-all text-lg font-mono"
+                      title="Copy link to this term"
+                    >
+                      #
+                    </a>
+                  </div>
+                  
+                  <!-- Category Badge (Visual Grouping) -->
+                  {item.link.category && (
+                    <span class="inline-block text-[10px] uppercase tracking-wider font-bold text-slate-500 bg-slate-950 border border-slate-800 rounded px-2 py-0.5 mb-3 w-fit">
+                      {item.link.category}
+                    </span>
+                  )}
+                  
+                  <!-- Definition -->
+                  <p class="text-slate-300 text-sm leading-relaxed mb-6 flex-grow">
+                    {item.definition}
+                  </p>
+                  
+                  <!-- Footer / Link -->
+                  {item.link && (
+                    <div class="mt-auto pt-4 border-t border-slate-800/50">
+                      <a 
+                        href={item.link.href} 
+                        class="inline-flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-amber-400 transition-colors group/link"
+                      >
+                        <span>Related:</span>
+                        <span class="underline decoration-slate-700 group-hover/link:decoration-amber-400/50 underline-offset-4">
+                          {item.link.text}
+                        </span>
+                        <svg class="w-3 h-3 opacity-0 group-hover/link:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- No Results State -->
+    <div id="no-results" class="hidden flex-col items-center justify-center py-24 text-center">
+      <div class="w-20 h-20 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center mb-6 shadow-inner">
+        <svg class="w-10 h-10 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+      <h3 class="text-xl font-bold text-slate-300 mb-2">No terms found</h3>
+      <p class="text-slate-500 max-w-md mb-6">
+        We couldn't find any definitions matching "<span id="search-query-display" class="text-amber-400 font-mono"></span>". Try adjusting your search terms.
+      </p>
+      <button 
+        onclick="document.getElementById('search-input').value = ''; document.getElementById('search-input').dispatchEvent(new Event('input'));"
+        class="px-6 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-sm font-medium transition-colors border border-slate-700"
+      >
+        Clear Search
+      </button>
+    </div>
+
+    <!-- Footer Action -->
+    <div class="mt-24 pt-12 border-t border-slate-800 text-center">
+      <p class="text-slate-500 mb-4">Missing a key concept?</p>
+      <a 
+        href="/wishlist" 
+        class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 font-medium transition-colors border-b border-amber-400/30 hover:border-amber-400 pb-0.5"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+        </svg>
+        Suggest a term for the glossary
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('search-input');
+    const glossaryItems = document.querySelectorAll('.glossary-item');
+    const letterSections = document.querySelectorAll('#glossary-list > div');
+    const noResults = document.getElementById('no-results');
+    const countDisplay = document.getElementById('term-count');
+    const searchQueryDisplay = document.getElementById('search-query-display');
+    const totalCount = glossaryItems.length;
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      let visibleCount = 0;
+      let hasAnyResults = false;
+
+      // Update query display in no-results message
+      searchQueryDisplay.textContent = query;
+
+      // 1. Filter individual cards
+      glossaryItems.forEach(item => {
+        const content = item.getAttribute('data-search');
+        const matches = content.includes(query);
+        
+        if (matches) {
+          item.classList.remove('hidden');
+          visibleCount++;
+          hasAnyResults = true;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      // 2. Update Count
+      countDisplay.textContent = visibleCount;
+
+      // 3. Hide/Show Letter Sections & Headers
+      letterSections.forEach(section => {
+        const visibleItemsInSection = section.querySelectorAll('.glossary-item:not(.hidden)');
+        const header = section.querySelector('div'); // The letter header div
+        
+        if (visibleItemsInSection.length === 0) {
+          section.classList.add('hidden');
+        } else {
+          section.classList.remove('hidden');
+          if(header) header.classList.remove('hidden');
+        }
+      });
+
+      // 4. Toggle no results message
+      if (hasAnyResults) {
+        noResults.classList.add('hidden');
+        noResults.classList.remove('flex');
+        document.getElementById('glossary-list').classList.remove('hidden');
+      } else {
+        noResults.classList.remove('hidden');
+        noResults.classList.add('flex');
+        document.getElementById('glossary-list').classList.add('hidden');
+      }
+    });
+  </script>
+</Layout>

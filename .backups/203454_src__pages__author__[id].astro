@@ -1,0 +1,350 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import Breadcrumb from '../../components/Breadcrumb.astro'
+import catalog from '../../data/catalog.json'
+
+// Helper functions for ID generation (must be duplicated for getStaticPaths scope)
+function _generateAuthorId(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[ ,.]+/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_|_$/g, '')
+}
+
+function _normalizeAuthorName(name: string): string {
+  return name.trim().replace(/\s+/g, ' ')
+}
+
+export async function getStaticPaths() {
+  // Define helpers inside getStaticPaths as required by Astro
+  const generateId = (name: string): string => {
+    return name.toLowerCase().replace(/[ ,.]+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
+  }
+  const normalizeName = (name: string): string => {
+    return name.trim().replace(/\s+/g, ' ')
+  }
+
+  const authorSet = new Set<string>()
+  
+  for (const paper of catalog.papers) {
+    if (paper.authors && Array.isArray(paper.authors)) {
+      for (const author of paper.authors) {
+        const normalized = normalizeName(author)
+        if (normalized) {
+          authorSet.add(normalized)
+        }
+      }
+    }
+  }
+  
+  const paths = Array.from(authorSet).map(authorName => {
+    const id = generateId(authorName)
+    return {
+      params: { id },
+      props: { authorName }
+    }
+  })
+  
+  return paths
+}
+
+const { authorName } = Astro.props
+const authorId = _generateAuthorId(authorName)
+
+// --- Data Processing ---
+
+// 1. Get Papers
+const authorPapers = catalog.papers
+  .filter(paper => 
+    paper.authors && 
+    paper.authors.some(author => _normalizeAuthorName(author) === authorName)
+  )
+  .sort((a, b) => b.year - a.year) // Sort by year, newest first
+
+// 2. Basic Stats
+const totalPapers = authorPapers.length
+const years = authorPapers.map(p => p.year).sort((a, b) => a - b)
+const yearRange = years.length > 0 ? `${years[0]} - ${years[years.length - 1]}` : 'N/A'
+const uniqueYears = [...new Set(years)]
+const journals = [...new Set(authorPapers.map(p => p.journal).filter(Boolean))]
+
+// 3. Domain Analysis
+const domainCounts: Record<string, number> = {}
+authorPapers.forEach(p => {
+  if (p.psi_domain) {
+    domainCounts[p.psi_domain] = (domainCounts[p.psi_domain] || 0) + 1
+  }
+})
+
+const sortedDomains = Object.entries(domainCounts).sort((a, b) => b[1] - a[1])
+const primaryDomain = sortedDomains.length > 0 ? sortedDomains[0][0] : 'General'
+
+// 4. Co-Authors
+const coAuthorMap = new Map<string, number>()
+authorPapers.forEach(paper => {
+  paper.authors?.forEach(author => {
+    const normalized = _normalizeAuthorName(author)
+    if (normalized && normalized !== authorName) {
+      coAuthorMap.set(normalized, (coAuthorMap.get(normalized) || 0) + 1)
+    }
+  })
+})
+const coAuthors = Array.from(coAuthorMap.entries())
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 10) // Top 10
+
+// --- Helpers for UI ---
+
+const domainColors: Record<string, string> = {
+  telepathy: 'bg-purple-900/40 text-purple-300 border-purple-700/50',
+  precognition: 'bg-blue-900/40 text-blue-300 border-blue-700/50',
+  psychokinesis: 'bg-red-900/40 text-red-300 border-red-700/50',
+  clairvoyance: 'bg-green-900/40 text-green-300 border-green-700/50',
+  mediumship: 'bg-amber-900/40 text-amber-300 border-amber-700/50',
+  healing: 'bg-teal-900/40 text-teal-300 border-teal-700/50',
+  near_death: 'bg-indigo-900/40 text-indigo-300 border-indigo-700/50',
+  reincarnation: 'bg-pink-900/40 text-pink-300 border-pink-700/50',
+}
+
+const getDomainColor = (domain: string) => {
+  return domainColors[domain] || 'bg-slate-800 text-slate-300 border-slate-600'
+}
+
+const getMethodologyStatus = (paper: any) => {
+  const hasBlinding = paper.blinding === true || paper.blinding === 'Yes'
+  const hasPreReg = paper.pre_registration === true || paper.pre_registration === 'Yes'
+  
+  if (hasBlinding && hasPreReg) return { color: 'bg-emerald-500', label: 'High Rigor' }
+  if (hasBlinding || hasPreReg) return { color: 'bg-amber-500', label: 'Moderate' }
+  return { color: 'bg-rose-500', label: 'Low Rigor' }
+}
+---
+
+<Layout title={`${authorName} - Author Profile`} description={`Research papers and contributions by ${authorName}`}>
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    
+    <!-- Breadcrumb -->
+    <Breadcrumb items={[
+      { label: "Home", href: "/" },
+      { label: "Authors", href: "/authors" },
+      { label: authorName }
+    ]} />
+
+    <!-- 1. Author Profile Header Card -->
+    <div class="mt-8 mb-10 bg-slate-900/50 border border-slate-800 rounded-xl p-6 md:p-8 backdrop-blur-sm">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold text-amber-400 mb-2">{authorName}</h1>
+          <div class="flex items-center gap-2 text-slate-400">
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-xs font-mono border border-slate-700">ID: {authorId}</span>
+            {primaryDomain && (
+              <span class={`px-2 py-0.5 rounded text-xs font-medium border ${getDomainColor(primaryDomain)}`}>
+                Primary: {primaryDomain}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <!-- Quick Stats Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full md:w-auto">
+          <div class="bg-slate-950/50 p-3 rounded-lg border border-slate-800 text-center">
+            <div class="text-2xl font-bold text-slate-200">{totalPapers}</div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider">Papers</div>
+          </div>
+          <div class="bg-slate-950/50 p-3 rounded-lg border border-slate-800 text-center">
+            <div class="text-2xl font-bold text-slate-200">{yearRange.split(' - ')[0]}</div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider">Start Year</div>
+          </div>
+          <div class="bg-slate-950/50 p-3 rounded-lg border border-slate-800 text-center">
+            <div class="text-2xl font-bold text-slate-200">{journals.length}</div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider">Journals</div>
+          </div>
+          <div class="bg-slate-950/50 p-3 rounded-lg border border-slate-800 text-center">
+            <div class="text-2xl font-bold text-slate-200">{coAuthors.length}</div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider">Collaborators</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Publication Timeline Visualization -->
+    <div class="mb-10 bg-slate-900 border border-slate-800 rounded-xl p-6">
+      <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">Publication Timeline</h3>
+      <div class="relative w-full h-12 flex items-center">
+        <!-- Background Line -->
+        <div class="absolute left-0 right-0 h-1 bg-slate-800 rounded-full"></div>
+        
+        <!-- Dots -->
+        <div class="relative w-full flex justify-between px-1">
+          {uniqueYears.map((year, index) => {
+            const count = years.filter(y => y === year).length
+            const isRecent = year > 2015
+            return (
+              <div class="group relative flex flex-col items-center" style={{ width: `${100 / uniqueYears.length}%` }}>
+                <div class={`w-3 h-3 rounded-full border-2 border-slate-900 z-10 transition-transform group-hover:scale-150 ${isRecent ? 'bg-amber-500' : 'bg-slate-600'}`}></div>
+                <div class="absolute -bottom-6 text-[10px] text-slate-500 font-mono opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  {year} ({count})
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Main Content: Paper List -->
+      <div class="lg:col-span-2 space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-semibold text-slate-200 flex items-center gap-2">
+            <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            Publications
+          </h2>
+          <span class="text-sm text-slate-500">Sorted by Year (Newest First)</span>
+        </div>
+
+        <div class="space-y-4">
+          {authorPapers.map((paper) => {
+            const methodStatus = getMethodologyStatus(paper)
+            return (
+              <article class="group bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-amber-700/50 hover:bg-slate-900/80 transition-all duration-300 shadow-sm hover:shadow-md">
+                <div class="flex items-start gap-4">
+                  <!-- Methodology Indicator -->
+                  <div class="flex-shrink-0 mt-1" title={`Methodology: ${methodStatus.label}`}>
+                    <div class={`w-3 h-3 rounded-full ${methodStatus.color} ring-2 ring-slate-900`}></div>
+                  </div>
+
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-start justify-between gap-4">
+                      <a 
+                        href={`/paper/${paper.id}`}
+                        class="text-lg font-medium text-slate-200 group-hover:text-amber-400 transition-colors line-clamp-2"
+                      >
+                        {paper.title}
+                      </a>
+                      <div class="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                         <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="mt-2 flex flex-wrap items-center gap-y-2 gap-x-4 text-sm">
+                      <span class="font-mono text-slate-500">{paper.year}</span>
+                      <span class="text-slate-600">•</span>
+                      <span class="text-slate-400 italic truncate max-w-[200px]">{paper.journal}</span>
+                      
+                      {paper.psi_domain && (
+                        <>
+                          <span class="text-slate-600">•</span>
+                          <span class={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${getDomainColor(paper.psi_domain)}`}>
+                            {paper.psi_domain}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            )
+          })}
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        
+        <!-- 5. Domains Breakdown (Visual Bars) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <h3 class="text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+            </svg>
+            Domain Distribution
+          </h3>
+          <div class="space-y-3">
+            {sortedDomains.map(([domain, count]) => {
+              const percentage = Math.round((count / totalPapers) * 100)
+              // Extract bg color class for the bar
+              const colorClass = getDomainColor(domain).split(' ')[0] 
+              
+              return (
+                <div>
+                  <div class="flex justify-between text-xs mb-1">
+                    <span class="text-slate-300 capitalize">{domain}</span>
+                    <span class="text-slate-500">{count} ({percentage}%)</span>
+                  </div>
+                  <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div 
+                      class={`h-full rounded-full ${colorClass.replace('/40', '')} opacity-80`} 
+                      style={{ width: `${percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        <!-- 4. Co-Authors Network -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <h3 class="text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Frequent Collaborators
+          </h3>
+          {coAuthors.length > 0 ? (
+            <ul class="space-y-3">
+              {coAuthors.map(([coAuthor, count]) => {
+                const coAuthorId = _generateAuthorId(coAuthor)
+                return (
+                  <li class="flex items-center justify-between group">
+                    <a 
+                      href={`/author/${coAuthorId}`}
+                      class="text-sm text-slate-300 hover:text-amber-400 transition-colors truncate pr-2"
+                      title={coAuthor}
+                    >
+                      {coAuthor}
+                    </a>
+                    <span class="flex-shrink-0 px-2 py-0.5 text-xs font-medium bg-slate-800 text-slate-400 rounded border border-slate-700 group-hover:border-amber-700/50 group-hover:text-amber-400 transition-colors">
+                      {count}
+                    </span>
+                  </li>
+                )
+              })}
+            </ul>
+          ) : (
+            <p class="text-sm text-slate-500 italic">No co-authors recorded in this dataset.</p>
+          )}
+        </div>
+
+        <!-- Journals List (Condensed) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <h3 class="text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>
+            Publication Venues
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {journals.slice(0, 15).map(journal => (
+              <span class="px-2 py-1 text-xs bg-slate-950 text-slate-400 rounded border border-slate-800 hover:border-slate-600 transition-colors">
+                {journal}
+              </span>
+            ))}
+            {journals.length > 15 && (
+              <span class="px-2 py-1 text-xs text-slate-500">+{journals.length - 15} more</span>
+            )}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</Layout>

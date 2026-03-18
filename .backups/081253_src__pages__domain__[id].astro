@@ -1,0 +1,192 @@
+---
+// src/pages/domain/[id].astro
+import Layout from '../../layouts/Layout.astro';
+import catalog from '../../data/catalog.json';
+
+export function getStaticPaths() {
+  const domains = [...new Set(catalog.papers.map((p: any) => p.psi_domain).filter(Boolean))];
+  return domains.map(domain => ({
+    params: { id: domain },
+    props: { domain },
+  }));
+}
+
+const { domain } = Astro.props;
+
+// Filter and sort papers (newest first)
+const papers = catalog.papers
+  .filter((p: any) => p.psi_domain === domain)
+  .sort((a: any, b: any) => (b.year || 0) - (a.year || 0));
+
+// Domain Labels
+const domainLabels: Record<string, string> = {
+  methodology: 'Methodology & Theory',
+  telepathy: 'Telepathy',
+  psychokinesis: 'Psychokinesis & Mind-Matter Interaction',
+  nde: 'Near-Death Experiences & OBEs',
+  skeptical: 'Skeptical & Critical',
+  precognition: 'Precognition',
+  healing: 'Healing & Distant Intention',
+  overview: 'Overviews & Books',
+  remote_viewing: 'Remote Viewing',
+  mediumship: 'Mediumship & Survival',
+  nonverbal: 'Nonverbal Communication',
+  meta_analysis: 'Meta-Analyses',
+};
+
+// Domain Descriptions
+const domainDescriptions: Record<string, string> = {
+  methodology: "Papers examining research methods, statistical approaches, and theoretical frameworks in psi research.",
+  telepathy: "Studies testing mind-to-mind communication, including Ganzfeld, DMILS, and staring detection experiments.",
+  psychokinesis: "Research on mental influence over physical systems, from random number generators to double-slit experiments.",
+  nde: "Near-death and out-of-body experience studies exploring consciousness at the boundaries of life.",
+  skeptical: "Critical analyses, failed replications, and methodological critiques of psi research claims.",
+  precognition: "Experiments testing the ability to predict or sense future events before they occur.",
+  healing: "Studies on distant healing, prayer, and intention-based therapeutic interventions.",
+  overview: "Comprehensive reviews, books, and survey articles covering multiple areas of psi research.",
+  remote_viewing: "Research on perceiving distant locations using mental impressions, including STAR GATE program studies.",
+  mediumship: "Studies testing whether mediums can access information about deceased persons under controlled conditions.",
+  nonverbal: "Research on anomalous communication in autism and nonverbal populations.",
+  meta_analysis: "Statistical meta-analyses aggregating results across multiple psi experiments.",
+};
+
+const title = domainLabels[domain] || domain.replace(/_/g, ' ');
+const description = domainDescriptions[domain] || "Research papers and studies in this domain.";
+
+// Calculate Stats
+const years = papers.map((p: any) => p.year).filter(Boolean);
+const minYear = years.length ? Math.min(...years) : 'N/A';
+const maxYear = years.length ? Math.max(...years) : 'N/A';
+
+const preRegisteredCount = papers.filter((p: any) => p.pre_registered === true).length;
+const preRegRate = papers.length > 0 ? Math.round((preRegisteredCount / papers.length) * 100) : 0;
+
+const skepticalCount = papers.filter((p: any) => 
+  p.stance === 'skeptical' || p.stance === 'critical' || p.tags?.includes('skeptical')
+).length;
+---
+
+<Layout title={`${title} - Psi Research Library`} description={description}>
+  <main class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+      <!-- Breadcrumb -->
+      <nav class="mb-6 text-sm">
+        <ol class="flex items-center space-x-2 text-slate-400">
+          <li><a href="/" class="hover:text-amber-400 transition-colors">Home</a></li>
+          <li>/</li>
+          <li><a href="/catalog" class="hover:text-amber-400 transition-colors">Domains</a></li>
+          <li>/</li>
+          <li class="text-amber-400">{title}</li>
+        </ol>
+      </nav>
+
+      <!-- Header Section -->
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold text-amber-400 mb-3">{title}</h1>
+        <p class="text-slate-300 text-lg mb-6 max-w-4xl leading-relaxed">
+          {description}
+        </p>
+
+        <!-- Summary Stats Box -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-900 border border-slate-800 rounded-lg p-4 mb-8">
+          <!-- Paper Count -->
+          <div class="flex flex-col">
+            <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Total Papers</span>
+            <span class="text-2xl font-bold text-slate-100">{papers.length}</span>
+          </div>
+          
+          <!-- Year Range -->
+          <div class="flex flex-col">
+            <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Year Range</span>
+            <span class="text-2xl font-bold text-slate-100">{minYear}–{maxYear}</span>
+          </div>
+
+          <!-- Pre-registration Rate -->
+          <div class="flex flex-col">
+            <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Pre-Registered</span>
+            <div class="flex items-baseline gap-1">
+              <span class="text-2xl font-bold text-slate-100">{preRegRate}%</span>
+              <span class="text-xs text-slate-500">({preRegisteredCount})</span>
+            </div>
+          </div>
+
+          <!-- Skeptical Papers -->
+          <div class="flex flex-col">
+            <span class="text-xs uppercase tracking-wider text-slate-500 font-semibold mb-1">Skeptical/Critical</span>
+            <span class="text-2xl font-bold text-slate-100">{skepticalCount}</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Papers List -->
+      <div class="space-y-4">
+        {papers.map((paper: any) => (
+          <article class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-amber-400/50 transition-colors group">
+            <div class="flex flex-col gap-3">
+              <!-- Title & Link -->
+              <h2 class="text-lg font-semibold">
+                <a 
+                  href={`/paper/${paper.id}`} 
+                  class="text-slate-100 hover:text-amber-400 transition-colors inline-block pr-4"
+                >
+                  {paper.title}
+                  <span class="inline-block ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-amber-400">→</span>
+                </a>
+              </h2>
+
+              <!-- Meta Info -->
+              <div class="flex flex-wrap items-center gap-3 text-sm text-slate-400">
+                <span class="text-slate-300">{paper.authors}</span>
+                <span class="text-slate-600">•</span>
+                <span>{paper.year}</span>
+                {paper.journal && (
+                  <>
+                    <span class="text-slate-600">•</span>
+                    <span class="italic">{paper.journal}</span>
+                  </>
+                )}
+                {paper.pre_registered && (
+                  <>
+                    <span class="text-slate-600">•</span>
+                    <span class="px-1.5 py-0.5 bg-emerald-900/30 text-emerald-400 border border-emerald-800/50 rounded text-xs font-medium">Pre-registered</span>
+                  </>
+                )}
+              </div>
+
+              <!-- Abstract Excerpt -->
+              {paper.abstract && (
+                <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+                  {paper.abstract.length > 300 
+                    ? paper.abstract.substring(0, 300) + '...' 
+                    : paper.abstract}
+                </p>
+              )}
+
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-2 pt-2">
+                {paper.tags?.slice(0, 5).map((tag: string) => (
+                  <span class="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded border border-slate-700">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Back Link -->
+      <div class="mt-8 pt-6 border-t border-slate-800">
+        <a 
+          href="/catalog" 
+          class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Domains
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>

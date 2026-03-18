@@ -67,7 +67,7 @@
       `radin_2006_reexamining` | Radin's point-by-point rebuttal of the Bosch et al. (2006) PK meta-analysis. Argues that the publication-bias critique does not hold up.
 
 14. **Cardena (2018)** -- *The Experimental Evidence for Parapsychological Phenomena: A Review*
-     `cardeña_2018_experimental` | End with the comprehensive review in *American Psychologist*. After reading every critique, see whether the overall case still stands.
+     `cardena_2018_experimental` | End with the comprehensive review in *American Psychologist*. After reading every critique, see whether the overall case still stands.
 
 ---
 

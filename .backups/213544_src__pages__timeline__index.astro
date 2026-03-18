@@ -1,0 +1,114 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+// Read all era markdown files
+const timelineDir = join(process.cwd(), 'src/data/timeline');
+const eraFiles = readdirSync(timelineDir).filter(f => f.endsWith('.md') && f.startsWith('era_'));
+
+const eras = eraFiles.map((file) => {
+  const filePath = join(timelineDir, file);
+  const content = readFileSync(filePath, 'utf-8');
+  
+  // Extract first non-heading paragraph (skip frontmatter, headings, empty lines)
+  const lines = content.split('\n');
+  let description = '';
+  let inFrontmatter = false;
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    
+    // Track frontmatter
+    if (trimmed === '---') {
+      inFrontmatter = !inFrontmatter;
+      continue;
+    }
+    
+    // Skip if in frontmatter
+    if (inFrontmatter) continue;
+    
+    // Skip empty lines and headings
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    
+    // Found first paragraph
+    description = trimmed;
+    break;
+  }
+  
+  // Count paper references: [catalog ID: xxx] or backtick-wrapped IDs
+  const catalogMatches = content.match(/\[catalog ID: [a-z0-9_]+\]/gi) || [];
+  const backtickMatches = content.match(/`[a-z0-9_]+`/gi) || [];
+  const paperCount = catalogMatches.length + backtickMatches.length;
+  
+  // Extract ID from filename
+  const id = file.replace('.md', '');
+  
+  // Try to extract title from first heading
+  const titleMatch = content.match(/^#\s+(.+)$/m);
+  let title = titleMatch ? titleMatch[1] : id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  
+  // Try to extract years from content
+  const yearsMatch = content.match(/(\d{4}[–-]\d{4}|\d{4}[–-]present)/i);
+  const years = yearsMatch ? yearsMatch[1] : '';
+  
+  // Color mapping based on era
+  const colorMap: Record<string, string> = {
+    'era_1_pre_modern': 'text-purple-400',
+    'era_2_rhine': 'text-blue-400',
+    'era_3_ganzfeld': 'text-cyan-400',
+    'era_4_stargate': 'text-green-400',
+    'era_5_modern': 'text-amber-400',
+    'era_6_current': 'text-red-400',
+  };
+  
+  return {
+    id,
+    title,
+    years,
+    desc: description,
+    paperCount,
+    color: colorMap[id] || 'text-slate-400',
+  };
+});
+
+// Sort eras by ID to maintain chronological order
+eras.sort((a, b) => a.id.localeCompare(b.id));
+---
+
+<Layout title="Timeline">
+  <!-- Breadcrumb -->
+  <nav class="mb-6">
+    <ol class="flex items-center gap-2 text-sm text-slate-500">
+      <li><a href="/" class="hover:text-amber-400 transition">Home</a></li>
+      <li>/</li>
+      <li class="text-slate-300">Timeline</li>
+    </ol>
+  </nav>
+  
+  <h1 class="text-3xl font-bold mb-2">Historical Timeline</h1>
+  <p class="text-slate-400 mb-8">Six eras of psi research, from Victorian séance investigations to modern pre-registered experiments.</p>
+  
+  <div class="relative">
+    <div class="absolute left-8 top-0 bottom-0 w-px bg-slate-700"></div>
+    <div class="space-y-8">
+      {eras.map((era) => (
+        <a href={`/timeline/${era.id}`} class="block relative pl-20 group">
+          <div class="absolute left-6 top-3 w-4 h-4 rounded-full bg-slate-800 border-2 border-amber-500 group-hover:bg-amber-500 transition"></div>
+          <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 group-hover:border-amber-500/30 transition">
+            <div class="flex items-baseline gap-3 mb-2 flex-wrap">
+              <span class={`font-mono text-sm ${era.color}`}>{era.years}</span>
+              <h3 class="text-xl font-bold text-slate-200">{era.title}</h3>
+              {era.paperCount > 0 && (
+                <span class="ml-auto text-xs bg-slate-800 text-amber-400 px-2 py-1 rounded-full border border-amber-500/20">
+                  {era.paperCount} paper{era.paperCount !== 1 ? 's' : ''} mentioned
+                </span>
+              )}
+            </div>
+            <p class="text-slate-400">{era.desc}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>

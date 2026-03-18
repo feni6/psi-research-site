@@ -1,0 +1,224 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const dir = path.join(process.cwd(), 'src/data/reading_paths');
+const files = fs.readdirSync(dir).filter(f => f.startsWith('path_') && f.endsWith('.md'));
+
+// Map filenames to audience labels and icons
+const pathMetadata = {
+  'path_1_steelman_psi': {
+    audience: 'For those who want the strongest case',
+    icon: '💪'
+  },
+  'path_2_weak_spots': {
+    audience: 'For skeptics and critical thinkers',
+    icon: '🔍'
+  },
+  'path_3_newcomer_survey': {
+    audience: 'For anyone new to psi research',
+    icon: '🗺️'
+  },
+  'path_4_deep_dive_remote_viewing': {
+    audience: 'For remote viewing specialists',
+    icon: '👁️'
+  },
+  'path_5_deep_dive_psychokinesis': {
+    audience: 'For psychokinesis researchers',
+    icon: '🎲'
+  },
+  'path_6_deep_dive_ndes_consciousness': {
+    audience: 'For NDE & consciousness researchers',
+    icon: '✨'
+  }
+};
+
+const paths = files.map(f => {
+  const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+  const id = f.replace('.md', '');
+  const lines = content.split('\n');
+  
+  // Extract title from first # heading
+  const titleLine = lines.find(l => l.startsWith('# '));
+  const title = titleLine?.replace(/^#\s*/, '').trim() || 'Untitled Path';
+  
+  // Extract description from first non-heading, non-empty paragraph
+  let desc = '';
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('---')) {
+      // Remove bold prefix like "**Description:**" if present
+      desc = trimmed.replace(/^\*\*.*?\*\*:?\s*/, '').trim();
+      break;
+    }
+  }
+  
+  // Count paper references
+  const paperCount = (content.match(/\[catalog ID:/g) || []).length;
+  
+  // Estimate reading time (5 min per paper + 2 min intro per path)
+  const readingTime = Math.max(5, paperCount * 5 + 2);
+  const readingTimeLabel = readingTime >= 60 
+    ? `~${Math.round(readingTime / 60)} hr read` 
+    : `~${readingTime} min read`;
+  
+  // Get metadata from filename mapping, with fallbacks
+  const meta = pathMetadata[id] || {
+    audience: 'All readers',
+    icon: '📚'
+  };
+  
+  // Extract sort number from filename
+  const num = f.match(/path_(\d+)/)?.[1] || '0';
+  
+  return { id, title, desc, paperCount, readingTimeLabel, audience: meta.audience, icon: meta.icon, num };
+}).sort((a, b) => parseInt(a.num) - parseInt(b.num));
+
+// Split into two groups
+const perspectivePaths = paths.filter(p => parseInt(p.num) <= 3);
+const deepDivePaths = paths.filter(p => parseInt(p.num) > 3);
+---
+
+<Layout title="Reading Paths">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Hero Section -->
+    <header class="mb-16 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full mb-6">
+        <span class="text-amber-400 text-sm font-medium">Curated Journeys</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-6 text-slate-100">
+        Reading Paths
+      </h1>
+      <p class="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+        Reading paths are curated journeys through the research. Each one is designed for a specific reader — whether you're a skeptic wanting the strongest case, a newcomer seeking orientation, or a researcher diving deep into a specific domain.
+      </p>
+    </header>
+  
+    <!-- Choose Your Perspective Section -->
+    <section class="mb-16">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="h-px flex-1 bg-slate-800"></div>
+        <h2 class="text-2xl font-bold text-slate-200">Choose Your Perspective</h2>
+        <div class="h-px flex-1 bg-slate-800"></div>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {perspectivePaths.map((p) => {
+          const isRecommended = p.id === 'path_3_newcomer_survey';
+          return (
+            <a 
+              href={`/paths/${p.id}`} 
+              class={`
+                group relative flex flex-col h-full 
+                bg-slate-900 border rounded-xl p-6 
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-900/10
+                ${isRecommended 
+                  ? 'border-amber-500/50 ring-1 ring-amber-500/20 bg-slate-900/80' 
+                  : 'border-slate-800 hover:border-amber-500/30'}
+              `}
+            >
+              {isRecommended && (
+                <div class="absolute -top-3 right-4 px-3 py-1 bg-amber-500 text-slate-950 text-xs font-bold rounded-full shadow-lg">
+                  Recommended Start
+                </div>
+              )}
+
+              <div class="text-5xl mb-5 transform group-hover:scale-110 transition-transform duration-300">
+                {p.icon}
+              </div>
+              
+              <h3 class="text-xl font-bold text-slate-100 mb-2 group-hover:text-amber-400 transition-colors">
+                {p.title}
+              </h3>
+              
+              <p class="text-amber-400/80 text-sm font-medium mb-4">
+                {p.audience}
+              </p>
+              
+              <p class="text-slate-400 text-sm leading-relaxed line-clamp-2 mb-6 flex-grow">
+                {p.desc}
+              </p>
+              
+              <div class="mt-auto pt-4 border-t border-slate-800/50">
+                <div class="flex items-center justify-between text-xs font-medium text-slate-500 mb-4">
+                  <span class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    {p.paperCount} papers
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    {p.readingTimeLabel}
+                  </span>
+                </div>
+                
+                <div class="flex items-center gap-2 text-amber-400 font-medium text-sm group-hover:gap-3 transition-all">
+                  <span>Start Reading</span>
+                  <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Deep Dives Section -->
+    <section>
+      <div class="flex items-center gap-3 mb-8">
+        <div class="h-px flex-1 bg-slate-800"></div>
+        <h2 class="text-2xl font-bold text-slate-200">Deep Dives</h2>
+        <div class="h-px flex-1 bg-slate-800"></div>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {deepDivePaths.map((p) => (
+          <a 
+            href={`/paths/${p.id}`} 
+            class="
+              group relative flex flex-col h-full 
+              bg-slate-900 border border-slate-800 rounded-xl p-6 
+              transition-all duration-300 ease-out
+              hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-900/10 hover:border-amber-500/30
+            "
+          >
+            <div class="text-5xl mb-5 transform group-hover:scale-110 transition-transform duration-300">
+              {p.icon}
+            </div>
+            
+            <h3 class="text-xl font-bold text-slate-100 mb-2 group-hover:text-amber-400 transition-colors">
+              {p.title}
+            </h3>
+            
+            <p class="text-amber-400/80 text-sm font-medium mb-4">
+              {p.audience}
+            </p>
+            
+            <p class="text-slate-400 text-sm leading-relaxed line-clamp-2 mb-6 flex-grow">
+              {p.desc}
+            </p>
+            
+            <div class="mt-auto pt-4 border-t border-slate-800/50">
+              <div class="flex items-center justify-between text-xs font-medium text-slate-500 mb-4">
+                <span class="flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                  {p.paperCount} papers
+                </span>
+                <span class="flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  {p.readingTimeLabel}
+                </span>
+              </div>
+              
+              <div class="flex items-center gap-2 text-amber-400 font-medium text-sm group-hover:gap-3 transition-all">
+                <span>Start Reading</span>
+                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,558 @@
+---
+import Layout from '../layouts/Layout.astro';
+import catalog from '../data/catalog.json';
+
+const papers = catalog.papers.sort((a: any, b: any) => (b.year || 0) - (a.year || 0));
+const domains = [...new Set(papers.map((p: any) => p.psi_domain).filter(Boolean))].sort();
+const folders = [...new Set(papers.map((p: any) => p.folder).filter(Boolean))].sort();
+
+// Get year range for filters
+const years = papers.map((p: any) => p.year).filter(Boolean);
+const minYear = Math.min(...years);
+const maxYear = Math.max(...years);
+
+// Helper to format folder names
+function formatFolder(folder: string): string {
+  return folder.replace(/^\d+_/, '').replace(/_/g, ' ');
+}
+
+// Helper to compute pre-registration status
+function getPreRegStatus(paper: any): string {
+  const prereg = paper.methodology?.pre_registration ?? paper.methodology?.pre_registered;
+  if (prereg === null || prereg === undefined) return 'unknown';
+  if (typeof prereg === 'boolean') return prereg ? 'true' : 'false';
+  if (typeof prereg === 'string') {
+    const lower = prereg.toLowerCase();
+    if (lower === 'yes' || lower === 'true') return 'true';
+    if (lower === 'no' || lower === 'false') return 'false';
+  }
+  return 'unknown';
+}
+
+// Helper to compute blinding status
+function getBlindingStatus(paper: any): string {
+  const blinding = paper.methodology?.blinding;
+  if (!blinding) return 'unknown';
+  const lower = blinding.toLowerCase();
+  if (lower.includes('double')) return 'double';
+  if (lower.includes('single')) return 'single';
+  if (lower.includes('none') || lower.includes('not') || lower.includes('open')) return 'none';
+  return 'unknown';
+}
+
+// Helper to compute DOI status
+function getDoiStatus(paper: any): string {
+  return paper.doi ? 'yes' : 'no';
+}
+
+// Helper to format authors
+function formatAuthors(authors: string[]): string {
+  if (!authors || authors.length === 0) return 'Unknown Author';
+  if (authors.length === 1) return authors[0];
+  if (authors.length === 2) return authors.join(' & ');
+  return `${authors[0]} et al.`;
+}
+
+// Helper to compute epistemic status (Quality Indicator)
+function getEpistemicStatus(paper: any): { label: string; color: string; title: string } {
+  const prereg = getPreRegStatus(paper);
+  const blinding = getBlindingStatus(paper);
+  
+  // Logic: Green if BOTH, Amber if ONE, Red if NEITHER
+  const hasPrereg = prereg === 'true';
+  const hasDoubleBlind = blinding === 'double';
+  
+  if (hasPrereg && hasDoubleBlind) {
+    return { label: 'High Rigor', color: 'bg-emerald-500', title: 'Double-blind & Pre-registered' };
+  } else if (hasPrereg || hasDoubleBlind) {
+    return { label: 'Moderate', color: 'bg-amber-500', title: 'Pre-registered OR Double-blind' };
+  } else {
+    return { label: 'Low Rigor', color: 'bg-red-500', title: 'Open/Single-blind & Not Pre-registered' };
+  }
+}
+
+// Helper to get domain border color
+function getDomainColor(domain: string): string {
+  const map: Record<string, string> = {
+    'telepathy': 'border-purple-500',
+    'psychokinesis': 'border-red-500',
+    'precognition': 'border-violet-500',
+    'remote_viewing': 'border-indigo-500',
+    'healing': 'border-green-500',
+    'nde': 'border-cyan-500',
+    'skeptical': 'border-orange-500',
+    'methodology': 'border-blue-500',
+    'meta_analysis': 'border-pink-500',
+    'history': 'border-amber-500',
+  };
+  return map[domain] || 'border-slate-600';
+}
+
+// Helper to get domain gradient for icon square
+function getDomainGradient(d: string): string {
+  const map: Record<string, string> = {
+    'telepathy': 'from-purple-600 to-purple-800',
+    'psychokinesis': 'from-red-600 to-red-800',
+    'nde': 'from-cyan-600 to-cyan-800',
+    'healing': 'from-green-600 to-green-800',
+    'precognition': 'from-violet-600 to-violet-800',
+    'skeptical': 'from-orange-600 to-orange-800',
+    'methodology': 'from-blue-600 to-blue-800',
+    'overview': 'from-amber-600 to-amber-800',
+    'remote_viewing': 'from-teal-600 to-teal-800',
+    'mediumship': 'from-indigo-600 to-indigo-800',
+    'nonverbal': 'from-pink-600 to-pink-800',
+    'meta_analysis': 'from-yellow-600 to-yellow-800',
+  };
+  return map[d] || 'from-slate-600 to-slate-800';
+}
+
+// Helper to get domain icon emoji
+function getDomainIcon(d: string): string {
+  const map: Record<string, string> = {
+    'telepathy': '🧠',
+    'psychokinesis': '🎲',
+    'nde': '✨',
+    'healing': '💚',
+    'precognition': '🔮',
+    'skeptical': '🔍',
+    'methodology': '🔬',
+    'overview': '📖',
+    'remote_viewing': '👁️',
+    'mediumship': '🕯️',
+    'nonverbal': '🤝',
+    'meta_analysis': '📊',
+  };
+  return map[d] || '📄';
+}
+---
+
+<Layout title="Catalog">
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2 text-slate-100">Research Catalog</h1>
+    <p class="text-slate-400 text-lg">Explore {papers.length} papers across {domains.length} domains of psi research</p>
+  </div>
+
+  <!-- Sentinel for sticky observer -->
+  <div id="scroll-sentinel" class="h-0 absolute -top-1 left-0 w-full"></div>
+
+  <!-- Filters (Sticky) -->
+  <div id="filter-container" class="sticky top-0 z-20 bg-slate-950/95 backdrop-blur-md pb-4 pt-4 border-b border-slate-800 transition-shadow duration-300" role="search">
+    <div class="flex flex-wrap gap-3 mb-4 items-center">
+      <div class="relative flex-1 min-w-[200px]">
+        <input 
+          type="text" 
+          id="search" 
+          aria-label="Search papers by title, author, or abstract"
+          placeholder="Search title, authors, abstract..." 
+          class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none transition-all"
+        />
+        <svg class="w-4 h-4 text-slate-500 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+      </div>
+      
+      <select id="domain-filter" aria-label="Filter by research domain" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
+        <option value="">All Domains</option>
+        {domains.map((d: string) => (
+          <option value={d}>{d.replace(/_/g, ' ')}</option>
+        ))}
+      </select>
+      <!-- Custom Arrow for Domain Filter -->
+      <div class="pointer-events-none absolute right-[16.5rem] top-[4.6rem] flex items-center px-2 text-slate-500">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </div>
+      
+      <select id="folder-filter" aria-label="Filter by category folder" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
+        <option value="">All Categories</option>
+        {folders.map((f: string) => (
+          <option value={f}>{formatFolder(f)}</option>
+        ))}
+      </select>
+      <!-- Custom Arrow for Folder Filter -->
+      <div class="pointer-events-none absolute right-[10.5rem] top-[4.6rem] flex items-center px-2 text-slate-500">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </div>
+      
+      <div class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-amber-400 focus-within:border-amber-500 transition">
+        <input 
+          type="number" 
+          id="year-min" 
+          aria-label="Minimum publication year"
+          placeholder="From" 
+          min={minYear}
+          max={maxYear}
+          class="bg-transparent border-none text-sm w-16 text-slate-300 placeholder-slate-600 focus:ring-0 focus:outline-none"
+        />
+        <span class="text-slate-600">–</span>
+        <input 
+          type="number" 
+          id="year-max" 
+          aria-label="Maximum publication year"
+          placeholder="To" 
+          min={minYear}
+          max={maxYear}
+          class="bg-transparent border-none text-sm w-16 text-slate-300 placeholder-slate-600 focus:ring-0 focus:outline-none"
+        />
+      </div>
+      
+      <div class="h-6 w-px bg-slate-800 mx-1 hidden md:block"></div>
+
+      <select id="prereg-filter" aria-label="Filter by pre-registration status" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
+        <option value="">Pre-reg: Any</option>
+        <option value="true">Pre-registered</option>
+        <option value="false">Not Pre-registered</option>
+      </select>
+      <!-- Custom Arrow for Prereg Filter -->
+      <div class="pointer-events-none absolute right-[3.5rem] top-[4.6rem] flex items-center px-2 text-slate-500">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </div>
+      
+      <select id="blinding-filter" aria-label="Filter by blinding method" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
+        <option value="">Blinding: Any</option>
+        <option value="double">Double-blind</option>
+        <option value="single">Single-blind</option>
+        <option value="none">Open/None</option>
+      </select>
+      <!-- Custom Arrow for Blinding Filter -->
+      <div class="pointer-events-none absolute right-[1.5rem] top-[4.6rem] flex items-center px-2 text-slate-500">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </div>
+      
+      <label class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 cursor-pointer hover:border-amber-500/30 hover:text-amber-400 transition select-none focus-within:ring-2 focus-within:ring-amber-400 focus-within:border-amber-500">
+        <input 
+          type="checkbox" 
+          id="doi-filter" 
+          aria-label="Filter to show only papers with DOI"
+          class="accent-amber-500 rounded focus:ring-2 focus:ring-amber-400"
+        />
+        <span>Has DOI</span>
+      </label>
+      
+      <div class="relative">
+        <select id="sort-filter" aria-label="Sort results" class="bg-slate-800 border border-amber-500/30 rounded-lg pl-4 pr-10 py-2.5 text-sm text-amber-100 font-medium focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:bg-slate-750 transition appearance-none">
+          <option value="year-desc">Newest First</option>
+          <option value="year-asc">Oldest First</option>
+          <option value="title-asc">Title (A-Z)</option>
+          <option value="title-desc">Title (Z-A)</option>
+          <option value="domain">Domain</option>
+          <option value="effect-size">By Effect Size</option>
+          <option value="sample-size">By Sample Size</option>
+        </select>
+        <div class="pointer-events-none absolute right-3 top-3 flex items-center px-2 text-amber-500">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+      </div>
+      
+      <button id="clear-filters" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/50 rounded-lg px-4 py-2.5 text-sm text-slate-300 hover:text-amber-400 transition font-medium">
+        Clear Filters
+      </button>
+    </div>
+    
+    <!-- Active Filters Display -->
+    <div id="active-filters" class="flex flex-wrap gap-2 items-center">
+      <span class="text-slate-500 text-sm">Active filters:</span>
+      <div id="filter-tags" class="flex flex-wrap gap-2"></div>
+      <span id="result-count" class="text-slate-400 text-sm ml-auto">Showing {papers.length} of {papers.length} papers</span>
+    </div>
+  </div>
+
+  <!-- Paper Grid -->
+  <div id="paper-list" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    {papers.map((paper: any) => {
+      const domain = paper.psi_domain || 'overview';
+      const epistemic = getEpistemicStatus(paper);
+      const authors = formatAuthors(paper.authors);
+      const folder = paper.folder ? formatFolder(paper.folder) : '';
+      
+      return (
+        <article 
+          class="paper-card group bg-slate-900/50 border border-slate-800 hover:border-amber-500/50 rounded-xl p-5 transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/10 flex flex-row gap-4"
+          data-domain={domain}
+          data-folder={paper.folder || ''}
+          data-year={paper.year || ''}
+          data-prereg={getPreRegStatus(paper)}
+          data-blinding={getBlindingStatus(paper)}
+          data-doi={getDoiStatus(paper)}
+          data-title={(paper.title || '').toLowerCase()}
+          data-authors={(authors || '').toLowerCase()}
+          data-abstract={(paper.abstract || '').toLowerCase()}
+          data-effect-size={paper.stats?.effect_size || ''}
+          data-sample-size={paper.stats?.sample_size || ''}
+        >
+          <!-- Domain Icon Square -->
+          <div class={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg bg-gradient-to-br ${getDomainGradient(paper.psi_domain)}`}>
+            {getDomainIcon(paper.psi_domain)}
+          </div>
+          
+          <!-- Card Content -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <h3 class="text-lg font-semibold text-slate-100 group-hover:text-amber-400 transition-colors line-clamp-2">
+                {paper.title || 'Untitled'}
+              </h3>
+              <span class={`flex-shrink-0 w-3 h-3 rounded-full ${epistemic.color}`} title={epistemic.title}></span>
+            </div>
+            
+            <p class="text-sm text-slate-400 mb-2">{authors}</p>
+            
+            <div class="flex flex-wrap gap-2 mb-3">
+              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">{paper.year || 'n.d.'}</span>
+              <span class={`text-xs px-2 py-1 rounded border ${getDomainColor(domain)} text-slate-300`}>
+                {domain.replace(/_/g, ' ')}
+              </span>
+              {folder && (
+                <span class="text-xs bg-slate-800/50 text-slate-400 px-2 py-1 rounded">
+                  {folder}
+                </span>
+              )}
+              {paper.doi && (
+                <span class="text-xs bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded border border-emerald-800/50">
+                  DOI
+                </span>
+              )}
+            </div>
+            
+            {paper.abstract && (
+              <p class="text-sm text-slate-500 line-clamp-3 mb-3">{paper.abstract}</p>
+            )}
+            
+            <div class="flex items-center justify-between pt-3 border-t border-slate-800">
+              <div class="flex items-center gap-3 text-xs text-slate-500">
+                {paper.stats?.effect_size && (
+                  <span title="Effect Size">d = {paper.stats.effect_size}</span>
+                )}
+                {paper.stats?.sample_size && (
+                  <span title="Sample Size">N = {paper.stats.sample_size}</span>
+                )}
+                {paper.stats?.p_value && (
+                  <span title="P-value">p = {paper.stats.p_value}</span>
+                )}
+              </div>
+              
+              {paper.pdf_url || paper.url ? (
+                <a 
+                  href={paper.pdf_url || paper.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="text-xs text-amber-400 hover:text-amber-300 font-medium transition-colors flex items-center gap-1"
+                >
+                  Read Paper
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              ) : (
+                <span class="text-xs text-slate-600">No PDF</span>
+              )}
+            </div>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+
+  <!-- Show More Button -->
+  <div class="mt-8 text-center">
+    <button id="show-more" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/50 rounded-lg px-6 py-3 text-slate-300 hover:text-amber-400 transition font-medium">
+      Show More Papers
+    </button>
+  </div>
+
+  <script>
+    const PAGINATION_LIMIT = 30;
+    let visibleCount = PAGINATION_LIMIT;
+    
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const domainFilter = document.getElementById('domain-filter') as HTMLSelectElement;
+    const folderFilter = document.getElementById('folder-filter') as HTMLSelectElement;
+    const yearMinInput = document.getElementById('year-min') as HTMLInputElement;
+    const yearMaxInput = document.getElementById('year-max') as HTMLInputElement;
+    const preregFilter = document.getElementById('prereg-filter') as HTMLSelectElement;
+    const blindingFilter = document.getElementById('blinding-filter') as HTMLSelectElement;
+    const doiFilter = document.getElementById('doi-filter') as HTMLInputElement;
+    const sortFilter = document.getElementById('sort-filter') as HTMLSelectElement;
+    const clearButton = document.getElementById('clear-filters') as HTMLButtonElement;
+    const showMoreBtn = document.getElementById('show-more') as HTMLButtonElement;
+    const paperList = document.getElementById('paper-list') as HTMLDivElement;
+    const resultCount = document.getElementById('result-count') as HTMLSpanElement;
+    const filterTags = document.getElementById('filter-tags') as HTMLDivElement;
+    
+    const cards = Array.from(paperList.querySelectorAll('.paper-card')) as HTMLElement[];
+    const totalPapers = cards.length;
+    
+    function triggerFilterChange() {
+      filterAndSortCards();
+      updateURL();
+    }
+    
+    function updateActiveFilters() {
+      filterTags.innerHTML = '';
+      const filters = [
+        { value: domainFilter.value, label: domainFilter.options[domainFilter.selectedIndex]?.text || '' },
+        { value: folderFilter.value, label: folderFilter.options[folderFilter.selectedIndex]?.text || '' },
+        { value: yearMinInput.value, label: `From ${yearMinInput.value}` },
+        { value: yearMaxInput.value, label: `To ${yearMaxInput.value}` },
+        { value: preregFilter.value, label: preregFilter.options[preregFilter.selectedIndex]?.text || '' },
+        { value: blindingFilter.value, label: blindingFilter.options[blindingFilter.selectedIndex]?.text || '' },
+        { value: doiFilter.checked ? 'yes' : '', label: 'Has DOI' },
+        { value: searchInput.value, label: `Search: "${searchInput.value}"` },
+      ].filter(f => f.value);
+      
+      filters.forEach(f => {
+        const tag = document.createElement('span');
+        tag.className = 'text-xs bg-amber-900/30 text-amber-400 px-2 py-1 rounded border border-amber-800/50';
+        tag.textContent = f.label;
+        filterTags.appendChild(tag);
+      });
+    }
+    
+    function filterAndSortCards() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const domainValue = domainFilter.value;
+      const folderValue = folderFilter.value;
+      const yearMin = yearMinInput.value ? parseInt(yearMinInput.value) : null;
+      const yearMax = yearMaxInput.value ? parseInt(yearMaxInput.value) : null;
+      const preregValue = preregFilter.value;
+      const blindingValue = blindingFilter.value;
+      const doiValue = doiFilter.checked;
+      const sortValue = sortFilter.value;
+      
+      let visibleMatchCount = 0;
+      let isFirstVisible = true;
+      
+      cards.forEach(card => {
+        const cardDomain = card.dataset.domain || '';
+        const cardFolder = card.dataset.folder || '';
+        const cardYear = card.dataset.year ? parseInt(card.dataset.year) : null;
+        const cardPrereg = card.dataset.prereg || 'unknown';
+        const cardBlinding = card.dataset.blinding || 'unknown';
+        const cardDoi = card.dataset.doi === 'yes';
+        const cardTitle = card.dataset.title || '';
+        const cardAuthors = card.dataset.authors || '';
+        const cardAbstract = card.dataset.abstract || '';
+        const cardEffectSize = card.dataset.effectSize ? parseFloat(card.dataset.effectSize) : null;
+        const cardSampleSize = card.dataset.sampleSize ? parseInt(card.dataset.sampleSize) : null;
+        
+        // Filter checks
+        const matchesSearch = !searchTerm || cardTitle.includes(searchTerm) || cardAuthors.includes(searchTerm) || cardAbstract.includes(searchTerm);
+        const matchesDomain = !domainValue || cardDomain === domainValue;
+        const matchesFolder = !folderValue || cardFolder === folderValue;
+        const matchesYearMin = !yearMin || (cardYear !== null && cardYear >= yearMin);
+        const matchesYearMax = !yearMax || (cardYear !== null && cardYear <= yearMax);
+        const matchesPrereg = !preregValue || cardPrereg === preregValue;
+        const matchesBlinding = !blindingValue || cardBlinding === blindingValue;
+        const matchesDoi = !doiValue || cardDoi;
+        
+        const matches = matchesSearch && matchesDomain && matchesFolder && matchesYearMin && matchesYearMax && matchesPrereg && matchesBlinding && matchesDoi;
+        
+        if (matches) {
+          visibleMatchCount++;
+          if (visibleMatchCount <= visibleCount) {
+            card.style.display = 'flex';
+            card.classList.remove('hidden');
+            if (isFirstVisible) {
+              paperList.insertBefore(card, paperList.firstChild);
+              isFirstVisible = false;
+            }
+          } else {
+            card.style.display = 'none';
+            card.classList.add('hidden');
+          }
+        } else {
+          card.style.display = 'none';
+          card.classList.add('hidden');
+        }
+        
+        // Re-append to reorder in DOM
+        paperList.appendChild(card);
+      });
+      
+      // Update UI Text
+      resultCount.textContent = `Showing ${Math.min(visibleMatchCount, isFiltered ? visibleMatchCount : visibleCount)} of ${totalPapers} papers`;
+      
+      // Update Button Visibility
+      if (isFiltered || visibleCount >= visibleMatchCount) {
+        showMoreBtn.classList.add('hidden');
+      } else {
+        showMoreBtn.classList.remove('hidden');
+      }
+
+      updateActiveFilters();
+    }
+
+    // Show More Button Handler
+    showMoreBtn.addEventListener('click', () => {
+      visibleCount += PAGINATION_LIMIT;
+      filterAndSortCards();
+    });
+
+    function clearFilters() {
+      domainFilter.value = '';
+      folderFilter.value = '';
+      yearMinInput.value = '';
+      yearMaxInput.value = '';
+      preregFilter.value = '';
+      blindingFilter.value = '';
+      doiFilter.checked = false;
+      searchInput.value = '';
+      sortFilter.value = 'year-desc'; // Reset sort to default
+      triggerFilterChange();
+    }
+
+    function updateURL() {
+      const params = new URLSearchParams();
+      if (domainFilter.value) params.set('domain', domainFilter.value);
+      if (folderFilter.value) params.set('folder', folderFilter.value);
+      if (yearMinInput.value) params.set('yearMin', yearMinInput.value);
+      if (yearMaxInput.value) params.set('yearMax', yearMaxInput.value);
+      if (preregFilter.value) params.set('prereg', preregFilter.value);
+      if (blindingFilter.value) params.set('blinding', blindingFilter.value);
+      if (doiFilter.checked) params.set('doi', 'yes');
+      if (searchInput.value) params.set('q', searchInput.value);
+      if (sortFilter.value !== 'year-desc') params.set('sort', sortFilter.value);
+      
+      const newURL = params.toString() ? `?${params.toString()}` : window.location.pathname;
+      window.history.replaceState({}, '', newURL);
+    }
+
+    domainFilter.addEventListener('change', triggerFilterChange);
+    folderFilter.addEventListener('change', triggerFilterChange);
+    yearMinInput.addEventListener('input', triggerFilterChange);
+    yearMaxInput.addEventListener('input', triggerFilterChange);
+    preregFilter.addEventListener('change', triggerFilterChange);
+    blindingFilter.addEventListener('change', triggerFilterChange);
+    doiFilter.addEventListener('change', triggerFilterChange);
+    searchInput.addEventListener('input', triggerFilterChange);
+    sortFilter.addEventListener('change', triggerFilterChange);
+    clearButton.addEventListener('click', clearFilters);
+
+    // Handle URL params on load
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('domain')) {
+      domainFilter.value = params.get('domain') || '';
+    }
+    if (params.get('folder')) {
+      folderFilter.value = params.get('folder') || '';
+    }
+    if (params.get('yearMin')) {
+      yearMinInput.value = params.get('yearMin') || '';
+    }
+    if (params.get('yearMax')) {
+      yearMaxInput.value = params.get('yearMax') || '';
+    }
+    if (params.get('prereg')) {
+      preregFilter.value = params.get('prereg') || '';
+    }
+    if (params.get('blinding')) {
+      blindingFilter.value = params.get('blinding') || '';
+    }
+    if (params.get('doi') === 'yes') {
+      doiFilter.checked = true;
+    }
+    if (params.get('q')) {
+      searchInput.value = params.get('q') || '';
+    }
+    if (params.get('sort')) {
+      sortFilter.value = params.get('sort') || 'year-desc';
+    }
+    
+    filterAndSortCards();
+  </script>
+</Layout>

@@ -1,0 +1,238 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import catalog from '../data/catalog.json';
+
+// --- Data Processing ---
+
+const decades = ['pre-1970', '1970s', '1980s', '1990s', '2000s', '2010s', '2020s'];
+
+// Helper to determine decade bucket
+function getDecade(year: number): string {
+  if (year < 1970) return 'pre-1970';
+  if (year < 1980) return '1970s';
+  if (year < 1990) return '1980s';
+  if (year < 2000) return '1990s';
+  if (year < 2010) return '2000s';
+  if (year < 2020) return '2010s';
+  return '2020s';
+}
+
+// Domain Color Map (Tailwind classes)
+const domainColors: Record<string, string> = {
+  'Parapsychology': 'bg-blue-500',
+  'Physics': 'bg-emerald-500',
+  'Psychology': 'bg-violet-500',
+  'Consciousness Studies': 'bg-amber-500',
+  'Anomalistics': 'bg-rose-500',
+  'History': 'bg-slate-500',
+  'default': 'bg-slate-600'
+};
+
+function getDomainColor(domain: string): string {
+  return domainColors[domain] || domainColors['default'];
+}
+
+// Initialize data structures
+const decadeCounts: Record<string, number> = {};
+const domainDecadeCounts: Record<string, Record<string, number>> = {};
+const domainTotals: Record<string, number> = {};
+const allDomains = new Set<string>();
+
+decades.forEach(d => {
+  decadeCounts[d] = 0;
+  domainDecadeCounts[d] = {};
+});
+
+// Process Catalog
+catalog.papers.forEach(paper => {
+  const year = paper.year || 0;
+  const decade = getDecade(year);
+  const domain = paper.domain || 'Uncategorized';
+  
+  // Increment totals
+  decadeCounts[decade]++;
+  allDomains.add(domain);
+  
+  if (!domainTotals[domain]) domainTotals[domain] = 0;
+  domainTotals[domain]++;
+
+  if (!domainDecadeCounts[decade][domain]) domainDecadeCounts[decade][domain] = 0;
+  domainDecadeCounts[decade][domain]++;
+});
+
+// Find max count for chart scaling
+const maxCount = Math.max(...Object.values(decadeCounts));
+
+// Sort domains alphabetically for the table
+const sortedDomains = Array.from(allDomains).sort();
+
+// Generate Narrative Text
+const totalPapers = catalog.papers.length;
+const peakDecade = Object.entries(decadeCounts).reduce((a, b) => a[1] > b[1] ? a : b)[0];
+const recentGrowth = decadeCounts['2020s'] > decadeCounts['2010s'] ? 'accelerating' : 'stabilizing';
+
+---
+
+<Layout title="Research Trends">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+    
+    <!-- Header -->
+    <div class="space-y-4">
+      <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Trends', href: '/trends' }]} />
+      <h1 class="text-4xl font-bold text-amber-400 tracking-tight">Publication Trends</h1>
+      <p class="text-slate-400 text-lg max-w-3xl">
+        A quantitative analysis of research output across decades and domains within the psi research library.
+      </p>
+    </div>
+
+    <!-- Bar Chart Section -->
+    <section class="bg-slate-900/50 border border-slate-800 rounded-xl p-6 sm:p-8 shadow-xl">
+      <h2 class="text-xl font-semibold text-slate-200 mb-8 flex items-center gap-2">
+        <span class="w-2 h-6 bg-amber-500 rounded-sm"></span>
+        Papers per Decade
+      </h2>
+      
+      <div class="h-80 w-full flex items-end justify-between gap-2 sm:gap-4">
+        {decades.map((decade) => {
+          const count = decadeCounts[decade];
+          const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
+          
+          return (
+            <div class="flex flex-col items-center flex-1 h-full justify-end group">
+              {/* Tooltip */}
+              <div class="mb-2 opacity-0 group-hover:opacity-100 transition-opacity absolute -mt-8 bg-slate-800 text-amber-400 text-xs px-2 py-1 rounded border border-slate-700 pointer-events-none whitespace-nowrap z-10">
+                {count} papers
+              </div>
+              
+              {/* Bar */}
+              <div 
+                class="w-full max-w-[60px] bg-gradient-to-t from-amber-600 to-amber-400 rounded-t-md transition-all duration-500 hover:from-amber-500 hover:to-amber-300 relative"
+                style={`height: ${percentage}%`}
+              ></div>
+              
+              {/* Label */}
+              <div class="mt-3 text-xs sm:text-sm font-medium text-slate-500 group-hover:text-amber-400 transition-colors rotate-0 sm:rotate-0 text-center">
+                {decade.replace('pre-', 'Pre-')}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Narrative Section -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="md:col-span-2 space-y-6">
+        <h2 class="text-2xl font-bold text-slate-200">Growth of the Field</h2>
+        <div class="prose prose-invert prose-slate max-w-none">
+          <p class="text-slate-300 leading-relaxed">
+            The library currently contains <strong class="text-amber-400">{totalPapers}</strong> indexed papers. 
+            Historical analysis shows that the <strong class="text-white">{peakDecade}</strong> was the most prolific period 
+            for publication in this dataset, representing a significant era of inquiry.
+          </p>
+          <p class="text-slate-300 leading-relaxed">
+            In the modern era (2020s), publication trends appear to be {recentGrowth}, 
+            with <strong class="text-white">{decadeCounts['2020s']}</strong> papers recorded so far. 
+            This suggests a sustained interest in consciousness studies and anomalistics despite shifting academic landscapes.
+          </p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+            {Object.entries(domainTotals).slice(0, 4).map(([domain, count]) => (
+              <div class="bg-slate-900 p-4 rounded-lg border border-slate-800">
+                <div class={`text-xs font-bold uppercase tracking-wider mb-1 ${getDomainColor(domain).replace('bg-', 'text-')}`}>
+                  {domain}
+                </div>
+                <div class="text-2xl font-bold text-white">{count}</div>
+                <div class="text-xs text-slate-500">Total Papers</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini Stats Card -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col justify-center space-y-6">
+        <div>
+          <div class="text-slate-500 text-sm font-medium uppercase tracking-wider">Earliest Record</div>
+          <div class="text-3xl font-bold text-white mt-1">
+            {Math.min(...catalog.papers.map(p => p.year || 9999))}
+          </div>
+        </div>
+        <div class="h-px bg-slate-800 w-full"></div>
+        <div>
+          <div class="text-slate-500 text-sm font-medium uppercase tracking-wider">Most Active Domain</div>
+          <div class="text-xl font-bold text-amber-400 mt-1">
+            {Object.entries(domainTotals).sort((a, b) => b[1] - a[1])[0][0]}
+          </div>
+        </div>
+        <div class="h-px bg-slate-800 w-full"></div>
+        <div>
+          <div class="text-slate-500 text-sm font-medium uppercase tracking-wider">Domains Tracked</div>
+          <div class="text-xl font-bold text-white mt-1">
+            {sortedDomains.length}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Table -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-bold text-slate-200">Domain Breakdown by Decade</h2>
+      <div class="overflow-x-auto border border-slate-800 rounded-lg shadow-lg bg-slate-900/50">
+        <table class="w-full text-left text-sm text-slate-400">
+          <thead class="bg-slate-950 text-xs uppercase font-bold text-slate-500">
+            <tr>
+              <th class="px-6 py-4 sticky left-0 bg-slate-950 z-10">Domain</th>
+              {decades.map(decade => (
+                <th class="px-4 py-4 text-center min-w-[100px]">{decade.replace('pre-', 'Pre-')}</th>
+              ))}
+              <th class="px-6 py-4 text-right font-bold text-amber-500">Total</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            {sortedDomains.map((domain) => {
+              const total = domainTotals[domain];
+              return (
+                <tr class="hover:bg-slate-800/50 transition-colors">
+                  <td class="px-6 py-4 font-medium text-slate-200 sticky left-0 bg-slate-900/50 backdrop-blur-sm">
+                    <div class="flex items-center gap-3">
+                      <span class={`w-3 h-3 rounded-full ${getDomainColor(domain)}`}></span>
+                      {domain}
+                    </div>
+                  </td>
+                  {decades.map(decade => {
+                    const count = domainDecadeCounts[decade][domain] || 0;
+                    // Visual indicator for non-zero cells
+                    const hasData = count > 0;
+                    return (
+                      <td class={`px-4 py-4 text-center ${hasData ? 'text-slate-200' : 'text-slate-700'}`}>
+                        {hasData ? count : '-'}
+                      </td>
+                    );
+                  })}
+                  <td class="px-6 py-4 text-right font-bold text-amber-400">
+                    {total}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+          <tfoot class="bg-slate-950 font-bold text-slate-300">
+            <tr>
+              <td class="px-6 py-4">Total Papers</td>
+              {decades.map(decade => (
+                <td class="px-4 py-4 text-center text-white">
+                  {decadeCounts[decade]}
+                </td>
+              ))}
+              <td class="px-6 py-4 text-right text-amber-400">
+                {totalPapers}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+  </div>
+</Layout>

@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { marked } from 'marked';
+import fs from 'node:fs';
+import path from 'node:path';
+import catalog from '../../data/catalog.json';
+
+export function getStaticPaths() {
+  const dir = path.join(process.cwd(), 'src/data/timeline');
+  const files = fs.readdirSync(dir).filter(f => f.startsWith('era_') && f.endsWith('.md'));
+  return files.map(f => {
+    const id = f.replace('.md', '');
+    const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+    return { params: { id }, props: { content } };
+  });
+}
+
+const { id } = Astro.params;
+const { content } = Astro.props;
+
+// Extract catalog IDs from content
+const catalogIdRegex = /\[catalog ID: ([^\]]+)\]/g;
+const matches = [...content.matchAll(catalogIdRegex)];
+const catalogIds = matches.map(m => m[1].trim());
+
+// Look up papers in catalog
+const papers = catalogIds
+  .map(id => catalog.papers.find(p => p.id === id))
+  .filter(p => p !== undefined);
+
+// Replace catalog ID references with links
+const linkedContent = content.replace(
+  /\[catalog ID: ([^\]]+)\]/g,
+  (_, id) => `[📄 ${id.trim()}](/paper/${id.trim()})`
+);
+const html = marked(linkedContent);
+const title = content.split('\n')[0].replace(/^#\s*/, '').trim();
+---
+
+<Layout title={title}>
+  <nav class="text-sm text-slate-500 mb-6">
+    <a href="/" class="hover:text-amber-400">Home</a>
+    <span class="mx-1 text-slate-600">/</span>
+    <a href="/timeline" class="hover:text-amber-400">Timeline</a>
+    <span class="mx-1 text-slate-600">/</span>
+    <span class="text-slate-300">{title}</span>
+  </nav>
+
+  {papers.length > 0 && (
+    <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold text-amber-400">
+          📚 Papers from this era
+        </h2>
+        <span class="text-sm text-slate-400">{papers.length} paper{papers.length !== 1 ? 's' : ''}</span>
+      </div>
+      <details class="group">
+        <summary class="cursor-pointer text-slate-300 hover:text-amber-400 flex items-center gap-2">
+          <span class="transition-transform group-open:rotate-90">▶</span>
+          View referenced papers
+        </summary>
+        <ul class="mt-3 space-y-2 pl-4">
+          {papers.map(paper => (
+            <li class="text-sm">
+              <a href={`/paper/${paper.id}`} class="text-slate-300 hover:text-amber-400">
+                <span class="text-amber-400">[{paper.id}]</span> {paper.title}
+              </a>
+              {paper.author && (
+                <span class="text-slate-500"> — {paper.author}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </details>
+    </div>
+  )}
+
+  <article class="prose prose-invert prose-amber max-w-4xl" set:html={html} />
+</Layout>

@@ -1,0 +1,29 @@
+/* src/styles/print.css */
+@media print {
+  /* Hide navigation, footer, mobile menu */
+  nav, footer, #mobile-menu, #mobile-menu-btn { display: none !important; }
+  
+  /* Remove dark background */
+  html, body { background: white !important; color: black !important; }
+  
+  /* Make text readable on paper */
+  body { font-family: Georgia, 'Times New Roman', serif; font-size: 12pt; line-height: 1.5; }
+  
+  /* Ensure links are visible */
+  a { color: #333 !important; text-decoration: underline !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
+  a[href^="/"]::after { content: none; }
+  
+  /* Cards/sections lose their dark styling */
+  [class*="bg-slate"] { background: white !important; border-color: #ccc !important; }
+  [class*="text-slate"], [class*="text-amber"] { color: #333 !important; }
+  
+  /* Paper page specific */
+  .prose { max-width: 100% !important; }
+  
+  /* No page breaks inside cards */
+  article, section { page-break-inside: avoid; }
+  
+  /* Hide filter controls on catalog page */
+  #filters { display: none !important; }
+}

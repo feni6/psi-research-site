@@ -1,0 +1,492 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import { marked } from 'marked';
+import fs from 'node:fs';
+import path from 'node:path';
+import catalog from '../../data/catalog.json';
+
+export function getStaticPaths() {
+  const dir = path.join(process.cwd(), 'src/data/controversies');
+  const files = fs.readdirSync(dir).filter(f => f.match(/^\d{2}_/) && f.endsWith('.md'));
+  return files.map(f => {
+    const id = f.replace('.md', '');
+    const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+    return { params: { id }, props: { content, filename: f } };
+  });
+}
+
+const { id } = Astro.params;
+const { content } = Astro.props;
+
+// --- Navigation Logic (Prev/Next) ---
+const dir = path.join(process.cwd(), 'src/data/controversies');
+const allFiles = fs.readdirSync(dir)
+  .filter(f => f.match(/^\d{2}_/) && f.endsWith('.md'))
+  .sort(); // Ensure sorted order
+
+const currentIndex = allFiles.findIndex(f => f === `${id}.md`);
+
+// Wrap-around logic
+const prevFile = currentIndex > 0 ? allFiles[currentIndex - 1] : allFiles[allFiles.length - 1];
+const nextFile = currentIndex < allFiles.length - 1 ? allFiles[currentIndex + 1] : allFiles[0];
+
+// Helper to get title from filename/content for nav
+function getNavTitle(filename: string | null): { title: string; slug: string } | null {
+  if (!filename) return null;
+  const slug = filename.replace('.md', '');
+  const filePath = path.join(dir, filename);
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  const title = fileContent.split('\n')[0].replace(/^#\s*\d+\.\s*/, '').trim();
+  return { title, slug };
+}
+
+const prevControversy = getNavTitle(prevFile);
+const nextControversy = getNavTitle(nextFile);
+
+// --- Content Parsing ---
+
+// Parse title from first line
+const title = content.split('\n')[0].replace(/^#\s*\d+\.\s*/, '').trim();
+
+// Parse key question (first sentence after title, before first ##)
+const contentAfterTitle = content.split('\n').slice(1).join('\n');
+const keyQuestionMatch = contentAfterTitle.match(/^(.+?[.?!])\s/);
+const keyQuestion = keyQuestionMatch ? keyQuestionMatch[1].trim() : '';
+
+// Parse content into sections
+function parseSections(content: string) {
+  const sections = {
+    intro: '',
+    pro: [] as string[],
+    con: [] as string[],
+    status: '',
+    remaining: ''
+  };
+
+  // Find Pro section
+  const proMatch = content.match(/\*\*Pro:\*\*([\s\S]*?)(?=\*\*Con:|\*\*Critical evidence:|\*\*Current status:|$)/i);
+  if (proMatch) {
+    const proContent = proMatch[1];
+    const proLines = proContent.split('\n').filter(line => line.trim().startsWith('- '));
+    sections.pro = proLines.map(line => line.replace(/^- /, '').trim());
+  }
+
+  // Find Con section
+  const conMatch = content.match(/\*\*Con:\*\*([\s\S]*?)(?=\*\*Critical evidence:|\*\*Current status:|$)/i);
+  if (conMatch) {
+    const conContent = conMatch[1];
+    const conLines = conContent.split('\n').filter(line => line.trim().startsWith('- '));
+    sections.con = conLines.map(line => line.replace(/^- /, '').trim());
+  }
+
+  // Also check for alternative headers
+  if (sections.pro.length === 0) {
+    const supportMatch = content.match(/\*\*Supporting evidence:\*\*([\s\S]*?)(?=\*\*Con:|\*\*Critical evidence:|\*\*Current status:|$)/i);
+    if (supportMatch) {
+      const supportContent = supportMatch[1];
+      const supportLines = supportContent.split('\n').filter(line => line.trim().startsWith('- '));
+      sections.pro = supportLines.map(line => line.replace(/^- /, '').trim());
+    }
+  }
+
+  if (sections.con.length === 0) {
+    const criticalMatch = content.match(/\*\*Critical evidence:\*\*([\s\S]*?)(?=\*\*Current status:|$)/i);
+    if (criticalMatch) {
+      const criticalContent = criticalMatch[1];
+      const criticalLines = criticalContent.split('\n').filter(line => line.trim().startsWith('- '));
+      sections.con = criticalLines.map(line => line.replace(/^- /, '').trim());
+    }
+  }
+
+  // Extract Current Status
+  const statusMatch = content.match(/\*?\*?Current status:\*?\**\s*([^\n]+)/i);
+  if (statusMatch) {
+    sections.status = statusMatch[1].trim();
+  }
+
+  // Extract intro (everything before Pro/Con sections)
+  const beforeProMatch = content.match(/^([\s\S]*?)(?=\*\*Pro:|\*\*Supporting evidence:)/i);
+  if (beforeProMatch) {
+    let introText = beforeProMatch[1];
+    // Remove title line
+    introText = introText.split('\n').slice(1).join('\n');
+    // Remove key question if it's on its own line
+    introText = introText.replace(/^(.+?[.?!])\s*\n/, '');
+    // Remove Current status line if present
+    introText = introText.replace(/\*?\*?Current status:\*?\**\s*[^\n]+\n?/i, '');
+    sections.intro = introText.trim();
+  }
+
+  return sections;
+}
+
+const sections = parseSections(content);
+
+// Parse paper references from bullet points
+function parsePaperReference(text: string) {
+  // Try to extract catalog ID from [catalog ID: XXX] pattern
+  const catalogMatch = text.match(/\[catalog ID: ([^\]]+)\]/);
+  const catalogId = catalogMatch ? catalogMatch[1].trim() : null;
+
+  // Try to extract year (4 digits)
+  const yearMatch = text.match(/\b(19|20)\d{2}\b/);
+  const year = yearMatch ? yearMatch[0] : null;
+
+  // Clean up the text for display
+  let description = text
+    .replace(/\[catalog ID: [^\]]+\]/g, '')
+    .replace(/\*\*/g, '')
+    .trim();
+
+  // Truncate if too long
+  if (description.length > 200) {
+    description = description.substring(0, 197) + '...';
+  }
+
+  // Lookup full title from catalog if ID exists
+  let fullTitle = description;
+  if (catalogId) {
+    const paper = catalog.papers.find(p => p.id === catalogId);
+    if (paper) {
+      fullTitle = paper.title;
+      // Use catalog year if text year is missing
+      if (!year && paper.year) {
+        // year = paper.year.toString(); // Optional: override year
+      }
+    }
+  }
+
+  return { catalogId, year, description, fullTitle };
+}
+
+const proPapers = sections.pro.map(parsePaperReference);
+const conPapers = sections.con.map(parsePaperReference);
+
+const proCount = proPapers.length;
+const conCount = conPapers.length;
+const totalCount = proCount + conCount;
+const proPercent = totalCount > 0 ? Math.round((proCount / totalCount) * 100) : 0;
+const conPercent = totalCount > 0 ? Math.round((conCount / totalCount) * 100) : 0;
+
+// Process intro content for rendering
+function processContent(text: string): string {
+  if (!text) return '';
+  
+  const linkedContent = text.replace(
+    /\[catalog ID: ([^\]]+)\]/g,
+    (_, id) => `[📄 ${id}](/paper/${id.trim()})`
+  );
+  
+  return marked(linkedContent);
+}
+
+const introHtml = processContent(sections.intro);
+const statusHtml = sections.status ? marked(sections.status) : '';
+
+// --- Related Reading Paths Logic ---
+const controversyPaperIds = new Set<string>();
+[...proPapers, ...conPapers].forEach(p => {
+  if (p.catalogId) controversyPaperIds.add(p.catalogId);
+});
+
+let relatedPaths: { slug: string; title: string }[] = [];
+
+if (controversyPaperIds.size > 0) {
+  const readingPathsDir = path.join(process.cwd(), 'src/data/reading_paths');
+  if (fs.existsSync(readingPathsDir)) {
+    const pathFiles = fs.readdirSync(readingPathsDir).filter(f => f.endsWith('.md'));
+    
+    for (const file of pathFiles) {
+      const filePath = path.join(readingPathsDir, file);
+      const pathContent = fs.readFileSync(filePath, 'utf-8');
+      
+      // Check if any controversy paper ID exists in this reading path
+      const hasMatch = Array.from(controversyPaperIds).some(id => pathContent.includes(id));
+      
+      if (hasMatch) {
+        // Extract title (first line starting with #)
+        const titleMatch = pathContent.match(/^#\s*(.*)/);
+        const pathTitle = titleMatch ? titleMatch[1].trim() : file.replace('.md', '').replace(/_/g, ' ');
+        const slug = file.replace('.md', '');
+        
+        relatedPaths.push({ slug, title: pathTitle });
+      }
+    }
+  }
+}
+// ----------------------------------
+---
+
+<Layout title={title}>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- Breadcrumbs -->
+    <div class="mb-6">
+      <Breadcrumb 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Controversies', href: '/controversies' },
+          { label: title, href: '#' }
+        ]} 
+      />
+    </div>
+
+    <!-- Header & Key Question -->
+    <div class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-slate-100 mb-4">{title}</h1>
+      
+      {keyQuestion && (
+        <div class="bg-slate-900 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-md">
+          <div class="flex items-start gap-3">
+            <svg class="w-6 h-6 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+              <h2 class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-1">Key Question</h2>
+              <p class="text-slate-300 text-lg leading-relaxed italic">"{keyQuestion}"</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- Verdict Bar & Stats -->
+    <div class="bg-slate-900 rounded-xl p-6 mb-8 border border-slate-800 shadow-lg">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        
+        <!-- Bar Visualization -->
+        <div class="flex-grow">
+          <div class="flex justify-between text-sm font-medium mb-2">
+            <span class="text-green-400 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-green-500"></span>
+              Supporting ({proCount})
+            </span>
+            <span class="text-red-400 flex items-center gap-2">
+              Critical ({conCount})
+              <span class="w-2 h-2 rounded-full bg-red-500"></span>
+            </span>
+          </div>
+          
+          <div class="relative h-6 rounded-full overflow-hidden bg-slate-800 flex shadow-inner">
+            {proPercent > 0 ? (
+              <div 
+                class="bg-gradient-to-r from-green-600 to-green-500 transition-all duration-1000 ease-out relative group" 
+                style={`width: ${proPercent}%`}
+              >
+                <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </div>
+            ) : <div class="w-0"></div>}
+            
+            {conPercent > 0 ? (
+              <div 
+                class="bg-gradient-to-r from-red-600 to-red-500 transition-all duration-1000 ease-out relative group" 
+                style={`width: ${conPercent}%`}
+              >
+                <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </div>
+            ) : <div class="w-0"></div>}
+            
+            {totalCount === 0 && (
+              <div class="w-full bg-slate-700 flex items-center justify-center text-xs text-slate-400">
+                No papers cited yet
+              </div>
+            )}
+          </div>
+        </div>
+
+        <!-- Total Count Badge -->
+        <div class="flex-shrink-0 text-center md:text-right">
+          <div class="text-3xl font-bold text-slate-200">{totalCount}</div>
+          <div class="text-xs text-slate-500 uppercase tracking-wide font-semibold">Papers Cited</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jump To Navigation -->
+    <div class="sticky top-4 z-20 mb-10">
+      <div class="bg-slate-950/90 backdrop-blur-sm border border-slate-800 rounded-lg p-2 flex flex-wrap gap-2 shadow-xl">
+        <a href="#overview" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors">Overview</a>
+        {(proCount > 0 || conCount > 0) && (
+          <>
+            <a href="#evidence" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors">Evidence</a>
+            <a href="#papers" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors">Key Papers</a>
+          </>
+        )}
+        {relatedPaths.length > 0 && (
+          <a href="#related" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors">Related Paths</a>
+        )}
+      </div>
+    </div>
+
+    <!-- Current Status -->
+    {sections.status && (
+      <div id="overview" class="bg-slate-900/50 border border-slate-800 rounded-lg p-6 mb-10">
+        <h3 class="text-sm font-bold text-amber-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Current Consensus
+        </h3>
+        <div class="text-slate-300 leading-relaxed" set:html={statusHtml} />
+      </div>
+    )}
+
+    <!-- Introduction -->
+    {sections.intro && (
+      <article class="prose prose-invert prose-amber max-w-none mb-12 text-slate-300" set:html={introHtml} />
+    )}
+
+    <!-- Evidence Breakdown (T-Chart) -->
+    {(proCount > 0 || conCount > 0) && (
+      <div id="evidence" class="mb-16 scroll-mt-24">
+        <div class="flex items-center gap-3 mb-8 border-b border-slate-800 pb-4">
+          <h2 class="text-2xl font-bold text-slate-100">Evidence Breakdown</h2>
+          <span class="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded border border-slate-700">Based on {totalCount} papers</span>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          
+          <!-- Supporting Evidence Column -->
+          <div class="space-y-6">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-1 h-6 bg-green-500 rounded-full"></div>
+              <h3 class="text-lg font-bold text-green-400">Supporting Evidence</h3>
+            </div>
+
+            {proCount > 0 ? (
+              <div class="space-y-4" id="papers">
+                {proPapers.map((paper, idx) => (
+                  <a 
+                    href={paper.catalogId ? `/paper/${paper.catalogId}` : '#'}
+                    class="block group bg-slate-900 border border-slate-800 border-l-4 border-l-green-600 rounded-r-lg p-5 hover:bg-slate-800 hover:border-l-green-400 hover:shadow-lg hover:shadow-green-900/10 transition-all duration-200"
+                  >
+                    <div class="flex justify-between items-start mb-2">
+                      <div class="flex items-center gap-2">
+                        {paper.year && (
+                          <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
+                        )}
+                        {paper.catalogId && (
+                          <span class="text-xs font-bold text-amber-500 uppercase tracking-wider">{paper.catalogId}</span>
+                        )}
+                      </div>
+                      <svg class="w-4 h-4 text-slate-600 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                      </svg>
+                    </div>
+                    <h4 class="text-slate-200 font-medium mb-2 group-hover:text-green-300 transition-colors line-clamp-2">{paper.fullTitle}</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">{paper.description}</p>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <div class="p-8 bg-slate-900/30 border border-dashed border-slate-800 rounded-lg text-center text-slate-500 text-sm">
+                No supporting papers cited in this controversy yet.
+              </div>
+            )}
+          </div>
+
+          <!-- Critical Evidence Column -->
+          <div class="space-y-6">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-1 h-6 bg-red-500 rounded-full"></div>
+              <h3 class="text-lg font-bold text-red-400">Critical Evidence</h3>
+            </div>
+
+            {conCount > 0 ? (
+              <div class="space-y-4">
+                {conPapers.map((paper, idx) => (
+                  <a 
+                    href={paper.catalogId ? `/paper/${paper.catalogId}` : '#'}
+                    class="block group bg-slate-900 border border-slate-800 border-l-4 border-l-red-600 rounded-r-lg p-5 hover:bg-slate-800 hover:border-l-red-400 hover:shadow-lg hover:shadow-red-900/10 transition-all duration-200"
+                  >
+                    <div class="flex justify-between items-start mb-2">
+                      <div class="flex items-center gap-2">
+                        {paper.year && (
+                          <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
+                        )}
+                        {paper.catalogId && (
+                          <span class="text-xs font-bold text-amber-500 uppercase tracking-wider">{paper.catalogId}</span>
+                        )}
+                      </div>
+                      <svg class="w-4 h-4 text-slate-600 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                      </svg>
+                    </div>
+                    <h4 class="text-slate-200 font-medium mb-2 group-hover:text-red-300 transition-colors line-clamp-2">{paper.fullTitle}</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">{paper.description}</p>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <div class="p-8 bg-slate-900/30 border border-dashed border-slate-800 rounded-lg text-center text-slate-500 text-sm">
+                No critical papers cited in this controversy yet.
+              </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+    )}
+
+    <!-- Related Reading Paths -->
+    {relatedPaths.length > 0 && (
+      <div id="related" class="mt-16 pt-10 border-t border-slate-800 scroll-mt-24">
+        <h2 class="text-xl font-bold text-slate-200 mb-6 flex items-center gap-2">
+          <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+          </svg>
+          Continue Learning
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {relatedPaths.map((path) => (
+            <a 
+              href={`/paths/${path.slug}`}
+              class="group block bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-500/50 hover:bg-slate-800 transition-all duration-200"
+            >
+              <div class="flex items-center gap-3">
+                <div class="p-2 bg-slate-800 rounded-md group-hover:bg-amber-500/10 transition-colors">
+                  <svg class="w-5 h-5 text-slate-400 group-hover:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-slate-200 font-medium group-hover:text-amber-400 transition-colors">{path.title}</h3>
+                  <p class="text-xs text-slate-500 mt-1">Reading Path</p>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Prev/Next Navigation -->
+    <div class="mt-20 pt-8 border-t border-slate-800 flex justify-between items-center">
+      {prevControversy ? (
+        <a href={`/controversies/${prevControversy.slug}`} class="group flex items-center gap-3 text-slate-400 hover:text-amber-400 transition-colors">
+          <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <div class="text-right">
+            <div class="text-xs uppercase tracking-wider font-bold text-slate-600 group-hover:text-amber-500/70">Previous</div>
+            <div class="text-sm font-medium truncate max-w-[200px]">{prevControversy.title}</div>
+          </div>
+        </a>
+      ) : <div></div>}
+
+      {nextControversy ? (
+        <a href={`/controversies/${nextControversy.slug}`} class="group flex items-center gap-3 text-slate-400 hover:text-amber-400 transition-colors">
+          <div class="text-left">
+            <div class="text-xs uppercase tracking-wider font-bold text-slate-600 group-hover:text-amber-500/70">Next</div>
+            <div class="text-sm font-medium truncate max-w-[200px]">{nextControversy.title}</div>
+          </div>
+          <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      ) : <div></div>}
+    </div>
+
+  </div>
+</Layout>

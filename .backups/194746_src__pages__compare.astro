@@ -1,0 +1,369 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+---
+
+<Layout title="Compare Papers">
+  <div class="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-amber-500/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      
+      <!-- Breadcrumbs -->
+      <div class="mb-8">
+        <Breadcrumb 
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Compare Papers', href: '/compare' }
+          ]} 
+        />
+      </div>
+
+      <!-- Header & Search -->
+      <div class="mb-8 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 class="text-3xl font-bold text-amber-400 mb-2">Paper Comparison</h1>
+            <p class="text-slate-400 text-sm">Select 2-3 papers to analyze methodology and results side-by-side.</p>
+          </div>
+          <div class="flex gap-2">
+            <button id="clearBtn" class="px-4 py-2 text-sm font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-md border border-slate-700 transition-colors">
+              Clear All
+            </button>
+            <button id="shareBtn" class="px-4 py-2 text-sm font-medium text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-md transition-colors shadow-lg shadow-amber-900/20">
+              Share Comparison
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative z-50">
+          <label for="paperSearch" class="sr-only">Search papers</label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <svg class="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="paperSearch" 
+              class="block w-full pl-10 pr-3 py-3 border border-slate-700 rounded-md leading-5 bg-slate-900 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 sm:text-sm transition-shadow" 
+              placeholder="Search by title, author, or keyword..."
+              autocomplete="off"
+            >
+          </div>
+          <!-- Search Results Dropdown -->
+          <div id="searchResults" class="absolute w-full mt-1 bg-slate-900 border border-slate-700 rounded-md shadow-xl max-h-60 overflow-y-auto hidden">
+            <!-- Results injected via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Table Container -->
+      <div id="comparisonContainer" class="bg-slate-900/50 border border-slate-800 rounded-lg overflow-hidden shadow-2xl">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-800" id="compareTable">
+            <thead class="bg-slate-900">
+              <tr>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-slate-400 uppercase tracking-wider w-48 sticky left-0 bg-slate-900 z-10 border-r border-slate-800">
+                  Metric
+                </th>
+                <!-- Paper Columns injected via JS -->
+                <th id="emptyStateHeader" scope="col" class="px-6 py-12 text-center text-slate-500">
+                  No papers selected. Search above to add papers.
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800" id="compareBody">
+              <!-- Rows injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // --- State ---
+    let catalog = [];
+    let selectedIds = [];
+    const MAX_SELECTION = 3;
+
+    // --- DOM Elements ---
+    const searchInput = document.getElementById('paperSearch');
+    const searchResults = document.getElementById('searchResults');
+    const compareTableHead = document.querySelector('#compareTable thead tr');
+    const compareBody = document.getElementById('compareBody');
+    const emptyStateHeader = document.getElementById('emptyStateHeader');
+    const clearBtn = document.getElementById('clearBtn');
+    const shareBtn = document.getElementById('shareBtn');
+
+    // --- Initialization ---
+    async function init() {
+      // 1. Load Catalog
+      try {
+        const res = await fetch('/api/catalog.json');
+        catalog = await res.json();
+      } catch (e) {
+        console.error("Failed to load catalog", e);
+        searchInput.placeholder = "Error loading catalog...";
+        return;
+      }
+
+      // 2. Check URL Params for shared link
+      const urlParams = new URLSearchParams(window.location.search);
+      const sharedIds = urlParams.get('ids');
+      
+      if (sharedIds) {
+        selectedIds = sharedIds.split(',').filter(id => catalog.papers.find(p => p.id == id));
+        saveToStorage();
+      } else {
+        // 3. Check LocalStorage
+        const stored = localStorage.getItem('psi_compare_ids');
+        if (stored) {
+          selectedIds = JSON.parse(stored);
+          // Validate IDs exist in current catalog
+          selectedIds = selectedIds.filter(id => catalog.papers.find(p => p.id == id));
+        }
+      }
+
+      renderTable();
+    }
+
+    // --- Rendering ---
+    function renderTable() {
+      // Clear existing dynamic columns (keep the first "Metric" column)
+      const headers = Array.from(compareTableHead.children);
+      // Remove all headers except the first one (Metric) and the empty state
+      for (let i = headers.length - 1; i >= 1; i--) {
+        if (headers[i].id !== 'emptyStateHeader') {
+          headers[i].remove();
+        }
+      }
+
+      compareBody.innerHTML = '';
+
+      if (selectedIds.length === 0) {
+        emptyStateHeader.style.display = 'table-cell';
+        return;
+      } else {
+        emptyStateHeader.style.display = 'none';
+      }
+
+      const selectedPapers = selectedIds.map(id => catalog.papers.find(p => p.id == id)).filter(Boolean);
+
+      // Render Headers
+      selectedPapers.forEach(paper => {
+        const th = document.createElement('th');
+        th.scope = "col";
+        th.className = "px-6 py-4 text-left text-xs font-medium text-amber-400 uppercase tracking-wider min-w-[250px] border-l border-slate-800 relative group";
+        
+        th.innerHTML = `
+          <div class="flex justify-between items-start">
+            <span class="line-clamp-2 font-bold text-base normal-case text-slate-200 mb-1">${paper.title}</span>
+            <button onclick="removePaper('${paper.id}')" class="ml-2 text-slate-500 hover:text-red-400 transition-colors" title="Remove">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+          <div class="text-xs text-slate-500 mt-1">${paper.authors?.split(';')[0] || 'Unknown'}, ${paper.year}</div>
+        `;
+        compareTableHead.appendChild(th);
+      });
+
+      // Define Rows Configuration
+      const rows = [
+        { key: 'journal', label: 'Journal', type: 'text' },
+        { key: 'domain', label: 'Domain', type: 'text' },
+        { key: 'study_type', label: 'Study Type', type: 'text' },
+        { key: 'sample_size', label: 'Sample Size (N)', type: 'number', metric: 'sample' },
+        { key: 'blinding', label: 'Blinding', type: 'categorical', metric: 'blinding' },
+        { key: 'pre_registered', label: 'Pre-registered', type: 'boolean', metric: 'binary' },
+        { key: 'effect_size', label: 'Effect Size (d/r)', type: 'number' },
+        { key: 'bayes_factor', label: 'Bayes Factor', type: 'number' },
+      ];
+
+      // Render Rows
+      rows.forEach(rowConfig => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-800/50 transition-colors";
+
+        // Label Cell
+        const tdLabel = document.createElement('td');
+        tdLabel.className = "px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-400 bg-slate-900/80 sticky left-0 z-10 border-r border-slate-800";
+        tdLabel.textContent = rowConfig.label;
+        tr.appendChild(tdLabel);
+
+        // Data Cells
+        selectedPapers.forEach(paper => {
+          const td = document.createElement('td');
+          td.className = "px-6 py-4 whitespace-nowrap text-sm text-slate-300 border-l border-slate-800";
+          
+          let value = paper[rowConfig.key];
+          let displayValue = value;
+          let colorClass = "";
+
+          // Formatting & Color Coding Logic
+          if (rowConfig.metric === 'sample') {
+            const n = parseInt(value) || 0;
+            if (n >= 100) colorClass = "text-emerald-400 font-semibold";
+            else if (n >= 30) colorClass = "text-amber-400";
+            else colorClass = "text-rose-400";
+            displayValue = n.toLocaleString();
+          } 
+          else if (rowConfig.metric === 'blinding') {
+            const v = (value || "").toLowerCase();
+            if (v.includes('double')) {
+              colorClass = "bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded border border-emerald-800/50";
+              displayValue = "Double-Blind";
+            } else if (v.includes('single')) {
+              colorClass = "bg-amber-900/30 text-amber-300 px-2 py-1 rounded border border-amber-800/50";
+              displayValue = "Single-Blind";
+            } else {
+              colorClass = "bg-rose-900/30 text-rose-300 px-2 py-1 rounded border border-rose-800/50";
+              displayValue = "None / Open";
+            }
+          }
+          else if (rowConfig.metric === 'binary') {
+            if (value === true || value === "true") {
+              colorClass = "bg-emerald-900/30 text-emerald-300 px-2 py-1 rounded border border-emerald-800/50";
+              displayValue = "Yes";
+            } else {
+              colorClass = "bg-rose-900/30 text-rose-300 px-2 py-1 rounded border border-rose-800/50";
+              displayValue = "No";
+            }
+          }
+          else if (rowConfig.key === 'effect_size' || rowConfig.key === 'bayes_factor') {
+             if (value) {
+               const num = parseFloat(value);
+               // Simple heuristic coloring for effect sizes
+               if (!isNaN(num)) {
+                 if (Math.abs(num) > 0.8 || (rowConfig.key === 'bayes_factor' && num > 10)) {
+                   colorClass = "text-emerald-400 font-mono";
+                 } else if (Math.abs(num) > 0.5 || (rowConfig.key === 'bayes_factor' && num > 3)) {
+                   colorClass = "text-amber-400 font-mono";
+                 } else {
+                   colorClass = "text-slate-400 font-mono";
+                 }
+                 displayValue = num.toFixed(2);
+               }
+             } else {
+               displayValue = "-";
+             }
+          }
+
+          if (!displayValue && displayValue !== 0) displayValue = "<span class='text-slate-600 italic'>Not reported</span>";
+
+          td.innerHTML = `<span class="${colorClass}">${displayValue}</span>`;
+          tr.appendChild(td);
+        });
+
+        compareBody.appendChild(tr);
+      });
+    }
+
+    // --- Actions ---
+    function addPaper(id) {
+      if (selectedIds.includes(id)) return;
+      if (selectedIds.length >= MAX_SELECTION) {
+        alert(`Maximum ${MAX_SELECTION} papers allowed. Remove one to add another.`);
+        return;
+      }
+      selectedIds.push(id);
+      saveToStorage();
+      renderTable();
+      searchInput.value = '';
+      searchResults.classList.add('hidden');
+    }
+
+    window.removePaper = function(id) {
+      selectedIds = selectedIds.filter(sid => sid != id);
+      saveToStorage();
+      renderTable();
+    }
+
+    function saveToStorage() {
+      localStorage.setItem('psi_compare_ids', JSON.stringify(selectedIds));
+      
+      // Update URL without reload if sharing
+      const url = new URL(window.location);
+      if (selectedIds.length > 0) {
+        url.searchParams.set('ids', selectedIds.join(','));
+      } else {
+        url.searchParams.delete('ids');
+      }
+      window.history.replaceState({}, '', url);
+    }
+
+    clearBtn.addEventListener('click', () => {
+      selectedIds = [];
+      saveToStorage();
+      renderTable();
+    });
+
+    shareBtn.addEventListener('click', () => {
+      if (selectedIds.length < 2) {
+        alert("Select at least 2 papers to share a comparison.");
+        return;
+      }
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        const originalText = shareBtn.textContent;
+        shareBtn.textContent = "Copied!";
+        shareBtn.classList.add('bg-emerald-500');
+        setTimeout(() => {
+          shareBtn.textContent = originalText;
+          shareBtn.classList.remove('bg-emerald-500');
+        }, 2000);
+      });
+    });
+
+    // --- Search Logic ---
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      searchResults.innerHTML = '';
+      
+      if (query.length < 2) {
+        searchResults.classList.add('hidden');
+        return;
+      }
+
+      const matches = catalog.papers.filter(p => 
+        (p.title && p.title.toLowerCase().includes(query)) || 
+        (p.authors && p.authors.toLowerCase().includes(query)) ||
+        (p.domain && p.domain.toLowerCase().includes(query))
+      ).slice(0, 10); // Limit results
+
+      if (matches.length > 0) {
+        searchResults.classList.remove('hidden');
+        matches.forEach(p => {
+          const isAdded = selectedIds.includes(p.id);
+          const div = document.createElement('div');
+          div.className = `px-4 py-3 cursor-pointer border-b border-slate-800 hover:bg-slate-800 transition-colors ${isAdded ? 'opacity-50 bg-slate-900' : ''}`;
+          div.innerHTML = `
+            <div class="text-sm font-medium text-slate-200">${p.title}</div>
+            <div class="text-xs text-slate-500 mt-1">${p.authors?.split(';')[0]} • ${p.year}</div>
+            ${isAdded ? '<div class="text-xs text-amber-500 mt-1 font-bold">Already Added</div>' : ''}
+          `;
+          
+          if (!isAdded) {
+            div.addEventListener('click', () => addPaper(p.id));
+          }
+          
+          searchResults.appendChild(div);
+        });
+      } else {
+        searchResults.classList.add('hidden');
+      }
+    });
+
+    // Close search on click outside
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.classList.add('hidden');
+      }
+    });
+
+    // Run
+    init();
+  </script>
+</Layout>

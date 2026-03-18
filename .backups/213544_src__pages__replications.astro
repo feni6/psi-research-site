@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { marked } from 'marked';
+import catalog from '../data/catalog.json';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const mapPath = path.join(process.cwd(), 'src/data/replication_map.md');
+const replicationMap = fs.readFileSync(mapPath, 'utf-8');
+
+// Create a set of valid catalog IDs for quick lookup
+const validIds = new Set(catalog.papers.map((p: any) => p.id));
+
+// Find backtick-wrapped strings that look like catalog IDs and link them
+const linkedContent = replicationMap.replace(
+  /`([a-z][a-z0-9]*_[0-9]{4}_[a-z_]+)`/g,
+  (match: string, id: string) => {
+    if (validIds.has(id)) {
+      return `[📄 \`${id}\`](/paper/${id})`;
+    }
+    return match;
+  }
+);
+
+const htmlContent = marked(linkedContent);
+
+// Parse stats from the markdown content
+const lines = replicationMap.split('\n');
+let totalChains = 0;
+let totalAttempts = 0;
+let successfulCount = 0;
+let failedCount = 0;
+let mixedCount = 0;
+
+for (const line of lines) {
+  const trimmedLine = line.trim();
+  
+  // Count ## headers as replication chains
+  if (trimmedLine.startsWith('## ')) {
+    totalChains++;
+  }
+  
+  // Count table rows (lines containing | on both sides)
+  if (trimmedLine.startsWith('|') && trimmedLine.endsWith('|')) {
+    // Skip header rows and separator rows (contain ---)
+    if (!trimmedLine.includes('---')) {
+      // Check if this looks like a header row (contains bold markers or typical header text)
+      const isHeaderRow = trimmedLine.includes('**') || 
+                         trimmedLine.toLowerCase().includes('study') && trimmedLine.toLowerCase().includes('outcome');
+      
+      if (!isHeaderRow) {
+        totalAttempts++;
+        
+        // Count outcomes - check for specific keywords
+        const lowerLine = trimmedLine.toLowerCase();
+        if (lowerLine.includes('successful') || lowerLine.includes('success')) {
+          successfulCount++;
+        } else if (lowerLine.includes('failed') || lowerLine.includes('failure') || lowerLine.includes('fail')) {
+          failedCount++;
+        } else if (lowerLine.includes('mixed') || lowerLine.includes('partial')) {
+          mixedCount++;
+        }
+      }
+    }
+  }
+}
+---
+
+<Layout title="Replication Map" description="A comprehensive map of replication attempts across psi research paradigms">
+  <!-- Breadcrumb -->
+  <nav class="mb-6 text-sm">
+    <ol class="flex items-center space-x-2 text-slate-400">
+      <li><a href="/" class="hover:text-amber-400 transition-colors">Home</a></li>
+      <li class="text-slate-600">/</li>
+      <li class="text-amber-400 font-medium">Replications</li>
+    </ol>
+  </nav>
+
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Replication Map</h1>
+    <p class="text-slate-400 mb-4">Tracks replication relationships across major psi research paradigms. Click any linked paper ID to view its details.</p>
+    
+    <!-- Summary Stats Box -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+        <p class="text-slate-400 text-xs uppercase tracking-wide mb-1">Replication Chains</p>
+        <p class="text-2xl font-bold text-amber-400">{totalChains}</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+        <p class="text-slate-400 text-xs uppercase tracking-wide mb-1">Total Attempts</p>
+        <p class="text-2xl font-bold text-white">{totalAttempts}</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+        <p class="text-slate-400 text-xs uppercase tracking-wide mb-1">Successful</p>
+        <p class="text-2xl font-bold text-green-400">{successfulCount}</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+        <p class="text-slate-400 text-xs uppercase tracking-wide mb-1">Failed</p>
+        <p class="text-2xl font-bold text-red-400">{failedCount}</p>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 rounded-lg p-4">
+        <p class="text-slate-400 text-xs uppercase tracking-wide mb-1">Mixed</p>
+        <p class="text-2xl font-bold text-amber-400">{mixedCount}</p>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 text-sm">
+      <p class="text-slate-300"><strong class="text-amber-400">Legend:</strong> 
+        <span class="text-green-400">Successful</span> · 
+        <span class="text-red-400">Failed</span> · 
+        <span class="text-amber-400">Mixed</span> · 
+        <span class="text-purple-400">Anomalous</span> · 
+        <span class="text-slate-400">Partial</span>
+      </p>
+    </div>
+  </div>
+
+  <article class="prose prose-invert prose-amber max-w-4xl" set:html={htmlContent} />
+</Layout>

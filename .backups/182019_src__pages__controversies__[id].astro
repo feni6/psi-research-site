@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { marked } from 'marked';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export function getStaticPaths() {
+  const dir = path.join(process.cwd(), 'src/data/controversies');
+  const files = fs.readdirSync(dir).filter(f => f.match(/^\d{2}_/) && f.endsWith('.md'));
+  return files.map(f => {
+    const id = f.replace('.md', '');
+    const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+    return { params: { id }, props: { content, filename: f } };
+  });
+}
+
+const { id } = Astro.params;
+const { content } = Astro.props;
+
+// Parse title from first line
+const title = content.split('\n')[0].replace(/^#\s*\d+\.\s*/, '').trim();
+
+// Parse key question (first sentence after title, before first ##)
+const contentAfterTitle = content.split('\n').slice(1).join('\n');
+const keyQuestionMatch = contentAfterTitle.match(/^(.+?[.?!])\s/);
+const keyQuestion = keyQuestionMatch ? keyQuestionMatch[1].trim() : '';
+
+// Parse Pro/Con counts from markdown
+function countPapers(section: string): number {
+  const sectionMatch = content.match(new RegExp(`\\*\\*${section}:\\*\\*([\\s\\S]*?)(?=\\*\\*|$)`));
+  if (!sectionMatch) return 0;
+  const sectionContent = sectionMatch[1];
+  const lines = sectionContent.split('\n').filter(line => line.trim().startsWith('- '));
+  return lines.length;
+}
+
+const proCount = countPapers('Pro');
+const conCount = countPapers('Con');
+const totalCount = proCount + conCount;
+const proPercent = totalCount > 0 ? Math.round((proCount / totalCount) * 100) : 0;
+const conPercent = totalCount > 0 ? Math.round((conCount / totalCount) * 100) : 0;
+
+// Process content for rendering
+const linkedContent = content.replace(
+  /\[catalog ID: ([^\]]+)\]/g,
+  (_, id) => `[📄 ${id}](/paper/${id.trim()})`
+);
+const html = marked(linkedContent);
+---
+
+<Layout title={title}>
+  <nav class="text-sm text-slate-500 mb-6">
+    <a href="/" class="hover:text-amber-400">Home</a>
+    <span class="mx-1 text-slate-600">/</span>
+    <a href="/controversies" class="hover:text-amber-400">Controversies</a>
+    <span class="mx-1 text-slate-600">/</span>
+    <span class="text-slate-300">{title}</span>
+  </nav>
+
+  <!-- Visual Summary Box -->
+  <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-8">
+    <h1 class="text-2xl font-bold text-amber-400 mb-2">{title}</h1>
+    {keyQuestion && (
+      <p class="text-slate-400 mb-4 italic">{keyQuestion}</p>
+    )}
+    
+    <div class="space-y-3">
+      <div class="flex h-3 rounded-full overflow-hidden bg-slate-800">
+        <div class="bg-green-500 transition-all" style={`width: ${proPercent}%`}></div>
+        <div class="bg-red-500 transition-all" style={`width: ${conPercent}%`}></div>
+      </div>
+      <div class="flex justify-between text-sm">
+        <span class="text-green-400">{proCount} supporting</span>
+        <span class="text-red-400">{conCount} critical</span>
+      </div>
+    </div>
+  </div>
+
+  <article class="prose prose-invert prose-amber max-w-4xl" set:html={html} />
+</Layout>

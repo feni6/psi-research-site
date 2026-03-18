@@ -1,0 +1,219 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const terms = [
+  { 
+    term: "Ganzfeld", 
+    definition: "A sensory deprivation protocol used in telepathy experiments. The receiver relaxes in a mild sensory isolation environment while a sender attempts to transmit an image or video clip.",
+    link: { href: "/controversies/01_ganzfeld_telepathy", text: "Ganzfeld Telepathy" }
+  },
+  { 
+    term: "Effect Size", 
+    definition: "A quantitative measure of the magnitude of an experimental effect. Common metrics include Cohen's d, Hedges' g, and correlation coefficient r. Larger values indicate stronger effects.",
+    link: { href: "/stats", text: "Statistics" }
+  },
+  { 
+    term: "Pre-registration", 
+    definition: "The practice of publicly registering hypotheses, methods, and analysis plans before data collection begins. Prevents post-hoc hypothesis revision (HARKing) and p-hacking.",
+    link: { href: "/stats", text: "Methodology" }
+  },
+  { 
+    term: "Meta-analysis", 
+    definition: "A statistical technique that combines results from multiple studies to estimate an overall effect size. Addresses the 'file drawer problem' by aggregating evidence across experiments.",
+    link: { href: "/controversies/10_meta_debate", text: "Meta-Analysis Debate" }
+  },
+  { 
+    term: "Bayes Factor", 
+    definition: "A ratio expressing how much more likely the observed data is under one hypothesis versus another. BF > 3 is considered moderate evidence; BF > 10 is strong evidence.",
+    link: { href: "/stats", text: "Statistics" }
+  },
+  { 
+    term: "RNG (Random Number Generator)", 
+    definition: "A device that produces random sequences, used in psychokinesis (PK) experiments. Participants attempt to mentally influence the output toward a target value.",
+    link: { href: "/domain/psychokinesis", text: "Psychokinesis" }
+  },
+  { 
+    term: "Presentiment", 
+    definition: "The hypothesized ability of the body to anticipate future emotional events before they occur, measured via physiological responses like skin conductance or pupil dilation.",
+    link: { href: "/controversies/03_presentiment", text: "Presentiment" }
+  },
+  { 
+    term: "DMILS", 
+    definition: "Direct Mental Interaction with Living Systems. Experiments testing whether one person's intention can influence another person's physiology at a distance.",
+    link: { href: "/domain/telepathy", text: "Telepathy" }
+  },
+  { 
+    term: "Remote Viewing", 
+    definition: "A protocol where a 'viewer' attempts to describe a distant or hidden target location using only mental impressions. Originally studied under the US government's STAR GATE program.",
+    link: { href: "/domain/remote_viewing", text: "Remote Viewing" }
+  },
+  { 
+    term: "Psi", 
+    definition: "An umbrella term for anomalous mental phenomena including telepathy, clairvoyance, precognition, and psychokinesis. From the Greek letter ψ (psi).",
+    link: { href: "/about", text: "About Psi" }
+  },
+  { 
+    term: "File Drawer Problem", 
+    definition: "The bias introduced when studies with null results go unpublished ('filed away'), making the published literature appear more supportive of an effect than the full evidence warrants.",
+    link: { href: "/method", text: "Methodology" }
+  },
+  { 
+    term: "Double-Blind", 
+    definition: "An experimental design where neither the participant nor the experimenter knows the condition assignment during data collection. Prevents unconscious bias from influencing results.",
+    link: { href: "/stats", text: "Statistics" }
+  },
+  { 
+    term: "Replication", 
+    definition: "An attempt to reproduce the findings of an earlier study using the same or similar methods. Successful replications strengthen confidence; failures weaken it.",
+    link: { href: "/replications", text: "Replications" }
+  },
+  { 
+    term: "NDE (Near-Death Experience)", 
+    definition: "Experiences reported by people who have been close to death, often including out-of-body perceptions, tunnel vision, and encounters with deceased persons.",
+    link: { href: "/domain/nde", text: "NDE Research" }
+  },
+  { 
+    term: "OBE (Out-of-Body Experience)", 
+    definition: "The sensation of perceiving the world from a vantage point outside one's physical body. Sometimes reported during NDEs or induced through specific meditation practices.",
+    link: { href: "/domain/nde", text: "NDE Research" }
+  },
+];
+
+// Sort terms alphabetically
+const sortedTerms = terms.sort((a, b) => a.term.localeCompare(b.term));
+
+// Generate unique first letters for jump links
+const letters = [...new Set(sortedTerms.map(t => t.term.charAt(0).toUpperCase()))].sort();
+
+// Helper to create URL-safe IDs
+const slugify = (text: string) => {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+};
+---
+
+<Layout title="Glossary">
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    
+    <!-- Header & Search -->
+    <div class="mb-10 text-center">
+      <h1 class="text-4xl font-bold text-amber-400 mb-4">Research Glossary</h1>
+      <p class="text-slate-400 mb-8 max-w-2xl mx-auto">
+        Key terms, protocols, and statistical concepts used throughout the Psi Research Library.
+      </p>
+      
+      <div class="relative max-w-md mx-auto">
+        <input 
+          type="text" 
+          id="search-input"
+          placeholder="Filter terms..." 
+          class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all"
+        />
+        <svg class="w-5 h-5 text-slate-500 absolute right-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Alphabet Jump Links -->
+    <div class="flex flex-wrap justify-center gap-2 mb-12 sticky top-4 z-10 bg-slate-950/90 backdrop-blur-sm py-2 border-b border-slate-800/50">
+      {letters.map((letter) => (
+        <a 
+          href={`#letter-${letter}`}
+          class="text-slate-400 hover:text-amber-400 font-mono text-sm px-2 py-1 rounded transition-colors"
+        >
+          {letter}
+        </a>
+      ))}
+    </div>
+
+    <!-- Glossary List -->
+    <div class="space-y-8" id="glossary-list">
+      {letters.map((letter) => (
+        <div class="scroll-mt-32" id={`letter-${letter}`}>
+          <h2 class="text-2xl font-bold text-slate-500 mb-4 border-b border-slate-800 pb-2">
+            {letter}
+          </h2>
+          
+          <div class="space-y-6">
+            {sortedTerms.filter(t => t.term.startsWith(letter)).map((item) => {
+              const id = slugify(item.term);
+              return (
+                <div class="glossary-item group" data-search={`${item.term} ${item.definition}`.toLowerCase()}>
+                  <h3 id={id} class="text-xl font-bold text-amber-400 group-hover:text-amber-300 transition-colors flex items-center gap-2">
+                    <a href={`#${id}`} class="opacity-0 group-hover:opacity-100 text-slate-600 hover:text-amber-400 transition-all">#</a>
+                    {item.term}
+                  </h3>
+                  <p class="text-slate-300 mt-2 leading-relaxed pl-6 border-l-2 border-slate-800 group-hover:border-amber-400/30 transition-colors">
+                    {item.definition}
+                  </p>
+                  {item.link && (
+                    <div class="mt-2 pl-6">
+                      <a href={item.link.href} class="text-sm text-slate-500 hover:text-amber-400 transition-colors flex items-center gap-1">
+                        <span>→</span>
+                        <span>See: {item.link.text}</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- No Results Message -->
+    <div id="no-results" class="hidden text-center py-12">
+      <p class="text-slate-500 text-lg">No terms found matching your search.</p>
+      <button 
+        onclick="document.getElementById('search-input').value = ''; document.getElementById('search-input').dispatchEvent(new Event('input'));"
+        class="mt-4 text-amber-400 hover:underline"
+      >
+        Clear search
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('search-input');
+    const glossaryItems = document.querySelectorAll('.glossary-item');
+    const letterHeaders = document.querySelectorAll('h2');
+    const noResults = document.getElementById('no-results');
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      let hasResults = false;
+
+      // Filter individual terms
+      glossaryItems.forEach(item => {
+        const content = item.getAttribute('data-search');
+        if (content.includes(query)) {
+          item.classList.remove('hidden');
+          hasResults = true;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      // Hide/Show Letter Headers if all children are hidden
+      letterHeaders.forEach(header => {
+        const parent = header.parentElement;
+        const visibleItems = parent.querySelectorAll('.glossary-item:not(.hidden)');
+        
+        if (visibleItems.length === 0) {
+          header.classList.add('hidden');
+        } else {
+          header.classList.remove('hidden');
+        }
+      });
+
+      // Toggle no results message
+      if (hasResults) {
+        noResults.classList.add('hidden');
+      } else {
+        noResults.classList.remove('hidden');
+      }
+    });
+  </script>
+</Layout>

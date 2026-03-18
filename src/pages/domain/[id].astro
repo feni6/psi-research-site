@@ -1,0 +1,201 @@
+---
+// src/pages/domain/[id].astro
+import Layout from '../../layouts/Layout.astro';
+import catalog from '../../data/catalog.json';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+export function getStaticPaths() {
+  const domainConfig = {
+    methodology: { icon: '🔬', color: 'blue', label: 'Methodology & Theory' },
+    telepathy: { icon: '🧠', color: 'purple', label: 'Telepathy' },
+    psychokinesis: { icon: '🎲', color: 'red', label: 'Psychokinesis' },
+    nde: { icon: '✨', color: 'cyan', label: 'NDE & OBE' },
+    skeptical: { icon: '🔍', color: 'orange', label: 'Skeptical & Critical' },
+    precognition: { icon: '🔮', color: 'violet', label: 'Precognition' },
+    healing: { icon: '💚', color: 'green', label: 'Healing & Intention' },
+    overview: { icon: '📖', color: 'amber', label: 'Books & Overviews' },
+    remote_viewing: { icon: '👁️', color: 'teal', label: 'Remote Viewing' },
+    mediumship: { icon: '🕯️', color: 'indigo', label: 'Mediumship & Survival' },
+    nonverbal: { icon: '🤝', color: 'pink', label: 'Autism & Nonverbal' },
+    meta_analysis: { icon: '📊', color: 'yellow', label: 'Meta-Analyses' },
+  };
+
+  // Helper to calculate top authors
+  function getTopAuthors(papers: any[]) {
+    const authorCounts: Record<string, number> = {};
+    papers.forEach(p => {
+      if (!p.authors) return;
+      // Split by common delimiters and clean up
+      const names = Array.isArray(p.authors) ? p.authors : [String(p.authors)];
+      names.forEach((name: string) => {
+        if (name) authorCounts[name] = (authorCounts[name] || 0) + 1;
+      });
+    });
+    return Object.entries(authorCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(entry => entry[0]);
+  }
+
+  const domains = [...new Set(catalog.papers.map((p: any) => p.psi_domain).filter(Boolean))];
+  
+  return domains.map(domain => {
+    const domainPapers = catalog.papers.filter((p: any) => p.psi_domain === domain);
+    const config = domainConfig[domain as keyof typeof domainConfig] || { icon: '📄', color: 'slate', label: domain };
+    
+    return {
+      params: { id: domain },
+      props: { 
+        domain, 
+        config,
+        stats: {
+          count: domainPapers.length,
+          topAuthors: getTopAuthors(domainPapers)
+        }
+      },
+    };
+  });
+}
+
+const { domain, config, stats } = Astro.props;
+const papers = catalog.papers
+  .filter((p: any) => p.psi_domain === domain)
+  .sort((a: any, b: any) => (b.year || 0) - (a.year || 0));
+
+const years = papers.map((p: any) => p.year).filter(Boolean);
+const minYear = years.length ? Math.min(...years) : 'N/A';
+const maxYear = years.length ? Math.max(...years) : 'N/A';
+
+// Dynamic color classes
+const borderColor = `border-${config.color}-500`;
+const textColor = `text-${config.color}-400`;
+const bgColor = `bg-${config.color}-500/10`;
+const hoverBgColor = `hover:bg-${config.color}-500/20`;
+---
+
+<Layout title={`${config.label} - Psi Research Library`} description={`Papers in the ${config.label} domain`}>
+  <main class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+      
+      <!-- Breadcrumb -->
+      <div class="mb-6">
+        <Breadcrumb 
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Domains', href: '/catalog' },
+            { label: config.label, href: '#' }
+          ]} 
+        />
+      </div>
+
+      <!-- Domain Hero Section -->
+      <section class={`relative overflow-hidden rounded-2xl ${bgColor} border border-${config.color}-500/30 p-8 mb-10`}>
+        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+          <!-- Icon -->
+          <div class={`text-6xl md:text-7xl drop-shadow-lg`}>
+            {config.icon}
+          </div>
+          
+          <!-- Title & Desc -->
+          <div class="flex-1">
+            <h1 class={`text-4xl md:text-5xl font-bold ${textColor} mb-2`}>
+              {config.label}
+            </h1>
+            <p class="text-slate-300 text-lg max-w-2xl">
+              A curated collection of research papers focusing on {config.label.toLowerCase()}.
+              Explore the methodology, key findings, and ongoing debates in this field.
+            </p>
+          </div>
+        </div>
+        
+        <!-- Decorative background element -->
+        <div class={`absolute -right-10 -bottom-10 w-64 h-64 ${bgColor} blur-3xl rounded-full opacity-50`}></div>
+      </section>
+
+      <!-- Stats Bar -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col items-center justify-center text-center">
+          <span class="text-slate-400 text-sm uppercase tracking-wider font-semibold mb-1">Total Papers</span>
+          <span class={`text-3xl font-bold ${textColor}`}>{stats.count}</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col items-center justify-center text-center">
+          <span class="text-slate-400 text-sm uppercase tracking-wider font-semibold mb-1">Year Range</span>
+          <span class="text-3xl font-bold text-slate-200">{minYear} – {maxYear}</span>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col items-center justify-center text-center">
+          <span class="text-slate-400 text-sm uppercase tracking-wider font-semibold mb-1">Top Contributors</span>
+          <div class="flex flex-wrap justify-center gap-2">
+            {stats.topAuthors.map((author: string) => (
+              <span class="text-sm text-slate-300 bg-slate-800 px-2 py-1 rounded">{author}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Papers List -->
+      <div class="space-y-6">
+        <h2 class="text-2xl font-bold text-slate-200 flex items-center gap-3">
+          <svg class={`w-6 h-6 ${textColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          Recent Publications
+        </h2>
+
+        {papers.map((paper: any) => (
+          <article class={`group bg-slate-900 border border-slate-800 ${borderColor} border-l-4 rounded-r-lg rounded-l-sm p-6 hover:${hoverBgColor} transition-all duration-300`}>
+            <div class="flex flex-col gap-3">
+              <!-- Title & Link -->
+              <h3 class="text-xl font-semibold text-slate-100 group-hover:text-amber-400 transition-colors">
+                <a href={`/paper/${paper.id}`}>
+                  {paper.title}
+                </a>
+              </h3>
+
+              <!-- Meta Info -->
+              <div class="flex flex-wrap items-center gap-3 text-sm text-slate-400">
+                <span class="font-medium text-slate-300">{paper.authors}</span>
+                <span class="text-slate-600">•</span>
+                <span>{paper.year}</span>
+                {paper.journal && (
+                  <>
+                    <span class="text-slate-600">•</span>
+                    <span class="italic text-slate-500">{paper.journal}</span>
+                  </>
+                )}
+              </div>
+
+              <!-- Abstract Excerpt -->
+              {paper.abstract && (
+                <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+                  {paper.abstract}
+                </p>
+              )}
+
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-2 pt-2">
+                {paper.tags?.slice(0, 5).map((tag: string) => (
+                  <span class="px-2 py-1 bg-slate-800 text-slate-400 text-xs rounded border border-slate-700">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Back Link -->
+      <div class="mt-12 pt-8 border-t border-slate-800">
+        <a 
+          href="/catalog" 
+          class="inline-flex items-center gap-2 text-slate-400 hover:text-amber-400 transition-colors font-medium"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to All Domains
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>

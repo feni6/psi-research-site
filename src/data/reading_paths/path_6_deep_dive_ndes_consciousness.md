@@ -79,7 +79,7 @@
 - **Read actively**: for each paper, note the year, the journal, and the sample size or scope. These contextual details matter as much as the conclusions.
 - **Cross-reference paths**: many papers appear in more than one path. Each time you encounter a paper in a different context, you will understand it differently.
 - **Follow the debate pairs**: several paths deliberately place a pro-psi paper next to its skeptical response (e.g., Bem & Honorton 1994 / Hyman 1994, Bosch et al. 2006 / Radin 2006). Reading both back-to-back is where the real learning happens.
-- **Use the catalog**: every entry includes a catalog ID (e.g., `cardeña_2018_experimental`) that maps directly to `_CATALOG.json` for metadata, DOIs, and file locations.
+- **Use the catalog**: every entry includes a catalog ID (e.g., `cardena_2018_experimental`) that maps directly to `_CATALOG.json` for metadata, DOIs, and file locations.
 
 ---
 

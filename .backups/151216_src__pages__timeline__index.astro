@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const eras = [
+  { id: 'era_1_pre_modern', title: 'Pre-Modern Era', years: '1882–1930', desc: 'The founding of the SPR, early telepathy experiments, and the birth of psychical research', color: 'text-purple-400' },
+  { id: 'era_2_rhine', title: 'The Rhine Era', years: '1930–1965', desc: "J.B. Rhine's card-guessing experiments at Duke University establish parapsychology as a laboratory discipline", color: 'text-blue-400' },
+  { id: 'era_3_ganzfeld', title: 'The Ganzfeld Era', years: '1965–1985', desc: 'Honorton develops the Ganzfeld protocol; the Hyman-Honorton debate shapes modern methodology', color: 'text-cyan-400' },
+  { id: 'era_4_stargate', title: 'The STAR GATE Era', years: '1972–1995', desc: 'Government-funded remote viewing research at SRI and SAIC; declassification and the AIR review', color: 'text-green-400' },
+  { id: 'era_5_modern', title: 'Modern Era', years: '1995–2015', desc: "Bem's Feeling the Future, the replication crisis, Bayesian critiques, and digital-age methodology", color: 'text-amber-400' },
+  { id: 'era_6_current', title: 'Current Era', years: '2015–present', desc: 'Pre-registered replications, citizen science, open data, and the intersection of psi with consciousness studies', color: 'text-red-400' },
+];
+---
+
+<Layout title="Timeline">
+  <h1 class="text-3xl font-bold mb-2">Historical Timeline</h1>
+  <p class="text-slate-400 mb-8">Six eras of psi research, from Victorian séance investigations to modern pre-registered experiments.</p>
+  
+  <div class="relative">
+    <div class="absolute left-8 top-0 bottom-0 w-px bg-slate-700"></div>
+    <div class="space-y-8">
+      {eras.map((era) => (
+        <a href={`/timeline/${era.id}`} class="block relative pl-20 group">
+          <div class="absolute left-6 top-3 w-4 h-4 rounded-full bg-slate-800 border-2 border-amber-500 group-hover:bg-amber-500 transition"></div>
+          <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 group-hover:border-amber-500/30 transition">
+            <div class="flex items-baseline gap-3 mb-2">
+              <span class={`font-mono text-sm ${era.color}`}>{era.years}</span>
+              <h3 class="text-xl font-bold text-slate-200">{era.title}</h3>
+            </div>
+            <p class="text-slate-400">{era.desc}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,313 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { marked } from 'marked';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export function getStaticPaths() {
+  const dir = path.join(process.cwd(), 'src/data/controversies');
+  const files = fs.readdirSync(dir).filter(f => f.match(/^\d{2}_/) && f.endsWith('.md'));
+  return files.map(f => {
+    const id = f.replace('.md', '');
+    const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+    return { params: { id }, props: { content, filename: f } };
+  });
+}
+
+const { id } = Astro.params;
+const { content } = Astro.props;
+
+// Parse title from first line
+const title = content.split('\n')[0].replace(/^#\s*\d+\.\s*/, '').trim();
+
+// Parse key question (first sentence after title, before first ##)
+const contentAfterTitle = content.split('\n').slice(1).join('\n');
+const keyQuestionMatch = contentAfterTitle.match(/^(.+?[.?!])\s/);
+const keyQuestion = keyQuestionMatch ? keyQuestionMatch[1].trim() : '';
+
+// Parse content into sections
+function parseSections(content: string) {
+  const sections = {
+    intro: '',
+    pro: [] as string[],
+    con: [] as string[],
+    status: '',
+    remaining: ''
+  };
+
+  // Find Pro section
+  const proMatch = content.match(/\*\*Pro:\*\*([\s\S]*?)(?=\*\*Con:|\*\*Critical evidence:|\*\*Current status:|$)/i);
+  if (proMatch) {
+    const proContent = proMatch[1];
+    const proLines = proContent.split('\n').filter(line => line.trim().startsWith('- '));
+    sections.pro = proLines.map(line => line.replace(/^- /, '').trim());
+  }
+
+  // Find Con section
+  const conMatch = content.match(/\*\*Con:\*\*([\s\S]*?)(?=\*\*Critical evidence:|\*\*Current status:|$)/i);
+  if (conMatch) {
+    const conContent = conMatch[1];
+    const conLines = conContent.split('\n').filter(line => line.trim().startsWith('- '));
+    sections.con = conLines.map(line => line.replace(/^- /, '').trim());
+  }
+
+  // Also check for alternative headers
+  if (sections.pro.length === 0) {
+    const supportMatch = content.match(/\*\*Supporting evidence:\*\*([\s\S]*?)(?=\*\*Con:|\*\*Critical evidence:|\*\*Current status:|$)/i);
+    if (supportMatch) {
+      const supportContent = supportMatch[1];
+      const supportLines = supportContent.split('\n').filter(line => line.trim().startsWith('- '));
+      sections.pro = supportLines.map(line => line.replace(/^- /, '').trim());
+    }
+  }
+
+  if (sections.con.length === 0) {
+    const criticalMatch = content.match(/\*\*Critical evidence:\*\*([\s\S]*?)(?=\*\*Current status:|$)/i);
+    if (criticalMatch) {
+      const criticalContent = criticalMatch[1];
+      const criticalLines = criticalContent.split('\n').filter(line => line.trim().startsWith('- '));
+      sections.con = criticalLines.map(line => line.replace(/^- /, '').trim());
+    }
+  }
+
+  // Extract Current Status
+  const statusMatch = content.match(/\*?\*?Current status:\*?\**\s*([^\n]+)/i);
+  if (statusMatch) {
+    sections.status = statusMatch[1].trim();
+  }
+
+  // Extract intro (everything before Pro/Con sections)
+  const beforeProMatch = content.match(/^([\s\S]*?)(?=\*\*Pro:|\*\*Supporting evidence:)/i);
+  if (beforeProMatch) {
+    let introText = beforeProMatch[1];
+    // Remove title line
+    introText = introText.split('\n').slice(1).join('\n');
+    // Remove key question if it's on its own line
+    introText = introText.replace(/^(.+?[.?!])\s*\n/, '');
+    // Remove Current status line if present
+    introText = introText.replace(/\*?\*?Current status:\*?\**\s*[^\n]+\n?/i, '');
+    sections.intro = introText.trim();
+  }
+
+  return sections;
+}
+
+const sections = parseSections(content);
+
+// Parse paper references from bullet points
+function parsePaperReference(text: string) {
+  // Try to extract catalog ID from [catalog ID: XXX] pattern
+  const catalogMatch = text.match(/\[catalog ID: ([^\]]+)\]/);
+  const catalogId = catalogMatch ? catalogMatch[1].trim() : null;
+
+  // Try to extract year (4 digits)
+  const yearMatch = text.match(/\b(19|20)\d{2}\b/);
+  const year = yearMatch ? yearMatch[0] : null;
+
+  // Clean up the text for display
+  let description = text
+    .replace(/\[catalog ID: [^\]]+\]/g, '')
+    .replace(/\*\*/g, '')
+    .trim();
+
+  // Truncate if too long
+  if (description.length > 200) {
+    description = description.substring(0, 197) + '...';
+  }
+
+  return { catalogId, year, description };
+}
+
+const proPapers = sections.pro.map(parsePaperReference);
+const conPapers = sections.con.map(parsePaperReference);
+
+const proCount = proPapers.length;
+const conCount = conPapers.length;
+const totalCount = proCount + conCount;
+const proPercent = totalCount > 0 ? Math.round((proCount / totalCount) * 100) : 0;
+const conPercent = totalCount > 0 ? Math.round((conCount / totalCount) * 100) : 0;
+
+// Process intro content for rendering
+function processContent(text: string): string {
+  if (!text) return '';
+  
+  const linkedContent = text.replace(
+    /\[catalog ID: ([^\]]+)\]/g,
+    (_, id) => `[📄 ${id}](/paper/${id.trim()})`
+  );
+  
+  return marked(linkedContent);
+}
+
+const introHtml = processContent(sections.intro);
+const statusHtml = sections.status ? marked(sections.status) : '';
+---
+
+<Layout title={title}>
+  <nav class="text-sm text-slate-500 mb-6">
+    <a href="/" class="hover:text-amber-400">Home</a>
+    <span class="mx-1 text-slate-600">/</span>
+    <a href="/controversies" class="hover:text-amber-400">Controversies</a>
+    <span class="mx-1 text-slate-600">/</span>
+    <span class="text-slate-300">{title}</span>
+  </nav>
+
+  <!-- Visual Summary Box -->
+  <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 mb-8 shadow-lg shadow-black/20">
+    <h1 class="text-2xl font-bold text-amber-400 mb-2">{title}</h1>
+    {keyQuestion && (
+      <p class="text-slate-400 mb-6 italic border-l-2 border-slate-700 pl-3">{keyQuestion}</p>
+    )}
+    
+    <div class="space-y-3">
+      <!-- Ratio Bar -->
+      <div class="relative h-4 rounded-full overflow-hidden bg-slate-800 flex">
+        {proPercent > 0 && (
+          <div 
+            class="bg-green-500 hover:bg-green-400 transition-all relative group" 
+            style={`width: ${proPercent}%`}
+          >
+            <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        )}
+        {conPercent > 0 && (
+          <div 
+            class="bg-red-500 hover:bg-red-400 transition-all relative group" 
+            style={`width: ${conPercent}%`}
+          >
+            <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        )}
+        {totalCount === 0 && (
+          <div class="w-full bg-slate-700"></div>
+        )}
+      </div>
+      
+      <!-- Ratio Labels -->
+      <div class="flex justify-between text-sm font-medium">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-green-500"></span>
+          <span class="text-green-400">{proCount} Supporting</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-red-400">{conCount} Critical</span>
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Status Key Findings Box -->
+  {sections.status && (
+    <div class="bg-slate-900/80 border-l-4 border-amber-500 rounded-r-lg p-5 mb-8 shadow-md">
+      <div class="flex items-center gap-2 mb-2">
+        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wide">Current Status</h3>
+      </div>
+      <div class="text-slate-300 text-sm leading-relaxed" set:html={statusHtml} />
+    </div>
+  )}
+
+  <!-- Introduction Content -->
+  {sections.intro && (
+    <article class="prose prose-invert prose-amber max-w-4xl mb-10 text-slate-300" set:html={introHtml} />
+  )}
+
+  <!-- T-Chart Layout for Pro/Con Arguments -->
+  {(proCount > 0 || conCount > 0) && (
+    <div class="mb-8">
+      <h2 class="text-xl font-bold text-slate-200 mb-6 flex items-center gap-2">
+        <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+        </svg>
+        Evidence Breakdown
+      </h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Pro Column -->
+        {proCount > 0 && (
+          <div class="flex flex-col h-full">
+            <div class="bg-slate-900 border-l-4 border-green-500 rounded-r-lg p-4 mb-4 shadow-sm">
+              <h3 class="text-lg font-bold text-green-400 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Supporting Evidence
+              </h3>
+            </div>
+            
+            <div class="space-y-3 flex-grow">
+              {proPapers.map((paper, idx) => (
+                <div class="group bg-slate-900/50 border border-slate-800 border-l-4 border-l-green-600 rounded-r-md p-4 hover:bg-slate-800 hover:border-l-green-400 transition-all duration-200">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    {paper.catalogId && (
+                      <a href={`/paper/${paper.catalogId}`} class="inline-flex items-center gap-1.5 text-amber-400 text-xs font-bold uppercase tracking-wider hover:text-amber-300 hover:underline">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        {paper.catalogId}
+                      </a>
+                    )}
+                    {paper.year && (
+                      <span class="text-xs text-slate-500 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">{paper.year}</span>
+                    )}
+                  </div>
+                  <p class="text-slate-300 text-sm leading-relaxed">{paper.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <!-- Con Column -->
+        {conCount > 0 && (
+          <div class="flex flex-col h-full">
+            <div class="bg-slate-900 border-l-4 border-red-500 rounded-r-lg p-4 mb-4 shadow-sm">
+              <h3 class="text-lg font-bold text-red-400 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Critical Evidence
+              </h3>
+            </div>
+            
+            <div class="space-y-3 flex-grow">
+              {conPapers.map((paper, idx) => (
+                <div class="group bg-slate-900/50 border border-slate-800 border-l-4 border-l-red-600 rounded-r-md p-4 hover:bg-slate-800 hover:border-l-red-400 transition-all duration-200">
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    {paper.catalogId && (
+                      <a href={`/paper/${paper.catalogId}`} class="inline-flex items-center gap-1.5 text-amber-400 text-xs font-bold uppercase tracking-wider hover:text-amber-300 hover:underline">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        {paper.catalogId}
+                      </a>
+                    )}
+                    {paper.year && (
+                      <span class="text-xs text-slate-500 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">{paper.year}</span>
+                    )}
+                  </div>
+                  <p class="text-slate-300 text-sm leading-relaxed">{paper.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  )}
+
+  <!-- Remaining Content (if any) -->
+  {(() => {
+    // Get content after Pro/Con/Status sections
+    const remainingMatch = content.match(/\*\*Current status:\*\*[^\n]*\n([\s\S]*)$/i);
+    if (remainingMatch && remainingMatch[1].trim()) {
+      const remainingContent = remainingMatch[1].trim();
+      const remainingHtml = processContent(remainingContent);
+      return <article class="prose prose-invert prose-amber max-w-4xl mt-12 pt-8 border-t border-slate-800" set:html={remainingHtml} />;
+    }
+    return null;
+  })()}
+</Layout>

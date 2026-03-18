@@ -76,7 +76,7 @@
     `open_science_2015_reproducibility` | The broader replication crisis. Context for understanding why psi's replication struggles are not unique.
 
 23. **Cardena (2018)** -- *The Experimental Evidence for Parapsychological Phenomena: A Review*
-    `cardeña_2018_experimental` | The current state of play, in *American Psychologist*. A comprehensive, peer-reviewed summary of where things stand.
+    `cardena_2018_experimental` | The current state of play, in *American Psychologist*. A comprehensive, peer-reviewed summary of where things stand.
 
 24. **Radin (2023)** -- *Sentiment and Presentiment in Twitter: Do Trends in Collective Mood "Feel the Future"?*
     `radin_2023_sentiment` | An accessible example of how psi research has expanded to Big Data: 13 years of Twitter sentiment in 10 languages shows a statistically significant anticipatory decline before unpredictable negative world events. Bridges individual presentiment psychophysiology with GCP-style collective-consciousness research, and illustrates how a publicly verifiable dataset can serve as an independent test.

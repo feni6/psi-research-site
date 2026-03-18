@@ -20,7 +20,7 @@ The current era is defined by three threads: (1) comprehensive review papers tha
 📄 In library:
 
 **Major Reviews & Overviews:**
-- `cardeña_2018_experimental` — Cardena (2018), "The Experimental Evidence for Parapsychological Phenomena," *American Psychologist*. The era's landmark review.
+- `cardena_2018_experimental` — Cardena (2018), "The Experimental Evidence for Parapsychological Phenomena," *American Psychologist*. The era's landmark review.
 - `protzko_2017_decline_effects` — Protzko & Schooler (2017), "Decline Effects: Types, Mechanisms, and Personal Reflections," book chapter in *Psychological Science Under Scrutiny* (Wiley). Taxonomy of four decline-effect types; Protzko skeptical, Schooler open to unconventional mechanisms.
 - `schooler_2018_entertaining` — Schooler, Baumgart & Franklin (2018), "Entertaining Without Endorsing," *Psychology of Consciousness*. Bayesian epistemological framework for anomalous cognition research; proposes nine criteria for endorsement.
 - `reber_2019_searching` — Reber & Alcock (2019), "Searching for the Impossible," *American Psychologist*. The philosophical rejection.
@@ -57,7 +57,7 @@ The current era is defined by three threads: (1) comprehensive review papers tha
 
 **Brain-to-Brain Interaction & DMILS:**
 - `tressoldi_2016_brain_interaction` — Giroldini, Pederzoli, Bilucaglia et al. (2016), "EEG Correlates of Social Interaction at Distance," *F1000Research*. Introduced the GW6 inter-electrode correlation algorithm to detect a receiver alpha-band response (9-10 Hz, p = 0.003) invisible to classical ERP averaging in 25 sender-receiver pairs.
-- `schmidt_2019_social_dmils` — Schmidt (2019), Social Connection and DMILS.
+- Schmidt (2019), Social Connection and DMILS.
 
 **Healing, Intention, & Biofield:**
 - `delorme_2016_meditation_bioassay` — Delorme et al. (2016), Meditation and Intention Bioassay.
@@ -88,7 +88,7 @@ The current era is defined by three threads: (1) comprehensive review papers tha
 **Global Consciousness / RNG (Continued):**
 - `bancel_2017_searching` / `bancel_2017_global_consciousness` — Bancel (2017), Exploration of Global Consciousness data.
 - `walach_2020_evidence` — Walach (2020), Anomalistic Correlations with RNG.
-- `boesch_2019_rng_online` — Boesch (2019), Online RNG Experiments.
+- Boesch (2019), Online RNG Experiments.
 - `holmberg_2020_stock` — Holmberg (2020), Stock Returns and Mind. Applied GCP-style analysis to financial data.
 - `radin_2023_anomalous` — Radin et al. (2023), Collective Consciousness and Entropy.
 - `radin_2025_years` — Radin (2025), New Year's Eve Global Consciousness Analysis.
@@ -109,11 +109,11 @@ The current era is defined by three threads: (1) comprehensive review papers tha
 
 **Skeptical & Methodological:**
 - `rabeyron_2020_most` — Rabeyron (2020), "Why Most Psi Findings Are False." Applies Ioannidis-style reasoning to psi.
-- `bierman_2020_absence` — Bierman (2020), Absence of Evidence for Psi. A null-results analysis.
+- Bierman (2020), Absence of Evidence for Psi. A null-results analysis.
 - `lakens_2017_equivalence` — Lakens (2017), Equivalence Tests. Methodological tool for demonstrating null effects.
 - `watt_2015_lessons` — Watt & Kennedy (2015), "Lessons from the First Two Years of Operating a Study Registry," *Frontiers in Psychology*. Practical recommendations from operating the KPU parapsychology study registry, advocating irreversibly public pre-registration and independent review of submissions.
 - `heino_2017_reproducibility` — Heino, Fried & LeBel (2017), "Commentary: Reproducibility in Psychological Science: When Do Psychological Phenomena Exist?" Short commentary in *Frontiers in Psychology* arguing that complexity of psychological phenomena should motivate sophisticated study designs rather than abandoning replicability; counters Iso-Ahola's claim that reproducibility is unattainable. Not about psi directly, but the complexity-vs-replicability tension it addresses parallels debates in parapsychology. NOTE: Catalog originally misattributed as Mossbridge (2017) "Examining Psi" — corrected Session 47.
-- `tressoldi_2018_advancing` — Tressoldi (2018), Advancing Parapsychology.
+- Tressoldi (2018), Advancing Parapsychology.
 - `tressoldi_2021_umbrella_review` — Tressoldi & Storm (2021), "Anomalous Cognition: An Umbrella Review of the Meta-Analytic Evidence," *JAEX*. The most comprehensive synthesis of psi meta-analyses: 11 meta-analyses covering 928 studies (1989-2021) across all major paradigms; effect sizes range from 0.005 to 0.39; altered states and free-response protocols identified as strong moderators (rs = .81).
 - `kennedy_2024_research_fraud` — Kennedy (2024), "Addressing Researcher Fraud: Retrospective, Real-Time, and Preventive Strategies," *Frontiers in Research Metrics and Analytics*, DOI: 10.3389/frma.2024.1397649. Policy review arguing that researcher fraud is easy and common in academia, and that most institutional anti-fraud efforts (retrospective investigation) are unreliable due to post-hoc bias, low 'preponderance of evidence' standards, and inability to identify perpetrators when data access is poorly controlled. Proposes 8 preventive practices from FDA-regulated clinical trials — raw data archiving, audit trails, restricted access, software validation, quality control, blinding with pre-registered analysis programs, research audits, data sharing — as the most effective approach. Kennedy personally audited the Transparent Psi Project and found a significant software error. Culmination of Kennedy's research integrity work alongside kennedy_2017_experimenter_fraud and kennedy_2024_falsifiable_research.
 

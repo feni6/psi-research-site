@@ -1,0 +1,362 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const dir = path.join(process.cwd(), 'src/data/reading_paths');
+const files = fs.readdirSync(dir).filter(f => f.startsWith('path_') && f.endsWith('.md'));
+
+// Map filenames to audience labels, icons, difficulty, and theme colors
+const pathMetadata = {
+  'path_1_steelman_psi': {
+    audience: 'For those who want the strongest case',
+    subtitle: 'Start here if you want to see the most compelling evidence first.',
+    icon: '💪',
+    difficulty: 'Intermediate',
+    theme: 'amber' // Default
+  },
+  'path_2_weak_spots': {
+    audience: 'For skeptics and critical thinkers',
+    subtitle: 'Start here if you want to examine the limitations and criticisms first.',
+    icon: '🔍',
+    difficulty: 'Advanced',
+    theme: 'slate'
+  },
+  'path_3_newcomer_survey': {
+    audience: 'For anyone new to psi research',
+    subtitle: 'Start here for a broad, balanced overview of the entire field.',
+    icon: '🗺️',
+    difficulty: 'Beginner',
+    theme: 'emerald'
+  },
+  'path_4_deep_dive_remote_viewing': {
+    audience: 'For remote viewing specialists',
+    subtitle: 'A technical deep dive into government programs and protocols.',
+    icon: '👁️',
+    difficulty: 'Advanced',
+    theme: 'violet'
+  },
+  'path_5_deep_dive_psychokinesis': {
+    audience: 'For psychokinesis researchers',
+    subtitle: 'Exploring mind-matter interaction from micro to macro scales.',
+    icon: '🎲',
+    difficulty: 'Advanced',
+    theme: 'rose'
+  },
+  'path_6_deep_dive_ndes_consciousness': {
+    audience: 'For NDE & consciousness researchers',
+    subtitle: 'Investigating survival of consciousness and near-death experiences.',
+    icon: '✨',
+    difficulty: 'Intermediate',
+    theme: 'indigo'
+  }
+};
+
+// Helper to get Tailwind color classes based on theme
+const getThemeClasses = (theme: string, isHover: boolean = false) => {
+  const prefix = isHover ? 'group-hover:' : '';
+  const shadowPrefix = isHover ? 'group-hover:shadow-' : 'shadow-';
+  
+  switch(theme) {
+    case 'emerald':
+      return {
+        text: `${prefix}text-emerald-400`,
+        border: `${prefix}border-emerald-500/30`,
+        bg: `${prefix}bg-emerald-500/5`,
+        shadow: `${shadowPrefix}emerald-900/20`,
+        badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+      };
+    case 'violet':
+      return {
+        text: `${prefix}text-violet-400`,
+        border: `${prefix}border-violet-500/30`,
+        bg: `${prefix}bg-violet-500/5`,
+        shadow: `${shadowPrefix}violet-900/20`,
+        badge: 'bg-violet-500/10 text-violet-400 border-violet-500/20'
+      };
+    case 'rose':
+      return {
+        text: `${prefix}text-rose-400`,
+        border: `${prefix}border-rose-500/30`,
+        bg: `${prefix}bg-rose-500/5`,
+        shadow: `${shadowPrefix}rose-900/20`,
+        badge: 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+      };
+    case 'indigo':
+      return {
+        text: `${prefix}text-indigo-400`,
+        border: `${prefix}border-indigo-500/30`,
+        bg: `${prefix}bg-indigo-500/5`,
+        shadow: `${shadowPrefix}indigo-900/20`,
+        badge: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20'
+      };
+    case 'slate':
+      return {
+        text: `${prefix}text-slate-300`,
+        border: `${prefix}border-slate-500/30`,
+        bg: `${prefix}bg-slate-500/5`,
+        shadow: `${shadowPrefix}slate-900/20`,
+        badge: 'bg-slate-500/10 text-slate-400 border-slate-500/20'
+      };
+    default: // amber
+      return {
+        text: `${prefix}text-amber-400`,
+        border: `${prefix}border-amber-500/30`,
+        bg: `${prefix}bg-amber-500/5`,
+        shadow: `${shadowPrefix}amber-900/20`,
+        badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+      };
+  }
+};
+
+const paths = files.map(f => {
+  const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+  const id = f.replace('.md', '');
+  const lines = content.split('\n');
+  
+  // Extract title from first # heading
+  const titleLine = lines.find(l => l.startsWith('# '));
+  const title = titleLine?.replace(/^#\s*/, '').trim() || 'Untitled Path';
+  
+  // Extract description from first non-heading, non-empty paragraph
+  let desc = '';
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#') && !trimmed.startsWith('---')) {
+      // Remove bold prefix like "**Description:**" if present
+      desc = trimmed.replace(/^\*\*.*?\*\*:?\s*/, '').trim();
+      break;
+    }
+  }
+  
+  // Count paper references
+  const paperCount = (content.match(/\[catalog ID:/g) || []).length;
+  
+  // Estimate reading time (5 min per paper + 2 min intro per path)
+  const readingTime = Math.max(5, paperCount * 5 + 2);
+  const readingTimeLabel = readingTime >= 60 
+    ? `~${Math.round(readingTime / 60)} hr` 
+    : `~${readingTime} min`;
+  
+  // Get metadata from filename mapping, with fallbacks
+  const meta = pathMetadata[id] || {
+    audience: 'All readers',
+    subtitle: 'General overview',
+    icon: '📚',
+    difficulty: 'Intermediate',
+    theme: 'amber'
+  };
+  
+  // Extract sort number from filename
+  const num = f.match(/path_(\d+)/)?.[1] || '0';
+  
+  return { 
+    id, 
+    title, 
+    desc, 
+    paperCount, 
+    readingTimeLabel, 
+    audience: meta.audience, 
+    subtitle: meta.subtitle,
+    icon: meta.icon, 
+    num,
+    difficulty: meta.difficulty,
+    theme: meta.theme
+  };
+}).sort((a, b) => parseInt(a.num) - parseInt(b.num));
+
+// Split into two groups
+const perspectivePaths = paths.filter(p => parseInt(p.num) <= 3);
+const deepDivePaths = paths.filter(p => parseInt(p.num) > 3);
+---
+
+<Layout title="Reading Paths">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Hero Section -->
+    <header class="mb-20 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full mb-6">
+        <span class="text-amber-400 text-sm font-medium">Curated Journeys</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-bold mb-6 text-slate-100">
+        Reading Paths
+      </h1>
+      <p class="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed">
+        Reading paths are curated journeys through the research. Each one is designed for a specific reader — whether you're a skeptic wanting the strongest case, a newcomer seeking orientation, or a researcher diving deep into a specific domain.
+      </p>
+    </header>
+  
+    <!-- Choose Your Perspective Section -->
+    <section class="mb-24">
+      <div class="flex items-center gap-4 mb-10">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
+        <h2 class="text-2xl font-bold text-slate-200 tracking-wide uppercase text-sm">Choose Your Perspective</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {perspectivePaths.map((p) => {
+          const isRecommended = p.id === 'path_3_newcomer_survey';
+          const theme = getThemeClasses(p.theme);
+          const difficultyColor = p.difficulty === 'Beginner' ? 'text-emerald-400' : p.difficulty === 'Advanced' ? 'text-rose-400' : 'text-amber-400';
+          
+          return (
+            <a 
+              href={`/paths/${p.id}`} 
+              class={`
+                group relative flex flex-col h-full 
+                bg-slate-900/50 backdrop-blur-sm border rounded-2xl p-8 
+                transition-all duration-300 ease-out
+                hover:-translate-y-2 hover:shadow-2xl ${theme.shadow}
+                ${isRecommended 
+                  ? `border-amber-500/40 ring-1 ring-amber-500/20 ${theme.bg}` 
+                  : `border-slate-800 ${theme.border}`}
+              `}
+            >
+              {isRecommended && (
+                <div class="absolute -top-4 right-6 px-4 py-1.5 bg-amber-500 text-slate-950 text-xs font-bold rounded-full shadow-lg z-10">
+                  Recommended Start
+                </div>
+              )}
+
+              <div class="flex justify-between items-start mb-6">
+                <div class={`text-5xl transform group-hover:scale-110 transition-transform duration-300 ${theme.text}`}>
+                  {p.icon}
+                </div>
+                <span class={`text-xs font-semibold px-2.5 py-1 rounded-full border ${difficultyColor.replace('text-', 'border-').replace('400', '500/20')} bg-slate-950/50 ${difficultyColor}`}>
+                  {p.difficulty}
+                </span>
+              </div>
+              
+              <h3 class={`text-xl font-bold mb-3 transition-colors ${theme.text} group-hover:text-slate-100`}>
+                {p.title}
+              </h3>
+              
+              <p class="text-slate-300 text-sm font-medium mb-2 italic">
+                {p.subtitle}
+              </p>
+              
+              <p class="text-slate-400 text-sm leading-relaxed line-clamp-3 mb-8 flex-grow">
+                {p.desc}
+              </p>
+              
+              <div class="mt-auto pt-6 border-t border-slate-800/60">
+                <div class="flex items-center justify-between text-xs font-medium text-slate-500 mb-5">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    {p.paperCount} Papers
+                  </span>
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    {p.readingTimeLabel}
+                  </span>
+                </div>
+                
+                <div class={`flex items-center gap-2 font-semibold text-sm transition-all ${theme.text}`}>
+                  <span>Begin Path</span>
+                  <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Deep Dives Section -->
+    <section class="mb-24">
+      <div class="flex items-center gap-4 mb-10">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
+        <h2 class="text-2xl font-bold text-slate-200 tracking-wide uppercase text-sm">Domain Deep Dives</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
+      </div>
+      
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {deepDivePaths.map((p) => {
+          const theme = getThemeClasses(p.theme);
+          const difficultyColor = p.difficulty === 'Beginner' ? 'text-emerald-400' : p.difficulty === 'Advanced' ? 'text-rose-400' : 'text-amber-400';
+
+          return (
+            <a 
+              href={`/paths/${p.id}`} 
+              class={`
+                group relative flex flex-col h-full 
+                bg-slate-900/50 backdrop-blur-sm border rounded-2xl p-8 
+                transition-all duration-300 ease-out
+                hover:-translate-y-2 hover:shadow-2xl ${theme.shadow}
+                border-slate-800 ${theme.border}
+              `}
+            >
+              <div class="flex justify-between items-start mb-6">
+                <div class={`text-5xl transform group-hover:scale-110 transition-transform duration-300 ${theme.text}`}>
+                  {p.icon}
+                </div>
+                <span class={`text-xs font-semibold px-2.5 py-1 rounded-full border ${difficultyColor.replace('text-', 'border-').replace('400', '500/20')} bg-slate-950/50 ${difficultyColor}`}>
+                  {p.difficulty}
+                </span>
+              </div>
+              
+              <h3 class={`text-xl font-bold mb-3 transition-colors ${theme.text} group-hover:text-slate-100`}>
+                {p.title}
+              </h3>
+              
+              <p class="text-slate-300 text-sm font-medium mb-2 italic">
+                {p.subtitle}
+              </p>
+              
+              <p class="text-slate-400 text-sm leading-relaxed line-clamp-3 mb-8 flex-grow">
+                {p.desc}
+              </p>
+              
+              <div class="mt-auto pt-6 border-t border-slate-800/60">
+                <div class="flex items-center justify-between text-xs font-medium text-slate-500 mb-5">
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    {p.paperCount} Papers
+                  </span>
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    {p.readingTimeLabel}
+                  </span>
+                </div>
+                
+                <div class={`flex items-center gap-2 font-semibold text-sm transition-all ${theme.text}`}>
+                  <span>Explore Domain</span>
+                  <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Not Sure Where to Start Helper -->
+    <section class="relative overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 p-8 sm:p-12 text-center">
+      <!-- Background decorative glow -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-emerald-500/5 blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 max-w-2xl mx-auto">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 mb-6">
+          <svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        
+        <h3 class="text-2xl font-bold text-slate-100 mb-4">
+          Not sure where to start?
+        </h3>
+        <p class="text-slate-400 mb-8 leading-relaxed">
+          If you're new to psi research or just want a balanced overview before diving into specific arguments, 
+          the <strong class="text-emerald-400">Newcomer Survey</strong> is the perfect entry point. 
+          It covers the history, methodology, and key findings without assuming prior knowledge.
+        </p>
+        
+        <a 
+          href="/paths/path_3_newcomer_survey" 
+          class="inline-flex items-center gap-3 px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl transition-all hover:shadow-lg hover:shadow-emerald-500/25 hover:-translate-y-0.5"
+        >
+          <span>Start with Newcomer Survey</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>

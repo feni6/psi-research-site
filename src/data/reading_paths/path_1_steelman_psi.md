@@ -4,7 +4,7 @@
 *Start with the strongest overview, move through the best meta-analyses, examine the most compelling individual studies, then read the sharpest critiques so you can weigh both sides.*
 
 1. **Cardena (2018)** -- *The Experimental Evidence for Parapsychological Phenomena: A Review*
-   `cardeña_2018_experimental` | Published in *American Psychologist*, this is the most authoritative recent overview of the entire field from a mainstream psychology journal. Start here for the strongest accessible case.
+   `cardena_2018_experimental` | Published in *American Psychologist*, this is the most authoritative recent overview of the entire field from a mainstream psychology journal. Start here for the strongest accessible case.
 
 1b. **Wahbeh, Radin, Cannard & Delorme (2022)** -- *What if consciousness is not an emergent property of the brain? Observational and empirical challenges to materialistic models*
    `wahbeh_2022_consciousness_not_emergent` | Frontiers in Psychology review examining six phenomena that challenge materialist models: remote viewing, ganzfeld telepathy (31% hit rate), presentiment (d=0.21, p<2.71×10⁻¹²), xenoglossy/savant syndrome, terminal lucidity (80%+ remission in dementia), and reverse priming (z=6.4, p=1.2×10⁻¹⁰). Compares physicalist theories (GWT, HOT, IIT) to non-local consciousness models (Orch-OR, analytic idealism, interface theory). Provides the theoretical framework for why psi phenomena matter to consciousness studies. Read this early to understand the paradigm stakes.

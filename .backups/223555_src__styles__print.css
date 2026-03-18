@@ -1,0 +1,175 @@
+/* src/styles/print.css */
+@media print {
+  /* Page Setup */
+  @page {
+    margin: 2cm;
+    size: A4;
+  }
+
+  /* Hide navigation, footer, mobile menu */
+  nav, footer, #mobile-menu, #mobile-menu-btn { display: none !important; }
+  
+  /* Hide UI Controls & Decorative Elements */
+  .welcome-banner, 
+  .theme-toggle, 
+  .btn-mark-read, 
+  .btn-surprise, 
+  .domain-icon, 
+  .thumbnail,
+  .no-print { 
+    display: none !important; 
+  }
+  
+  /* Remove dark background */
+  html, body { background: white !important; color: black !important; }
+  
+  /* Make text readable on paper */
+  body { 
+    font-family: Georgia, 'Times New Roman', serif; 
+    font-size: 12pt; 
+    line-height: 1.5; 
+    -webkit-print-color-adjust: exact; 
+    print-color-adjust: exact;
+  }
+  
+  /* Typography Hierarchy */
+  h1, h2, h3 {
+    color: #000 !important;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    page-break-after: avoid;
+  }
+
+  h1.paper-title {
+    font-size: 24pt;
+    font-weight: bold;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Ensure links are visible with URLs */
+  a { 
+    color: #000 !important; 
+    text-decoration: underline !important; 
+    font-weight: normal;
+  }
+  
+  /* Show full URL for external links */
+  a[href^="http"]::after { 
+    content: " (" attr(href) ")"; 
+    font-size: 0.8em; 
+    color: #333; 
+    font-style: italic;
+    word-break: break-all;
+  }
+  
+  /* Don't show URLs for internal anchors or empty links */
+  a[href^="#"]::after, 
+  a[href=""]::after,
+  a[href^="/"]::after { 
+    content: none; 
+  }
+  
+  /* Cards/sections lose their dark styling */
+  [class*="bg-slate"], 
+  [class*="bg-gray"],
+  [class*="bg-zinc"] { 
+    background: white !important; 
+    border: 1px solid #ccc !important; 
+    box-shadow: none !important;
+  }
+  
+  [class*="text-slate"], 
+  [class*="text-amber"], 
+  [class*="text-gray"] { 
+    color: #000 !important; 
+  }
+  
+  /* Abstract Styling */
+  .abstract, 
+  .paper-abstract {
+    border-left: 4px solid #000;
+    padding-left: 15px;
+    margin: 20px 0;
+    font-style: italic;
+    background: #f9f9f9 !important;
+    padding: 15px;
+  }
+
+  /* Methodology Tables */
+  table.methodology,
+  .methodology-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 10pt;
+  }
+
+  table.methodology th,
+  table.methodology td,
+  .methodology-table th,
+  .methodology-table td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: left;
+  }
+
+  table.methodology th,
+  .methodology-table th {
+    background-color: #eee !important;
+    font-weight: bold;
+  }
+  
+  /* Reading Path Cards */
+  .reading-path-card,
+  .path-step {
+    border: 1px solid #000;
+    padding: 15px;
+    margin-bottom: 15px;
+    page-break-inside: avoid;
+    position: relative;
+  }
+
+  /* Numbered Reading Paths */
+  .reading-path-list {
+    counter-reset: path-step;
+  }
+
+  .reading-path-card::before,
+  .path-step::before {
+    counter-increment: path-step;
+    content: "Step " counter(path-step) ": ";
+    font-weight: bold;
+    font-size: 14pt;
+    display: block;
+    margin-bottom: 5px;
+    color: #000;
+  }
+  
+  /* Paper page specific */
+  .prose { 
+    max-width: 100% !important; 
+    color: #000;
+  }
+  
+  /* No page breaks inside cards */
+  article, section, .card, .paper-card { 
+    page-break-inside: avoid; 
+  }
+  
+  /* Hide filter controls on catalog page */
+  #filters, 
+  .filter-controls,
+  .search-bar { 
+    display: none !important; 
+  }
+
+  /* Ensure images scale correctly */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+  }
+}

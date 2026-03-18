@@ -9,7 +9,7 @@ The sense of being stared at (SOBA) — the widespread experience of detecting w
 - Braud & Schlitz (1991) -- Four remote attention experiments measuring electrodermal correlates of staring: all 4 real experiments significant (calming or activation during staring vs. non-staring epochs) while sham control showed no effect; 78 total sessions [catalog ID: braud_schlitz_1991_consciousness_interactions]
 - Schmidt et al. (2004) -- Meta-analysis of 15 remote staring/CCTV studies using EDA: d = 0.13 (p = .01, 95% CI [0.03, 0.23]); homogeneous dataset but no study exceeded 71% overall quality, precluding a best-evidence synthesis [catalog ID: schmidt_2004_distant]
 - Radin (2005) -- Meta-analysis of 60 supervised conscious staring detection experiments (33,357 trials): FEM e = 0.089, p = 10^-232; 10 through-the-window studies without feedback homogeneous at p = 4.8 x 10^-17 [catalog ID: radin_2005_sense]
-- Schmidt et al. (2019) -- Updated social DMILS meta-analysis extending the staring-detection evidence base [catalog ID: schmidt_2019_social_dmils]
+- Schmidt et al. (2019) -- Updated social DMILS meta-analysis extending the staring-detection evidence base
 
 **Con:**
 - Schlitz, Wiseman, Watt & Radin (2006) -- Third and final collaborative study (2×2 cross-over, N=100) at IONS: neither greeter role (F=0.46, p=.50) nor sender role (F=0.21, p=.64) produced significant staring effects; Schlitz as both greeter+sender: es=-0.03, p=.87; the failure to replicate Studies 1-2 supports artifact interpretation [catalog ID: schlitz_2006_two_minds]

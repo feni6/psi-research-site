@@ -1,0 +1,224 @@
+---
+import Layout from '../layouts/Layout.astro';
+import catalog from '../data/catalog.json';
+
+// 1. Process Data
+const authorMap: Record<string, { count: number, papers: any[] }> = {};
+
+catalog.papers.forEach((p: any) => {
+  (p.authors || []).forEach((author: string) => {
+    if (!authorMap[author]) authorMap[author] = { count: 0, papers: [] };
+    authorMap[author].count++;
+    authorMap[author].papers.push({ 
+      id: p.id, 
+      title: p.title, 
+      year: p.year
+    });
+  });
+});
+
+// Sort alphabetically for the main list
+const authors = Object.entries(authorMap)
+  .sort(([a], [b]) => a.localeCompare(b));
+
+// Get top 20 for the highlight section
+const topAuthors = [...authors].sort(([,a], [,b]) => b.count - a.count).slice(0, 20);
+
+// Calculate max count for relative bar visualization
+const maxPaperCount = Math.max(...authors.map(([, data]) => data.count));
+
+// Group by first letter for the index navigation
+const authorsByLetter: Record<string, typeof authors> = {};
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+alphabet.forEach(letter => {
+  authorsByLetter[letter] = authors.filter(([name]) => name.toUpperCase().startsWith(letter));
+});
+
+// Generate unique letters that actually have authors for the jump nav
+const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
+---
+
+<Layout title="Author Index" description="Browse researchers and authors in the Psi Research Library catalog.">
+  <div class="max-w-5xl mx-auto px-4 py-8 space-y-12">
+    
+    <!-- Header & Breadcrumb -->
+    <div class="space-y-4">
+      <nav class="text-sm text-slate-400">
+        <a href="/" class="hover:text-amber-400 transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <span class="text-amber-400 font-medium">Authors</span>
+      </nav>
+      <h1 class="text-4xl font-bold text-slate-100 tracking-tight">Author Index</h1>
+      <p class="text-slate-400 max-w-2xl">
+        Explore the contributors in our catalog. Click an author's name to view their specific papers.
+      </p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="relative">
+      <input 
+        type="text" 
+        id="authorSearch"
+        placeholder="Filter by author name..." 
+        class="w-full bg-slate-900 border border-slate-700 rounded-lg py-3 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+        oninput="filterAuthors()"
+      />
+      <div class="absolute right-3 top-3.5 text-slate-500 pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 0114 0z" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Top Authors Section -->
+    <section class="space-y-6">
+      <div class="flex items-center space-x-2 border-b border-slate-800 pb-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+        <h2 class="text-xl font-semibold text-slate-200">Most Published</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {topAuthors.map(([name, data]) => {
+          const percentage = (data.count / maxPaperCount) * 100;
+          return (
+            <a 
+              href={`#author-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+              class="bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-400/50 hover:bg-slate-900/80 transition-all group"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <div class="text-amber-400 text-2xl font-bold">{data.count}</div>
+                <div class="text-xs text-slate-500 font-mono">papers</div>
+              </div>
+              <div class="text-slate-200 font-medium text-sm truncate mb-3 group-hover:text-amber-200 transition-colors">
+                {name}
+              </div>
+              <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                <div 
+                  class="bg-gradient-to-r from-amber-500 to-amber-400 h-full rounded-full transition-all duration-500"
+                  style={`width: ${percentage}%`}
+                ></div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Alphabet Jump Links -->
+    <nav class="flex flex-wrap gap-2 justify-center md:justify-start" aria-label="Alphabetical navigation">
+      {activeLetters.map(letter => (
+        <a 
+          href={`#letter-${letter}`}
+          class="w-8 h-8 flex items-center justify-center rounded bg-slate-900 border border-slate-800 text-slate-400 hover:bg-amber-400 hover:text-slate-950 hover:border-amber-400 transition-all font-mono text-sm font-bold"
+        >
+          {letter}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Main Author List -->
+    <section class="space-y-12" id="author-list-container">
+      {alphabet.map(letter => {
+        const letterAuthors = authorsByLetter[letter];
+        if (letterAuthors.length === 0) return null;
+
+        return (
+          <div class="scroll-mt-24" id={`letter-${letter}`}>
+            <h3 class="text-2xl font-bold text-slate-500 mb-6 border-b border-slate-800 pb-2 font-mono">
+              {letter}
+            </h3>
+            
+            <div class="space-y-3">
+              {letterAuthors.map(([name, data]) => {
+                const authorId = `author-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
+                return (
+                  <details class="author-card group bg-slate-900/50 border border-slate-800 rounded-lg overflow-hidden transition-all hover:border-slate-700" data-name={name.toLowerCase()}>
+                    <summary class="p-4 flex items-center justify-between cursor-pointer list-none" id={authorId}>
+                      <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 font-bold border border-slate-700 group-hover:border-amber-400/50 transition-colors">
+                          {name.charAt(0)}
+                        </div>
+                        <div>
+                          <h4 class="text-lg font-semibold text-slate-200 group-hover:text-amber-400 transition-colors">{name}</h4>
+                          <p class="text-sm text-slate-500">{data.count} {data.count === 1 ? 'paper' : 'papers'} in catalog</p>
+                        </div>
+                      </div>
+                      <div class="flex items-center space-x-2 text-amber-400">
+                        <span class="text-sm font-medium hidden group-open:inline">Hide Papers</span>
+                        <span class="text-sm font-medium group-open:hidden">Show Papers</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transform transition-transform duration-200 group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </summary>
+
+                    <!-- Expandable Paper List -->
+                    <div class="bg-slate-950 border-t border-slate-800/50">
+                      <ul class="divide-y divide-slate-800/50">
+                        {data.papers.sort((a, b) => b.year - a.year).map(paper => (
+                          <li class="p-4 hover:bg-slate-900 transition-colors">
+                            <div class="flex justify-between items-start gap-4">
+                              <div>
+                                <a href={`/paper/${paper.id}`} class="text-slate-300 hover:text-amber-400 font-medium transition-colors line-clamp-2">
+                                  {paper.title}
+                                </a>
+                                <div class="text-xs text-slate-500 mt-1 font-mono">ID: {paper.id}</div>
+                              </div>
+                              <span class="text-xs font-mono bg-slate-800 text-slate-400 px-2 py-1 rounded whitespace-nowrap">
+                                {paper.year}
+                              </span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </details>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </section>
+
+  </div>
+
+  <script>
+    // Filter Authors by Search Input
+    function filterAuthors() {
+      const input = document.getElementById('authorSearch') as HTMLInputElement;
+      if (!input) return;
+      
+      const filter = input.value.toLowerCase();
+      const container = document.getElementById('author-list-container');
+      if (!container) return;
+
+      const cards = container.querySelectorAll('.author-card');
+      let hasVisibleAuthors = false;
+
+      cards.forEach(card => {
+        const name = card.getAttribute('data-name') || '';
+        if (name.includes(filter)) {
+          card.classList.remove('hidden');
+          hasVisibleAuthors = true;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      // Hide letter headers if no authors match in that section
+      const sections = container.querySelectorAll('[id^="letter-"]');
+      sections.forEach(section => {
+        const visibleCards = section.querySelectorAll('.author-card:not(.hidden)');
+        if (visibleCards.length === 0) {
+          section.classList.add('hidden');
+        } else {
+          section.classList.remove('hidden');
+        }
+      });
+    }
+  </script>
+</Layout>

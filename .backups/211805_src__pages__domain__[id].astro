@@ -1,0 +1,138 @@
+---
+// src/pages/domain/[id].astro
+import Layout from '../../layouts/Layout.astro';
+import catalog from '../../data/catalog.json';
+
+export function getStaticPaths() {
+  const domains = [...new Set(catalog.papers.map((p: any) => p.psi_domain).filter(Boolean))];
+  return domains.map(domain => ({
+    params: { id: domain },
+    props: { domain },
+  }));
+}
+
+const { domain } = Astro.props;
+const papers = catalog.papers
+  .filter((p: any) => p.psi_domain === domain)
+  .sort((a: any, b: any) => (b.year || 0) - (a.year || 0));
+
+const domainLabels: Record<string, string> = {
+  methodology: 'Methodology & Theory',
+  telepathy: 'Telepathy',
+  psychokinesis: 'Psychokinesis & Mind-Matter Interaction',
+  nde: 'Near-Death Experiences & OBEs',
+  skeptical: 'Skeptical & Critical',
+  precognition: 'Precognition',
+  healing: 'Healing & Distant Intention',
+  overview: 'Overviews & Books',
+  remote_viewing: 'Remote Viewing',
+  mediumship: 'Mediumship & Survival',
+  nonverbal: 'Nonverbal Communication',
+  meta_analysis: 'Meta-Analyses',
+};
+
+const title = domainLabels[domain] || domain.replace(/_/g, ' ');
+
+const years = papers.map((p: any) => p.year).filter(Boolean);
+const minYear = years.length ? Math.min(...years) : 'N/A';
+const maxYear = years.length ? Math.max(...years) : 'N/A';
+---
+
+<Layout title={`${title} - Psi Research Library`} description={`Papers in the ${title} domain`}>
+  <main class="min-h-screen bg-slate-950 text-slate-100">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+      <!-- Breadcrumb -->
+      <nav class="mb-6 text-sm">
+        <ol class="flex items-center space-x-2 text-slate-400">
+          <li><a href="/" class="hover:text-amber-400 transition-colors">Home</a></li>
+          <li>/</li>
+          <li><a href="/catalog" class="hover:text-amber-400 transition-colors">Domains</a></li>
+          <li>/</li>
+          <li class="text-amber-400">{title}</li>
+        </ol>
+      </nav>
+
+      <!-- Header -->
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold text-amber-400 mb-2">{title}</h1>
+        <div class="flex flex-wrap gap-4 text-slate-400">
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            {papers.length} paper{papers.length !== 1 ? 's' : ''}
+          </span>
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            {minYear} – {maxYear}
+          </span>
+        </div>
+      </header>
+
+      <!-- Papers List -->
+      <div class="space-y-4">
+        {papers.map((paper: any) => (
+          <article class="bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-amber-400/50 transition-colors">
+            <div class="flex flex-col gap-3">
+              <!-- Title & Link -->
+              <h2 class="text-lg font-semibold">
+                <a 
+                  href={`/paper/${paper.id}`} 
+                  class="text-slate-100 hover:text-amber-400 transition-colors"
+                >
+                  {paper.title}
+                </a>
+              </h2>
+
+              <!-- Meta Info -->
+              <div class="flex flex-wrap items-center gap-3 text-sm text-slate-400">
+                <span class="text-slate-300">{paper.authors}</span>
+                <span class="text-slate-600">•</span>
+                <span>{paper.year}</span>
+                {paper.journal && (
+                  <>
+                    <span class="text-slate-600">•</span>
+                    <span class="italic">{paper.journal}</span>
+                  </>
+                )}
+              </div>
+
+              <!-- Abstract Excerpt -->
+              {paper.abstract && (
+                <p class="text-slate-400 text-sm leading-relaxed line-clamp-3">
+                  {paper.abstract.length > 300 
+                    ? paper.abstract.substring(0, 300) + '...' 
+                    : paper.abstract}
+                </p>
+              )}
+
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-2 pt-2">
+                {paper.tags?.slice(0, 5).map((tag: string) => (
+                  <span class="px-2 py-1 bg-slate-800 text-slate-300 text-xs rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Back Link -->
+      <div class="mt-8 pt-6 border-t border-slate-800">
+        <a 
+          href="/catalog" 
+          class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Domains
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>

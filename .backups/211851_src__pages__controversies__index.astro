@@ -1,0 +1,393 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const KEY_QUESTIONS: Record<string, string> = {
+  '01': "Can telepathy be demonstrated under controlled conditions?",
+  '02': "Did Bem really prove precognition?",
+  '03': "Does the body anticipate unpredictable future events?",
+  '04': "Can consciousness affect quantum-level physical systems?",
+  '05': "Can prayer or distant intention promote healing?",
+  '06': "Can mediums genuinely access information from deceased persons?",
+  '07': "Do NDEs provide evidence for consciousness beyond the brain?",
+  '08': "Does collective human attention influence random systems worldwide?",
+  '09': "Can facilitator-assisted communication reveal hidden cognitive abilities?",
+  '10': "Do meta-analyses actually support the existence of psi?",
+  '11': "Can people detect when they're being stared at?",
+  '12': "Do pets genuinely anticipate their owner's return?",
+  '13': "Can people sense who's calling before answering?",
+  '14': "Do twins share a psychic connection?"
+};
+
+const GROUP_DEFINITIONS = [
+  {
+    id: 'telepathy',
+    name: 'Telepathy & Remote Perception',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>',
+    ids: ['01', '11', '12', '13', '14']
+  },
+  {
+    id: 'precognition',
+    name: 'Precognition & Presentiment',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+    ids: ['02', '03']
+  },
+  {
+    id: 'mind-matter',
+    name: 'Mind-Matter Interaction',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>',
+    ids: ['04', '08']
+  },
+  {
+    id: 'healing',
+    name: 'Healing & Survival',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>',
+    ids: ['05', '06', '07']
+  },
+  {
+    id: 'methodology',
+    name: 'Methodology & Analysis',
+    icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>',
+    ids: ['09', '10']
+  }
+];
+
+function countProCon(content: string) {
+  const lines = content.split('\n');
+  let pro = 0, con = 0;
+  const proWords = ['supports', 'evidence for', 'confirms', 'replicated', 'significant', 'positive'];
+  const conWords = ['critiques', 'fails to', 'no evidence', 'null result', 'artifact', 'skeptic', 'not support', 'negative'];
+  
+  lines.forEach(line => {
+    const lower = line.toLowerCase();
+    if (proWords.some(w => lower.includes(w))) pro++;
+    if (conWords.some(w => lower.includes(w))) con++;
+  });
+  
+  const total = pro + con;
+  return { 
+    pro, 
+    con, 
+    total,
+    proPercent: total > 0 ? (pro / total) * 100 : 0,
+    conPercent: total > 0 ? (con / total) * 100 : 0
+  };
+}
+
+const dir = path.join(process.cwd(), 'src/data/controversies');
+const files = fs.readdirSync(dir).filter(f => f.match(/^\d{2}_/) && f.endsWith('.md'));
+
+const allControversies = files.map(f => {
+  const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+  const id = f.replace('.md', '');
+  const num = f.slice(0, 2);
+  const title = content.split('\n')[0].replace(/^#\s*\d+\.\s*/, '').trim();
+  
+  // Extract current status
+  const statusMatch = content.match(/\*\*Current status:\*\*\s*(.*?)(?:\n\n|$)/s);
+  const status = statusMatch ? statusMatch[1].slice(0, 200) + '...' : '';
+  
+  // Calculate balance using keyword scanning
+  const counts = countProCon(content);
+  
+  // Determine Heat Level
+  let heatLevel = 1;
+  let heatIcon = '🔥';
+  if (counts.total > 20) { heatLevel = 3; heatIcon = '🔥🔥🔥'; }
+  else if (counts.total >= 10) { heatLevel = 2; heatIcon = '🔥🔥'; }
+
+  // Determine Domains
+  const domains = GROUP_DEFINITIONS
+    .filter(g => g.ids.includes(num))
+    .map(g => g.id);
+  
+  return { 
+    id, 
+    num,
+    title, 
+    keyQuestion: KEY_QUESTIONS[num] || '',
+    status, 
+    proCount: counts.pro, 
+    conCount: counts.con,
+    proPercent: counts.proPercent,
+    conPercent: counts.conPercent,
+    heatLevel,
+    heatIcon,
+    domains
+  };
+});
+
+// Sort by heat (most papers first)
+allControversies.sort((a, b) => b.heatLevel - a.heatLevel || b.total - a.total);
+
+// Organize into groups (items within groups will retain sort order if we map carefully)
+const groupedControversies = GROUP_DEFINITIONS.map(group => {
+  return {
+    ...group,
+    items: allControversies.filter(c => group.ids.includes(c.num))
+  };
+});
+
+const totalControversies = allControversies.length;
+---
+
+<Layout title="Controversies">
+  <!-- Hero Section -->
+  <div class="relative mb-12 overflow-hidden rounded-xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 p-8 sm:p-12 text-center shadow-2xl">
+    <div class="absolute top-0 left-0 w-full h-full bg-[url('/grid.svg')] opacity-5 pointer-events-none"></div>
+    <div class="relative z-10">
+      <h1 class="text-4xl sm:text-5xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 tracking-tight">
+        The Active Debates
+      </h1>
+      <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-8 font-light">
+        Where does the evidence point? Explore both sides of <span class="text-amber-400 font-semibold">{totalControversies} contested questions</span> in psi research.
+      </p>
+      
+      <div class="bg-slate-950/50 backdrop-blur-sm border border-slate-800 rounded-lg p-6 max-w-3xl mx-auto text-left shadow-inner">
+        <p class="text-slate-300 leading-relaxed text-sm sm:text-base">
+          <span class="text-amber-500 font-bold mr-2">⚠️ Note:</span>
+          Each controversy map shows research <span class="text-green-400 font-medium">supporting</span> AND <span class="text-red-400 font-medium">challenging</span> the claim. 
+          We present both sides so you can evaluate the evidence yourself. The "Heat" indicator reflects the volume of active discourse.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Controls: Filters & Search -->
+  <div class="sticky top-20 z-40 bg-slate-950/95 backdrop-blur border-b border-slate-800 pb-4 mb-8 transition-all">
+    <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+      
+      <!-- Domain Filters -->
+      <div class="flex flex-wrap gap-2" id="domain-filters">
+        <button 
+          class="filter-btn active px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all border bg-amber-500/10 border-amber-500/50 text-amber-400 hover:bg-amber-500/20"
+          data-filter="all"
+        >
+          All Debates
+        </button>
+        {GROUP_DEFINITIONS.map(group => (
+          <button 
+            class="filter-btn px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all border border-slate-800 text-slate-500 hover:text-slate-300 hover:border-slate-600 hover:bg-slate-900"
+            data-filter={group.id}
+          >
+            {group.name}
+          </button>
+        ))}
+      </div>
+
+      <!-- Search & Count -->
+      <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full lg:w-auto">
+        <div class="relative w-full sm:w-64">
+          <input 
+            type="text" 
+            id="search-input"
+            placeholder="Search debates..." 
+            class="w-full bg-slate-900 border border-slate-700 rounded-md py-2 px-4 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 transition font-mono text-sm"
+          />
+        </div>
+        <div class="text-xs text-slate-500 whitespace-nowrap font-mono hidden sm:block">
+          <span id="result-count" class="text-amber-400 font-bold">{totalControversies}</span> active debates
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Controversy List -->
+  <div class="space-y-12" id="controversy-list">
+    {groupedControversies.map((group) => (
+      <div class="controversy-group transition-opacity duration-300" data-group-id={group.id}>
+        <h2 class="text-lg font-bold text-slate-200 mb-6 flex items-center gap-3 border-l-4 border-amber-500 bg-slate-900/30 py-3 px-5 rounded-r-md">
+          <span class="text-amber-500 opacity-90" set:html={group.icon}></span>
+          {group.name}
+        </h2>
+        
+        <div class="grid grid-cols-1 gap-4">
+          {group.items.map((c) => (
+            <a 
+              href={`/controversies/${c.id}`} 
+              class="block bg-slate-900 border border-slate-800 rounded-lg p-5 hover:border-amber-500/40 hover:bg-slate-800/60 hover:shadow-lg hover:shadow-amber-900/5 hover:-translate-y-0.5 transition-all duration-200 group controversy-item"
+              data-title={c.title.toLowerCase()}
+              data-question={c.keyQuestion.toLowerCase()}
+              data-group={group.id}
+              data-domains={c.domains.join(',')}
+            >
+              <div class="flex flex-col sm:flex-row gap-4">
+                
+                <!-- Left: ID & Heat -->
+                <div class="flex sm:flex-col items-center sm:items-start gap-3 sm:gap-2 shrink-0 min-w-[80px]">
+                  <span class="text-amber-500/80 font-mono text-sm font-bold bg-amber-950/30 border border-amber-900/30 px-2 py-1 rounded group-hover:bg-amber-900/40 group-hover:text-amber-400 transition">
+                    #{c.num}
+                  </span>
+                  <span class="text-xs font-bold text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800" title="Debate Intensity">
+                    {c.heatIcon}
+                  </span>
+                </div>
+
+                <!-- Center: Content -->
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-bold text-slate-100 mb-1 group-hover:text-amber-400 transition text-lg search-target-title" data-original={c.title}>
+                    {c.title}
+                  </h3>
+                  <p class="text-slate-400 italic text-sm mb-3 search-target-question" data-original={c.keyQuestion}>
+                    "{c.keyQuestion}"
+                  </p>
+                  
+                  <!-- Domain Badges -->
+                  <div class="flex flex-wrap gap-2 mb-3">
+                    {c.domains.map(domainId => {
+                      const domainDef = GROUP_DEFINITIONS.find(g => g.id === domainId);
+                      return domainDef ? (
+                        <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 bg-slate-950 border border-slate-800 px-2 py-0.5 rounded">
+                          {domainDef.name}
+                        </span>
+                      ) : null;
+                    })}
+                  </div>
+
+                  <!-- Balance Bar -->
+                  {c.total > 0 && (
+                    <div class="mt-2">
+                      <div class="flex h-2.5 rounded-full overflow-hidden bg-slate-950 border border-slate-800">
+                        <div class="bg-gradient-to-r from-green-600 to-green-400 transition-all duration-500 relative group/bar" style={`width: ${c.proPercent}%`}>
+                          <div class="absolute inset-0 bg-white/10 opacity-0 group-hover/bar:opacity-100 transition-opacity"></div>
+                        </div>
+                        <div class="bg-gradient-to-r from-red-600 to-red-400 transition-all duration-500 relative group/bar" style={`width: ${c.conPercent}%`}>
+                           <div class="absolute inset-0 bg-white/10 opacity-0 group-hover/bar:opacity-100 transition-opacity"></div>
+                        </div>
+                      </div>
+                      <div class="flex justify-between text-[10px] text-slate-500 mt-1.5 font-mono uppercase tracking-wide">
+                        <span class="text-green-500/80">{c.proCount} Supporting</span>
+                        <span class="text-red-500/80">{c.conCount} Critical</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <!-- Right: Status Preview (Desktop Only) -->
+                {c.status && (
+                  <div class="hidden lg:block w-48 shrink-0 border-l border-slate-800 pl-4">
+                    <p class="text-slate-500 text-xs line-clamp-3 leading-relaxed">{c.status}</p>
+                  </div>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const resultCount = document.getElementById('result-count') as HTMLSpanElement;
+    const items = document.querySelectorAll('.controversy-item') as NodeListOf<HTMLElement>;
+    const groups = document.querySelectorAll('.controversy-group') as NodeListOf<HTMLElement>;
+    const filterBtns = document.querySelectorAll('.filter-btn') as NodeListOf<HTMLButtonElement>;
+
+    let activeFilter = 'all';
+
+    // Helper to escape HTML to prevent XSS when injecting highlights
+    const escapeHtml = (unsafe: string) => {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+
+    // Helper to highlight text
+    const highlightText = (element: Element, query: string) => {
+      const original = element.getAttribute('data-original');
+      if (!original) return;
+
+      if (!query) {
+        element.textContent = original;
+        return;
+      }
+
+      const regex = new RegExp(`(${query})`, 'gi');
+      const highlighted = escapeHtml(original).replace(regex, '<mark class="bg-amber-500/30 text-amber-200 rounded px-0.5">$1</mark>');
+      element.innerHTML = highlighted;
+    };
+
+    // Filter Logic
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update UI
+        filterBtns.forEach(b => {
+          b.classList.remove('active', 'bg-amber-500/10', 'border-amber-500/50', 'text-amber-400');
+          b.classList.add('border-slate-800', 'text-slate-500');
+        });
+        btn.classList.add('active', 'bg-amber-500/10', 'border-amber-500/50', 'text-amber-400');
+        btn.classList.remove('border-slate-800', 'text-slate-500');
+
+        activeFilter = btn.dataset.filter || 'all';
+        runFilters();
+      });
+    });
+
+    const runFilters = () => {
+      const query = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      groups.forEach(group => {
+        const groupId = group.dataset.groupId;
+        let groupHasVisibleItems = false;
+
+        const itemsInGroup = group.querySelectorAll('.controversy-item');
+        itemsInGroup.forEach(item => {
+          const itemDomains = (item.dataset.domains || '').split(',');
+          const title = item.dataset.title || '';
+          const question = item.dataset.question || '';
+          
+          // Check Filter Match
+          const matchesFilter = activeFilter === 'all' || itemDomains.includes(activeFilter);
+          
+          // Check Search Match
+          const matchesSearch = !query || title.includes(query) || question.includes(query);
+
+          if (matchesFilter && matchesSearch) {
+            item.style.display = 'block';
+            groupHasVisibleItems = true;
+            visibleCount++;
+            
+            // Highlight
+            const titleEl = item.querySelector('.search-target-title');
+            const questionEl = item.querySelector('.search-target-question');
+            if (titleEl) highlightText(titleEl, query);
+            if (questionEl) highlightText(questionEl, query);
+          } else {
+            item.style.display = 'none';
+            // Clear Highlight
+            const titleEl = item.querySelector('.search-target-title');
+            const questionEl = item.querySelector('.search-target-question');
+            if (titleEl) highlightText(titleEl, '');
+            if (questionEl) highlightText(questionEl, '');
+          }
+        });
+
+        // Toggle Group Visibility
+        group.style.display = groupHasVisibleItems ? 'block' : 'none';
+        
+        // Dim effect for partial matches
+        if (query && groupHasVisibleItems) {
+           const totalInGroup = itemsInGroup.length;
+           const visibleInGroup = Array.from(itemsInGroup).filter(i => i.style.display !== 'none').length;
+           if (visibleInGroup < totalInGroup) {
+             group.classList.add('opacity-50');
+           } else {
+             group.classList.remove('opacity-50');
+           }
+        } else {
+          group.classList.remove('opacity-50');
+        }
+      });
+
+      resultCount.textContent = visibleCount.toString();
+    };
+
+    searchInput.addEventListener('input', runFilters);
+  </script>
+</Layout>

@@ -1,0 +1,225 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Guide', href: '/guide' }
+];
+---
+
+<Layout title="How to Read This Library" description="A quick guide to understanding the epistemic status, methodology scores, and structure of the Psi Research Library.">
+  <div class="max-w-5xl mx-auto px-4 py-12 space-y-16">
+    
+    <!-- Breadcrumb -->
+    <Breadcrumb items={breadcrumbs} />
+
+    <!-- Hero Section -->
+    <header class="text-center space-y-4">
+      <h1 class="text-4xl md:text-5xl font-bold text-white tracking-tight">
+        How to Read This Library
+      </h1>
+      <p class="text-xl text-slate-400 max-w-2xl mx-auto">
+        A quick guide to understanding what you're looking at, how evidence is weighted, and how to navigate the data.
+      </p>
+    </header>
+
+    <!-- Epistemic Status Badges -->
+    <section class="space-y-6">
+      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+        <span class="text-2xl">🏷️</span>
+        <h2 class="text-2xl font-semibold text-white">Epistemic Status Badges</h2>
+      </div>
+      <p class="text-slate-400 mb-8">
+        Every paper in the catalog is tagged with a status badge indicating the current scientific consensus regarding its findings.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Strong Evidence -->
+        <div class="bg-slate-900 border border-green-500/30 rounded-lg p-6 space-y-3 hover:border-green-500/50 transition-colors">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+            <h3 class="font-bold text-green-400">Strong Evidence</h3>
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Multiple successful replications, significant meta-analyses, and robust methodology. The effect is considered reliable.
+          </p>
+        </div>
+
+        <!-- Mixed Evidence -->
+        <div class="bg-slate-900 border border-amber-500/30 rounded-lg p-6 space-y-3 hover:border-amber-500/50 transition-colors">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]"></div>
+            <h3 class="font-bold text-amber-400">Mixed Evidence</h3>
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Some positive results exist, but there are notable critiques, failed replications, or methodological inconsistencies.
+          </p>
+        </div>
+
+        <!-- Weak/Contested -->
+        <div class="bg-slate-900 border border-red-500/30 rounded-lg p-6 space-y-3 hover:border-red-500/50 transition-colors">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+            <h3 class="font-bold text-red-400">Weak / Contested</h3>
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Failed replications, serious methodological concerns, fraud allegations, or strong counter-evidence dominates.
+          </p>
+        </div>
+
+        <!-- Insufficient Data -->
+        <div class="bg-slate-900 border border-slate-600/30 rounded-lg p-6 space-y-3 hover:border-slate-500/50 transition-colors">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-slate-500 shadow-[0_0_10px_rgba(100,116,139,0.5)]"></div>
+            <h3 class="font-bold text-slate-400">Insufficient Data</h3>
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Too few studies to draw conclusions. Often applies to niche phenomena or very recent research.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Methodology Scores -->
+    <section class="space-y-6">
+      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
+        <span class="text-2xl">📊</span>
+        <h2 class="text-2xl font-semibold text-white">Methodology Scores</h2>
+      </div>
+      <p class="text-slate-400 mb-8">
+        We extract key methodological metrics from each paper to help you assess quality at a glance.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-5">
+          <h3 class="text-amber-400 font-mono text-sm mb-2">SAMPLE SIZE (n)</h3>
+          <p class="text-slate-300 text-sm">
+            The total number of participants or trials. In psi research, small samples (n &lt; 50) are often viewed with skepticism due to the "file drawer problem."
+          </p>
+        </div>
+
+        <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-5">
+          <h3 class="text-amber-400 font-mono text-sm mb-2">PRE-REGISTRATION</h3>
+          <p class="text-slate-300 text-sm">
+            Indicates if the study hypothesis and analysis plan were registered publicly <em>before</em> data collection began. This prevents p-hacking.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-5">
+          <h3 class="text-amber-400 font-mono text-sm mb-2">BLINDING</h3>
+          <p class="text-slate-300 text-sm">
+            <strong>Double-blind:</strong> Neither participant nor experimenter knows the condition.<br>
+            <strong>Single-blind:</strong> Only the participant is unaware.<br>
+            <strong>Open:</strong> No blinding (high risk of bias).
+          </p>
+        </div>
+
+        <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-5">
+          <h3 class="text-amber-400 font-mono text-sm mb-2">EFFECT SIZE (Cohen's d)</h3>
+          <p class="text-slate-300 text-sm">
+            Measures the magnitude of the phenomenon.<br>
+            <span class="text-slate-500">0.2 = Small</span> • <span class="text-slate-500">0.5 = Medium</span> • <span class="text-slate-500">0.8 = Large</span>
+          </p>
+        </div>
+
+        <div class="bg-slate-900/50 border border-slate-800 rounded-lg p-5 md:col-span-2">
+          <h3 class="text-amber-400 font-mono text-sm mb-2">BAYES FACTOR (BF₁₀)</h3>
+          <p class="text-slate-300 text-sm mb-3">
+            A ratio indicating how much more likely the data is under the alternative hypothesis (psi exists) vs the null hypothesis (chance).
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs font-mono">
+            <span class="px-2 py-1 bg-slate-800 rounded text-slate-400">BF &lt; 1: Evidence for Null</span>
+            <span class="px-2 py-1 bg-slate-800 rounded text-slate-400">1 - 3: Anecdotal</span>
+            <span class="px-2 py-1 bg-slate-800 rounded text-amber-400/80">3 - 10: Moderate</span>
+            <span class="px-2 py-1 bg-slate-800 rounded text-amber-400">10 - 30: Strong</span>
+            <span class="px-2 py-1 bg-slate-800 rounded text-green-400">100+: Very Strong</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controversy Maps & Reading Paths -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Controversy Maps -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🗺️</span>
+          <h2 class="text-xl font-semibold text-white">Controversy Maps</h2>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-4">
+          <p class="text-slate-300">
+            Our controversy pages are designed to be neutral ground. Each map visualizes the research landscape for a specific debate (e.g., "Ganzfeld ESP" or "Remote Viewing").
+          </p>
+          <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
+            <li>Shows papers from <strong>both</strong> proponents and skeptics.</li>
+            <li>Highlights methodological flaws and strengths side-by-side.</li>
+            <li>Links directly to relevant <strong>Reading Paths</strong> for guided exploration.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Reading Paths -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">📚</span>
+          <h2 class="text-xl font-semibold text-white">Reading Paths</h2>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 space-y-4">
+          <p class="text-slate-300">
+            Don't know where to start? Reading Paths are curated sequences of papers designed to take you from foundational concepts to advanced debates.
+          </p>
+          <div class="space-y-3 pt-2">
+            <div class="flex items-start gap-3">
+              <span class="text-amber-400 font-bold">01.</span>
+              <div>
+                <h4 class="text-white text-sm font-medium">Beginner</h4>
+                <p class="text-xs text-slate-500">High-level overviews and famous historical cases.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-amber-400 font-bold">02.</span>
+              <div>
+                <h4 class="text-white text-sm font-medium">Methodology Deep Dive</h4>
+                <p class="text-xs text-slate-500">Focus on experimental design, statistics, and controls.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <span class="text-amber-400 font-bold">03.</span>
+              <div>
+                <h4 class="text-white text-sm font-medium">The Skeptic's Case</h4>
+                <p class="text-xs text-slate-500">Key papers arguing against psi phenomena.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- For AI Agents -->
+    <section class="border-t border-slate-800 pt-10">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-2">
+          <h2 class="text-xl font-semibold text-white flex items-center gap-2">
+            <span class="text-2xl">🤖</span> For AI Agents
+          </h2>
+          <p class="text-slate-400 text-sm max-w-xl">
+            This library is optimized for LLM consumption. You can access the full structured dataset via our API or context file.
+          </p>
+        </div>
+        
+        <div class="flex flex-col gap-3 min-w-[300px]">
+          <div class="bg-slate-950 border border-slate-800 rounded p-3 font-mono text-xs text-slate-300 flex items-center justify-between group">
+            <span class="truncate">/llms.txt</span>
+            <span class="text-slate-600 group-hover:text-amber-400 transition-colors">Context File</span>
+          </div>
+          <div class="bg-slate-950 border border-slate-800 rounded p-3 font-mono text-xs text-slate-300 flex items-center justify-between group">
+            <span class="truncate">/api/catalog.json</span>
+            <span class="text-slate-600 group-hover:text-amber-400 transition-colors">Full Dataset</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</Layout>

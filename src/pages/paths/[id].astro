@@ -1,8 +1,9 @@
+<!-- src/pages/paths/[id].astro -->
 ---
 import Layout from '../../layouts/Layout.astro';
-import { marked } from 'marked';
 import fs from 'node:fs';
 import path from 'node:path';
+import catalog from '../../data/catalog.json';
 
 export function getStaticPaths() {
   const dir = path.join(process.cwd(), 'src/data/reading_paths');
@@ -16,18 +17,344 @@ export function getStaticPaths() {
 
 const { id } = Astro.params;
 const { content } = Astro.props;
-// Auto-link catalog IDs: [catalog ID: xxx] → linked to /paper/xxx
-const linkedContent = content.replace(
-  /\[catalog ID: ([^\]]+)\]/g,
-  (_, id) => `[📄 ${id}](/paper/${id.trim()})`
-);
-const html = marked(linkedContent);
-const title = content.split('\n')[0].replace(/^#\s*/, '').trim();
+
+// --- PARSING HELPERS ---
+
+function parsePathContent(fileContent: string) {
+  const lines = fileContent.split('\n');
+  let title = 'Reading Path';
+  let tagline = '';
+  const papers: any[] = [];
+
+  let currentPaper: any = null;
+  let isParsingDescription = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    
+    if (line.startsWith('# ') && !title) {
+      title = line.replace('# ', '').trim();
+      continue;
+    }
+
+    if (!tagline && line.startsWith('*') && line.endsWith('*')) {
+      tagline = line.replace(/^\*|\*$/g, '').trim();
+      continue;
+    }
+
+    const paperHeaderMatch = line.match(/^(\d+)([a-z])?\.\s+\*\*(.+?)\*\*\s+--\s+\*(.+?)\*/);
+    if (paperHeaderMatch) {
+      if (currentPaper) papers.push(currentPaper);
+
+      const [, num, sub, authors, paperTitle] = paperHeaderMatch;
+      currentPaper = {
+        number: parseInt(num),
+        subNumber: sub || null,
+        authors,
+        title: paperTitle,
+        id: null,
+        description: '',
+        journal: null
+      };
+      isParsingDescription = true;
+      continue;
+    }
+
+    if (currentPaper && isParsingDescription && line.startsWith('`')) {
+      const metaMatch = line.match(/^`([^`]+)`\s*\|\s*(.*)/);
+      if (metaMatch) {
+        currentPaper.id = metaMatch[1];
+        const desc = metaMatch[2];
+        const journalMatch = desc.match(/Published in \*([^*]+)\*/);
+        if (journalMatch) {
+          currentPaper.journal = journalMatch[1];
+        }
+        currentPaper.description = desc;
+      }
+      continue;
+    }
+
+    if (currentPaper && isParsingDescription && line.length > 0 && !line.startsWith('`')) {
+       currentPaper.description += ' ' + line;
+    }
+  }
+  if (currentPaper) papers.push(currentPaper);
+
+  // Enrich
+  papers.forEach(p => {
+    if (p.id) {
+      const catalogEntry = catalog.papers.find((c: any) => c.id === p.id);
+      if (catalogEntry) {
+        p.year = catalogEntry.year || p.authors.match(/\((\d{4})\)/)?.[1] || 'n.d.';
+        p.domain = catalogEntry.domain || 'General';
+        p.pdf = catalogEntry.pdf || null;
+        p.tags = catalogEntry.tags || [];
+        p.folder = catalogEntry.folder || null;
+      }
+    }
+  });
+
+  return { title, tagline, papers };
+}
+
+// Parse current path
+const parsed = parsePathContent(content);
+const { title, tagline, papers } = parsed;
+
+// --- RELATED PATHS LOGIC ---
+
+function getRelatedPaths(currentId: string, currentPapers: any[]) {
+  const dir = path.join(process.cwd(), 'src/data/reading_paths');
+  const files = fs.readdirSync(dir).filter(f => f.startsWith('path_') && f.endsWith('.md'));
+  
+  const currentIds = new Set(currentPapers.map(p => p.id).filter(Boolean));
+  
+  const scoredPaths = files
+    .filter(f => f.replace('.md', '') !== currentId)
+    .map(f => {
+      const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+      const { title, papers } = parsePathContent(content);
+      const pathIds = new Set(papers.map(p => p.id).filter(Boolean));
+      
+      // Calculate overlap
+      let overlapCount = 0;
+      currentIds.forEach(id => {
+        if (pathIds.has(id)) overlapCount++;
+      });
+
+      // Also check domain overlap (less weight)
+      const currentDomains = new Set(currentPapers.map(p => p.domain));
+      let domainOverlap = 0;
+      papers.forEach(p => {
+        if (currentDomains.has(p.domain)) domainOverlap++;
+      });
+
+      return {
+        id: f.replace('.md', ''),
+        title,
+        tagline: papers[0]?.description?.substring(0, 100) || '', // Fallback
+        score: (overlapCount * 10) + (domainOverlap * 0.5)
+      };
+    })
+    .filter(p => p.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 2);
+
+  return scoredPaths;
+}
+
+const relatedPaths = getRelatedPaths(id, papers);
+
+// --- TRANSITION PHRASES ---
+
+function getTransitionPhrase(index: number, total: number, paper: any): string {
+  if (index === 0) return "Begin your journey...";
+  if (index >= total - 2) return "And finally...";
+  if (paper.folder && paper.folder.includes('10_Skeptical_and_Critical')) return "Now the critical perspective...";
+  if (index >= 1 && index <= 2) return "Building on this foundation...";
+  if (index >= 3 && index <= 5) return "Going deeper...";
+  return "Next...";
+}
 ---
 
-<Layout title={title}>
-  <nav class="text-sm text-slate-500 mb-6">
-    <a href="/paths" class="hover:text-amber-400">← All Reading Paths</a>
-  </nav>
-  <article class="prose prose-invert prose-amber max-w-4xl" set:html={html} />
+<Layout title={title} description={tagline}>
+  <div class="max-w-3xl mx-auto px-4 py-8 relative">
+    
+    <!-- Header -->
+    <div class="mb-10 text-center">
+      <a href="/paths" class="text-amber-400 hover:text-amber-300 text-sm mb-6 inline-block transition-colors">← Back to Reading Paths</a>
+      <h1 class="text-4xl font-bold text-white mb-4 tracking-tight">{title}</h1>
+      {tagline && <p class="text-slate-300 text-lg italic max-w-2xl mx-auto leading-relaxed">{tagline}</p>}
+    </div>
+
+    <!-- Progress Bar (Top) -->
+    <div class="mb-12 bg-slate-900/50 rounded-full p-1 border border-slate-800 sticky top-4 z-40 backdrop-blur-sm shadow-lg">
+      <div class="flex items-center justify-between px-4 py-2">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Your Progress</span>
+        <span id="progress-text" class="text-xs font-mono text-amber-400">0 of {papers.length} papers explored</span>
+      </div>
+      <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+        <div id="progress-bar" class="bg-amber-500 h-2 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(245,158,11,0.5)]" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- Paper List -->
+    <div class="space-y-2">
+      {papers.map((paper, index) => (
+        <>
+          <!-- Transition Connector -->
+          <div class="flex justify-center py-2 relative">
+            <div class="h-10 w-0.5 bg-slate-800 relative overflow-hidden">
+              <!-- Pulsing Dot -->
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-amber-500/30 rounded-full animate-ping"></div>
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-amber-500 rounded-full"></div>
+            </div>
+            <span class="absolute top-1/2 left-4 -translate-y-1/2 text-[10px] text-slate-600 uppercase tracking-widest font-semibold whitespace-nowrap bg-slate-950 px-2">
+              {getTransitionPhrase(index, papers.length, paper)}
+            </span>
+          </div>
+          
+          <!-- Paper Card -->
+          <div 
+            data-paper-id={paper.id}
+            class="group bg-slate-900 rounded-xl p-6 border border-slate-800 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-900/10 transition-all duration-300 relative overflow-hidden"
+          >
+            <!-- Decorative gradient glow -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+
+            <div class="relative z-10">
+              <div class="flex items-start justify-between gap-4 mb-4">
+                <div class="flex items-center gap-3">
+                  <span class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 text-amber-400 font-mono text-sm font-bold border border-slate-700">
+                    {paper.number}{paper.subNumber}
+                  </span>
+                  {paper.year && (
+                    <span class="bg-slate-800 text-amber-400 text-xs px-2 py-0.5 rounded font-mono border border-slate-700/50">
+                      {paper.year}
+                    </span>
+                  )}
+                  {paper.domain && (
+                    <span class="text-xs px-2 py-1 bg-slate-800/50 text-slate-500 rounded border border-slate-800">
+                      {paper.domain}
+                    </span>
+                  )}
+                </div>
+                
+                <!-- Read Indicator -->
+                <div class="flex-shrink-0 flex items-center gap-2">
+                  <span class="read-indicator hidden text-amber-400 text-sm font-bold flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                    Visited
+                  </span>
+                  <span class="unread-indicator text-slate-600 text-xs font-mono border border-slate-700 px-2 py-0.5 rounded">Unread</span>
+                </div>
+              </div>
+              
+              <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">{paper.title}</h3>
+              <p class="text-slate-400 text-sm font-medium mb-1">{paper.authors}</p>
+              
+              {paper.journal && (
+                <p class="text-slate-500 text-xs mb-3 italic">
+                  Published in {paper.journal}
+                </p>
+              )}
+              
+              {paper.description && (
+                <p class="text-slate-500 text-sm leading-relaxed mb-4 border-l-2 border-slate-800 pl-4">{paper.description}</p>
+              )}
+              
+              <!-- Action Links -->
+              <div class="flex items-center gap-4 pt-4 border-t border-slate-800/50">
+                {paper.pdf && (
+                  <a 
+                    href={paper.pdf} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="text-amber-400 hover:text-amber-300 text-sm font-medium flex items-center gap-2 transition-colors"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Read PDF
+                  </a>
+                )}
+                {paper.id && (
+                  <a 
+                    href={`/paper/${paper.id}`} 
+                    class="text-slate-400 hover:text-white text-sm font-medium flex items-center gap-2 transition-colors"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Paper Details
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </>
+      ))}
+    </div>
+
+    <!-- Continue Your Journey -->
+    {relatedPaths.length > 0 && (
+      <div class="mt-16 pt-10 border-t border-slate-800">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.553-.894L15 7m0 13V7"/></svg>
+          Continue Your Journey
+        </h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          {relatedPaths.map(rp => (
+            <a href={`/paths/${rp.id}`} class="block p-5 bg-slate-900 border border-slate-800 rounded-lg hover:border-amber-500/50 hover:bg-slate-800 transition-all group">
+              <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-amber-400">{rp.title}</h3>
+              <p class="text-slate-500 text-sm line-clamp-2">{rp.tagline}</p>
+              <div class="mt-3 text-xs text-amber-500/80 font-medium flex items-center gap-1">
+                Explore Path <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Back Link -->
+    <div class="mt-12 text-center">
+      <a href="/paths" class="text-slate-500 hover:text-amber-400 text-sm transition-colors">← Back to Reading Paths</a>
+    </div>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <button 
+    id="scroll-to-top"
+    class="fixed bottom-6 right-6 bg-amber-500 hover:bg-amber-400 text-slate-950 p-3 rounded-full shadow-lg shadow-amber-900/20 transition-all duration-300 opacity-0 pointer-events-none translate-y-4 z-50"
+    aria-label="Scroll to top"
+  >
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+    </svg>
+  </button>
+
+  <!-- Scripts -->
+  <script>
+    // --- Progress Logic ---
+    const progress = JSON.parse(localStorage.getItem('psi-path-progress') || '{}');
+    const paperElements = document.querySelectorAll('[data-paper-id]');
+    let readCount = 0;
+
+    paperElements.forEach(el => {
+      const id = el.getAttribute('data-paper-id');
+      if (id && progress[id]) {
+        readCount++;
+        const readInd = el.querySelector('.read-indicator');
+        const unreadInd = el.querySelector('.unread-indicator');
+        if (readInd) readInd.classList.remove('hidden');
+        if (unreadInd) unreadInd.classList.add('hidden');
+        // Visual highlight for read items
+        el.classList.add('border-amber-500/20', 'bg-slate-900/80');
+      }
+    });
+
+    const bar = document.getElementById('progress-bar');
+    const text = document.getElementById('progress-text');
+    if (bar && paperElements.length > 0) {
+      const pct = (readCount / paperElements.length) * 100;
+      bar.style.width = `${pct}%`;
+      text.textContent = `${readCount} of ${paperElements.length} papers explored`;
+    }
+
+    // --- Scroll to Top Logic ---
+    const scrollBtn = document.getElementById('scroll-to-top');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 500) {
+        scrollBtn?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+      } else {
+        scrollBtn?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+      }
+    });
+
+    scrollBtn?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </Layout>

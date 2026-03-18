@@ -1,0 +1,335 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import catalog from '../../data/catalog.json';
+
+export function getStaticPaths() {
+  return catalog.papers.map((paper: any) => ({
+    params: { id: paper.id },
+    props: { paper },
+  }));
+}
+
+const { paper } = Astro.props;
+const relatedPapersRaw = paper.related_papers || {};
+const relatedEntries: { type: string; paper: any }[] = [];
+if (typeof relatedPapersRaw === 'object' && !Array.isArray(relatedPapersRaw)) {
+  for (const [relType, ids] of Object.entries(relatedPapersRaw)) {
+    if (Array.isArray(ids)) {
+      for (const id of ids as string[]) {
+        const found = catalog.papers.find((p: any) => p.id === id);
+        if (found) relatedEntries.push({ type: relType, paper: found });
+      }
+    }
+  }
+}
+const relatedPapers = relatedEntries;
+
+const folderLabels: Record<string, string> = {
+  '01_Meta-Analyses': 'Meta-Analyses',
+  '02_Telepathy': 'Telepathy',
+  '03_Precognition': 'Precognition',
+  '04_Remote_Viewing': 'Remote Viewing',
+  '05_Psychokinesis': 'Psychokinesis',
+  '06_Healing_and_Intention': 'Healing & Intention',
+  '07_Mediumship_and_Survival': 'Mediumship & Survival',
+  '08_NDE_and_OBE': 'NDE & OBE',
+  '09_Methodology_and_Theory': 'Methodology & Theory',
+  '10_Skeptical_and_Critical': 'Skeptical & Critical',
+  '11_Autism_and_Nonverbal': 'Autism & Nonverbal',
+  '12_Books_and_Overviews': 'Books & Overviews',
+  '13_Podcast_References': 'Podcast References',
+};
+
+// Find prev/next in same domain
+const sameDomain = catalog.papers
+  .filter((p: any) => p.psi_domain === paper.psi_domain)
+  .sort((a: any, b: any) => (a.year || 0) - (b.year || 0));
+const currentIndex = sameDomain.findIndex((p: any) => p.id === paper.id);
+const prevPaper = currentIndex > 0 ? sameDomain[currentIndex - 1] : null;
+const nextPaper = currentIndex < sameDomain.length - 1 ? sameDomain[currentIndex + 1] : null;
+
+// Group related papers by type
+const groupedRelated: Record<string, any[]> = {};
+relatedPapers.forEach((entry) => {
+  if (!groupedRelated[entry.type]) {
+    groupedRelated[entry.type] = [];
+  }
+  groupedRelated[entry.type].push(entry.paper);
+});
+
+// Relationship type colors
+const relationColors: Record<string, string> = {
+  critiques: 'text-red-400 border-red-400/30 bg-red-400/10',
+  critiqued_by: 'text-red-400 border-red-400/30 bg-red-400/10',
+  extends: 'text-blue-400 border-blue-400/30 bg-blue-400/10',
+  extended_by: 'text-blue-400 border-blue-400/30 bg-blue-400/10',
+  replicated_by: 'text-green-400 border-green-400/30 bg-green-400/10',
+  replication_of: 'text-green-400 border-green-400/30 bg-green-400/10',
+  precursor: 'text-purple-400 border-purple-400/30 bg-purple-400/10',
+};
+
+const getRelationColor = (type: string) => {
+  return relationColors[type] || 'text-slate-400 border-slate-400/30 bg-slate-400/10';
+};
+
+const formatRelationLabel = (type: string) => {
+  return type.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+};
+
+// Effect size color
+const getEffectSizeColor = (es: number) => {
+  if (es > 0.3) return 'bg-green-500';
+  if (es >= 0.1) return 'bg-amber-500';
+  return 'bg-red-500';
+};
+
+// Blinding badge
+const getBlindingBadge = (blinding: string) => {
+  if (!blinding) return null;
+  const lower = blinding.toLowerCase();
+  if (lower.includes('double')) {
+    return { text: 'Double-Blind', color: 'bg-green-500/20 text-green-400 border-green-500/30' };
+  }
+  if (lower.includes('single')) {
+    return { text: 'Single-Blind', color: 'bg-amber-500/20 text-amber-400 border-amber-500/30' };
+  }
+  return { text: 'Not Blinded', color: 'bg-red-500/20 text-red-400 border-red-500/30' };
+};
+
+// Generate JSON-LD structured data
+const jsonLdData = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "name": paper.title,
+  "author": (paper.authors || []).map((name: string) => ({
+    "@type": "Person",
+    "name": name
+  })),
+  "datePublished": String(paper.year || ""),
+  "description": paper.abstract || "",
+  ...(paper.journal ? { "isPartOf": { "@type": "Periodical", "name": paper.journal } } : {}),
+  ...(paper.doi ? { "sameAs": `https://doi.org/${paper.doi}` } : {}),
+  ...(paper.source_url ? { "url": paper.source_url } : {})
+};
+const jsonLd = JSON.stringify(jsonLdData);
+---
+
+<Layout title={paper.title} description={paper.abstract?.substring(0, 160) || 'Psi Research Paper'} jsonLd={jsonLd}>
+  <article class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-slate-500 mb-6">
+      <a href="/" class="hover:text-amber-400">Home</a>
+      <span class="mx-1">/</span>
+      <a href="/catalog" class="hover:text-amber-400">Catalog</a>
+      <span class="mx-1">/</span>
+      <span class="text-slate-300">{paper.title}</span>
+    </nav>
+
+    <!-- Paper Header -->
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold text-slate-100 mb-2">{paper.title}</h1>
+      <div class="flex flex-wrap items-center gap-3 text-slate-400">
+        <span class="text-amber-400">{paper.authors?.join(', ')}</span>
+        {paper.year && (
+          <>
+            <span>•</span>
+            <span>{paper.year}</span>
+          </>
+        )}
+        {paper.psi_domain && (
+          <>
+            <span>•</span>
+            <span class="px-2 py-0.5 rounded-full text-xs bg-amber-400/20 text-amber-400 border border-amber-400/30">
+              {paper.psi_domain}
+            </span>
+          </>
+        )}
+      </div>
+    </header>
+
+    <!-- Methodology Indicators -->
+    {(paper.pre_registered !== undefined || paper.effect_size !== undefined || paper.blinding) && (
+      <>
+        <section class="mb-8 p-4 rounded-lg bg-slate-900 border border-slate-800">
+          <h2 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">Methodology</h2>
+          <div class="flex flex-wrap gap-4">
+            <!-- Pre-registration -->
+            {paper.pre_registered !== undefined && (
+              <div class="flex items-center gap-2">
+                {paper.pre_registered ? (
+                  <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                ) : (
+                  <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                )}
+                <span class="text-slate-300 text-sm">
+                  Pre-registered: <span class={paper.pre_registered ? 'text-green-400' : 'text-slate-500'}>
+                    {paper.pre_registered ? 'Yes' : 'No'}
+                  </span>
+                </span>
+              </div>
+            )}
+
+            <!-- Effect Size -->
+            {typeof paper.effect_size === 'number' && (
+              <div class="flex items-center gap-2">
+                <span class="text-slate-300 text-sm">Effect Size:</span>
+                <div class="flex items-center gap-2">
+                  <div class="w-16 h-2 rounded-full bg-slate-700 overflow-hidden">
+                    <div 
+                      class={`h-full ${getEffectSizeColor(paper.effect_size)}`} 
+                      style={`width: ${Math.min(Math.abs(paper.effect_size) * 100, 100)}%`}
+                    ></div>
+                  </div>
+                  <span class="text-slate-300 text-sm font-mono">{paper.effect_size.toFixed(2)}</span>
+                </div>
+              </div>
+            )}
+
+            <!-- Blinding -->
+            {paper.blinding && (() => {
+              const badge = getBlindingBadge(paper.blinding);
+              if (!badge) return null;
+              return (
+                <span class={`px-2 py-0.5 rounded text-xs border ${badge.color}`}>
+                  {badge.text}
+                </span>
+              );
+            })()}
+          </div>
+        </section>
+
+        <div class="bg-amber-500/5 border border-amber-500/20 rounded-lg p-3 mb-6 text-sm">
+          <p class="text-slate-400">
+            <span class="text-amber-400 font-medium">⚠️ Data note:</span> 
+            Methodology fields were AI-extracted and may contain errors. 
+            <a href="/method" class="text-amber-400 hover:underline">Read about our extraction process</a> 
+            and verify against the source paper.
+          </p>
+        </div>
+      </>
+    )}
+
+    <!-- Abstract -->
+    {paper.abstract && (
+      <section class="mb-8">
+        <h2 class="text-lg font-semibold text-slate-200 mb-3">Abstract</h2>
+        <div class="prose prose-invert prose-slate max-w-none">
+          <p class="text-slate-300 leading-relaxed">{paper.abstract}</p>
+        </div>
+      </section>
+    )}
+
+    <!-- Links -->
+    {(paper.doi || paper.url || paper.pdf_url) && (
+      <section class="mb-8">
+        <h2 class="text-lg font-semibold text-slate-200 mb-3">Links</h2>
+        <div class="flex flex-wrap gap-3">
+          {paper.doi && (
+            <a 
+              href={`https://doi.org/${paper.doi}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="px-4 py-2 rounded-lg bg-amber-400/20 text-amber-400 border border-amber-400/30 hover:bg-amber-400/30 transition-colors text-sm"
+            >
+              DOI: {paper.doi}
+            </a>
+          )}
+          {paper.url && (
+            <a 
+              href={paper.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 transition-colors text-sm"
+            >
+              Publisher Page
+            </a>
+          )}
+          {paper.pdf_url && (
+            <a 
+              href={paper.pdf_url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 transition-colors text-sm"
+            >
+              PDF
+            </a>
+          )}
+        </div>
+      </section>
+    )}
+
+    <!-- Related Papers -->
+    {Object.keys(groupedRelated).length > 0 && (
+      <section class="mb-8">
+        <h2 class="text-lg font-semibold text-slate-200 mb-4">Related Papers</h2>
+        <div class="space-y-6">
+          {Object.entries(groupedRelated).map(([relType, papers]) => (
+            <div key={relType} class={`p-4 rounded-lg border ${getRelationColor(relType)}`}>
+              <h3 class="text-sm font-semibold mb-3 uppercase tracking-wide">
+                {formatRelationLabel(relType)}
+              </h3>
+              <ul class="space-y-2">
+                {papers.map((relatedPaper: any) => (
+                  <li key={relatedPaper.id}>
+                    <a 
+                      href={`/paper/${relatedPaper.id}`}
+                      class="block text-slate-300 hover:text-amber-400 transition-colors"
+                    >
+                      <span class="font-medium">{relatedPaper.title}</span>
+                      <span class="text-slate-500 text-sm"> — {relatedPaper.authors?.[0] || 'Unknown'} ({relatedPaper.year || 'n.d.'})</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Prev/Next Navigation -->
+    {(prevPaper || nextPaper) && (
+      <nav class="mt-12 pt-8 border-t border-slate-800">
+        <div class="flex justify-between items-center">
+          {prevPaper ? (
+            <a 
+              href={`/paper/${prevPaper.id}`}
+              class="flex items-center gap-2 text-slate-400 hover:text-amber-400 transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              <div class="text-left">
+                <span class="text-xs text-slate-500 block">Previous in {paper.psi_domain || 'Domain'}</span>
+                <span class="text-sm">{prevPaper.title}</span>
+              </div>
+            </a>
+          ) : (
+            <div></div>
+          )}
+          
+          {nextPaper ? (
+            <a 
+              href={`/paper/${nextPaper.id}`}
+              class="flex items-center gap-2 text-slate-400 hover:text-amber-400 transition-colors"
+            >
+              <div class="text-right">
+                <span class="text-xs text-slate-500 block">Next in {paper.psi_domain || 'Domain'}</span>
+                <span class="text-sm">{nextPaper.title}</span>
+              </div>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      </nav>
+    )}
+  </article>
+</Layout>

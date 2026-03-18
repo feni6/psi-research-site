@@ -1,0 +1,365 @@
+---
+import Layout from '../layouts/Layout.astro';
+import catalog from '../data/catalog.json';
+
+const papers = catalog.papers.sort((a: any, b: any) => (b.year || 0) - (a.year || 0));
+const domains = [...new Set(papers.map((p: any) => p.psi_domain).filter(Boolean))].sort();
+const folders = [...new Set(papers.map((p: any) => p.folder).filter(Boolean))].sort();
+
+// Get year range for filters
+const years = papers.map((p: any) => p.year).filter(Boolean);
+const minYear = Math.min(...years);
+const maxYear = Math.max(...years);
+
+// Helper to format folder names
+function formatFolder(folder: string): string {
+  return folder.replace(/^\d+_/, '').replace(/_/g, ' ');
+}
+
+// Helper to compute pre-registration status
+function getPreRegStatus(paper: any): string {
+  const prereg = paper.methodology?.pre_registration ?? paper.methodology?.pre_registered;
+  if (prereg === null || prereg === undefined) return 'unknown';
+  if (typeof prereg === 'boolean') return prereg ? 'true' : 'false';
+  if (typeof prereg === 'string') {
+    const lower = prereg.toLowerCase();
+    if (lower === 'yes' || lower === 'true') return 'true';
+    if (lower === 'no' || lower === 'false') return 'false';
+  }
+  return 'unknown';
+}
+
+// Helper to compute blinding status
+function getBlindingStatus(paper: any): string {
+  const blinding = paper.methodology?.blinding;
+  if (!blinding) return 'unknown';
+  const lower = blinding.toLowerCase();
+  if (lower.includes('double')) return 'double';
+  if (lower.includes('single')) return 'single';
+  if (lower.includes('none') || lower.includes('not') || lower.includes('open')) return 'none';
+  return 'unknown';
+}
+
+// Helper to compute DOI status
+function getDoiStatus(paper: any): string {
+  return paper.doi ? 'yes' : 'no';
+}
+---
+
+<Layout title="Catalog">
+  <h1 class="text-3xl font-bold mb-2">Paper Catalog</h1>
+  <p class="text-slate-400 mb-6">{papers.length} papers across {domains.length} research domains</p>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-3 mb-4" id="filters" role="search">
+    <select id="domain-filter" aria-label="Filter by domain" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-amber-500/50 focus:outline-none">
+      <option value="">All Domains</option>
+      {domains.map((d: string) => (
+        <option value={d}>{d.replace(/_/g, ' ')}</option>
+      ))}
+    </select>
+    
+    <select id="folder-filter" aria-label="Filter by folder" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-amber-500/50 focus:outline-none">
+      <option value="">All Categories</option>
+      {folders.map((f: string) => (
+        <option value={f}>{formatFolder(f)}</option>
+      ))}
+    </select>
+    
+    <div class="flex items-center gap-2">
+      <input 
+        type="number" 
+        id="year-min" 
+        aria-label="Minimum year"
+        placeholder="From" 
+        min={minYear}
+        max={maxYear}
+        class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm w-20 focus:border-amber-500/50 focus:outline-none"
+      />
+      <span class="text-slate-500">–</span>
+      <input 
+        type="number" 
+        id="year-max" 
+        aria-label="Maximum year"
+        placeholder="To" 
+        min={minYear}
+        max={maxYear}
+        class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm w-20 focus:border-amber-500/50 focus:outline-none"
+      />
+    </div>
+    
+    <select id="prereg-filter" aria-label="Filter by pre-registration" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-amber-500/50 focus:outline-none">
+      <option value="">Pre-registration: All</option>
+      <option value="true">Pre-registered only</option>
+      <option value="false">Not pre-registered</option>
+    </select>
+    
+    <select id="blinding-filter" aria-label="Filter by blinding" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-amber-500/50 focus:outline-none">
+      <option value="">Blinding: All</option>
+      <option value="double">Double-blind</option>
+      <option value="single">Single-blind</option>
+      <option value="none">Not blinded</option>
+    </select>
+    
+    <label class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm cursor-pointer hover:border-amber-500/30 transition">
+      <input 
+        type="checkbox" 
+        id="doi-filter" 
+        aria-label="Filter by DOI availability"
+        class="accent-amber-500"
+      />
+      <span>Has DOI</span>
+    </label>
+    
+    <input 
+      type="text" 
+      id="search" 
+      aria-label="Search papers"
+      placeholder="Search papers..." 
+      class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm flex-1 min-w-[200px] focus:border-amber-500/50 focus:outline-none"
+    />
+
+    <select id="sort-filter" aria-label="Sort papers" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-amber-500/50 focus:outline-none">
+      <option value="year-desc">Year (Newest)</option>
+      <option value="year-asc">Year (Oldest)</option>
+      <option value="title-asc">Title (A-Z)</option>
+      <option value="title-desc">Title (Z-A)</option>
+      <option value="domain">Domain</option>
+    </select>
+    
+    <button 
+      id="clear-filters" 
+      aria-label="Clear all filters"
+      class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-300 hover:text-amber-400 transition"
+    >
+      Clear All
+    </button>
+  </div>
+
+  <!-- Result count -->
+  <div class="mb-4">
+    <span id="result-count" aria-live="polite" class="text-sm text-slate-400">Showing {papers.length} of {papers.length} papers</span>
+  </div>
+
+  <!-- Paper list -->
+  <div id="paper-list" role="list" class="space-y-3">
+    {papers.map((paper: any) => (
+      <article 
+        class="paper-card bg-slate-900 border border-slate-800 rounded-lg p-4 hover:border-amber-500/30 transition flex justify-between items-start gap-4"
+        role="listitem"
+        data-domain={paper.psi_domain}
+        data-folder={paper.folder}
+        data-title={paper.title?.toLowerCase()}
+        data-authors={paper.authors?.join(' ').toLowerCase()}
+        data-abstract={paper.abstract?.toLowerCase()}
+        data-year={paper.year}
+        data-prereg={getPreRegStatus(paper)}
+        data-blinding={getBlindingStatus(paper)}
+        data-doi={getDoiStatus(paper)}
+      >
+        <!-- Left Content: Title, Meta, Abstract -->
+        <div class="flex-1 min-w-0">
+          <a 
+            href={`/paper/${paper.id}`}
+            class="block font-semibold text-slate-200 text-lg hover:text-amber-400 transition mb-1"
+          >
+            {paper.title}
+          </a>
+          
+          <p class="text-slate-500 text-sm mb-2">
+            {paper.authors?.slice(0, 3).join(', ')}{paper.authors?.length > 3 ? ' et al.' : ''} 
+            ({paper.year}) 
+            <span class="text-slate-400">— {paper.journal}</span>
+          </p>
+          
+          {paper.abstract && (
+            <p class="text-slate-400 text-sm line-clamp-2 leading-relaxed">
+              {paper.abstract}
+            </p>
+          )}
+        </div>
+        
+        <!-- Right Content: Badges, DOI -->
+        <div class="flex flex-col items-end gap-2 shrink-0 ml-4">
+          <span class="text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded capitalize whitespace-nowrap">
+            {paper.psi_domain?.replace(/_/g, ' ')}
+          </span>
+          
+          {paper.folder === '10_Skeptical_and_Critical' && (
+            <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded whitespace-nowrap">
+              Skeptical
+            </span>
+          )}
+          
+          {paper.doi && (
+            <a 
+              href={`https://doi.org/${paper.doi}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-xs text-slate-500 hover:text-amber-400 flex items-center gap-1 transition"
+            >
+              DOI <span aria-hidden="true">↗</span>
+            </a>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <script>
+    const domainFilter = document.getElementById('domain-filter') as HTMLSelectElement;
+    const folderFilter = document.getElementById('folder-filter') as HTMLSelectElement;
+    const yearMinInput = document.getElementById('year-min') as HTMLInputElement;
+    const yearMaxInput = document.getElementById('year-max') as HTMLInputElement;
+    const preregFilter = document.getElementById('prereg-filter') as HTMLSelectElement;
+    const blindingFilter = document.getElementById('blinding-filter') as HTMLSelectElement;
+    const doiFilter = document.getElementById('doi-filter') as HTMLInputElement;
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    const sortFilter = document.getElementById('sort-filter') as HTMLSelectElement;
+    const clearButton = document.getElementById('clear-filters') as HTMLButtonElement;
+    const resultCount = document.getElementById('result-count') as HTMLElement;
+    const paperList = document.getElementById('paper-list') as HTMLElement;
+
+    // Get initial static list of cards
+    let cards = Array.from(document.querySelectorAll('.paper-card')) as HTMLElement[];
+    const totalPapers = cards.length;
+
+    function filterAndSortCards() {
+      const domain = domainFilter.value;
+      const folder = folderFilter.value;
+      const yearMin = yearMinInput.value ? parseInt(yearMinInput.value) : null;
+      const yearMax = yearMaxInput.value ? parseInt(yearMaxInput.value) : null;
+      const prereg = preregFilter.value;
+      const blinding = blindingFilter.value;
+      const hasDoi = doiFilter.checked;
+      const query = searchInput.value.toLowerCase();
+      const sortValue = sortFilter.value;
+      
+      let visibleCount = 0;
+      
+      // 1. Sort the cards array based on selection
+      cards.sort((a, b) => {
+        if (sortValue === 'year-desc') {
+          const yearA = a.dataset.year ? parseInt(a.dataset.year) : 0;
+          const yearB = b.dataset.year ? parseInt(b.dataset.year) : 0;
+          return yearB - yearA;
+        }
+        if (sortValue === 'year-asc') {
+          const yearA = a.dataset.year ? parseInt(a.dataset.year) : 0;
+          const yearB = b.dataset.year ? parseInt(b.dataset.year) : 0;
+          return yearA - yearB;
+        }
+        if (sortValue === 'title-asc') {
+          return (a.dataset.title || '').localeCompare(b.dataset.title || '');
+        }
+        if (sortValue === 'title-desc') {
+          return (b.dataset.title || '').localeCompare(a.dataset.title || '');
+        }
+        if (sortValue === 'domain') {
+          return (a.dataset.domain || '').localeCompare(b.dataset.domain || '');
+        }
+        return 0;
+      });
+
+      // 2. Filter and Re-append to DOM
+      cards.forEach((card) => {
+        const cardYear = card.dataset.year ? parseInt(card.dataset.year) : null;
+        
+        const matchDomain = !domain || card.dataset.domain === domain;
+        const matchFolder = !folder || card.dataset.folder === folder;
+        const matchYear = (!yearMin || (cardYear && cardYear >= yearMin)) && 
+                          (!yearMax || (cardYear && cardYear <= yearMax));
+        const matchPrereg = !prereg || card.dataset.prereg === prereg;
+        const matchBlinding = !blinding || card.dataset.blinding === blinding;
+        const matchDoi = !hasDoi || card.dataset.doi === 'yes';
+        const matchSearch = !query || 
+          card.dataset.title?.includes(query) || 
+          card.dataset.authors?.includes(query) ||
+          card.dataset.abstract?.includes(query);
+        
+        const isVisible = matchDomain && matchFolder && matchYear && matchPrereg && matchBlinding && matchDoi && matchSearch;
+        
+        card.style.display = isVisible ? 'flex' : 'none'; // Changed from 'block' to 'flex' to match CSS
+        if (isVisible) visibleCount++;
+        
+        // Re-append to reorder in DOM
+        paperList.appendChild(card);
+      });
+      
+      resultCount.textContent = `Showing ${visibleCount} of ${totalPapers} papers`;
+    }
+
+    function clearFilters() {
+      domainFilter.value = '';
+      folderFilter.value = '';
+      yearMinInput.value = '';
+      yearMaxInput.value = '';
+      preregFilter.value = '';
+      blindingFilter.value = '';
+      doiFilter.checked = false;
+      searchInput.value = '';
+      sortFilter.value = 'year-desc'; // Reset sort to default
+      filterAndSortCards();
+      updateURL();
+    }
+
+    function updateURL() {
+      const params = new URLSearchParams();
+      if (domainFilter.value) params.set('domain', domainFilter.value);
+      if (folderFilter.value) params.set('folder', folderFilter.value);
+      if (yearMinInput.value) params.set('yearMin', yearMinInput.value);
+      if (yearMaxInput.value) params.set('yearMax', yearMaxInput.value);
+      if (preregFilter.value) params.set('prereg', preregFilter.value);
+      if (blindingFilter.value) params.set('blinding', blindingFilter.value);
+      if (doiFilter.checked) params.set('doi', 'yes');
+      if (searchInput.value) params.set('q', searchInput.value);
+      if (sortFilter.value !== 'year-desc') params.set('sort', sortFilter.value);
+      
+      const newURL = params.toString() ? `?${params.toString()}` : window.location.pathname;
+      window.history.replaceState({}, '', newURL);
+    }
+
+    domainFilter.addEventListener('change', () => { filterAndSortCards(); updateURL(); });
+    folderFilter.addEventListener('change', () => { filterAndSortCards(); updateURL(); });
+    yearMinInput.addEventListener('input', () => { filterAndSortCards(); updateURL(); });
+    yearMaxInput.addEventListener('input', () => { filterAndSortCards(); updateURL(); });
+    preregFilter.addEventListener('change', () => { filterAndSortCards(); updateURL(); });
+    blindingFilter.addEventListener('change', () => { filterAndSortCards(); updateURL(); });
+    doiFilter.addEventListener('change', () => { filterAndSortCards(); updateURL(); });
+    searchInput.addEventListener('input', () => { filterAndSortCards(); updateURL(); });
+    sortFilter.addEventListener('change', () => { filterAndSortCards(); updateURL(); });
+    clearButton.addEventListener('click', clearFilters);
+
+    // Handle URL params on load
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('domain')) {
+      domainFilter.value = params.get('domain') || '';
+    }
+    if (params.get('folder')) {
+      folderFilter.value = params.get('folder') || '';
+    }
+    if (params.get('yearMin')) {
+      yearMinInput.value = params.get('yearMin') || '';
+    }
+    if (params.get('yearMax')) {
+      yearMaxInput.value = params.get('yearMax') || '';
+    }
+    if (params.get('prereg')) {
+      preregFilter.value = params.get('prereg') || '';
+    }
+    if (params.get('blinding')) {
+      blindingFilter.value = params.get('blinding') || '';
+    }
+    if (params.get('doi') === 'yes') {
+      doiFilter.checked = true;
+    }
+    if (params.get('q')) {
+      searchInput.value = params.get('q') || '';
+    }
+    if (params.get('sort')) {
+      sortFilter.value = params.get('sort') || 'year-desc';
+    }
+    
+    filterAndSortCards();
+  </script>
+</Layout>
