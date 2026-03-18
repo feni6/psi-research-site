@@ -270,9 +270,9 @@ const chainSectionsFinal = rawSectionsFinal.slice(1);
           </div>
           <!-- Colored Bar -->
           <div class="mt-3 h-3 w-full bg-slate-800 rounded-full overflow-hidden flex shadow-inner">
-            <div class="h-full bg-green-500 transition-all duration-1000 ease-out" style="width: {successRate}%"></div>
-            <div class="h-full bg-red-500 transition-all duration-1000 ease-out" style="width: {failRate}%"></div>
-            <div class="h-full bg-amber-500 transition-all duration-1000 ease-out" style="width: {mixedRate}%"></div>
+            <div class="h-full bg-green-500 transition-all duration-1000 ease-out" style={`width: ${successRate}%`}></div>
+            <div class="h-full bg-red-500 transition-all duration-1000 ease-out" style={`width: ${failRate}%`}></div>
+            <div class="h-full bg-amber-500 transition-all duration-1000 ease-out" style={`width: ${mixedRate}%`}></div>
           </div>
           <div class="flex justify-between mt-2 text-[10px] text-slate-500 uppercase tracking-wide font-semibold">
             <span class="text-green-500">Success ({successRate}%)</span>

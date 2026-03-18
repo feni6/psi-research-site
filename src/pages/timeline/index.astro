@@ -160,7 +160,7 @@ eras.forEach(era => {
         <div id={`era-${era.id}`} class="timeline-item block relative pl-20 group opacity-0 translate-y-12 transition-all duration-700 ease-out" data-index={index}>
           
           <!-- Era Marker Dot -->
-          <a href={`/timeline/${era.id}`} class="absolute left-0 top-2 w-12 h-12 rounded-full bg-slate-950 border-4 ${era.border} flex items-center justify-center z-20 shadow-lg ${era.glow} hover:scale-110 hover:shadow-xl transition-all duration-300 cursor-pointer">
+          <a href={`/timeline/${era.id}`} class={`absolute left-0 top-2 w-12 h-12 rounded-full bg-slate-950 border-4 ${era.border} flex items-center justify-center z-20 shadow-lg ${era.glow} hover:scale-110 hover:shadow-xl transition-all duration-300 cursor-pointer`}>
             <span class="text-lg filter drop-shadow-md">{era.icon}</span>
           </a>
           
