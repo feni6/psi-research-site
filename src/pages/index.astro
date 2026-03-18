@@ -87,10 +87,10 @@ const allPaperIds = papers.map((p: any) => p.id);
   </div>
 
   <!-- Hero Section with Animated Background -->
-  <section class="relative text-center py-24 bg-slate-950 border-b border-slate-800 overflow-hidden">
+  <section class="relative text-center py-24 bg-slate-950 border-b border-slate-800 overflow-hidden" role="region" aria-label="Introduction">
     <!-- Ambient Glow Effect -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-500/5 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
-    <div class="absolute bottom-0 right-0 w-[600px] h-[400px] bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-700 pointer-events-none"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-500/5 rounded-full blur-3xl animate-pulse pointer-events-none" aria-hidden="true"></div>
+    <div class="absolute bottom-0 right-0 w-[600px] h-[400px] bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-700 pointer-events-none" aria-hidden="true"></div>
 
     <div class="relative z-10 max-w-4xl mx-auto px-4">
       <div class="inline-block mb-4 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold tracking-wide uppercase">
@@ -123,7 +123,7 @@ const allPaperIds = papers.map((p: any) => p.id);
           <svg class="absolute left-4 h-5 w-5 text-slate-500 group-focus-within:text-amber-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <input type="text" name="q" placeholder={`Search ${totalPapers}+ papers, authors, or topics...`}
+          <input type="text" name="q" aria-label="Search papers, authors, or topics" placeholder={`Search ${totalPapers}+ papers, authors, or topics...`}
             class="w-full bg-slate-900/80 backdrop-blur border border-slate-700 rounded-xl px-12 py-4 text-slate-200 placeholder-slate-500 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 focus:outline-none transition-all shadow-lg" />
         </div>
       </form>
@@ -131,7 +131,7 @@ const allPaperIds = papers.map((p: any) => p.id);
   </section>
 
   <!-- Stats Section -->
-  <section class="py-16 border-b border-slate-800 bg-slate-950/50">
+  <section class="py-16 border-b border-slate-800 bg-slate-950/50" role="region" aria-label="Library statistics">
     <div class="max-w-6xl mx-auto px-4">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         <div class="stat-card group bg-slate-900 rounded-2xl p-6 text-center border border-slate-800 hover:border-amber-500/30 hover:bg-slate-800/50 transition-all duration-300">
@@ -167,7 +167,7 @@ const allPaperIds = papers.map((p: any) => p.id);
   </section>
 
   <!-- Paper of the Day -->
-  <section class="py-16 border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-900">
+  <section class="py-16 border-b border-slate-800 bg-gradient-to-b from-slate-950 to-slate-900" role="region" aria-label="Paper of the Day">
     <div class="max-w-5xl mx-auto px-4">
       <div class="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
         <div>
@@ -176,7 +176,7 @@ const allPaperIds = papers.map((p: any) => p.id);
           </h2>
           <p class="text-slate-500 text-sm mt-1">A daily selection from the archive</p>
         </div>
-        <button id="surprise-btn" class="group flex items-center gap-2 bg-slate-800 hover:bg-amber-500 text-slate-300 hover:text-slate-950 px-6 py-3 rounded-lg font-bold text-base transition-all border border-slate-700 hover:border-amber-400 shadow-lg hover:shadow-amber-500/20">
+        <button id="surprise-btn" aria-label="Open a random paper" class="group flex items-center gap-2 bg-slate-800 hover:bg-amber-500 text-slate-300 hover:text-slate-950 px-6 py-3 rounded-lg font-bold text-base transition-all border border-slate-700 hover:border-amber-400 shadow-lg hover:shadow-amber-500/20">
           <span class="text-xl group-hover:rotate-180 transition-transform duration-500">🎲</span>
           <span>Surprise Me</span>
         </button>
@@ -269,7 +269,7 @@ const allPaperIds = papers.map((p: any) => p.id);
         <h2 class="text-2xl font-bold text-slate-200 flex items-center gap-2">
           <span>📚</span> Continue Reading
         </h2>
-        <button id="clear-history-btn" class="text-xs text-slate-500 hover:text-red-400 transition-colors underline">Clear History</button>
+        <button id="clear-history-btn" aria-label="Clear reading history" class="text-xs text-slate-500 hover:text-red-400 transition-colors underline">Clear History</button>
       </div>
       <div id="recently-viewed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Cards injected via JS -->
@@ -301,19 +301,19 @@ const allPaperIds = papers.map((p: any) => p.id);
   </section>
 
   <!-- Domain Explorer -->
-  <section class="py-16 border-b border-slate-800">
+  <section class="py-16 border-b border-slate-800" role="region" aria-label="Research Domains">
     <div class="max-w-6xl mx-auto px-4">
       <h2 class="text-2xl font-bold mb-2 text-slate-200">Research Domains</h2>
       <p class="text-slate-500 mb-8">Explore specific areas of psi research.</p>
       
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" role="list">
         {domains.sort().map((domain: string) => {
           const count = papers.filter((p: any) => p.psi_domain === domain).length;
           const config = domainConfig[domain] || { icon: '📄', color: 'border-slate-500/30 hover:border-slate-400', label: domain, badgeColor: 'bg-slate-500/10 text-slate-400 border-slate-500/20' };
           const topPaper = papers.find((p: any) => p.psi_domain === domain);
           
           return (
-            <a href={`/domain/${domain}`} class={`group relative bg-slate-900 border border-slate-800 ${config.color} rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden`}>
+            <a href={`/domain/${domain}`} role="listitem" aria-label={`${config.label} - ${count} papers`} class={`group relative bg-slate-900 border border-slate-800 ${config.color} rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden focus:ring-2 focus:ring-amber-400 focus:outline-none`}>
               <div class="relative z-10">
                 <div class="flex items-center justify-between mb-3">
                   <span class="text-2xl filter grayscale group-hover:grayscale-0 transition-all">{config.icon}</span>
@@ -451,6 +451,7 @@ const allPaperIds = papers.map((p: any) => p.id);
       <p class="text-slate-400 mb-8 text-lg">Discover something unexpected in the collection.</p>
       <button 
         id="random-paper-btn"
+        aria-label="Navigate to a random paper"
         class="group relative inline-flex items-center justify-center px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 rounded-2xl text-xl font-bold hover:from-amber-400 hover:to-orange-400 transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_50px_rgba(245,158,11,0.6)]"
       >
         <span class="mr-3 text-2xl group-hover:rotate-180 transition-transform duration-700">🎲</span>
