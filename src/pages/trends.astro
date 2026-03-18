@@ -68,7 +68,7 @@ let latestPaper: any = null;
 catalog.papers.forEach(paper => {
   const year = paper.year || 0;
   const decade = getDecade(year);
-  const domain = paper.domain || 'Uncategorized';
+  const domain = paper.psi_domain || 'Uncategorized';
   
   // Track Min/Max Years
   if (year > 0) {
