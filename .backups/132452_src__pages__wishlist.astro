@@ -109,12 +109,12 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
         </div>
         
         <!-- Progress Card -->
-        <div class="lg:col-span-4 bg-slate-900/50 p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm" aria-label="Acquisition progress">
+        <div class="lg:col-span-4 bg-slate-900/50 p-6 rounded-2xl border border-slate-800 shadow-xl backdrop-blur-sm">
           <div class="flex justify-between items-end mb-3">
             <span class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Acquisition Progress</span>
             <span class="text-3xl font-mono font-bold text-amber-400">{progressPercent}%</span>
           </div>
-          <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden shadow-inner" role="progressbar" aria-valuenow={progressPercent} aria-valuemin="0" aria-valuemax="100">
+          <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden shadow-inner">
             <div class="bg-gradient-to-r from-amber-700 to-amber-400 h-3 rounded-full transition-all duration-1000" style={`width: ${progressPercent}%`}></div>
           </div>
           <div class="flex justify-between mt-3 text-xs text-slate-500 font-mono">
@@ -139,9 +139,9 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
           </h2>
           <div class="h-px flex-1 bg-slate-800"></div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" role="list">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {recentlyAcquired.map(paper => (
-            <div class="group relative bg-slate-900/30 border border-emerald-900/30 rounded-lg p-4 flex items-start gap-4 hover:bg-slate-900/50 transition-all" role="listitem">
+            <div class="group relative bg-slate-900/30 border border-emerald-900/30 rounded-lg p-4 flex items-start gap-4 hover:bg-slate-900/50 transition-all">
               <div class="flex-shrink-0 mt-1">
                 <div class="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
                   <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -172,7 +172,7 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
           Do you have access to academic databases (JSTOR, PubMed, university libraries) or physical archives? 
           If you can locate and digitize any of the papers listed below, your contribution helps preserve the history of psi research.
         </p>
-        <a href="mailto:?subject=Psi%20Research%20Library%20—%20Paper%20Contribution" class="inline-flex items-center text-base font-bold text-slate-900 bg-amber-400 hover:bg-amber-300 px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-amber-400/20 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950">
+        <a href="mailto:?subject=Psi%20Research%20Library%20—%20Paper%20Contribution" class="inline-flex items-center text-base font-bold text-slate-900 bg-amber-400 hover:bg-amber-300 px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-amber-400/20 hover:-translate-y-0.5">
           Contact Us About a Paper
           <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
         </a>
@@ -191,9 +191,9 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
           <div class="h-px flex-1 bg-slate-800"></div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" role="list">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {mostWanted.map(paper => (
-            <div class="group relative bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-red-500/40 hover:bg-slate-800/50 hover:shadow-2xl hover:shadow-red-900/10 transition-all duration-300 flex flex-col h-full overflow-hidden" role="listitem">
+            <div class="group relative bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-red-500/40 hover:bg-slate-800/50 hover:shadow-2xl hover:shadow-red-900/10 transition-all duration-300 flex flex-col h-full overflow-hidden">
               <!-- Priority Stripe -->
               <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>
               
@@ -223,36 +223,28 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
     <div class="sticky top-4 z-20 bg-slate-950/95 backdrop-blur-md border border-slate-800 rounded-2xl p-6 mb-8 shadow-2xl">
       
       <!-- Priority Tabs -->
-      <div class="flex flex-wrap gap-2 mb-6 border-b border-slate-800 pb-4" role="tablist" aria-label="Filter by priority">
+      <div class="flex flex-wrap gap-2 mb-6 border-b border-slate-800 pb-4">
         <button 
-          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-amber-400/10 border border-amber-400/50 text-amber-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-amber-400/10 border border-amber-400/50 text-amber-400 shadow-sm"
           data-priority="all"
-          role="tab"
-          aria-selected="true"
         >
           All Papers <span class="text-slate-500 ml-1 font-mono">({processedPapers.length})</span>
         </button>
         <button 
-          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-900 border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-900 border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200"
           data-priority="high"
-          role="tab"
-          aria-selected="false"
         >
           High <span class="text-slate-500 ml-1 font-mono">({highPriorityCount})</span>
         </button>
         <button 
-          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-900 border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-900 border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200"
           data-priority="medium"
-          role="tab"
-          aria-selected="false"
         >
           Medium <span class="text-slate-500 ml-1 font-mono">({mediumPriorityCount})</span>
         </button>
         <button 
-          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-900 border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+          class="priority-tab px-4 py-2 rounded-lg text-sm font-medium transition-all bg-slate-900 border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200"
           data-priority="low"
-          role="tab"
-          aria-selected="false"
         >
           Low <span class="text-slate-500 ml-1 font-mono">({lowPriorityCount})</span>
         </button>
@@ -261,21 +253,17 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
       <div class="flex flex-col lg:flex-row gap-6">
         <!-- Category Scrollable Tabs -->
         <div class="flex-1 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
-          <div class="flex gap-2 min-w-max" id="categoryFilters" role="tablist" aria-label="Filter by category">
+          <div class="flex gap-2 min-w-max" id="categoryFilters">
             <button 
-              class="category-tab px-4 py-2 rounded-full text-xs font-bold border transition-all bg-slate-800 border-slate-600 text-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+              class="category-tab px-4 py-2 rounded-full text-xs font-bold border transition-all bg-slate-800 border-slate-600 text-slate-200 shadow-sm"
               data-category="all"
-              role="tab"
-              aria-selected="true"
             >
               All Categories
             </button>
             {categories.map(cat => (
               <button 
-                class="category-tab px-4 py-2 rounded-full text-xs font-medium border transition-all bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950"
+                class="category-tab px-4 py-2 rounded-full text-xs font-medium border transition-all bg-slate-900 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200"
                 data-category={cat}
-                role="tab"
-                aria-selected="false"
               >
                 {cat} <span class="opacity-60 ml-1 font-mono text-[10px]">({categoryCounts[cat]})</span>
               </button>
@@ -292,8 +280,7 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
             type="text" 
             id="searchInput"
             placeholder="Search title, author, reason..." 
-            aria-label="Search papers by title, author, or reason"
-            class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all text-sm shadow-inner"
+            class="w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all text-sm shadow-inner"
           />
           <div id="resultCount" class="absolute right-4 top-3.5 text-xs text-slate-500 font-mono hidden bg-slate-950 px-2 py-0.5 rounded">
             <!-- Populated by JS -->
@@ -309,9 +296,7 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
       </p>
       <button 
         id="showAllBtn"
-        class="inline-flex items-center gap-3 px-8 py-4 bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold rounded-xl border border-slate-700 hover:border-amber-400/50 transition-all shadow-lg hover:shadow-amber-900/20 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950"
-        aria-expanded="false"
-        aria-controls="fullListContainer"
+        class="inline-flex items-center gap-3 px-8 py-4 bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold rounded-xl border border-slate-700 hover:border-amber-400/50 transition-all shadow-lg hover:shadow-amber-900/20 hover:-translate-y-1"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
         Show Complete Catalog
@@ -330,7 +315,7 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
       </div>
 
       <!-- Papers List -->
-      <div id="papersList" class="space-y-4" role="list">
+      <div id="papersList" class="space-y-4">
         {processedPapers.map((paper) => (
           <article 
             class="paper-row group relative bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-slate-700 transition-all shadow-sm"
@@ -339,7 +324,6 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
             data-title={(paper.title || "").toLowerCase()}
             data-authors={((paper.authors || []) as string[]).join(' ').toLowerCase()}
             data-reason={(paper.why_needed || "").toLowerCase()}
-            role="listitem"
           >
             <!-- Priority Side Stripe -->
             <div class={`absolute left-0 top-0 bottom-0 w-1.5 ${paper.priorityColor}`}></div>
@@ -370,7 +354,7 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
               </div>
               
               <details class="group/details bg-slate-950/50 rounded-lg border border-slate-800/50 overflow-hidden">
-                <summary class="flex items-center justify-between p-3 cursor-pointer list-none text-sm font-medium text-slate-400 hover:text-amber-400 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 rounded">
+                <summary class="flex items-center justify-between p-3 cursor-pointer list-none text-sm font-medium text-slate-400 hover:text-amber-400 transition-colors">
                   <span>Why We Need It</span>
                   <svg class="w-4 h-4 transition-transform group-open/details:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </summary>
@@ -400,7 +384,7 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
               </div>
               <div class="col-span-5">
                 <details class="group/details bg-slate-950/30 rounded-lg border border-slate-800/50 hover:border-slate-700 transition-colors">
-                  <summary class="flex items-center justify-between p-3 cursor-pointer list-none text-sm font-medium text-slate-400 hover:text-amber-400 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 rounded">
+                  <summary class="flex items-center justify-between p-3 cursor-pointer list-none text-sm font-medium text-slate-400 hover:text-amber-400 transition-colors">
                     <span class="truncate mr-2">Click to see why this is needed...</span>
                     <svg class="w-4 h-4 flex-shrink-0 transition-transform group-open/details:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                   </summary>
@@ -421,7 +405,7 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
         <p class="mt-2 text-sm text-slate-500">Try adjusting your search terms or category filter.</p>
         <button 
           id="resetFilters"
-          class="mt-6 text-amber-400 hover:text-amber-300 text-sm font-bold underline underline-offset-4 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950 rounded"
+          class="mt-6 text-amber-400 hover:text-amber-300 text-sm font-bold underline underline-offset-4"
         >
           Clear all filters
         </button>
@@ -454,19 +438,13 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
     function updateTabStyles(buttons: NodeListOf<Element>, activeValue: string, dataAttr: string) {
       buttons.forEach(btn => {
         const val = btn.getAttribute(dataAttr);
-        const isSelected = val === activeValue;
-        
-        // Update visual classes
-        if (isSelected) {
+        if (val === activeValue) {
           btn.classList.remove('bg-slate-900', 'border-slate-700', 'text-slate-400', 'bg-slate-800', 'border-slate-600', 'text-slate-300');
           btn.classList.add('bg-amber-400/10', 'border-amber-400/50', 'text-amber-400', 'shadow-sm');
         } else {
           btn.classList.add('bg-slate-900', 'border-slate-700', 'text-slate-400');
           btn.classList.remove('bg-amber-400/10', 'border-amber-400/50', 'text-amber-400', 'bg-slate-800', 'border-slate-600', 'text-slate-300', 'shadow-sm');
         }
-
-        // Update ARIA
-        btn.setAttribute('aria-selected', isSelected.toString());
       });
     }
 
@@ -524,11 +502,9 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
         categoryButtons.forEach(b => {
             b.classList.remove('bg-slate-800', 'border-slate-600', 'text-slate-200', 'shadow-sm');
             b.classList.add('bg-slate-900', 'border-slate-700', 'text-slate-400');
-            b.setAttribute('aria-selected', 'false');
         });
         btn.classList.remove('bg-slate-900', 'border-slate-700', 'text-slate-400');
         btn.classList.add('bg-slate-800', 'border-slate-600', 'text-slate-200', 'shadow-sm');
-        btn.setAttribute('aria-selected', 'true');
         
         filterPapers();
       });
@@ -553,11 +529,9 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
         if (b.getAttribute('data-category') === 'all') {
             b.classList.remove('bg-slate-900', 'border-slate-700', 'text-slate-400');
             b.classList.add('bg-slate-800', 'border-slate-600', 'text-slate-200', 'shadow-sm');
-            b.setAttribute('aria-selected', 'true');
         } else {
             b.classList.add('bg-slate-900', 'border-slate-700', 'text-slate-400');
             b.classList.remove('bg-slate-800', 'border-slate-600', 'text-slate-200', 'shadow-sm');
-            b.setAttribute('aria-selected', 'false');
         }
       });
       
@@ -572,11 +546,6 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
         fullListContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         // Hide the button container
         if (showAllContainer) showAllContainer.classList.add('hidden');
-        
-        // Update ARIA
-        if (showAllBtn) {
-          showAllBtn.setAttribute('aria-expanded', 'true');
-        }
       }
     });
 
