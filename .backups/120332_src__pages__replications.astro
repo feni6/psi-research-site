@@ -214,22 +214,6 @@ const chainSectionsFinal = rawSectionsFinal.slice(1);
         }
       });
     }
-
-    // Keyboard accessibility for collapsible cards
-    document.addEventListener('DOMContentLoaded', () => {
-      const summaries = document.querySelectorAll('summary');
-      summaries.forEach(summary => {
-        summary.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            const details = summary.parentElement as HTMLDetailsElement;
-            details.open = !details.open;
-            // Sync aria-expanded
-            details.setAttribute('aria-expanded', details.open.toString());
-          }
-        });
-      });
-    });
   </script>
 
   <!-- Breadcrumb -->
@@ -285,30 +269,30 @@ const chainSectionsFinal = rawSectionsFinal.slice(1);
 
     <!-- Filters -->
     <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-      <div role="group" aria-label="Filter replications by outcome" class="flex items-center gap-2">
+      <div class="flex items-center gap-2">
         <span class="text-sm text-slate-400 font-medium mr-2">Filter by outcome:</span>
         <button 
           data-filter-btn="all" 
           onclick="filterReplications('all')"
-          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-amber-500 text-slate-950 border-amber-500 transition-all focus:ring-2 focus:ring-amber-400 focus:outline-none">
+          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-amber-500 text-slate-950 border-amber-500 transition-all">
           Show All
         </button>
         <button 
           data-filter-btn="success" 
           onclick="filterReplications('success')"
-          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500 transition-all focus:ring-2 focus:ring-amber-400 focus:outline-none">
+          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500 transition-all">
           Successful Only
         </button>
         <button 
           data-filter-btn="fail" 
           onclick="filterReplications('fail')"
-          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500 transition-all focus:ring-2 focus:ring-amber-400 focus:outline-none">
+          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500 transition-all">
           Failed Only
         </button>
         <button 
           data-filter-btn="mixed" 
           onclick="filterReplications('mixed')"
-          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500 transition-all focus:ring-2 focus:ring-amber-400 focus:outline-none">
+          class="px-3 py-1.5 text-xs font-medium rounded-md border bg-slate-800 text-slate-400 border-slate-700 hover:border-slate-500 transition-all">
           Mixed
         </button>
       </div>
@@ -376,7 +360,6 @@ const chainSectionsFinal = rawSectionsFinal.slice(1);
         <details 
           class="group bg-slate-900 border border-slate-800 rounded-lg overflow-hidden transition-all duration-200 hover:border-slate-600 open:border-slate-500 shadow-sm"
           data-outcome={outcomeType}
-          aria-expanded="false"
         >
           <summary class={`cursor-pointer list-none p-4 flex items-center justify-between bg-slate-900/80 hover:bg-slate-800 transition-colors border-l-4 ${borderColor}`}>
             <div class="flex items-center gap-3">
