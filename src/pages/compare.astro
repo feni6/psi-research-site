@@ -165,7 +165,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
           </div>
-          <div class="text-xs text-slate-500 mt-1">${paper.authors?.split(';')[0] || 'Unknown'}, ${paper.year}</div>
+          <div class="text-xs text-slate-500 mt-1">${Array.isArray(paper.authors) ? paper.authors[0] : paper.authors?.split(';')[0] || 'Unknown'}, ${paper.year}</div>
         `;
         compareTableHead.appendChild(th);
       });
@@ -329,7 +329,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
 
       const matches = catalog.papers.filter(p => 
         (p.title && p.title.toLowerCase().includes(query)) || 
-        (p.authors && p.authors.toLowerCase().includes(query)) ||
+        (p.authors && (Array.isArray(p.authors) ? p.authors.join(', ') : p.authors).toLowerCase().includes(query)) ||
         (p.domain && p.domain.toLowerCase().includes(query))
       ).slice(0, 10); // Limit results
 
@@ -341,7 +341,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
           div.className = `px-4 py-3 cursor-pointer border-b border-slate-800 hover:bg-slate-800 transition-colors ${isAdded ? 'opacity-50 bg-slate-900' : ''}`;
           div.innerHTML = `
             <div class="text-sm font-medium text-slate-200">${p.title}</div>
-            <div class="text-xs text-slate-500 mt-1">${p.authors?.split(';')[0]} • ${p.year}</div>
+            <div class="text-xs text-slate-500 mt-1">${Array.isArray(p.authors) ? p.authors[0] : p.authors?.split(';')[0]} • ${p.year}</div>
             ${isAdded ? '<div class="text-xs text-amber-500 mt-1 font-bold">Already Added</div>' : ''}
           `;
           
