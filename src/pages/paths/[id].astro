@@ -22,7 +22,7 @@ const { content } = Astro.props;
 
 function parsePathContent(fileContent: string) {
   const lines = fileContent.split('\n');
-  let title = 'Reading Path';
+  let title = '';
   let tagline = '';
   const papers: any[] = [];
 
@@ -33,7 +33,10 @@ function parsePathContent(fileContent: string) {
     const line = lines[i].trim();
     
     if (line.startsWith('# ') && !title) {
-      title = line.replace('# ', '').trim();
+      let rawTitle = line.replace('# ', '').trim();
+      // Extract just the path name, removing "Path X:" prefix if present
+      const pathMatch = rawTitle.match(/^Path\s+\d+:\s*[""]?(.+?)[""]?$/);
+      title = pathMatch ? pathMatch[1].trim() : rawTitle;
       continue;
     }
 

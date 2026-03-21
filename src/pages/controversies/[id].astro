@@ -164,13 +164,20 @@ function createPaperPill(catalogId: string): string {
   const title = paper ? paper.title : catalogId;
   // Escape quotes for HTML attribute
   const safeTitle = title.replace(/"/g, '&quot;');
-  return `<a href="/paper/${catalogId}" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer focus:ring-2 focus:ring-amber-400 focus:outline-none" title="${safeTitle}"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>${catalogId}</a>`;
+  // Truncate title for pill display if too long
+  const displayTitle = title.length > 30 ? title.substring(0, 27) + '...' : title;
+  const safeDisplayTitle = displayTitle.replace(/"/g, '&quot;');
+  return `<a href="/paper/${catalogId}" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer focus:ring-2 focus:ring-amber-400 focus:outline-none" title="${safeTitle}"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>${safeDisplayTitle}</a>`;
 }
 
 function processContent(text: string): string {
   if (!text) return '';
   
   let processed = text;
+
+  // 0. Convert double hyphens to em dashes
+  processed = processed.replace(/ -- /g, ' \u2014 ');
+  processed = processed.replace(/--/g, '\u2014');
 
   // 1. Convert [catalog ID: XXX] to pills
   processed = processed.replace(
@@ -337,16 +344,16 @@ if (controversyPaperIds.size > 0) {
 
     <!-- Jump To Navigation -->
     <div class="sticky top-4 z-20 mb-10">
-      <div class="bg-slate-950/90 backdrop-blur-sm border border-slate-800 rounded-lg p-2 flex flex-wrap gap-2 shadow-xl">
-        <a href="#overview" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">Overview</a>
+      <div class="bg-slate-950/90 backdrop-blur-sm border border-slate-800 rounded-lg p-2 flex flex-wrap gap-2 shadow-xl [data-theme='light']:bg-slate-100 [data-theme='light']:border-slate-200">
+        <a href="#overview" class="px-4 py-2 text-sm font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none [data-theme='light']:text-slate-900 [data-theme='light']:hover:text-amber-700 [data-theme='light']:hover:bg-white">Overview</a>
         {(proCount > 0 || conCount > 0) && (
           <>
-            <a href="#evidence" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">Evidence</a>
-            <a href="#papers" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">Key Papers</a>
+            <a href="#evidence" class="px-4 py-2 text-sm font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none [data-theme='light']:text-slate-900 [data-theme='light']:hover:text-amber-700 [data-theme='light']:hover:bg-white">Evidence</a>
+            <a href="#papers" class="px-4 py-2 text-sm font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none [data-theme='light']:text-slate-900 [data-theme='light']:hover:text-amber-700 [data-theme='light']:hover:bg-white">Key Papers</a>
           </>
         )}
         {relatedPaths.length > 0 && (
-          <a href="#related" class="px-4 py-2 text-sm font-medium text-slate-400 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">Related Paths</a>
+          <a href="#related" class="px-4 py-2 text-sm font-semibold text-slate-300 hover:text-amber-400 hover:bg-slate-900 rounded-md transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none [data-theme='light']:text-slate-900 [data-theme='light']:hover:text-amber-700 [data-theme='light']:hover:bg-white">Related Paths</a>
         )}
       </div>
     </div>
@@ -398,9 +405,6 @@ if (controversyPaperIds.size > 0) {
                         <div class="flex items-center gap-2">
                           {paper.year && (
                             <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
-                          )}
-                          {paper.catalogId && (
-                            <span class="text-xs font-bold text-amber-500 uppercase tracking-wider">{paper.catalogId}</span>
                           )}
                         </div>
                         <svg class="w-4 h-4 text-slate-600 group-hover:text-green-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -456,9 +460,6 @@ if (controversyPaperIds.size > 0) {
                         <div class="flex items-center gap-2">
                           {paper.year && (
                             <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year}</span>
-                          )}
-                          {paper.catalogId && (
-                            <span class="text-xs font-bold text-amber-500 uppercase tracking-wider">{paper.catalogId}</span>
                           )}
                         </div>
                         <svg class="w-4 h-4 text-slate-600 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
