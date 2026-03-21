@@ -130,7 +130,7 @@ function getDomainIcon(d: string): string {
 <Layout title="Catalog">
   <div class="mb-8">
     <h1 class="text-4xl font-bold mb-2 text-slate-100">Research Catalog</h1>
-    <p class="text-slate-400 text-lg">Explore {papers.length} papers across {domains.length} domains of psi research</p>
+    <p class="text-slate-400 text-lg">Explore <span id="total-papers-count">{papers.length}</span> papers across {domains.length} domains of psi research</p>
   </div>
 
   <!-- Sentinel for sticky observer -->
@@ -259,7 +259,7 @@ function getDomainIcon(d: string): string {
     <!-- Active Filters & Results Count -->
     <div class="flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center gap-2 text-sm text-slate-400">
-        <span id="result-count">Showing {papers.length} papers</span>
+        <span id="result-count">Showing 0 of {papers.length} papers</span>
         <button id="clear-filters" class="text-amber-400 hover:text-amber-300 underline decoration-amber-400/30 hover:decoration-amber-400 underline-offset-4 transition-all hidden">
           Clear all filters
         </button>
@@ -332,8 +332,7 @@ function getDomainIcon(d: string): string {
 
   <script>
     // Configuration
-    const PAGINATION_LIMIT = 20;
-    const totalPapers = 354;
+    const PAGINATION_LIMIT = 30;
     let visibleCount = PAGINATION_LIMIT;
     let isFiltered = false;
 
@@ -451,7 +450,30 @@ function getDomainIcon(d: string): string {
       isFiltered = searchTerm || selectedDomain || selectedFolder || yearMinInput.value || yearMaxInput.value || preregStatus || blindingStatus || hasDoi;
 
       // Update UI Text
-      resultCount.textContent = `Showing ${visibleMatchCount} paper${visibleMatchCount !== 1 ? 's' : ''}`;
+      const totalFiltered = cards.filter(card => {
+        const domain = card.dataset.domain || '';
+        const folder = card.dataset.folder || '';
+        const year = parseInt(card.dataset.year || '0');
+        const prereg = card.dataset.prereg || 'unknown';
+        const blinding = card.dataset.blinding || 'unknown';
+        const doi = card.dataset.doi === 'yes';
+        const title = card.dataset.title || '';
+        const authors = card.dataset.authors || '';
+        const abstract = card.dataset.abstract || '';
+
+        const matchesSearch = !searchTerm || title.includes(searchTerm) || authors.includes(searchTerm) || abstract.includes(searchTerm);
+        const matchesDomain = !selectedDomain || domain === selectedDomain;
+        const matchesFolder = !selectedFolder || folder === selectedFolder;
+        const matchesYear = year >= minYear && year <= maxYear;
+        const matchesPrereg = !preregStatus || prereg === preregStatus;
+        const matchesBlinding = !blindingStatus || blinding === blindingStatus;
+        const matchesDoi = !hasDoi || doi;
+
+        return matchesSearch && matchesDomain && matchesFolder && matchesYear && matchesPrereg && matchesBlinding && matchesDoi;
+      }).length;
+      
+      const showingCount = Math.min(visibleCount, totalFiltered);
+      resultCount.textContent = `Showing ${showingCount} of ${totalFiltered} paper${totalFiltered !== 1 ? 's' : ''}`;
       
       // Update Button Visibility
       if (isFiltered || visibleCount >= visibleMatchCount) {
