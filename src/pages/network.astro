@@ -408,33 +408,40 @@ const totalPapers = catalog.papers.length;
       updateStats();
     }
 
-    if (searchInput && domainToggles) {
-      searchInput.addEventListener('input', filterNetwork);
-      
-      // Handle checkbox logic (mutually exclusive 'All' vs specific domains)
-      const allCheckbox = domainToggles.querySelector('input[value="all"]');
-      const domainCheckboxes = domainToggles.querySelectorAll('.domain-checkbox');
+    function initNetwork() {
+      if (searchInput && domainToggles) {
+        searchInput.addEventListener('input', filterNetwork);
+        
+        // Handle checkbox logic (mutually exclusive 'All' vs specific domains)
+        const allCheckbox = domainToggles.querySelector('input[value="all"]');
+        const domainCheckboxes = domainToggles.querySelectorAll('.domain-checkbox');
 
-      allCheckbox.addEventListener('change', (e: any) => {
-        if (e.target.checked) {
-          domainCheckboxes.forEach(cb => cb.checked = false);
-        }
-        filterNetwork();
-      });
-
-      domainCheckboxes.forEach(cb => {
-        cb.addEventListener('change', (e: any) => {
+        allCheckbox.addEventListener('change', (e: any) => {
           if (e.target.checked) {
-            allCheckbox.checked = false;
+            domainCheckboxes.forEach(cb => cb.checked = false);
           }
-          // If all specific domains are unchecked, maybe auto-check 'All'? 
-          // For now, let's allow empty selection (shows nothing) or user can click All.
           filterNetwork();
         });
-      });
-      
-      // Initial run to set stats
-      filterNetwork();
+
+        domainCheckboxes.forEach(cb => {
+          cb.addEventListener('change', (e: any) => {
+            if (e.target.checked) {
+              allCheckbox.checked = false;
+            }
+            filterNetwork();
+          });
+        });
+        
+        // Initial run to set stats
+        filterNetwork();
+      }
+    }
+
+    // Ensure DOM is fully loaded before initializing
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initNetwork);
+    } else {
+      initNetwork();
     }
   </script>
 </Layout>
