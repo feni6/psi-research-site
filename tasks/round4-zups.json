@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Fix Layout: mobile nav clipping + duplicate nav accessibility + replications link disabled",
+    "description": "There are THREE issues to fix in this file:\n\n### Issue 1: Mobile nav items clipped on left edge\nWhen the hamburger menu is opened on mobile (375px), nav items are clipped — 'Home' shows as 'me', 'Catalog' as 'log', etc. A previous fix added pl-2 to the mobile menu panel but it's not enough. The issue is likely that the mobile menu panel is positioned or sized incorrectly, or the nav links inside have negative margin/offset. Fix by:\n- Ensuring the mobile menu panel has adequate left padding (at least pl-4 or px-4)\n- Making sure no parent container has overflow:hidden that clips the text\n- Check if the mobile menu div is positioned within the nav's padded container correctly\n\n### Issue 2: Duplicate navigation links for screen readers\nThe desktop nav and mobile nav are both in the DOM simultaneously. Screen readers announce every link twice (35 anchors, 17 unique destinations). Fix by:\n- Adding aria-hidden='true' to the mobile menu when it's hidden, and removing it when shown\n- Adding aria-hidden='true' to the desktop nav at mobile breakpoints (or use role='presentation' on the hidden one)\n- The mobile menu toggle JS should update aria-hidden when toggling\n\n### Issue 3: Replications link in 'More' dropdown appears disabled\nThe Replications link in the 'More' dropdown menu appears greyed out and doesn't respond to clicks, even though /replications is a working page. Check if there's a CSS rule or class that's disabling this specific link. It might be styled with pointer-events:none, opacity, or a disabled class. Find and remove whatever is preventing the link from being clickable.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/layouts/Layout.astro"
+  },
+  {
+    "title": "Fix timeline era tabs: truncated with no scroll indicator",
+    "description": "On the Timeline page, the horizontal era navigation tabs extend beyond the viewport — 'Era 4' is cut off as 'Era 4: T...' with no scroll indicator or overflow handling. Users may not realize there are more eras to explore.\n\nFix by:\n1. Make the era tab container horizontally scrollable (overflow-x: auto)\n2. Add scroll-snap for nice tab snapping\n3. Optionally add a subtle gradient fade on the right edge to indicate more content\n4. Ensure the tabs don't get truncated — use whitespace-nowrap on each tab\n5. On mobile, the tabs should be swipeable/scrollable\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/timeline/index.astro"
+  },
+  {
+    "title": "Improve sparse glossary: add more terms or remove empty letter indicators",
+    "description": "The Glossary only defines 16 terms, leaving most alphabet letters greyed out and empty. This makes the glossary feel incomplete for a research library.\n\nThe best fix: remove the alphabetical letter index/navigation that prominently displays empty letters. Instead, just show all terms in a simple alphabetical list or grouped by letter (only showing letters that have terms). This way, the glossary doesn't advertise its gaps.\n\nIf there's an alphabet bar/index at the top showing A-Z with greyed out empty letters, either:\n- Remove it entirely, OR\n- Only show letters that have at least one term\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/glossary.astro"
+  }
+]
