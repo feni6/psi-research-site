@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Timeline era filter buttons show generic 'Era' instead of actual era names",
+    "description": "On /timeline, the era filter buttons all display the word 'Era' instead of showing the actual era name (e.g., 'Pre-Modern', 'Rhine Era', 'Ganzfeld Era', etc.). Each button should display its specific era label so users can tell them apart.",
+    "file": "src/pages/timeline/index.astro"
+  },
+  {
+    "title": "Timeline page renders raw markdown instead of formatted text",
+    "description": "The timeline page shows raw markdown syntax in the rendered HTML. For example, **1934** appears literally as **1934** instead of bold 1934, and *Extra-Sensory Perception* shows asterisks instead of italics. The page needs to process markdown to HTML before rendering. The content comes from markdown data files. If the page is inserting raw markdown strings into HTML, they need to be parsed (e.g., using a simple regex to convert **text** to <strong>text</strong> and *text* to <em>text</em>, or by using a markdown library).",
+    "file": "src/pages/timeline/index.astro",
+    "context_files": ["src/data/timeline/era_2_rhine.md"]
+  },
+  {
+    "title": "Replications page legend uses monospace code formatting",
+    "description": "On /replications, the legend labels (explicit, implicit, none, extends, critiques, precursor) are displayed in monospace/code font styling. These should use normal body text styling since they are user-facing labels, not code.",
+    "file": "src/pages/replications.astro"
+  },
+  {
+    "title": "Replications bar chart has unlabeled gray segment",
+    "description": "The replication bar chart shows 31% + 20% + 7% = 58%, but the remaining ~42% is a gray segment with no label. Every segment of the bar should have a visible label or be accounted for in the legend, so users understand what the gray portion represents. Check the data to determine what category it represents and add the appropriate label.",
+    "file": "src/pages/replications.astro"
+  },
+  {
+    "title": "Trends page shows REMOTE_VIEWING with database-style underscore",
+    "description": "On /trends, domain names like 'REMOTE_VIEWING' appear with underscores, which is a raw database/key format leaking into the UI. These should be formatted as human-readable labels: replace underscores with spaces and use title case (e.g., 'Remote Viewing'). Apply this transformation to all domain name displays on the page.",
+    "file": "src/pages/trends.astro"
+  },
+  {
+    "title": "Trends page has content logic bug: 'shifted from telepathy to telepathy'",
+    "description": "The Growth Story section on /trends contains the text 'the dominant focus shifted from telepathy in the preceding decade to telepathy' — this says telepathy shifted to telepathy, which is a meaningless statement. The logic that generates this text is comparing the top domain of the current decade to the previous decade but produces a nonsensical sentence when they are the same domain. Fix the logic so that when the top domain is the same in both decades, it says something like 'telepathy remained the dominant focus' instead.",
+    "file": "src/pages/trends.astro"
+  },
+  {
+    "title": "Network page shows LINKS: 0 contradicting Most Connected Papers",
+    "description": "On /network, the stats area shows 'LINKS: 0' but the 'Most Connected Papers' section lists papers with 12-13 links each. The link count statistic is not being computed correctly. Find where the total link count is calculated and fix it so it reflects the actual number of connections in the network data.",
+    "file": "src/pages/network.astro"
+  },
+  {
+    "title": "Network page domain filter tags show database-style underscored names",
+    "description": "On /network, the domain filter tags display raw database keys like 'meta_analysis' and 'remote_viewing' instead of human-readable labels. Replace underscores with spaces and use title case (e.g., 'Meta Analysis', 'Remote Viewing'). Apply this formatting wherever domain names are displayed as filter buttons or tags.",
+    "file": "src/pages/network.astro"
+  },
+  {
+    "title": "Network page paper cards show missing author names (just comma + year)",
+    "description": "On /network, paper cards in the 'Most Connected Papers' section display author fields like ', 2017' and ', 2011' — the author name is missing and only a comma before the year is shown. Find where the author name is being rendered on these cards and fix it so the actual author name appears. The author data likely comes from the catalog.json paper entries.",
+    "file": "src/pages/network.astro",
+    "context_files": ["src/data/catalog.json"]
+  },
+  {
+    "title": "Authors page shows duplicate entries for same author (e.g., 'Radin, Dean' vs 'Radin, Dean I')",
+    "description": "On /authors, 'Radin, Dean' appears with 30 papers and 'Radin, Dean I' appears separately with 14 papers. These are the same person. The author name normalization logic should handle middle initials, so that 'Lastname, First' and 'Lastname, First M' are merged into a single entry. A practical approach: when aggregating authors, normalize by stripping trailing single-letter initials (with or without period) from the first name portion, then merge counts. Apply this to all authors, not just Radin.",
+    "file": "src/pages/authors.astro"
+  },
+  {
+    "title": "Stats page pre-registration shows 0 True / 0 False despite tagged papers existing",
+    "description": "On /stats, the pre-registration section shows '0 True / 0 False' and '0.0% reported pre-registered', but papers in the catalog are tagged with pre-registration info. The issue is likely that the stats page is looking for a field name that doesn't match what's actually in catalog.json (e.g., looking for 'pre_registered' when the data uses 'preRegistered', or the field is nested differently). Check catalog.json for the actual pre-registration field name/structure and fix the stats computation to match.",
+    "file": "src/pages/stats.astro",
+    "context_files": ["src/data/catalog.json"]
+  },
+  {
+    "title": "Guide page (/guide) incorrectly renders the Wishlist page content",
+    "description": "The /guide route shows the exact same content as /wishlist — it imports wishlistData and has the title 'Wishlist: Wanted Papers'. This is a copy-paste error. The guide page should be a site guide/orientation page that helps new visitors navigate the site. It should explain what each section of the site offers (Catalog, Controversies, Reading Paths, Timeline, Stats, etc.) with brief descriptions and links. Replace the wishlist content with a proper guide page. Use the existing navigation structure from Layout.astro (mainNavLinks and moreNavLinks) as a reference for what sections to describe. Keep the same Layout and Breadcrumb imports but change the breadcrumb to show 'Guide'. Style it consistently with the rest of the site (dark theme, similar card/section styling).",
+    "file": "src/pages/guide.astro",
+    "context_files": ["src/layouts/Layout.astro"]
+  }
+]

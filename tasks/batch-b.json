@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Journals page count (119) disagrees with homepage/stats count (118)",
+    "description": "The /journals page header says '119 journals' but the homepage and stats page both say '118 journals'. Find where each count is computed and make them consistent. The journals page likely computes its count from catalog.json at build time — check whether there is an off-by-one error, an empty-string journal being counted, or a different filtering logic between the pages. Fix whichever is wrong so all pages agree.",
+    "file": "src/pages/journals.astro",
+    "context_files": ["src/pages/index.astro"]
+  },
+  {
+    "title": "Homepage says '514 Papers Still Wanted' but wishlist page says '445 Papers Wanted'",
+    "description": "The homepage hero/stats area says '514 Papers Still Wanted' but the /wishlist page says '445 PAPERS WANTED' with '514 Total Goal'. The 514 number is the total wishlist size (all entries in wishlist.json), while 445 is the number not yet acquired. The homepage should say '445 Papers Still Wanted' (the not-yet-acquired count) or otherwise match the wishlist page's messaging. Fix the homepage to accurately reflect the still-wanted count, not the total goal.",
+    "file": "src/pages/index.astro",
+    "context_files": ["src/data/wishlist.json"]
+  },
+  {
+    "title": "Light mode: nav 'More' dropdown button has dark outline that looks out of place",
+    "description": "In light mode, the 'More' dropdown button in the navigation bar retains a dark/outlined box style that looks out of place against the light background. Add or fix the light-mode styles for this button so it blends naturally with the light theme. Look for the 'More' button element (likely has a border or outline style) and ensure it uses appropriate light-mode colors. The site uses [data-theme='light'] for light mode overrides.",
+    "file": "src/layouts/Layout.astro"
+  },
+  {
+    "title": "Light mode: controversy detail tab bar has very low contrast text",
+    "description": "On controversy detail pages (e.g., /controversies/ganzfeld_telepathy) in light mode, the tab bar (Overview, Evidence, Key Papers, Related Paths) has light gray text on a dark navy background, making it nearly unreadable. The tabs need higher contrast in light mode. Either make the text darker/bolder on the dark background, or switch the tab bar to a light background in light mode. The site uses [data-theme='light'] for light mode overrides.",
+    "file": "src/pages/controversies/[id].astro"
+  },
+  {
+    "title": "Controversy detail pages show database-style IDs on paper cards",
+    "description": "On controversy detail pages, paper cards display raw database IDs like 'BEM_1994_DOES', 'STORM_2010_METAANALYSIS', 'HYMAN_1994_ANOMALY'. These internal IDs should be hidden from users. Either remove the ID display entirely, or replace it with the paper's human-readable title. The IDs are likely being rendered from the controversy data file's paper references. Find where the ID string is displayed in the template and remove or replace it.",
+    "file": "src/pages/controversies/[id].astro"
+  },
+  {
+    "title": "Controversy detail pages show raw -- (double hyphens) instead of em dashes",
+    "description": "On controversy detail pages, the quick summary text contains raw double hyphens like 'The ganzfeld protocol -- in which...' instead of proper em dashes (—). Find where the summary/description text is rendered and add a text transformation to replace ' -- ' with ' — ' (em dash). This might also be fixable in the source markdown data files in src/data/controversies/. If the text comes from a variable, apply .replace(' -- ', ' \\u2014 ') or equivalent.",
+    "file": "src/pages/controversies/[id].astro"
+  },
+  {
+    "title": "Controversy index and detail pages show different evidence counts",
+    "description": "The controversy index page (/controversies) shows '19 SUPPORTING / 7 CRITICAL' for the ganzfeld entry, but the detail page (/controversies/ganzfeld_telepathy) shows 'SUPPORTING (20) / CRITICAL (8)'. These should be the same numbers. Check whether the index and detail pages compute the counts differently — one may be filtering papers differently or using a cached/stale count from the data file while the other computes live from the evidence list. Make both pages use the same computation.",
+    "file": "src/pages/controversies/index.astro",
+    "context_files": ["src/pages/controversies/[id].astro"]
+  },
+  {
+    "title": "Domain pages concatenate author names without spaces",
+    "description": "On domain pages (e.g., /domain/telepathy), author names run together without separators: 'Sheldrake, RupertStedall, TomTressoldi, Patrizio' instead of 'Sheldrake, Rupert; Stedall, Tom; Tressoldi, Patrizio'. The template is joining author names without adding a delimiter (semicolon + space, or similar) between them. Find the author list rendering and add proper separators between each author entry.",
+    "file": "src/pages/domain/[id].astro"
+  },
+  {
+    "title": "Reading path detail page title just says 'Reading Path' instead of specific path name",
+    "description": "On reading path detail pages (e.g., /paths/path_3_newcomer_survey), the page title/heading just says 'Reading Path' generically instead of showing the specific path name like 'I'm New — Give Me the Lay of the Land'. The path name is available in the path data. Find where the title is set and replace the generic 'Reading Path' with the actual path title from the data.",
+    "file": "src/pages/paths/[id].astro",
+    "context_files": ["src/data/reading_paths/path_3_newcomer_survey.md"]
+  },
+  {
+    "title": "Controversies index page heading overflows on mobile",
+    "description": "On the /controversies page at mobile widths (~375px), the heading 'The Active Debates' gets clipped/truncated, showing as 'The Active Debat...' with text overflowing its container. Fix this by either: reducing the font size at small breakpoints, allowing the text to wrap, or using a shorter heading on mobile. A CSS fix like adding word-break, reducing font-size in a media query, or using a responsive text size class would work.",
+    "file": "src/pages/controversies/index.astro"
+  },
+  {
+    "title": "Wishlist page messaging inconsistent with actual counts",
+    "description": "The /wishlist page shows '445 PAPERS WANTED' as the main heading with '514 Total Goal' separately. The messaging should be clearer: '445 Papers Still Wanted' as the main count (matching what the homepage should say after fixing it), with '514 Total Goal' and '69 Already Acquired' for context. The numbers should be computed from the data, not hardcoded. Check how the current counts are derived from wishlist.json and ensure the page accurately reflects: total entries, acquired count, and still-wanted count.",
+    "file": "src/pages/wishlist.astro",
+    "context_files": ["src/data/wishlist.json"]
+  }
+]
