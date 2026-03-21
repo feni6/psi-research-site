@@ -24,24 +24,52 @@ const getStyle = (type: string) => {
   return relationshipStyles[key] || relationshipStyles['default'];
 };
 
+// Domain name lookup map for human-friendly display names
+const domainNameMap: Record<string, string> = {
+  'nde': 'Near-Death Experiences',
+  'meta_analysis': 'Meta-Analyses',
+  'remote_viewing': 'Remote Viewing',
+  'psychokinesis': 'Psychokinesis',
+  'telepathy': 'Telepathy',
+  'precognition': 'Precognition',
+  'healing': 'Healing',
+  'mediumship': 'Mediumship',
+  'methodology': 'Methodology',
+  'overview': 'Overviews',
+  'skeptical': 'Skeptical Analysis',
+  'nonverbal': 'Nonverbal Communication'
+};
+
 // Domain Configuration (Icons and Colors)
 const domainConfig: Record<string, { color: string; icon: string; bg: string }> = {
-  'Telepathy': { color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: '🧠' },
-  'Clairvoyance': { color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: '👁️' },
-  'Precognition': { color: 'text-violet-400', bg: 'bg-violet-500/10', icon: '🔮' },
-  'Psychokinesis': { color: 'text-amber-400', bg: 'bg-amber-500/10', icon: '⚡' },
-  'Healing': { color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: '🌿' },
-  'Mediumship': { color: 'text-slate-400', bg: 'bg-slate-500/10', icon: '👻' },
-  'Uncategorized': { color: 'text-slate-500', bg: 'bg-slate-800/50', icon: '📁' }
+  'telepathy': { color: 'text-indigo-400', bg: 'bg-indigo-500/10', icon: '🧠' },
+  'clairvoyance': { color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: '👁️' },
+  'precognition': { color: 'text-violet-400', bg: 'bg-violet-500/10', icon: '🔮' },
+  'psychokinesis': { color: 'text-amber-400', bg: 'bg-amber-500/10', icon: '⚡' },
+  'healing': { color: 'text-emerald-400', bg: 'bg-emerald-500/10', icon: '🌿' },
+  'mediumship': { color: 'text-slate-400', bg: 'bg-slate-500/10', icon: '👻' },
+  'nde': { color: 'text-amber-400', bg: 'bg-amber-500/10', icon: '✨' },
+  'meta_analysis': { color: 'text-blue-400', bg: 'bg-blue-500/10', icon: '📊' },
+  'remote_viewing': { color: 'text-cyan-400', bg: 'bg-cyan-500/10', icon: '🔭' },
+  'methodology': { color: 'text-slate-400', bg: 'bg-slate-500/10', icon: '📋' },
+  'overview': { color: 'text-slate-400', bg: 'bg-slate-500/10', icon: '📁' },
+  'skeptical': { color: 'text-gray-400', bg: 'bg-gray-500/10', icon: '🤔' },
+  'nonverbal': { color: 'text-pink-400', bg: 'bg-pink-500/10', icon: '💬' },
+  'uncategorized': { color: 'text-slate-500', bg: 'bg-slate-800/50', icon: '📁' }
 };
 
 const getDomainConfig = (domain: string) => {
-  return domainConfig[domain] || domainConfig['Uncategorized'];
+  const normalizedDomain = domain.toLowerCase();
+  return domainConfig[normalizedDomain] || domainConfig['uncategorized'];
 };
 
-// Format domain name for display (replace underscores with spaces, title case)
+// Format domain name for display (use lookup map or fallback to title case)
 const formatDomainName = (domain: string) => {
   if (!domain) return 'Uncategorized';
+  const normalizedDomain = domain.toLowerCase();
+  if (domainNameMap[normalizedDomain]) {
+    return domainNameMap[normalizedDomain];
+  }
   return domain
     .replace(/_/g, ' ')
     .split(' ')
@@ -59,12 +87,13 @@ catalog.papers.forEach((paper: any) => {
   if (!domainGroups[domain]) domainGroups[domain] = [];
   domainGroups[domain].push(paper);
   
-  // Count connections (each key maps to an array of paper IDs, or is a direct string)
+  // Count connections (related_papers is an object where keys are relationship types and values are arrays of paper IDs)
   let count = 0;
   if (paper.related_papers && typeof paper.related_papers === 'object') {
     Object.values(paper.related_papers).forEach((val: any) => {
-      if (Array.isArray(val)) count += val.length;
-      else count += 1;
+      if (Array.isArray(val)) {
+        count += val.length;
+      }
     });
     totalConnectionsCount += count;
   }
@@ -234,8 +263,9 @@ const totalPapers = catalog.papers.length;
                   let connectionCount = 0;
                   if (hasRelations) {
                     Object.values(paper.related_papers).forEach((val: any) => {
-                      if (Array.isArray(val)) connectionCount += val.length;
-                      else connectionCount += 1;
+                      if (Array.isArray(val)) {
+                        connectionCount += val.length;
+                      }
                     });
                   }
                   
@@ -269,36 +299,38 @@ const totalPapers = catalog.papers.length;
                       <!-- Connections Visualizer -->
                       {hasRelations ? (
                         <div class="space-y-3 bg-slate-950/30 rounded-lg p-4 border border-slate-800/50">
-                          {Object.entries(paper.related_papers).map(([relId, type]: [string, any]) => {
-                            const target = getPaper(relId);
-                            if (!target) return null;
+                          {Object.entries(paper.related_papers).map(([relType, paperIds]: [string, any]) => {
+                            if (!Array.isArray(paperIds)) return null;
                             
-                            const style = getStyle(typeof type === 'string' ? type : 'default');
-                            const statusTag = typeof type === 'object' && type.status ? `[${type.status}]` : '';
+                            const style = getStyle(relType);
 
-                            return (
-                              <div class={`network-connection relative pl-4 py-1.5 border-l-2 ${style.border} transition-colors hover:bg-slate-900 rounded-r`} 
-                                   data-search-text={`${style.label} ${target.title} ${target.author}`.toLowerCase()}>
-                                
-                                <!-- Connection Line Decorator (Dot) -->
-                                <div class={`absolute -left-[5px] top-3 w-2.5 h-2.5 rounded-full border-2 border-slate-900 ${style.bg.replace('/20', '')}`}></div>
+                            return paperIds.map((targetId: string) => {
+                              const target = getPaper(targetId);
+                              if (!target) return null;
 
-                                <div class="flex items-start gap-2.5 text-sm">
-                                  <span class={`font-bold ${style.color} mt-0.5 shrink-0 text-xs`}>
-                                    {style.arrow}
-                                  </span>
-                                  <div class="flex-1 min-w-0">
-                                    <div class="flex items-center gap-2 mb-0.5">
-                                      <span class={`${style.text} font-bold text-[10px] uppercase tracking-wider`}>{style.label}</span>
-                                      {statusTag && <span class="text-slate-600 text-[10px] border border-slate-800 px-1 rounded bg-slate-900">{statusTag}</span>}
+                              return (
+                                <div class={`network-connection relative pl-4 py-1.5 border-l-2 ${style.border} transition-colors hover:bg-slate-900 rounded-r`} 
+                                     data-search-text={`${style.label} ${target.title} ${target.author}`.toLowerCase()}>
+                                  
+                                  <!-- Connection Line Decorator (Dot) -->
+                                  <div class={`absolute -left-[5px] top-3 w-2.5 h-2.5 rounded-full border-2 border-slate-900 ${style.bg.replace('/20', '')}`}></div>
+
+                                  <div class="flex items-start gap-2.5 text-sm">
+                                    <span class={`font-bold ${style.color} mt-0.5 shrink-0 text-xs`}>
+                                      {style.arrow}
+                                    </span>
+                                    <div class="flex-1 min-w-0">
+                                      <div class="flex items-center gap-2 mb-0.5">
+                                        <span class={`${style.text} font-bold text-[10px] uppercase tracking-wider`}>{style.label}</span>
+                                      </div>
+                                      <a href={`/paper/${target.id}`} class="block text-slate-300 hover:text-white hover:underline decoration-slate-600 underline-offset-2 truncate">
+                                        {target.title} <span class="text-slate-600 font-mono text-xs">({target.year})</span>
+                                      </a>
                                     </div>
-                                    <a href={`/paper/${target.id}`} class="block text-slate-300 hover:text-white hover:underline decoration-slate-600 underline-offset-2 truncate">
-                                      {target.title} <span class="text-slate-600 font-mono text-xs">({target.year})</span>
-                                    </a>
                                   </div>
                                 </div>
-                              </div>
-                            );
+                              );
+                            });
                           })}
                         </div>
                       ) : (
