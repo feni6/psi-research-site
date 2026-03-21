@@ -429,6 +429,21 @@ function getMobileLinkClasses(href: string): string {
         color: #d97706 !important;
       }
 
+      /* More Menu Button Fix */
+      [data-theme="light"] #more-menu-btn {
+        color: var(--text-secondary) !important;
+        outline: none !important;
+        border: none !important;
+        background: transparent !important;
+      }
+      [data-theme="light"] #more-menu-btn:hover {
+        color: #d97706 !important;
+      }
+      [data-theme="light"] #more-menu-btn:focus {
+        outline: 2px solid #d97706 !important;
+        outline-offset: 2px !important;
+      }
+
       /* Primary CTA Button Contrast */
       [data-theme="light"] .bg-amber-500 {
         background-color: #d97706 !important; /* amber-600 - darker for contrast on light bg */
