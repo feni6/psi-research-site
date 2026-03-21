@@ -157,7 +157,7 @@ function transformTableToCards(html: string): string {
       cardsHtml += `
         <div class="group relative p-3 rounded-lg border ${borderColor} ${bgAccent} hover:bg-slate-800 transition-colors">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 items-start">
-            <div class="md:col-span-3 text-xs font-mono text-slate-400 uppercase tracking-wide">
+            <div class="md:col-span-3 text-xs text-slate-400 uppercase tracking-wide">
               ${cleanCells[0] || 'Study'}
             </div>
             <div class="md:col-span-4 text-sm text-slate-300">
