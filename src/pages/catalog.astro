@@ -242,8 +242,13 @@ function getDomainIcon(d: string): string {
           <option value="year-asc">Oldest First</option>
           <option value="title-asc">Title (A-Z)</option>
           <option value="title-desc">Title (Z-A)</option>
+          <option value="author-asc">Author (A-Z)</option>
+          <option value="author-desc">Author (Z-A)</option>
           <option value="domain">Domain</option>
-          <option value="sample-size">By Sample Size</option>
+          <option value="journal">Journal</option>
+          <option value="sample-size">Sample Size (largest)</option>
+          <option value="rigor-desc">Rigor (highest)</option>
+          <option value="rigor-asc">Rigor (lowest)</option>
         </select>
         <div class="pointer-events-none absolute right-3 top-3 text-amber-500">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -266,7 +271,7 @@ function getDomainIcon(d: string): string {
   <!-- Paper Grid -->
   <div id="paper-list" class="grid grid-cols-1 gap-4 mt-6">
     {papers.map((paper: any) => (
-      <div class="paper-card group relative bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 flex gap-4" data-domain={paper.psi_domain} data-folder={paper.folder} data-year={paper.year} data-prereg={getPreRegStatus(paper)} data-blinding={getBlindingStatus(paper)} data-doi={getDoiStatus(paper)} data-title={paper.title.toLowerCase()} data-authors={paper.authors.join(' ').toLowerCase()} data-abstract={paper.abstract.toLowerCase()} data-sample-size={paper.methodology?.n || 0}>
+      <div class="paper-card group relative bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 flex gap-4" data-domain={paper.psi_domain} data-folder={paper.folder} data-year={paper.year} data-prereg={getPreRegStatus(paper)} data-blinding={getBlindingStatus(paper)} data-doi={getDoiStatus(paper)} data-title={paper.title.toLowerCase()} data-authors={paper.authors.join(' ').toLowerCase()} data-abstract={paper.abstract.toLowerCase()} data-sample-size={paper.methodology?.n || 0} data-rigor={getEpistemicStatus(paper).label === 'High Rigor' ? 3 : getEpistemicStatus(paper).label === 'Moderate' ? 2 : 1} data-journal={(paper.journal || '').toLowerCase()} data-author-sort={(paper.authors?.[0] || '').toLowerCase()}>
         
         <!-- Domain Icon Square -->
         <div class={`flex-shrink-0 w-10 h-10 rounded flex items-center justify-center text-lg bg-gradient-to-br ${getDomainGradient(paper.psi_domain)}`}>
@@ -392,8 +397,13 @@ function getDomainIcon(d: string): string {
         if (sortMode === 'year-asc') return parseInt(a.dataset.year!) - parseInt(b.dataset.year!);
         if (sortMode === 'title-asc') return a.dataset.title!.localeCompare(b.dataset.title!);
         if (sortMode === 'title-desc') return b.dataset.title!.localeCompare(a.dataset.title!);
+        if (sortMode === 'author-asc') return (a.dataset.authorSort || '').localeCompare(b.dataset.authorSort || '');
+        if (sortMode === 'author-desc') return (b.dataset.authorSort || '').localeCompare(a.dataset.authorSort || '');
         if (sortMode === 'domain') return (a.dataset.domain || '').localeCompare(b.dataset.domain || '');
+        if (sortMode === 'journal') return (a.dataset.journal || '').localeCompare(b.dataset.journal || '');
         if (sortMode === 'sample-size') return parseInt(b.dataset.sampleSize!) - parseInt(a.dataset.sampleSize!);
+        if (sortMode === 'rigor-desc') return parseInt(b.dataset.rigor!) - parseInt(a.dataset.rigor!);
+        if (sortMode === 'rigor-asc') return parseInt(a.dataset.rigor!) - parseInt(b.dataset.rigor!);
         return 0;
       });
 
