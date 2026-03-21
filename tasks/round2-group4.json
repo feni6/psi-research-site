@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Fix method page: Radin paper count conflict + placeholder text",
+    "description": "There are TWO issues to fix in this file:\n\n### Issue 1: Radin paper count shows 30 but Authors page shows 44\nThe Method/Analytics page says 'Most Prolific Author: Radin, Dean — 30 papers published' but the Authors page (after our deduplication fix) shows a different count. The method page likely has a hardcoded or separately computed count. Fix it to dynamically compute the most prolific author count from catalog.json so it matches the Authors page.\n\n### Issue 2: 'Most Connected Paper: See Relationships' is placeholder text\nThe Method/Analytics page shows 'Most Connected Paper: See Relationships' — this is a placeholder link rather than the actual paper title. Either compute the actual most connected paper from the data and display its title, or remove this placeholder entirely if the data isn't available.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/method.astro"
+  },
+  {
+    "title": "Fix stats page: folder names leaked in UI",
+    "description": "The Stats page displays raw internal folder names like 'Papers in folder 10_Skeptical_and_Critical' visible to end users. These internal directory names should be replaced with human-readable labels. Find where folder names are displayed and replace them with clean labels (e.g., '10_Skeptical_and_Critical' → 'Skeptical & Critical').\n\nA general approach: replace underscores with spaces, remove the leading number prefix, and use title case.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/stats.astro"
+  },
+  {
+    "title": "Fix replications page: raw field names shown in legend",
+    "description": "The replications page legend section displays raw database field names like 'replication_of', 'replicated_by', and 'related_papers' in code-formatted text. These should be translated into human-friendly language:\n- 'replication_of' → 'Replication Of'\n- 'replicated_by' → 'Replicated By'\n- 'related_papers' → 'Related Papers'\n\nAlso remove any code/monospace formatting (<code> tags or backtick styling) from these labels — they should be plain text.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/replications.astro"
+  },
+  {
+    "title": "Fix API catalog.json: strip internal fields from public endpoint",
+    "description": "The file public/api/catalog.json is the public API endpoint. It currently exposes internal fields including 'folder', 'filename', and 'source_url' (which contains Dropbox links) for every paper entry. These internal fields should be stripped from the public-facing API.\n\nSince this is a static JSON file (not a generated endpoint), you need to remove the 'folder', 'filename', and 'source_url' keys from every paper object in the JSON. Use search/replace blocks to remove these fields.\n\nNote: This file may be very large. Focus on removing the pattern of these three fields wherever they appear. If every paper has the same field structure, a single representative search/replace showing the removal pattern is fine — but make sure the SEARCH text exactly matches the file content.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "public/api/catalog.json"
+  },
+  {
+    "title": "Fix llms.txt: replace stub with proper site description",
+    "description": "The file public/llms.txt currently only contains 'GET /api/catalog.json' — essentially empty. For a site that advertises being machine-readable, this should contain a proper description.\n\nReplace the entire file contents with a useful llms.txt that includes:\n- Site name: Psi Research Library\n- Brief description: A curated library of parapsychology and psi research papers\n- Scope: 354 papers, 728 authors, 118 journals covering domains like telepathy, remote viewing, psychokinesis, precognition, etc.\n- Available endpoints: /api/catalog.json (full paper catalog with metadata)\n- Key sections: Catalog, Controversies, Reading Paths, Timeline, Replications, Stats\n- A note that the site aims for epistemic neutrality, including both supportive and critical/skeptical research\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "public/llms.txt"
+  }
+]

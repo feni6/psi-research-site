@@ -22,7 +22,7 @@ Options:
 import argparse, json, os, re, subprocess, sys, urllib.request, datetime
 
 SYSTEM_PROMPT = """\
-You are an expert Astro/web developer fixing bugs in a site. You will receive a source file and an issue to fix.
+You are an expert Astro/web developer fixing bugs in a site. You will receive a source file and one or more issues to fix.
 
 Output ONLY search/replace edit blocks in this exact format:
 
@@ -34,10 +34,10 @@ replacement lines
 
 Rules:
 - SEARCH text must match the file character-for-character (indentation, quotes, etc.)
-- Output as many blocks as needed to fix the issue
-- Make minimal, targeted changes — only fix the described issue
+- Output as many blocks as needed to fix ALL listed issues
+- Make minimal, targeted changes — only fix the described issues
 - Do NOT add comments explaining your changes
-- Do NOT output anything other than search/replace blocks
+- Do NOT output any thinking, explanation, or text other than search/replace blocks
 """
 
 LOG_DIR = "logs"
@@ -62,7 +62,7 @@ def call_model(host, port, messages, max_tokens):
         "stream": False,
     }).encode()
     req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=600) as r:
+    with urllib.request.urlopen(req, timeout=3600) as r:
         data = json.loads(r.read())
     return data["choices"][0]["message"]["content"]
 
@@ -111,7 +111,7 @@ def main():
     ap.add_argument("task_file", help="JSON task file (e.g. tasks/batch-a.json)")
     ap.add_argument("--host", required=True, help="llama.cpp server IP")
     ap.add_argument("--port", default="8080", help="llama.cpp server port (default 8080)")
-    ap.add_argument("--max-tokens", type=int, default=4096, help="max response tokens")
+    ap.add_argument("--max-tokens", type=int, default=16384, help="max response tokens")
     ap.add_argument("--dry-run", action="store_true", help="print prompts, don't call model")
     ap.add_argument("--no-commit", action="store_true", help="apply edits, skip git commit")
     ap.add_argument("--resume", action="store_true", help="skip tasks already committed")

@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Fix search page: broken search + hardcoded paper count",
+    "description": "There are TWO issues to fix in this file:\n\n### Issue 1: Search is completely broken\nThe search page returns 0 results for any query. The root cause is a JavaScript error: `item.authors.toLowerCase is not a function`. The `authors` field in the catalog data is an ARRAY of strings (e.g., [\"Radin, Dean\", \"Nelson, Roger\"]), but the search code calls `.toLowerCase()` on it as if it were a string. Fix all places where `authors` is treated as a string — use `.join(', ').toLowerCase()` or similar to convert the array to a searchable string first.\n\n### Issue 2: Paper count says 'over 350' instead of actual count\nThe search page subtitle says 'Explore over 350 papers' while the actual count is 354. Replace the hardcoded '350' text with a dynamically computed count from the catalog data.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/search.astro"
+  },
+  {
+    "title": "Fix compare page: search produces no results",
+    "description": "The paper comparison tool at /compare has the same bug as the search page — the `authors` field is an array of strings but the code calls string methods like `.toLowerCase()` on it directly. Fix all places where `authors` is treated as a string — use `.join(', ').toLowerCase()` or similar to handle the array correctly.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/compare.astro"
+  },
+  {
+    "title": "Fix reading paths listing: '0 Papers' and 'Untitled Path'",
+    "description": "There are TWO issues to fix in this file:\n\n### Issue 1: All reading path cards show '0 Papers', '~5 min', and '0 of 0 read / 0%'\nOn /paths, every path card displays zero papers and zero progress, but clicking into a path shows the real data (e.g., 32 papers). The listing page is failing to read or compute path length from the data. Check how each path's paper count is extracted from the markdown data files — the papers are likely listed in the markdown content but the index page isn't parsing them.\n\n### Issue 2: One path shows 'Untitled Path' instead of its real name\nThe third Domain Deep Dive path (about NDEs/consciousness/mediumship) displays 'Untitled Path'. The path title should come from the markdown data file's frontmatter or heading. Check why this particular path's title isn't being read correctly.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/paths/index.astro",
+    "context_files": ["src/data/reading_paths/_INDEX.md", "src/data/reading_paths/path_6_deep_dive_ndes_consciousness.md"]
+  }
+]
