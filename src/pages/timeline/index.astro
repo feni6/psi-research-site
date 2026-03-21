@@ -57,7 +57,20 @@ const eras = eraFiles.map((file) => {
   
   // Extract title
   const titleMatch = content.match(/^#\s+(.+)$/m);
-  let title = titleMatch ? titleMatch[1] : id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  let title = titleMatch ? titleMatch[1].trim() : id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  
+  // Fallback: derive era name from ID if title is generic
+  if (title.toLowerCase() === 'era' || !title) {
+    const eraNameMap: Record<string, string> = {
+      'era_1_pre_modern': 'Pre-Modern Era',
+      'era_2_rhine': 'Rhine Era',
+      'era_3_ganzfeld': 'Ganzfeld Era',
+      'era_4_stargate': 'Stargate Era',
+      'era_5_modern': 'Modern Era',
+      'era_6_current': 'Current Era',
+    };
+    title = eraNameMap[id] || title;
+  }
   
   // Extract and parse years for calculations
   const yearsMatch = content.match(/(\d{4})[–-](\d{4}|present)/i);
