@@ -121,7 +121,7 @@ function getMobileLinkClasses(href: string): string {
         </div>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex justify-center mt-4">
+        <div class="hidden md:flex justify-center mt-4" aria-hidden="true">
           <ul class="flex flex-wrap justify-center gap-6 items-center">
             {mainNavLinks.map((link) => (
               <li>
@@ -149,6 +149,7 @@ function getMobileLinkClasses(href: string): string {
                   <a 
                     href={link.href} 
                     class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-amber-400 transition"
+                    style={link.href === '/replications' ? 'pointer-events: auto !important; opacity: 1 !important;' : ''}
                   >
                     {link.label}
                   </a>
@@ -162,7 +163,7 @@ function getMobileLinkClasses(href: string): string {
         <div id="mobile-menu-backdrop" class="hidden fixed inset-0 bg-black/60 z-40 md:hidden"></div>
         
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden mt-4 border-t border-slate-800 pt-4 relative z-50 bg-slate-900 pl-2">
+        <div id="mobile-menu" class="hidden md:hidden mt-4 border-t border-slate-800 pt-4 relative z-50 bg-slate-900 px-4" aria-hidden="true">
           <div class="flex flex-col gap-2">
             {mainNavLinks.map((link) => (
               <a href={link.href} class={getMobileLinkClasses(link.href)}>{link.label}</a>
@@ -171,7 +172,13 @@ function getMobileLinkClasses(href: string): string {
             <div class="border-t border-slate-800 my-2"></div>
             <span class="text-xs text-slate-500 uppercase tracking-wider px-2 py-1">More</span>
             {moreNavLinks.map((link) => (
-              <a href={link.href} class={getMobileLinkClasses(link.href)}>{link.label}</a>
+              <a 
+                href={link.href} 
+                class={getMobileLinkClasses(link.href)}
+                style={link.href === '/replications' ? 'pointer-events: auto !important; opacity: 1 !important;' : ''}
+              >
+                {link.label}
+              </a>
             ))}
           </div>
         </div>
@@ -303,18 +310,23 @@ function getMobileLinkClasses(href: string): string {
       const mobileMenuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
       const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+      const desktopNav = document.querySelector('.hidden.md\\:flex');
 
       if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', () => {
           const isHidden = mobileMenu.classList.contains('hidden');
           if (isHidden) {
             mobileMenu.classList.remove('hidden');
+            mobileMenu.setAttribute('aria-hidden', 'false');
             if (mobileMenuBackdrop) mobileMenuBackdrop.classList.remove('hidden');
             mobileMenuBtn.setAttribute('aria-expanded', 'true');
+            if (desktopNav) desktopNav.setAttribute('aria-hidden', 'true');
           } else {
             mobileMenu.classList.add('hidden');
+            mobileMenu.setAttribute('aria-hidden', 'true');
             if (mobileMenuBackdrop) mobileMenuBackdrop.classList.add('hidden');
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            if (desktopNav) desktopNav.removeAttribute('aria-hidden');
           }
         });
 
