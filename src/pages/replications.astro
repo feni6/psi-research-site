@@ -116,6 +116,23 @@ legendTerms.forEach(term => {
   legendProcessedHtml = legendProcessedHtml.replace(regex, `<span class="font-normal">${term}</span>`);
 });
 
+// Translate raw field names to human-friendly labels and remove code formatting
+const fieldTranslations: Record<string, string> = {
+  'replication_of': 'Replication Of',
+  'replicated_by': 'Replicated By',
+  'related_papers': 'Related Papers'
+};
+
+Object.entries(fieldTranslations).forEach(([rawField, friendlyLabel]) => {
+  // Replace <code>raw_field</code> with plain text friendly label
+  const codeRegex = new RegExp(`<code>${rawField}</code>`, 'gi');
+  legendProcessedHtml = legendProcessedHtml.replace(codeRegex, `<span class="font-normal">${friendlyLabel}</span>`);
+  
+  // Also replace backtick-wrapped versions if they exist
+  const backtickRegex = new RegExp(`\`${rawField}\``, 'gi');
+  legendProcessedHtml = legendProcessedHtml.replace(backtickRegex, `<span class="font-normal">${friendlyLabel}</span>`);
+});
+
 // Split content into chains based on our markers
 const rawSections = legendProcessedHtml.split('<!--CHAIN_START-->');
 const introSection = rawSections[0]; // Content before first h2
