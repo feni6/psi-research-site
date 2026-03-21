@@ -41,6 +41,7 @@ const getDomainConfig = (domain: string) => {
 
 // Format domain name for display (replace underscores with spaces, title case)
 const formatDomainName = (domain: string) => {
+  if (!domain) return 'Uncategorized';
   return domain
     .replace(/_/g, ' ')
     .split(' ')
