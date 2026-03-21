@@ -39,6 +39,15 @@ const getDomainConfig = (domain: string) => {
   return domainConfig[domain] || domainConfig['Uncategorized'];
 };
 
+// Format domain name for display (replace underscores with spaces, title case)
+const formatDomainName = (domain: string) => {
+  return domain
+    .replace(/_/g, ' ')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 // Group papers by domain and calculate stats
 const domainGroups: Record<string, any[]> = {};
 let totalConnectionsCount = 0;
@@ -169,7 +178,7 @@ const totalPapers = catalog.papers.length;
                   <input type="checkbox" value={domain} class="peer sr-only domain-checkbox" />
                   <span class={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-slate-700 bg-slate-800 text-slate-400 peer-checked:${config.bg} peer-checked:${config.color} peer-checked:border-transparent transition-all`}>
                     <span>{config.icon}</span>
-                    {domain}
+                    {formatDomainName(domain)}
                   </span>
                 </label>
               );
@@ -201,7 +210,7 @@ const totalPapers = catalog.papers.length;
                   {config.icon}
                 </span>
                 <div>
-                  <h2 class="text-xl font-bold text-slate-200">{domain}</h2>
+                  <h2 class="text-xl font-bold text-slate-200">{formatDomainName(domain)}</h2>
                   <p class="text-xs text-slate-500 font-mono mt-0.5">{domainGroups[domain].length} papers in this domain</p>
                 </div>
               </div>
