@@ -1,1 +1,23 @@
-GET /api/catalog.json
+# Psi Research Library
+
+A curated library of parapsychology and psi research papers.
+
+## Scope
+- 354 papers
+- 728 authors
+- 118 journals
+- Domains: telepathy, remote viewing, psychokinesis, precognition, and related phenomena
+
+## Available Endpoints
+- `/api/catalog.json` - Full paper catalog with metadata (title, authors, journal, year, abstract, tags, PDF links)
+
+## Key Sections
+- Catalog - Browse and search all papers
+- Controversies - Notable debates and disputed findings
+- Reading Paths - Curated sequences for learning
+- Timeline - Historical development of psi research
+- Replications - Studies attempting to replicate key findings
+- Stats - Aggregate statistics and visualizations
+
+## Epistemic Neutrality
+This site aims for epistemic neutrality, including both supportive and critical/skeptical research. Papers are presented with their original claims and methodology, allowing readers to evaluate evidence independently.
