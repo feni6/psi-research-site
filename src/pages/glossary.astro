@@ -186,7 +186,7 @@ const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
         
         <div class="flex items-center gap-3 bg-slate-900 border border-slate-800 rounded-lg px-4 py-2 shadow-sm">
           <span class="text-2xl font-bold text-amber-400 font-mono" id="term-count">{terms.length}</span>
-          <span class="text-slate-500 text-sm font-medium uppercase tracking-wider">Terms Defined</span>
+          <span class="text-slate-500 text-sm font-medium uppercase tracking-wider" id="term-label">Terms Defined</span>
         </div>
       </div>
 
@@ -367,6 +367,7 @@ const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
   <script>
     // --- Search Functionality ---
+    document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input');
     const glossaryItems = document.querySelectorAll('.glossary-item');
     const letterSections = document.querySelectorAll('#glossary-list > div');
@@ -396,6 +397,12 @@ const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
       });
 
       countDisplay.textContent = visibleCount;
+      
+      // Update pluralization
+      const termLabel = document.getElementById('term-label');
+      if (termLabel) {
+        termLabel.textContent = visibleCount === 1 ? 'Term Defined' : 'Terms Defined';
+      }
 
       // 2. Hide/Show Letter Sections & Headers
       letterSections.forEach(section => {
@@ -454,6 +461,7 @@ const allLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
     letterSections.forEach(section => {
       observer.observe(section);
+    });
     });
   </script>
 </Layout>
