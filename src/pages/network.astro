@@ -59,10 +59,13 @@ catalog.papers.forEach((paper: any) => {
   if (!domainGroups[domain]) domainGroups[domain] = [];
   domainGroups[domain].push(paper);
   
-  // Count connections
+  // Count connections (each key maps to an array of paper IDs, or is a direct string)
   let count = 0;
-  if (paper.related_papers) {
-    count = Object.keys(paper.related_papers).length;
+  if (paper.related_papers && typeof paper.related_papers === 'object') {
+    Object.values(paper.related_papers).forEach((val: any) => {
+      if (Array.isArray(val)) count += val.length;
+      else count += 1;
+    });
     totalConnectionsCount += count;
   }
   
@@ -228,7 +231,13 @@ const totalPapers = catalog.papers.length;
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {domainGroups[domain].map((paper: any) => {
                   const hasRelations = paper.related_papers && Object.keys(paper.related_papers).length > 0;
-                  const connectionCount = hasRelations ? Object.keys(paper.related_papers).length : 0;
+                  let connectionCount = 0;
+                  if (hasRelations) {
+                    Object.values(paper.related_papers).forEach((val: any) => {
+                      if (Array.isArray(val)) connectionCount += val.length;
+                      else connectionCount += 1;
+                    });
+                  }
                   
                   return (
                     <div class="network-node bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-slate-600 hover:shadow-xl hover:shadow-black/20 transition-all duration-300 group" 

@@ -64,8 +64,8 @@ papers.forEach(p => {
   const m = p.methodology || {};
   
   // Pre-registration
-  if (m.preRegistered === true) preRegTrue++;
-  else if (m.preRegistered === false) preRegFalse++;
+  if (m.pre_registered === true) preRegTrue++;
+  else if (m.pre_registered === false) preRegFalse++;
   else preRegNull++;
 
   // Blinding
@@ -274,7 +274,7 @@ const skepticalPercent = formatPercent(skepticalCount, totalPapers);
         <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 flex items-center justify-between">
           <div>
             <h3 class="text-lg font-medium text-slate-100">Skeptical & Critical Papers</h3>
-            <p class="text-sm text-slate-400 mt-1">Papers in folder <code class="bg-slate-950 px-1 py-0.5 rounded text-slate-300">Skeptical & Critical</code></p>
+            <p class="text-sm text-slate-400 mt-1">Papers classified as skeptical or critical analysis</p>
           </div>
           <div class="text-right">
             <div class="text-3xl font-bold text-amber-400">{skepticalCount}</div>
