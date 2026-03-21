@@ -8,7 +8,8 @@ import catalog from '../data/catalog.json';
 const journalMap: Record<string, { count: number, papers: any[], years: number[] }> = {};
 
 catalog.papers.forEach((p: any) => {
-  const j = p.journal || 'Unknown Journal';
+  const j = p.journal;
+  if (!j) return; // Skip papers without a valid journal (matches homepage filtering)
   if (!journalMap[j]) {
     journalMap[j] = { count: 0, papers: [], years: [] };
   }
