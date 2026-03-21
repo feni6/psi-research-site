@@ -29,6 +29,7 @@ let totalAttempts = 0;
 let successfulCount = 0;
 let failedCount = 0;
 let mixedCount = 0;
+let anomalousCount = 0;
 let otherCount = 0;
 
 for (const line of lines) {
@@ -58,6 +59,8 @@ for (const line of lines) {
           failedCount++;
         } else if (lowerLine.includes('mixed') || lowerLine.includes('partial')) {
           mixedCount++;
+        } else if (lowerLine.includes('anomalous')) {
+          anomalousCount++;
         } else {
           otherCount++;
         }
@@ -122,6 +125,7 @@ const chainSections = rawSections.slice(1); // Content starting with h2
 const successRate = totalAttempts > 0 ? Math.round((successfulCount / totalAttempts) * 100) : 0;
 const failRate = totalAttempts > 0 ? Math.round((failedCount / totalAttempts) * 100) : 0;
 const mixedRate = totalAttempts > 0 ? Math.round((mixedCount / totalAttempts) * 100) : 0;
+const anomalousRate = totalAttempts > 0 ? Math.round((anomalousCount / totalAttempts) * 100) : 0;
 const otherRate = totalAttempts > 0 ? Math.round((otherCount / totalAttempts) * 100) : 0;
 
 // Helper to transform HTML tables into Tailwind-styled card lists
@@ -285,12 +289,14 @@ const chainSectionsFinal = rawSectionsFinal.slice(1);
             <div class="h-full bg-green-500 transition-all duration-1000 ease-out" style={`width: ${successRate}%`}></div>
             <div class="h-full bg-red-500 transition-all duration-1000 ease-out" style={`width: ${failRate}%`}></div>
             <div class="h-full bg-amber-500 transition-all duration-1000 ease-out" style={`width: ${mixedRate}%`}></div>
+            <div class="h-full bg-purple-500 transition-all duration-1000 ease-out" style={`width: ${anomalousRate}%`}></div>
             <div class="h-full bg-slate-600 transition-all duration-1000 ease-out" style={`width: ${otherRate}%`}></div>
           </div>
           <div class="flex justify-between mt-2 text-[10px] text-slate-500 uppercase tracking-wide font-semibold">
             <span class="text-green-500">Success ({successRate}%)</span>
             <span class="text-red-500">Fail ({failRate}%)</span>
             <span class="text-amber-500">Mixed ({mixedRate}%)</span>
+            <span class="text-purple-400">Anomalous ({anomalousRate}%)</span>
             <span class="text-slate-400">Other ({otherRate}%)</span>
           </div>
         </div>
