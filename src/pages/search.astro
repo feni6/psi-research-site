@@ -12,7 +12,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
       <h1 class="text-5xl font-bold text-slate-100 mt-6 mb-4 tracking-tight">
         Search the <span class="text-amber-400">Library</span>
       </h1>
-      <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto" id="catalog-subtitle">
         Explore over 350 papers, controversies, and glossary terms.
       </p>
     </div>
@@ -191,7 +191,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
           const titleMatch = item.title.toLowerCase().includes(term);
           const content = item.abstract || item.text || '';
           const contentMatch = content.toLowerCase().includes(term);
-          const authorsMatch = item.authors ? item.authors.toLowerCase().includes(term) : false;
+          const authorsMatch = item.authors ? (Array.isArray(item.authors) ? item.authors.join(', ') : item.authors).toLowerCase().includes(term) : false;
           const domainMatch = item.domain ? item.domain.toLowerCase().includes(term) : false;
           return titleMatch || contentMatch || authorsMatch || domainMatch;
         });
@@ -228,7 +228,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
           ${iconSvg}
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-slate-200 truncate">${highlightText(item.title, term)}</p>
-            <p class="text-xs text-slate-500 truncate">${item.type === 'paper' ? (item.authors || 'Unknown') : item.type}</p>
+            <p class="text-xs text-slate-500 truncate">${item.type === 'paper' ? (Array.isArray(item.authors) ? item.authors.join(', ') : item.authors) || 'Unknown' : item.type}</p>
           </div>
           <svg class="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
         `;
@@ -283,7 +283,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
           
           const highlightedTitle = highlightText(item.title, term);
           const highlightedExcerpt = highlightText(excerpt, term);
-          const highlightedAuthors = highlightText(item.authors || 'Unknown Authors', term);
+          const highlightedAuthors = highlightText((Array.isArray(item.authors) ? item.authors.join(', ') : item.authors) || 'Unknown Authors', term);
           
           // Format Journal/Year line
           const journalInfo = item.journal ? `${item.journal} • ${item.year}` : `${item.year}`;
@@ -484,6 +484,12 @@ import Breadcrumb from '../components/Breadcrumb.astro';
         
         // Calculate total papers for the initial state message
         totalPapersCount = searchIndex.filter(i => i.type === 'paper').length;
+
+        // Update subtitle with actual count
+        const subtitleEl = document.getElementById('catalog-subtitle');
+        if (subtitleEl) {
+          subtitleEl.textContent = `Explore ${totalPapersCount} papers, controversies, and glossary terms.`;
+        }
 
         // Enable UI
         loadingState.classList.add('hidden');
