@@ -172,6 +172,9 @@ function processContent(text: string): string {
   
   let processed = text;
 
+  // 0. Convert double hyphens to em dashes
+  processed = processed.replace(/ -- /g, ' \u2014 ');
+
   // 1. Convert [catalog ID: XXX] to pills
   processed = processed.replace(
     /\[catalog ID: ([^\]]+)\]/g,
