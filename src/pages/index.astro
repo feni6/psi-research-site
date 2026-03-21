@@ -5,7 +5,7 @@ import wishlist from '../data/wishlist.json';
 
 const papers = catalog.papers;
 const papersWanted = wishlist.papers_wanted || [];
-const stillWantedCount = papersWanted.filter((p: any) => p.status !== 'acquired').length;
+const stillWantedCount = papersWanted.filter((p: any) => !p.status || p.status !== 'acquired').length;
 const totalPapers = papers.length;
 const domains = [...new Set(papers.map((p: any) => p.psi_domain).filter(Boolean))];
 const journals = [...new Set(papers.map((p: any) => p.journal).filter(Boolean))];
