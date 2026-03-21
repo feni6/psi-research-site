@@ -132,7 +132,12 @@ const peakPercentage = ((peakCount / totalPapers) * 100).toFixed(1);
 const domain90s = decadeDominance['1990s']?.domain || 'various fields';
 const domain00s = decadeDominance['2000s']?.domain || 'various fields';
 
-const growthStory = `Research activity saw a significant surge in the ${peakDecade.replace('s', '')}s, producing ${peakCount} papers—representing ${peakPercentage}% of the entire library's collection. During this period, the dominant focus shifted from ${domain90s} in the preceding decade to ${domain00s}, reflecting broader changes in academic inquiry.`;
+let growthStory;
+if (domain90s === domain00s) {
+  growthStory = `Research activity saw a significant surge in the ${peakDecade.replace('s', '')}s, producing ${peakCount} papers—representing ${peakPercentage}% of the entire library's collection. During this period, ${domain90s} remained the dominant focus, reflecting sustained academic inquiry in this area.`;
+} else {
+  growthStory = `Research activity saw a significant surge in the ${peakDecade.replace('s', '')}s, producing ${peakCount} papers—representing ${peakPercentage}% of the entire library's collection. During this period, the dominant focus shifted from ${domain90s} in the preceding decade to ${domain00s}, reflecting broader changes in academic inquiry.`;
+}
 
 ---
 
