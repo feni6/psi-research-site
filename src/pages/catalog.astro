@@ -328,7 +328,9 @@ function getDomainIcon(d: string): string {
   <script>
     // Configuration
     const PAGINATION_LIMIT = 20;
+    const totalPapers = 354;
     let visibleCount = PAGINATION_LIMIT;
+    let isFiltered = false;
 
     // DOM Elements
     const paperList = document.getElementById('paper-list')!;
@@ -435,8 +437,11 @@ function getDomainIcon(d: string): string {
         paperList.appendChild(card);
       });
       
+      // Determine if any filters are active
+      isFiltered = searchTerm || selectedDomain || selectedFolder || yearMinInput.value || yearMaxInput.value || preregStatus || blindingStatus || hasDoi;
+
       // Update UI Text
-      resultCount.textContent = `Showing ${Math.min(visibleMatchCount, isFiltered ? visibleMatchCount : visibleCount)} of ${totalPapers} papers`;
+      resultCount.textContent = `Showing ${visibleMatchCount} paper${visibleMatchCount !== 1 ? 's' : ''}`;
       
       // Update Button Visibility
       if (isFiltered || visibleCount >= visibleMatchCount) {
