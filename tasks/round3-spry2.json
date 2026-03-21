@@ -1,0 +1,7 @@
+[
+  {
+    "title": "Catalog filter count stays at 354 instead of updating when filters are applied",
+    "description": "On the /catalog page, the text 'Showing 354 papers' does not update when domain or year filters are applied. For example, filtering to 'skeptical' papers from 2020+ shows 1 result but the count still says 354.\n\nThe count display needs to be updated dynamically whenever the filter logic runs. Find where the filtered results are computed in the JavaScript and update the count element to reflect the actual number of visible/matching papers after each filter change.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/catalog.astro"
+  }
+]

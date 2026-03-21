@@ -1,0 +1,7 @@
+[
+  {
+    "title": "Glossary: fix '1 terms' pluralization and broken search filter",
+    "description": "There are TWO issues to fix in the glossary page:\n\n### Issue 1: Pluralization bug\nWhen there is exactly 1 matching term, the page says '1 terms' instead of '1 term'. Find where the count is displayed and add proper pluralization (e.g., use a ternary: `count === 1 ? 'term' : 'terms'`).\n\n### Issue 2: Search doesn't filter terms\nTyping in the glossary search box has no effect — the terms are not filtered. The search input likely has no event listener, or the filter function is not connected. Find the search input element and ensure it has an 'input' event listener that filters the displayed glossary terms based on the search query. The filter should match against term names and definitions.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/glossary.astro"
+  }
+]

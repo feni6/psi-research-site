@@ -1,0 +1,7 @@
+[
+  {
+    "title": "Remove duplicate Copy Link button on paper detail page",
+    "description": "On paper detail pages (e.g., /paper/bem_2011_feeling), there are TWO 'Copy Link' buttons — one below the paper thumbnail/header area and another in a separate SHARE section further down. This is redundant. Remove the second/duplicate one (the one in the SHARE section), keeping only the primary one near the top of the page.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/paper/[id].astro"
+  }
+]

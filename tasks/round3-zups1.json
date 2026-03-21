@@ -1,0 +1,7 @@
+[
+  {
+    "title": "Footer still says 'Methodology' instead of 'Library Analytics'",
+    "description": "In the site footer (in Layout.astro), there is a link labeled 'Methodology' pointing to /method. This should be renamed to 'Library Analytics' to match the nav dropdown and the page title. Find the footer link text 'Methodology' and change it to 'Library Analytics'.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/layouts/Layout.astro"
+  }
+]
