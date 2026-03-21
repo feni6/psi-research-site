@@ -44,6 +44,7 @@ const eras = eraFiles.map((file) => {
     }
     if (inFrontmatter) continue;
     if (!trimmed || trimmed.startsWith('#')) continue;
+    if (trimmed.startsWith('-')) continue; // Skip list items
     description = trimmed;
     break;
   }
