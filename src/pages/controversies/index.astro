@@ -54,16 +54,42 @@ const GROUP_DEFINITIONS = [
 ];
 
 function countProCon(content: string) {
-  const lines = content.split('\n');
   let pro = 0, con = 0;
-  const proWords = ['supports', 'evidence for', 'confirms', 'replicated', 'significant', 'positive'];
-  const conWords = ['critiques', 'fails to', 'no evidence', 'null result', 'artifact', 'skeptic', 'not support', 'negative'];
   
-  lines.forEach(line => {
-    const lower = line.toLowerCase();
-    if (proWords.some(w => lower.includes(w))) pro++;
-    if (conWords.some(w => lower.includes(w))) con++;
-  });
+  // Find Pro section and count bullet points
+  const proMatch = content.match(/\*\*Pro:\*\*([\s\S]*?)(?=\*\*Con:|\*\*Critical evidence:|\*\*Current status:|$)/i);
+  if (proMatch) {
+    const proContent = proMatch[1];
+    const proLines = proContent.split('\n').filter(line => line.trim().startsWith('- '));
+    pro = proLines.length;
+  }
+  
+  // Find Con section and count bullet points
+  const conMatch = content.match(/\*\*Con:\*\*([\s\S]*?)(?=\*\*Critical evidence:|\*\*Current status:|$)/i);
+  if (conMatch) {
+    const conContent = conMatch[1];
+    const conLines = conContent.split('\n').filter(line => line.trim().startsWith('- '));
+    con = conLines.length;
+  }
+  
+  // Also check for alternative headers
+  if (pro === 0) {
+    const supportMatch = content.match(/\*\*Supporting evidence:\*\*([\s\S]*?)(?=\*\*Con:|\*\*Critical evidence:|\*\*Current status:|$)/i);
+    if (supportMatch) {
+      const supportContent = supportMatch[1];
+      const supportLines = supportContent.split('\n').filter(line => line.trim().startsWith('- '));
+      pro = supportLines.length;
+    }
+  }
+  
+  if (con === 0) {
+    const criticalMatch = content.match(/\*\*Critical evidence:\*\*([\s\S]*?)(?=\*\*Current status:|$)/i);
+    if (criticalMatch) {
+      const criticalContent = criticalMatch[1];
+      const criticalLines = criticalContent.split('\n').filter(line => line.trim().startsWith('- '));
+      con = criticalLines.length;
+    }
+  }
   
   const total = pro + con;
   return { 
