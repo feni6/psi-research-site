@@ -34,7 +34,7 @@ const moreNavLinks = [
   { href: '/authors', label: '✍️ Authors' },
   { href: '/journals', label: '📰 Journals' },
   { href: '/wishlist', label: '📝 Wishlist' },
-  { href: '/method', label: '🔬 Methodology' },
+  { href: '/method', label: '🔬 Method' },
   { href: '/guide', label: '🗺️ Guide' },
   { href: '/compare', label: '⚖️ Compare' },
 ];
@@ -102,7 +102,7 @@ function getMobileLinkClasses(href: string): string {
         
         <!-- Top Row: Logo + Mobile Toggle + Desktop Theme Toggle -->
         <div class="flex justify-between items-center">
-          <a href="/" class="text-xl font-bold text-amber-400 hover:text-amber-300 transition">Psi Research Library</a>
+          <a href="/" class="text-xl font-bold text-amber-400 hover:text-amber-300 transition pl-3">Psi Research Library</a>
           
           <div class="flex items-center gap-4">
             <!-- Desktop Theme Toggle -->
@@ -142,7 +142,7 @@ function getMobileLinkClasses(href: string): string {
               
               <div 
                 id="more-menu-dropdown" 
-                class="hidden absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-md shadow-lg py-2 z-50"
+                class="hidden absolute right-0 mt-2 w-48 bg-slate-900 bg-opacity-100 border border-slate-800 rounded-md shadow-lg py-2 z-50"
               >
                 {moreNavLinks.map((link) => (
                   <a 
@@ -157,14 +157,12 @@ function getMobileLinkClasses(href: string): string {
           </ul>
         </div>
 
+        <!-- Mobile Menu Backdrop -->
+        <div id="mobile-menu-backdrop" class="hidden fixed inset-0 bg-black/60 z-40 md:hidden"></div>
+        
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden mt-4 border-t border-slate-800 pt-4">
+        <div id="mobile-menu" class="hidden md:hidden mt-4 border-t border-slate-800 pt-4 relative z-50">
           <div class="flex flex-col gap-2">
-            <!-- Mobile Theme Toggle (Inside Menu) -->
-            <button id="mobile-theme-toggle" class="flex items-center gap-2 py-2 px-2 text-slate-300 hover:text-amber-400 hover:bg-slate-800/50 rounded mb-2">
-              <span>🎨</span> Toggle Theme
-            </button>
-
             {mainNavLinks.map((link) => (
               <a href={link.href} class={getMobileLinkClasses(link.href)}>{link.label}</a>
             ))}
@@ -235,7 +233,6 @@ function getMobileLinkClasses(href: string): string {
     <script>
       // Theme Toggle Logic
       const toggleBtn = document.getElementById('theme-toggle');
-      const mobileToggleBtn = document.getElementById('mobile-theme-toggle');
       const html = document.documentElement;
       const sunIcon = '☀️';
       const moonIcon = '🌙';
@@ -274,7 +271,6 @@ function getMobileLinkClasses(href: string): string {
       updateIcon();
 
       if (toggleBtn) toggleBtn.addEventListener('click', toggleTheme);
-      if (mobileToggleBtn) mobileToggleBtn.addEventListener('click', toggleTheme);
 
       // Dropdown Menu Logic
       const moreBtn = document.getElementById('more-menu-btn');
@@ -305,15 +301,18 @@ function getMobileLinkClasses(href: string): string {
       // Mobile Menu Logic
       const mobileMenuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
+      const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
 
       if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', () => {
           const isHidden = mobileMenu.classList.contains('hidden');
           if (isHidden) {
             mobileMenu.classList.remove('hidden');
+            if (mobileMenuBackdrop) mobileMenuBackdrop.classList.remove('hidden');
             mobileMenuBtn.setAttribute('aria-expanded', 'true');
           } else {
             mobileMenu.classList.add('hidden');
+            if (mobileMenuBackdrop) mobileMenuBackdrop.classList.add('hidden');
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
           }
         });
@@ -323,9 +322,19 @@ function getMobileLinkClasses(href: string): string {
         mobileLinks.forEach(link => {
           link.addEventListener('click', () => {
             mobileMenu.classList.add('hidden');
+            if (mobileMenuBackdrop) mobileMenuBackdrop.classList.add('hidden');
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
           });
         });
+
+        // Close mobile menu when backdrop is clicked
+        if (mobileMenuBackdrop) {
+          mobileMenuBackdrop.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenuBackdrop.classList.add('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+          });
+        }
       }
 
       // Back to Top Logic

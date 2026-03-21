@@ -80,11 +80,27 @@ const eras = eraFiles.map((file) => {
   let endYear = currentYear;
   let duration = 0;
 
+  // Fallback year ranges based on era ID if not found in content
+  const eraYearFallbacks: Record<string, [number, number]> = {
+    'era_1_pre_modern': [1882, 1920],
+    'era_2_rhine': [1920, 1960],
+    'era_3_ganzfeld': [1960, 1980],
+    'era_4_stargate': [1980, 2000],
+    'era_5_modern': [2000, 2020],
+    'era_6_current': [2020, currentYear],
+  };
+
   if (yearsMatch) {
     startYear = parseInt(yearsMatch[1]);
     const endStr = yearsMatch[2];
     endYear = endStr.toLowerCase() === 'present' ? currentYear : parseInt(endStr);
     duration = endYear - startYear;
+  } else if (eraYearFallbacks[id]) {
+    const [fallbackStart, fallbackEnd] = eraYearFallbacks[id];
+    startYear = fallbackStart;
+    endYear = fallbackEnd;
+    duration = endYear - startYear;
+    yearsDisplay = `${startYear}—${endYear === currentYear ? 'present' : endYear}`;
   }
   
   const config = eraConfig[id] || { bg: 'bg-slate-500', border: 'border-slate-400', text: 'text-slate-400', glow: 'shadow-slate-500/20', gradient: 'from-slate-600/10 to-slate-900/5', icon: '📜' };
