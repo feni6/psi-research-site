@@ -334,8 +334,12 @@ const totalPapers = catalog.papers.length;
       document.querySelectorAll('.network-node:not(.hidden)').forEach(node => {
         visiblePapers++;
         // Count visible connections inside this node
-        const conns = node.querySelectorAll('.network-connection:not(.hidden)');
-        visibleConnections += conns.length;
+        const conns = node.querySelectorAll('.network-connection');
+        conns.forEach(conn => {
+          if (!conn.classList.contains('hidden')) {
+            visibleConnections++;
+          }
+        });
       });
 
       statPapers.textContent = visiblePapers;
