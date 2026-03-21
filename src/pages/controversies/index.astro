@@ -72,7 +72,7 @@ function countProCon(content: string) {
     con = conLines.length;
   }
   
-  // Also check for alternative headers
+  // Also check for alternative headers (only if primary headers not found)
   if (pro === 0) {
     const supportMatch = content.match(/\*\*Supporting evidence:\*\*([\s\S]*?)(?=\*\*Con:|\*\*Critical evidence:|\*\*Current status:|$)/i);
     if (supportMatch) {
@@ -96,8 +96,8 @@ function countProCon(content: string) {
     pro, 
     con, 
     total,
-    proPercent: total > 0 ? (pro / total) * 100 : 0,
-    conPercent: total > 0 ? (con / total) * 100 : 0
+    proPercent: total > 0 ? Math.round((pro / total) * 100) : 0,
+    conPercent: total > 0 ? Math.round((con / total) * 100) : 0
   };
 }
 
