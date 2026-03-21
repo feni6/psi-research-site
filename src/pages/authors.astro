@@ -7,14 +7,22 @@ function generateAuthorId(name: string): string {
   return name.toLowerCase().replace(/[ ,.]+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
 }
 
+// Helper function to normalize author names by stripping trailing single-letter initials
+function normalizeAuthorName(name: string): string {
+  // Remove trailing single-letter initials (with or without period) from the first name portion
+  // e.g., "Radin, Dean I" or "Radin, Dean I." becomes "Radin, Dean"
+  return name.replace(/, ([A-Za-z])\s+[A-Za-z]\.?$/, ', $1').trim();
+}
+
 // 1. Process Data
 const authorMap: Record<string, { count: number, papers: any[] }> = {};
 
 catalog.papers.forEach((p: any) => {
   (p.authors || []).forEach((author: string) => {
-    if (!authorMap[author]) authorMap[author] = { count: 0, papers: [] };
-    authorMap[author].count++;
-    authorMap[author].papers.push({ 
+    const normalizedAuthor = normalizeAuthorName(author);
+    if (!authorMap[normalizedAuthor]) authorMap[normalizedAuthor] = { count: 0, papers: [] };
+    authorMap[normalizedAuthor].count++;
+    authorMap[normalizedAuthor].papers.push({ 
       id: p.id, 
       title: p.title, 
       year: p.year
