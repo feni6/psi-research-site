@@ -105,8 +105,16 @@ const highlightedHtml = processedHtml.replace(
   }
 );
 
+// Post-process HTML to remove monospace styling from legend labels
+const legendTerms = ['explicit', 'implicit', 'none', 'extends', 'critiques', 'precursor'];
+let legendProcessedHtml = highlightedHtml;
+legendTerms.forEach(term => {
+  const regex = new RegExp(`<code>${term}</code>`, 'gi');
+  legendProcessedHtml = legendProcessedHtml.replace(regex, `<span class="font-normal">${term}</span>`);
+});
+
 // Split content into chains based on our markers
-const rawSections = highlightedHtml.split('<!--CHAIN_START-->');
+const rawSections = legendProcessedHtml.split('<!--CHAIN_START-->');
 const introSection = rawSections[0]; // Content before first h2
 const chainSections = rawSections.slice(1); // Content starting with h2
 
@@ -183,7 +191,7 @@ function transformTableToCards(html: string): string {
   });
 }
 
-const finalHtml = transformTableToCards(highlightedHtml);
+const finalHtml = transformTableToCards(legendProcessedHtml);
 const rawSectionsFinal = finalHtml.split('<!--CHAIN_START-->');
 const introSectionFinal = rawSectionsFinal[0];
 const chainSectionsFinal = rawSectionsFinal.slice(1);
