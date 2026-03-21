@@ -1,105 +1,127 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
-import wishlistData from '../data/wishlist.json';
 
-const pageTitle = "Wishlist: Wanted Papers";
+const pageTitle = "Site Guide";
 
-// --- Helpers ---
-
-function categorizePaper(whyNeeded: string | undefined): string {
-  const text = (whyNeeded || "").toLowerCase();
-  if (text.includes("skeptic") || text.includes("critical")) return "Skeptical/Critical";
-  if (text.includes("replicat")) return "Replications";
-  if (text.includes("meta")) return "Meta-Analyses";
-  if (text.includes("method")) return "Methodology";
-  return "General";
-}
-
-function getPriorityColor(priority: string | undefined): string {
-  const p = (priority || "medium").toLowerCase();
-  if (p === "high") return "bg-red-500";
-  if (p === "medium") return "bg-amber-500";
-  return "bg-emerald-500";
-}
-
-function getPriorityBadgeClasses(priority: string | undefined): string {
-  const p = (priority || "medium").toLowerCase();
-  if (p === "high") return "bg-red-500/10 text-red-400 border-red-500/20";
-  if (p === "medium") return "bg-amber-500/10 text-amber-400 border-amber-500/20";
-  return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
-}
-
-function getPriorityLabel(priority: string | undefined): string {
-  const p = (priority || "medium").toLowerCase();
-  if (p === "high") return "HIGH";
-  if (p === "medium") return "MEDIUM";
-  return "LOW";
-}
-
-// --- Data Processing ---
-
-const allPapers = (wishlistData.papers_wanted || []);
-
-// Calculate Progress
-const acquiredPapers = allPapers.filter(p => p.status === "acquired");
-const wantedPapers = allPapers.filter(p => p.status !== "acquired");
-const totalPapers = allPapers.length;
-const progressPercent = totalPapers > 0 ? Math.round((acquiredPapers.length / totalPapers) * 100) : 0;
-
-// Process Wanted Papers with safe defaults for missing fields
-const processedPapers = wantedPapers.map(paper => ({
-  ...paper,
-  title: paper.title || "Untitled Paper",
-  authors: Array.isArray(paper.authors) ? paper.authors : (paper.authors ? [paper.authors] : []),
-  why_needed: paper.why_needed || "No reason provided",
-  year: paper.year || "N/A",
-  category: categorizePaper(paper.why_needed),
-  priorityColor: getPriorityColor(paper.priority),
-  badgeClass: getPriorityBadgeClasses(paper.priority),
-  priorityLabel: getPriorityLabel(paper.priority),
-  priority: (paper.priority || "medium").toLowerCase()
-}));
-
-// Sort by Priority (High first) then Year (Newest first)
-processedPapers.sort((a, b) => {
-  const pA = (a.priority || "medium").toLowerCase();
-  const pB = (b.priority || "medium").toLowerCase();
-  const priorityWeight: Record<string, number> = { "high": 3, "medium": 2, "low": 1 };
-  
-  if (priorityWeight[pA] !== priorityWeight[pB]) {
-    return priorityWeight[pB] - priorityWeight[pA];
+// Site sections with descriptions
+const siteSections = [
+  {
+    href: "/catalog",
+    label: "Catalog",
+    icon: "📚",
+    description: "Browse our complete collection of peer-reviewed papers on psi research, organized by topic, year, and methodology.",
+    color: "amber"
+  },
+  {
+    href: "/controversies",
+    label: "Controversies",
+    icon: "⚡",
+    description: "Explore key debates and controversies in psi research, with balanced presentations of evidence from multiple perspectives.",
+    color: "red"
+  },
+  {
+    href: "/paths",
+    label: "Reading Paths",
+    icon: "🛤️",
+    description: "Curated reading sequences designed to help you understand specific topics or build knowledge progressively.",
+    color: "emerald"
+  },
+  {
+    href: "/timeline",
+    label: "Timeline",
+    icon: "📅",
+    description: "A chronological journey through the history of psi research, highlighting key studies and milestones.",
+    color: "blue"
+  },
+  {
+    href: "/replications",
+    label: "Replications",
+    icon: "🔄",
+    description: "Track replication attempts and their outcomes across major psi experiments and studies.",
+    color: "violet"
+  },
+  {
+    href: "/stats",
+    label: "Stats",
+    icon: "📊",
+    description: "Statistical overviews and meta-analytic results summarizing the evidence base.",
+    color: "cyan"
+  },
+  {
+    href: "/trends",
+    label: "Trends",
+    icon: "📈",
+    description: "Visualize publication trends, research focus shifts, and emerging topics over time.",
+    color: "pink"
+  },
+  {
+    href: "/glossary",
+    label: "Glossary",
+    icon: "📖",
+    description: "Definitions of key terms and concepts used throughout psi research literature.",
+    color: "indigo"
+  },
+  {
+    href: "/network",
+    label: "Network",
+    icon: "🔗",
+    description: "Explore connections between researchers, institutions, and research topics.",
+    color: "purple"
+  },
+  {
+    href: "/authors",
+    label: "Authors",
+    icon: "✍️",
+    description: "Browse researchers and their contributions to the field.",
+    color: "orange"
+  },
+  {
+    href: "/journals",
+    label: "Journals",
+    icon: "📰",
+    description: "Explore publications by journal source and publication venue.",
+    color: "teal"
+  },
+  {
+    href: "/wishlist",
+    label: "Wishlist",
+    icon: "📝",
+    description: "See which papers we're still looking for and help us fill gaps in the historical record.",
+    color: "rose"
+  },
+  {
+    href: "/method",
+    label: "Methodology",
+    icon: "🔬",
+    description: "Learn about research methods, experimental designs, and quality criteria used in psi research.",
+    color: "lime"
+  },
+  {
+    href: "/compare",
+    label: "Compare",
+    icon: "⚖️",
+    description: "Compare studies, methodologies, and results side-by-side.",
+    color: "slate"
   }
-  const yearA = typeof a.year === 'number' ? a.year : parseInt(a.year) || 0;
-  const yearB = typeof b.year === 'number' ? b.year : parseInt(b.year) || 0;
-  return yearB - yearA;
-});
+];
 
-// "Most Wanted": Top 24 High Priority Papers
-const mostWanted = processedPapers
-  .filter(p => (p.priority || "medium").toLowerCase() === "high")
-  .slice(0, 24);
-
-// Calculate category counts (handles empty categories safely)
-const categoryCounts: Record<string, number> = {};
-processedPapers.forEach(p => {
-  const cat = p.category || "General";
-  categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
-});
-const categories = Object.keys(categoryCounts).sort();
-
-// Counts for tabs (safe defaults)
-const highPriorityCount = processedPapers.filter(p => (p.priority || "medium").toLowerCase() === "high").length;
-const mediumPriorityCount = processedPapers.filter(p => (p.priority || "medium").toLowerCase() === "medium").length;
-const lowPriorityCount = processedPapers.filter(p => (p.priority || "medium").toLowerCase() === "low").length;
-
-// Get recently acquired (last 6) for display
-const recentlyAcquired = acquiredPapers.slice(0, 6).map(paper => ({
-  ...paper,
-  title: paper.title || "Untitled Paper",
-  authors: Array.isArray(paper.authors) ? paper.authors : (paper.authors ? [paper.authors] : []),
-  year: paper.year || "N/A"
-}));
+const colorClasses: Record<string, { bg: string; border: string; text: string; hover: string }> = {
+  amber: { bg: "bg-amber-500/10", border: "border-amber-500/20", text: "text-amber-400", hover: "hover:border-amber-500/40" },
+  red: { bg: "bg-red-500/10", border: "border-red-500/20", text: "text-red-400", hover: "hover:border-red-500/40" },
+  emerald: { bg: "bg-emerald-500/10", border: "border-emerald-500/20", text: "text-emerald-400", hover: "hover:border-emerald-500/40" },
+  blue: { bg: "bg-blue-500/10", border: "border-blue-500/20", text: "text-blue-400", hover: "hover:border-blue-500/40" },
+  violet: { bg: "bg-violet-500/10", border: "border-violet-500/20", text: "text-violet-400", hover: "hover:border-violet-500/40" },
+  cyan: { bg: "bg-cyan-500/10", border: "border-cyan-500/20", text: "text-cyan-400", hover: "hover:border-cyan-500/40" },
+  pink: { bg: "bg-pink-500/10", border: "border-pink-500/20", text: "text-pink-400", hover: "hover:border-pink-500/40" },
+  indigo: { bg: "bg-indigo-500/10", border: "border-indigo-500/20", text: "text-indigo-400", hover: "hover:border-indigo-500/40" },
+  purple: { bg: "bg-purple-500/10", border: "border-purple-500/20", text: "text-purple-400", hover: "hover:border-purple-500/40" },
+  orange: { bg: "bg-orange-500/10", border: "border-orange-500/20", text: "text-orange-400", hover: "hover:border-orange-500/40" },
+  teal: { bg: "bg-teal-500/10", border: "border-teal-500/20", text: "text-teal-400", hover: "hover:border-teal-500/40" },
+  rose: { bg: "bg-rose-500/10", border: "border-rose-500/20", text: "text-rose-400", hover: "hover:border-rose-500/40" },
+  lime: { bg: "bg-lime-500/10", border: "border-lime-500/20", text: "text-lime-400", hover: "hover:border-lime-500/40" },
+  slate: { bg: "bg-slate-500/10", border: "border-slate-500/20", text: "text-slate-400", hover: "hover:border-slate-500/40" }
+};
 ---
 
 <Layout title={pageTitle}>
