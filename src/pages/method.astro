@@ -457,7 +457,7 @@ const getDomainColor = (domain) => {
         <!-- Most Connected -->
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-pink-500/30 hover:shadow-lg hover:shadow-pink-500/5 transition-all duration-300">
           <div class="text-xs text-slate-500 uppercase font-bold mb-1">Most Connected Paper</div>
-          <div class="text-lg font-medium text-slate-200 truncate" title={mostConnected?.title}>{mostConnected?.title ? 'See Relationships' : 'No Data'}</div>
+          <div class="text-lg font-medium text-slate-200 truncate" title={mostConnected?.title}>{mostConnected?.title || 'No Data'}</div>
           <div class="text-sm text-pink-400 mt-1">
             <span class="count-up" data-target={mostConnected?._connectionCount}>0</span> direct relationships
           </div>
