@@ -135,7 +135,7 @@ const totalPapers = catalog.papers.length;
             <h3 class="text-sm font-medium text-slate-300 line-clamp-2 group-hover:text-white leading-snug">
               {item.paper.title}
             </h3>
-            <p class="text-xs text-slate-500 mt-2 truncate">{item.paper.author}, {item.paper.year}</p>
+            <p class="text-xs text-slate-500 mt-2 truncate">{item.paper.authors?.[0] || 'Unknown'}, {item.paper.year}</p>
           </a>
         ))}
       </div>
@@ -240,7 +240,7 @@ const totalPapers = catalog.papers.length;
                             {paper.title}
                           </h3>
                           <p class="text-sm text-slate-400 mt-1.5 font-medium">
-                            {paper.author} <span class="text-slate-600 mx-1">•</span> {paper.year}
+                            {paper.authors?.[0] || 'Unknown'} <span class="text-slate-600 mx-1">•</span> {paper.year}
                           </p>
                         </a>
                         
