@@ -11,7 +11,7 @@ function generateAuthorId(name: string): string {
 function normalizeAuthorName(name: string): string {
   // Remove trailing single-letter initials (with or without period) from the first name portion
   // e.g., "Radin, Dean I" or "Radin, Dean I." becomes "Radin, Dean"
-  return name.replace(/, ([A-Za-z])\s+[A-Za-z]\.?$/, ', $1').trim();
+  return name.replace(/, ([A-Za-z]+)\s+[A-Za-z]\.?$/, ', $1').trim();
 }
 
 // 1. Process Data
