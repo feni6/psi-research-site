@@ -153,7 +153,7 @@ const hoverBgColor = `hover:bg-${config.color}-500/20`;
 
               <!-- Meta Info -->
               <div class="flex flex-wrap items-center gap-3 text-sm text-slate-400">
-                <span class="font-medium text-slate-300">{Array.isArray(paper.authors) ? paper.authors.join('; ') : paper.authors}</span>
+                <span class="font-medium text-slate-300">{Array.isArray(paper.authors) ? paper.authors.join('; ') : String(paper.authors || '').split(/;\s*/).filter(Boolean).join('; ')}</span>
                 <span class="text-slate-600">•</span>
                 <span>{paper.year}</span>
                 {paper.journal && (
