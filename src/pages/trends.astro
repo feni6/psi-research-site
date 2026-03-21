@@ -47,6 +47,14 @@ function getDomainTextColor(domain: string): string {
   return map[getDomainColor(domain)] || 'text-slate-400';
 }
 
+function formatDomainName(domain: string): string {
+  return domain
+    .replace(/_/g, ' ')
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
 // Initialize data structures
 const decadeCounts: Record<string, number> = {};
 const domainDecadeCounts: Record<string, Record<string, number>> = {};
@@ -187,7 +195,7 @@ const growthStory = `Research activity saw a significant surge in the ${peakDeca
                   </div>
                 </div>
                 <div class="w-32 text-right">
-                   <span class={`text-xs font-bold uppercase ${textColor}`}>{dominant.domain}</span>
+                   <span class={`text-xs font-bold uppercase ${textColor}`}>{formatDomainName(dominant.domain)}</span>
                 </div>
               </div>
             </div>
@@ -211,11 +219,11 @@ const growthStory = `Research activity saw a significant surge in the ${peakDeca
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
            <div class="bg-slate-950/50 p-4 rounded-lg border border-slate-800">
               <div class="text-slate-500 text-xs uppercase font-bold mb-1">Dominant 1990s</div>
-              <div class={`text-xl font-bold ${getDomainTextColor(domain90s)}`}>{domain90s}</div>
+              <div class={`text-xl font-bold ${getDomainTextColor(domain90s)}`}>{formatDomainName(domain90s)}</div>
            </div>
            <div class="bg-slate-950/50 p-4 rounded-lg border border-slate-800">
               <div class="text-slate-500 text-xs uppercase font-bold mb-1">Dominant 2000s</div>
-              <div class={`text-xl font-bold ${getDomainTextColor(domain00s)}`}>{domain00s}</div>
+              <div class={`text-xl font-bold ${getDomainTextColor(domain00s)}`}>{formatDomainName(domain00s)}</div>
            </div>
         </div>
       </div>
@@ -278,7 +286,7 @@ const growthStory = `Research activity saw a significant surge in the ${peakDeca
                   <td class="px-6 py-4 font-medium text-slate-200 sticky left-0 bg-slate-900/50 backdrop-blur-sm">
                     <div class="flex items-center gap-3">
                       <span class={`w-3 h-3 rounded-full ${getDomainColor(domain)}`}></span>
-                      {domain}
+                      {formatDomainName(domain)}
                     </div>
                   </td>
                   {decades.map(decade => {
