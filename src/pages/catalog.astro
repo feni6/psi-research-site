@@ -53,15 +53,30 @@ function formatAuthors(authors: string[]): string {
   return `${authors[0]} et al.`;
 }
 
+// Non-empirical domains where rigor criteria (blinding, pre-reg) don't apply
+const nonEmpiricalDomains = new Set(['methodology', 'overview', 'meta_analysis', 'skeptical']);
+
+function isNonEmpirical(paper: any): boolean {
+  const domain = (paper.psi_domain || '').toLowerCase();
+  if (nonEmpiricalDomains.has(domain)) return true;
+  // Also treat papers with no sample size as non-empirical
+  const n = paper.methodology?.n ?? paper.methodology?.sample_size;
+  if (n === null || n === undefined || n === 0) return true;
+  return false;
+}
+
 // Helper to compute epistemic status (Quality Indicator)
 function getEpistemicStatus(paper: any): { label: string; color: string; title: string } {
+  if (isNonEmpirical(paper)) {
+    return { label: 'Non-Empirical', color: 'bg-slate-600', title: 'Review, meta-analysis, or discussion — empirical rigor criteria do not apply' };
+  }
+
   const prereg = getPreRegStatus(paper);
   const blinding = getBlindingStatus(paper);
-  
-  // Logic: Green if BOTH, Amber if ONE, Red if NEITHER
+
   const hasPrereg = prereg === 'true';
   const hasDoubleBlind = blinding === 'double';
-  
+
   if (hasPrereg && hasDoubleBlind) {
     return { label: 'High Rigor', color: 'bg-emerald-500', title: 'Double-blind & Pre-registered' };
   } else if (hasPrereg || hasDoubleBlind) {
@@ -271,7 +286,7 @@ function getDomainIcon(d: string): string {
   <!-- Paper Grid -->
   <div id="paper-list" class="grid grid-cols-1 gap-4 mt-6">
     {papers.map((paper: any) => (
-      <div class="paper-card group relative bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 flex gap-4" data-domain={paper.psi_domain} data-folder={paper.folder} data-year={paper.year} data-prereg={getPreRegStatus(paper)} data-blinding={getBlindingStatus(paper)} data-doi={getDoiStatus(paper)} data-title={paper.title.toLowerCase()} data-authors={paper.authors.join(' ').toLowerCase()} data-abstract={paper.abstract.toLowerCase()} data-sample-size={paper.methodology?.n || 0} data-rigor={getEpistemicStatus(paper).label === 'High Rigor' ? 3 : getEpistemicStatus(paper).label === 'Moderate' ? 2 : 1} data-journal={(paper.journal || '').toLowerCase()} data-author-sort={(paper.authors?.[0] || '').toLowerCase()}>
+      <div class="paper-card group relative bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 flex gap-4" data-domain={paper.psi_domain} data-folder={paper.folder} data-year={paper.year} data-prereg={getPreRegStatus(paper)} data-blinding={getBlindingStatus(paper)} data-doi={getDoiStatus(paper)} data-title={paper.title.toLowerCase()} data-authors={paper.authors.join(' ').toLowerCase()} data-abstract={paper.abstract.toLowerCase()} data-sample-size={paper.methodology?.n || 0} data-rigor={getEpistemicStatus(paper).label === 'High Rigor' ? 3 : getEpistemicStatus(paper).label === 'Moderate' ? 2 : getEpistemicStatus(paper).label === 'Non-Empirical' ? 0 : 1} data-journal={(paper.journal || '').toLowerCase()} data-author-sort={(paper.authors?.[0] || '').toLowerCase()}>
         
         <!-- Domain Icon Square -->
         <div class={`flex-shrink-0 w-10 h-10 rounded flex items-center justify-center text-lg bg-gradient-to-br ${getDomainGradient(paper.psi_domain)}`}>
