@@ -56,8 +56,8 @@ papers.forEach(p => {
   const m = p.methodology || {};
   
   // Pre-registration
-  if (m.pre_registration === true) preRegTrue++;
-  else if (m.pre_registration === false) preRegFalse++;
+  if (m.pre_registered === true) preRegTrue++;
+  else if (m.pre_registered === false) preRegFalse++;
   else preRegNull++;
 
   // Blinding
