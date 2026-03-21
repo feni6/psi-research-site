@@ -114,9 +114,9 @@ const paths = files.map(f => {
   const id = f.replace('.md', '');
   const lines = content.split('\n');
   
-  // Extract title from first # heading
-  const titleLine = lines.find(l => l.startsWith('# '));
-  const title = titleLine?.replace(/^#\s*/, '').trim() || 'Untitled Path';
+  // Extract title from first # or ## heading
+  const titleLine = lines.find(l => l.startsWith('# ') || l.startsWith('## '));
+  const title = titleLine?.replace(/^#+\s*/, '').trim() || 'Untitled Path';
   
   // Extract description from first non-heading, non-empty paragraph
   let desc = '';
@@ -129,10 +129,10 @@ const paths = files.map(f => {
     }
   }
   
-  // Extract paper IDs from catalog references
-  const paperIdMatches = content.match(/\[catalog ID:([^\]]+)\]/g) || [];
+  // Extract paper IDs from catalog references (backtick-enclosed IDs like `braude_1992_survival`)
+  const paperIdMatches = content.match(/`([a-z0-9_]+)`/g) || [];
   const paperIds = paperIdMatches.map(match => {
-    const idMatch = match.match(/\[catalog ID:([^\]]+)\]/);
+    const idMatch = match.match(/`([a-z0-9_]+)`/);
     return idMatch ? idMatch[1].trim() : null;
   }).filter(Boolean);
   
