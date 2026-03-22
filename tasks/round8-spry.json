@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Fix controversies index: search input missing aria-label + duplicate h1 on replications",
+    "description": "The controversies index page has a search input (id='search-input') that lacks an aria-label. Add `aria-label=\"Search controversies\"` to this input element.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/controversies/index.astro"
+  },
+  {
+    "title": "Fix replications page: duplicate h1 heading",
+    "description": "The replications page has TWO `<h1>` elements both saying 'Replication Map'. There should only be one <h1> per page. Find the duplicate and change it to an <h2> or remove it.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/replications.astro"
+  }
+]

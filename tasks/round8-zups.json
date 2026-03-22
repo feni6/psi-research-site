@@ -1,0 +1,13 @@
+[
+  {
+    "title": "Fix network page: search input missing aria-label",
+    "description": "The network page has a search input (id='network-search') that lacks an aria-label. It has a visual label above it ('Search Network') but no programmatic association. Add `aria-label=\"Search network papers and relationships\"` to the input element.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/network.astro"
+  },
+  {
+    "title": "Fix broken author detail page links for multi-word names",
+    "description": "The authors page generates links to /author/{id} for each author. Some author IDs produce 404 errors (e.g., /author/dunne_brenda, /author/jahn_robert). Check how the author ID is generated from the author name string. The function `generateAuthorId` converts names like 'Dunne, Brenda' to a URL slug. The issue may be that the [id].astro dynamic route uses a different ID format than what the authors page generates. Check both files and ensure the ID generation matches.\n\nLook at how the author/[id].astro page resolves the author: it likely iterates catalog.papers and matches the URL param against generated IDs. If the ID generation logic differs between authors.astro and author/[id].astro, unify them.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/authors.astro",
+    "context_files": ["src/pages/author/[id].astro"]
+  }
+]
