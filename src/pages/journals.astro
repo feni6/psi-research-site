@@ -180,6 +180,9 @@ const totalPapers = catalog.papers.length;
           </svg>
           Complete Directory
         </h2>
+        <div id="journals-shown-count" class="text-sm text-slate-400 font-mono" aria-live="polite">
+          Showing <span id="shown-count">0</span> of <span id="total-count">0</span> journals
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="journal-list" role="list">
@@ -247,6 +250,20 @@ const totalPapers = catalog.papers.length;
         <h3 class="text-lg font-medium text-slate-300">No journals found</h3>
         <p class="text-slate-500 mt-1">Try adjusting your search terms.</p>
       </div>
+
+      <!-- Show More Button -->
+      <div class="mt-8 text-center">
+        <button 
+          id="show-more-btn" 
+          class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-amber-400 font-semibold rounded-lg border border-slate-700 hover:border-amber-400 transition-all focus:ring-2 focus:ring-amber-400 focus:outline-none"
+          aria-label="Show more journals"
+        >
+          Show More
+          <svg class="w-4 h-4 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+      </div>
     </section>
 
     <!-- Client-side Search & Sort Script -->
@@ -258,24 +275,61 @@ const totalPapers = catalog.papers.length;
       const journalList = document.getElementById('journal-list');
       const btnCount = document.getElementById('sort-count');
       const btnAlpha = document.getElementById('sort-alpha');
+      const showMoreBtn = document.getElementById('show-more-btn');
+      const shownCountEl = document.getElementById('shown-count');
+      const totalCountEl = document.getElementById('total-count');
 
       let currentSort = 'count';
+      let visibleLimit = 50;
+      let isSearchActive = false;
+
+      function updateCountDisplay(shown: number, total: number) {
+        if (shownCountEl) shownCountEl.textContent = shown.toString();
+        if (totalCountEl) totalCountEl.textContent = total.toString();
+      }
 
       function updateDisplay() {
         const query = searchInput.value.toLowerCase();
+        isSearchActive = query.length > 0;
         let visibleCount = 0;
+        let matchingCards: HTMLElement[] = [];
         
         journalCards.forEach(card => {
           const name = card.getAttribute('data-name') || '';
           const matchesSearch = name.includes(query);
           
           if (matchesSearch) {
-            card.classList.remove('hidden');
+            matchingCards.push(card);
             visibleCount++;
           } else {
             card.classList.add('hidden');
           }
         });
+
+        // When search is active, show all matching results (no pagination)
+        // Otherwise, apply pagination limit
+        if (isSearchActive) {
+          matchingCards.forEach(card => card.classList.remove('hidden'));
+          if (showMoreBtn) showMoreBtn.classList.add('hidden');
+        } else {
+          // Apply pagination
+          matchingCards.forEach((card, index) => {
+            if (index < visibleLimit) {
+              card.classList.remove('hidden');
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+          
+          // Show/hide Show More button
+          if (showMoreBtn) {
+            if (visibleCount > visibleLimit) {
+              showMoreBtn.classList.remove('hidden');
+            } else {
+              showMoreBtn.classList.add('hidden');
+            }
+          }
+        }
 
         // Update count badge
         if (searchCount) {
@@ -286,6 +340,10 @@ const totalPapers = catalog.papers.length;
             searchCount.classList.add('hidden');
           }
         }
+
+        // Update journals shown count
+        const currentlyShown = isSearchActive ? visibleCount : Math.min(visibleCount, visibleLimit);
+        updateCountDisplay(currentlyShown, visibleCount);
 
         // Toggle no results message
         if (journalList) {
@@ -339,7 +397,16 @@ const totalPapers = catalog.papers.length;
         updateDisplay();
       }
 
+      function showMoreJournals() {
+        visibleLimit += 50;
+        updateDisplay();
+      }
+
       searchInput?.addEventListener('input', updateDisplay);
+      showMoreBtn?.addEventListener('click', showMoreJournals);
+
+      // Initialize count display on page load
+      updateCountDisplay(Math.min(journalCards.length, visibleLimit), journalCards.length);
     </script>
 
   </div>
