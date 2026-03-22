@@ -59,8 +59,6 @@ const domainConfig: Record<string, { icon: string, color: string, label: string,
 // Deterministic random paper selection for the "Feeling Adventurous?" feature
 const randomPaperIds = papers.filter((_: any, i: number) => i % 17 === 0).slice(0, 20).map((p: any) => p.id);
 
-// All paper IDs for the "Surprise Me" button
-const allPaperIds = papers.map((p: any) => p.id);
 ---
 
 <Layout title="Home">
@@ -148,7 +146,7 @@ const allPaperIds = papers.map((p: any) => p.id);
           </div>
           <div class="text-4xl font-bold text-slate-100">{skepticalCount}</div>
           <div class="text-slate-500 text-sm font-medium mt-1 uppercase tracking-wider">Critical Views</div>
-          <div class="text-slate-600 text-xs mt-1">(Skeptical Analysis papers)</div>
+          <div class="text-slate-600 text-xs mt-1">(across all domains)</div>
         </div>
         <div class="stat-card group bg-slate-900 rounded-2xl p-6 text-center border border-slate-800 hover:border-amber-500/30 hover:bg-slate-800/50 transition-all duration-300">
           <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-500/10 text-purple-400 mb-3 group-hover:scale-110 transition-transform">
@@ -512,7 +510,7 @@ const allPaperIds = papers.map((p: any) => p.id);
   </section>
 </Layout>
 
-<script define:vars={{ randomPaperIds, allPaperIds }}>
+<script define:vars={{ randomPaperIds }}>
   // Random Paper Button Logic
   const btn = document.getElementById('random-paper-btn');
   if (btn) {
@@ -526,7 +524,7 @@ const allPaperIds = papers.map((p: any) => p.id);
   const surpriseBtn = document.getElementById('surprise-btn');
   if (surpriseBtn) {
     surpriseBtn.addEventListener('click', () => {
-      const randomId = allPaperIds[Math.floor(Math.random() * allPaperIds.length)];
+      const randomId = randomPaperIds[Math.floor(Math.random() * randomPaperIds.length)];
       window.location.href = `/paper/${randomId}`;
     });
   }
