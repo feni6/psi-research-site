@@ -56,16 +56,16 @@ const GROUP_DEFINITIONS = [
 function countProCon(content: string) {
   let pro = 0, con = 0;
   
-  // Find Pro section and count bullet points
-  const proMatch = content.match(/\*\*Pro:\*\*([\s\S]*?)(?=\*\*Con:|\*\*Critical evidence:|\*\*Current status:|$)/i);
+  // Find Pro section and count bullet points (handles both **Pro:** and **Pro (description):**)
+  const proMatch = content.match(/\*\*Pro[^*]*:\*\*([\s\S]*?)(?=\*\*Con[^*]*:\*\*|\*\*Critical evidence:|\*\*Current status:|$)/i);
   if (proMatch) {
     const proContent = proMatch[1];
     const proLines = proContent.split('\n').filter(line => line.trim().startsWith('- '));
     pro = proLines.length;
   }
-  
-  // Find Con section and count bullet points
-  const conMatch = content.match(/\*\*Con:\*\*([\s\S]*?)(?=\*\*Critical evidence:|\*\*Current status:|$)/i);
+
+  // Find Con section and count bullet points (handles both **Con:** and **Con (description):**)
+  const conMatch = content.match(/\*\*Con[^*]*:\*\*([\s\S]*?)(?=\*\*Critical evidence:|\*\*Current status:|$)/i);
   if (conMatch) {
     const conContent = conMatch[1];
     const conLines = conContent.split('\n').filter(line => line.trim().startsWith('- '));

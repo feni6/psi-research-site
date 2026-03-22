@@ -61,16 +61,16 @@ function parseSections(content: string) {
     remaining: ''
   };
 
-  // Find Pro section
-  const proMatch = content.match(/\*\*Pro:\*\*([\s\S]*?)(?=\*\*Con:|\*\*Critical evidence:|\*\*Current status:|$)/i);
+  // Find Pro section (handles both **Pro:** and **Pro (description):**)
+  const proMatch = content.match(/\*\*Pro[^*]*:\*\*([\s\S]*?)(?=\*\*Con[^*]*:\*\*|\*\*Critical evidence:|\*\*Current status:|$)/i);
   if (proMatch) {
     const proContent = proMatch[1];
     const proLines = proContent.split('\n').filter(line => line.trim().startsWith('- '));
     sections.pro = proLines.map(line => line.replace(/^- /, '').trim());
   }
 
-  // Find Con section
-  const conMatch = content.match(/\*\*Con:\*\*([\s\S]*?)(?=\*\*Critical evidence:|\*\*Current status:|$)/i);
+  // Find Con section (handles both **Con:** and **Con (description):**)
+  const conMatch = content.match(/\*\*Con[^*]*:\*\*([\s\S]*?)(?=\*\*Critical evidence:|\*\*Current status:|$)/i);
   if (conMatch) {
     const conContent = conMatch[1];
     const conLines = conContent.split('\n').filter(line => line.trim().startsWith('- '));
