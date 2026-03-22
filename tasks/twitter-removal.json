@@ -1,0 +1,7 @@
+[
+  {
+    "title": "Remove all Share on X (Twitter) links and buttons from paper detail page",
+    "description": "Remove every 'Share on X', 'Share on Twitter', or twitter.com/intent/tweet link/button from this file. This includes any <a> tags linking to twitter.com or x.com for sharing purposes, any buttons labeled 'Twitter' or 'X' in share sections, and any associated icons (the X/Twitter bird SVG). Remove the entire link/button element, not just the text. If removing a share button leaves an empty share section or an orphaned separator/divider, clean that up too.\n\nDo NOT remove Twitter meta tags (twitter:card, twitter:title, etc.) from the Layout — those are for link previews, not share buttons.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/paper/[id].astro"
+  }
+]
