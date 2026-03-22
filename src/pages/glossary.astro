@@ -22,7 +22,7 @@ const terms = [
     term: "Ganzfeld", 
     category: "Protocols",
     definition: "A sensory deprivation protocol used in telepathy experiments. The receiver relaxes in a mild sensory isolation environment (often using halved ping-pong balls over eyes and white noise) while a sender attempts to transmit an image or video clip.",
-    related: ["Telepathy", "DMILS", "Remote Viewing"],
+    related: ["DMILS", "Remote Viewing"],
     link: { href: "/controversies/01_ganzfeld_telepathy", text: "Ganzfeld Meta-Analysis" }
   },
   { 
@@ -57,42 +57,42 @@ const terms = [
     term: "RNG (Random Number Generator)", 
     category: "Equipment",
     definition: "A hardware or software device that produces random sequences, used in psychokinesis (PK) experiments. Participants attempt to mentally influence the output distribution toward a target value (e.g., more 1s than 0s).",
-    related: ["Psychokinesis", "Micro-PK"],
+    related: [],
     link: { href: "/domain/psychokinesis", text: "PK Experiments" }
   },
   { 
     term: "Presentiment", 
     category: "Phenomena",
     definition: "The hypothesized ability of the body to anticipate future emotional events before they occur, measured via physiological responses like skin conductance, heart rate, or pupil dilation seconds before a stimulus is shown.",
-    related: ["Precognition", "Physiology"],
+    related: [],
     link: { href: "/controversies/03_presentiment", text: "Presentiment Research" }
   },
   { 
     term: "DMILS", 
     category: "Protocols",
     definition: "Direct Mental Interaction with Living Systems. Experiments testing whether one person's intention can influence another person's physiology (e.g., skin conductance) at a distance without sensory cues.",
-    related: ["Ganzfeld", "Telepathy", "Healing"],
+    related: ["Ganzfeld"],
     link: { href: "/domain/telepathy", text: "DMILS Studies" }
   },
   { 
     term: "Remote Viewing", 
     category: "Protocols",
     definition: "A protocol where a 'viewer' attempts to describe a distant or hidden target location using only mental impressions. Originally studied under the US government's STAR GATE program using coordinate-based targeting.",
-    related: ["Clairvoyance", "Ganzfeld"],
+    related: ["Ganzfeld"],
     link: { href: "/domain/remote_viewing", text: "Remote Viewing Archives" }
   },
   { 
     term: "Psi", 
     category: "General",
     definition: "An umbrella term for anomalous mental phenomena including telepathy, clairvoyance, precognition, and psychokinesis. From the Greek letter ψ (psi), chosen by J.B. Rhine to represent the unknown factor.",
-    related: ["Parapsychology", "Anomalies"],
+    related: [],
     link: { href: "/about", text: "About Psi Research" }
   },
   { 
     term: "File Drawer Problem", 
     category: "Methodology",
     definition: "The bias introduced when studies with null results go unpublished ('filed away'), making the published literature appear more supportive of an effect than the full evidence warrants. Meta-analyses attempt to correct for this.",
-    related: ["Meta-analysis", "Publication Bias"],
+    related: ["Meta-analysis"],
     link: { href: "/method", text: "Bias in Science" }
   },
   { 
@@ -113,14 +113,14 @@ const terms = [
     term: "NDE (Near-Death Experience)", 
     category: "Phenomena",
     definition: "Profound experiences reported by people who have been close to death, often including out-of-body perceptions, tunnel vision, life reviews, and encounters with deceased persons or beings of light.",
-    related: ["OBE", "Consciousness"],
+    related: ["OBE"],
     link: { href: "/domain/nde", text: "NDE Research" }
   },
   { 
     term: "OBE (Out-of-Body Experience)", 
     category: "Phenomena",
     definition: "The sensation of perceiving the world from a vantage point outside one's physical body. Sometimes reported during NDEs, sleep paralysis, or induced through specific meditation practices and sensory deprivation.",
-    related: ["NDE", "Astral Projection"],
+    related: ["NDE"],
     link: { href: "/domain/nde", text: "OBE Studies" }
   },
   { 
@@ -177,6 +177,7 @@ const availableLetters = Object.keys(letterData).sort();
           <input 
             type="text" 
             id="search-input"
+            aria-label="Search glossary terms"
             placeholder="Search terms, definitions, or categories..." 
             class="w-full bg-slate-900/50 border border-slate-700 text-slate-200 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all shadow-lg backdrop-blur-sm"
             autocomplete="off"
@@ -219,7 +220,7 @@ const availableLetters = Object.keys(letterData).sort();
           <div class="flex items-center gap-4 mb-8 border-b border-slate-800 pb-2">
             <span class="text-6xl font-serif text-slate-800 italic font-bold select-none">{letter}</span>
             <div class="h-px bg-slate-800 flex-grow"></div>
-            <span class="text-slate-600 font-mono text-sm">{letterData[letter].count} terms</span>
+            <span class="text-slate-600 font-mono text-sm">{letterData[letter].count} {letterData[letter].count === 1 ? 'term' : 'terms'}</span>
           </div>
           
           <!-- Cards Grid -->
