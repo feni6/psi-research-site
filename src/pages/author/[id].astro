@@ -13,7 +13,7 @@ function _generateAuthorId(name: string): string {
 }
 
 function _normalizeAuthorName(name: string): string {
-  return name.trim().replace(/\s+/g, ' ')
+  return name.replace(/, ([A-Za-z]+)\s+[A-Za-z]\.?$/, ', $1').trim()
 }
 
 export async function getStaticPaths() {
@@ -22,7 +22,7 @@ export async function getStaticPaths() {
     return name.toLowerCase().replace(/[ ,.]+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '')
   }
   const normalizeName = (name: string): string => {
-    return name.trim().replace(/\s+/g, ' ')
+    return name.replace(/, ([A-Za-z]+)\s+[A-Za-z]\.?$/, ', $1').trim()
   }
 
   const authorSet = new Set<string>()
