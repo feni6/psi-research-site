@@ -91,13 +91,13 @@ Beyond any individual controversy, there is a meta-level debate about whether th
 
 **Current status:** This meta-debate is the most consequential in the field because it determines whether psi research is capable of producing reliable knowledge.
 
-The strongest pro-psi argument is Cardena's (2018) American Psychologist review, which was peer-reviewed by a mainstream journal and argues the evidence would be accepted in any other domain.
+The strongest pro-psi argument is Cardena's (2018) [catalog ID: cardena_2018_experimental] American Psychologist review, which was peer-reviewed by a mainstream journal and argues the evidence would be accepted in any other domain.
 
-The strongest skeptical argument has two strands: (1) Reber & Alcock's (2019) contention that no statistical evidence can overcome the violation of known physics, and (2) Ioannidis's (2005) mathematical proof that small effects (d=0.1-0.3), small samples (n<100), multiple paradigms, flexible protocols, and strong beliefs create conditions where PPV < 50%.
+The strongest skeptical argument has two strands: (1) Reber & Alcock's (2019) [catalog ID: reber_2019_searching] contention that no statistical evidence can overcome the violation of known physics, and (2) Ioannidis's (2005) [catalog ID: ioannidis_2005_false] mathematical proof that small effects (d=0.1-0.3), small samples (n<100), multiple paradigms, flexible protocols, and strong beliefs create conditions where PPV < 50%.
 
-The Schlitz–Wiseman series is particularly instructive: the 1997 and 1999 studies found that the proponent experimenter obtained significant EDA results and the skeptic did not using identical protocols — a finding both sides interpret differently (experimenter psi vs. experimenter bias).
+The Schlitz–Wiseman series [catalog ID: wiseman_schlitz_1997_experimenter_staring] is particularly instructive: the 1997 and 1999 studies found that the proponent experimenter obtained significant EDA results and the skeptic did not using identical protocols — a finding both sides interpret differently (experimenter psi vs. experimenter bias).
 
-The 2006 follow-up was specifically designed to identify the cause, but found no effect for anyone, including Schlitz working in her own institution with believers — which most observers regard as evidence for the artifact interpretation.
+The 2006 follow-up [catalog ID: schlitz_2006_two_minds] was specifically designed to identify the cause, but found no effect for anyone, including Schlitz working in her own institution with believers — which most observers regard as evidence for the artifact interpretation.
 
 The debate is unlikely to be resolved by any single experiment and may ultimately require either a physical mechanism for psi or a truly independent, large-scale, pre-registered replication effort.
 

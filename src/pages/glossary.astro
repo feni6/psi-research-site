@@ -28,7 +28,7 @@ const terms = [
   { 
     term: "Effect Size", 
     category: "Statistics",
-    definition: "A quantitative measure of the magnitude of an experimental effect. Common metrics include Cohen's d, Hedges' g, and correlation coefficient r. In psi research, effect sizes are typically small (r < 0.1) but statistically significant across large datasets.",
+    definition: 'A quantitative measure of the magnitude of an experimental effect. Common metrics include <a href="/glossary#cohen-s-d" class="text-amber-400 underline hover:text-amber-300">Cohen\'s d</a>, <a href="/glossary#hedges-g" class="text-amber-400 underline hover:text-amber-300">Hedges\' g</a>, and <a href="/glossary#correlation-coefficient-r" class="text-amber-400 underline hover:text-amber-300">correlation coefficient r</a>. In psi research, effect sizes are typically small (r &lt; 0.1) but statistically significant across large datasets.',
     related: ["Meta-analysis", "Bayes Factor", "p-value"],
     link: { href: "/stats", text: "Understanding Effect Sizes" }
   },
@@ -129,6 +129,55 @@ const terms = [
     definition: "The probability of obtaining test results at least as extreme as the results actually observed, under the assumption that the null hypothesis is correct. In psi, p < 0.05 is the standard threshold for significance.",
     related: ["Bayes Factor", "Effect Size"],
     link: { href: "/stats", text: "Significance Testing" }
+  },
+  {
+    term: "Cohen's d",
+    category: "Statistics",
+    definition: 'A standardized effect size measuring the difference between two group means in units of <a href="/glossary#standard-deviation" class="text-amber-400 underline hover:text-amber-300">standard deviation</a>. Values of 0.2, 0.5, and 0.8 are conventionally considered small, medium, and large effects. In psi research, effect sizes are typically small (d = 0.1–0.3), which requires large sample sizes to detect reliably.',
+    related: ["Effect Size", "Sample Size", "PPV"],
+    link: { href: "/stats", text: "Understanding Effect Sizes" }
+  },
+  {
+    term: "Sample Size",
+    category: "Statistics",
+    definition: 'The number of participants or trials (n) in a study. Small sample sizes reduce statistical power — the ability to detect a real effect — and increase the risk that a significant finding is a false positive. For small psi effects (<a href="/glossary#cohen-s-d" class="text-amber-400 underline hover:text-amber-300">d</a> ≈ 0.2), adequate power (≥ 0.80) typically requires n > 400 per group.',
+    related: ["Cohen's d", "PPV", "Effect Size"],
+    link: { href: "/stats", text: "Statistical Power" }
+  },
+  {
+    term: "PPV (Positive Predictive Value)",
+    category: "Statistics",
+    definition: "The probability that a statistically significant finding reflects a true effect rather than a false positive. PPV depends on statistical power, the prior probability of the hypothesis, and bias. Ioannidis (2005) showed that when effects are small, samples are small, and researcher degrees of freedom are high, PPV can fall below 50% — meaning most 'significant' findings are more likely false than true.",
+    related: ["p-value", "Cohen's d", "Sample Size"],
+    link: { href: "/controversies/10_meta_debate", text: "The Meta-Debate" }
+  },
+  {
+    term: "Standard Deviation",
+    category: "Statistics",
+    definition: "A measure of how spread out values are from the mean in a dataset, often represented by the Greek letter sigma (σ). A small standard deviation means data points cluster tightly around the average; a large one means they are more dispersed. When a result is described as '6-sigma' (6σ), it means the observed value is 6 standard deviations from the expected mean — an extremely unlikely outcome under the null hypothesis. In psi research, standard deviation is used to standardize effect sizes — for example, Cohen's d expresses group differences in standard deviation units, allowing comparison across studies that use different measurement scales.",
+    related: ["Cohen's d", "Effect Size"],
+    link: { href: "/stats", text: "Basic Statistics" }
+  },
+  {
+    term: "z-score",
+    category: "Statistics",
+    definition: 'A z-score (or z-value) measures how many <a href="/glossary#standard-deviation" class="text-amber-400 underline hover:text-amber-300">standard deviations</a> a result is from the expected mean under the null hypothesis. Higher absolute z-scores indicate stronger evidence against chance. For example, z = 2.0 corresponds to roughly p = 0.05 (two-tailed), while z = 8.31 indicates an astronomically unlikely result under the null. In psi meta-analyses, cumulative z-scores are used to summarize the overall strength of evidence across many studies.',
+    related: ["p-value", "Standard Deviation", "Effect Size"],
+    link: { href: "/stats", text: "Significance Testing" }
+  },
+  {
+    term: "Hedges' g",
+    category: "Statistics",
+    definition: 'A standardized effect size similar to Cohen\'s d but with a correction for small-sample bias. Hedges\' g multiplies Cohen\'s d by a factor (approximately 1 − 3/(4n−9)) that shrinks the estimate slightly when sample sizes are small. In psi meta-analyses, Hedges\' g is often preferred over Cohen\'s d because many studies have modest sample sizes where the bias correction matters.',
+    related: ["Cohen's d", "Effect Size", "Sample Size"],
+    link: { href: "/stats", text: "Understanding Effect Sizes" }
+  },
+  {
+    term: "Correlation Coefficient (r)",
+    category: "Statistics",
+    definition: "A measure of the strength and direction of a linear relationship between two variables, ranging from −1 (perfect negative correlation) to +1 (perfect positive correlation), with 0 meaning no relationship. In psi research, r is commonly used as an effect size metric — for example, ganzfeld hit rates are often converted to r values for meta-analysis. By convention, r = 0.1 is small, r = 0.3 is medium, and r = 0.5 is large. Most psi effects fall in the small range (r < 0.1).",
+    related: ["Effect Size", "Cohen's d", "Hedges' g"],
+    link: { href: "/stats", text: "Understanding Effect Sizes" }
   },
 ];
 
@@ -273,7 +322,7 @@ const availableLetters = Object.keys(letterData).sort();
                       </svg>
                     </summary>
                     <div class="mt-3 text-slate-300 text-sm leading-relaxed animate-fadeIn">
-                      {item.definition}
+                      <span set:html={item.definition} />
                     </div>
                   </details>
                   
@@ -453,6 +502,29 @@ const availableLetters = Object.keys(letterData).sort();
     letterSections.forEach(section => {
       observer.observe(section);
     });
+
+    // Auto-open <details> when navigating via hash link
+    function openHashTarget() {
+      const hash = window.location.hash;
+      if (!hash) return;
+      const target = document.querySelector(hash);
+      if (!target) return;
+      // Remove highlight from any previously highlighted card
+      document.querySelectorAll('.glossary-item.ring-2').forEach(el => {
+        el.classList.remove('ring-2', 'ring-amber-500', 'ring-offset-2', 'ring-offset-slate-950');
+      });
+      // The anchor div is inside the card — find the parent card and its <details>
+      const card = target.closest('.glossary-item');
+      if (card) {
+        const details = card.querySelector('details');
+        if (details) details.open = true;
+        card.classList.add('ring-2', 'ring-amber-500', 'ring-offset-2', 'ring-offset-slate-950');
+      }
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    openHashTarget();
+    window.addEventListener('hashchange', openHashTarget);
     });
   </script>
 </Layout>
