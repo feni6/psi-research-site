@@ -468,8 +468,10 @@ const bibtexCitation = `@article{${paper.id},
     {paper.notes && (
       <section class="mb-8">
         <h2 class="text-xs uppercase tracking-wider text-slate-500 font-medium mb-2">Research Notes</h2>
-        <div class="border-l-4 border-blue-500/30 pl-5 bg-slate-900/30 rounded-r-lg py-4">
-          <p class="text-base leading-relaxed text-slate-300">{paper.notes}</p>
+        <div class="border-l-4 border-blue-500/30 pl-5 bg-slate-900/30 rounded-r-lg py-4 space-y-3">
+          {paper.notes.split('\n\n').map((para: string) => (
+            <p class="text-base leading-relaxed text-slate-300">{para}</p>
+          ))}
         </div>
       </section>
     )}
