@@ -199,11 +199,18 @@ function processContent(text: string): string {
 let summaryHtml = '';
 let bodyHtml = '';
 
+// Split a dense paragraph into one paragraph per sentence
+function splitSentences(text: string): string {
+  // Split on sentence-ending punctuation followed by a space and uppercase letter
+  return text.replace(/([.!?])\s+(?=[A-Z])/g, '$1\n\n');
+}
+
 if (sections.intro) {
   // Split by double newline to find paragraphs
   const paragraphs = sections.intro.split(/\n\n+/);
   if (paragraphs.length > 0) {
-    summaryHtml = processContent(paragraphs[0]);
+    // Split the first paragraph's sentences into separate paragraphs
+    summaryHtml = processContent(splitSentences(paragraphs[0]));
     // Join the rest back together for the main body
     const remainingIntro = paragraphs.slice(1).join('\n\n');
     bodyHtml = processContent(remainingIntro);
@@ -338,7 +345,7 @@ if (controversyPaperIds.size > 0) {
     {summaryHtml && (
       <div class="bg-slate-900/30 border-l-4 border-amber-500/30 p-6 mb-10 rounded-r-lg">
         <h3 class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-2">Quick Summary</h3>
-        <div class="text-slate-300 text-lg leading-relaxed" set:html={summaryHtml} />
+        <div class="text-slate-300 text-lg leading-relaxed [&>p]:mb-4 last:[&>p]:mb-0" set:html={summaryHtml} />
       </div>
     )}
 
