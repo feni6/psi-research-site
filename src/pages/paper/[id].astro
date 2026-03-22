@@ -352,24 +352,6 @@ const bibtexCitation = `@article{${paper.id},
         )}
       </div>
 
->>>>>>> REPLACE
-
-<<<<<<< SEARCH
-    const twitterBtn = document.getElementById('share-twitter');
-    if (twitterBtn) {
-      twitterBtn.addEventListener('click', () => {
-        const url = encodeURIComponent(window.location.href);
-        const title = twitterBtn.getAttribute('data-title') || 'Psi Research Paper';
-        const year = twitterBtn.getAttribute('data-year') || '';
-        const yearStr = year ? ` (${year})` : '';
-        
-        const text = encodeURIComponent(`📄 ${title}${yearStr} — from the Psi Research Library`);
-        
-        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'noopener,noreferrer');
-      });
-    }
-
-=======
     </header>
 
     <!-- Context Badges (Controversies & Reading Paths) -->
@@ -689,19 +671,6 @@ const bibtexCitation = `@article{${paper.id},
       });
     });
 
-    const twitterBtn = document.getElementById('share-twitter');
-    if (twitterBtn) {
-      twitterBtn.addEventListener('click', () => {
-        const url = encodeURIComponent(window.location.href);
-        const title = twitterBtn.getAttribute('data-title') || 'Psi Research Paper';
-        const year = twitterBtn.getAttribute('data-year') || '';
-        const yearStr = year ? ` (${year})` : '';
-        
-        const text = encodeURIComponent(`📄 ${title}${yearStr} — from the Psi Research Library`);
-        
-        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'noopener,noreferrer');
-      });
-    }
 
     // Copy URL Button (New)
     document.getElementById('copy-url')?.addEventListener('click', async function() {
