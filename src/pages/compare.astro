@@ -171,15 +171,17 @@ import Breadcrumb from '../components/Breadcrumb.astro';
       });
 
       // Define Rows Configuration
+      // getter resolves nested paths like 'methodology.n' from the paper object
+      const getter = (paper, path) => path.split('.').reduce((o, k) => o?.[k], paper);
       const rows = [
         { key: 'journal', label: 'Journal', type: 'text' },
-        { key: 'domain', label: 'Domain', type: 'text' },
-        { key: 'study_type', label: 'Study Type', type: 'text' },
-        { key: 'sample_size', label: 'Sample Size (N)', type: 'number', metric: 'sample' },
-        { key: 'blinding', label: 'Blinding', type: 'categorical', metric: 'blinding' },
-        { key: 'pre_registered', label: 'Pre-registered', type: 'boolean', metric: 'binary' },
-        { key: 'effect_size', label: 'Effect Size (d/r)', type: 'number' },
-        { key: 'bayes_factor', label: 'Bayes Factor', type: 'number' },
+        { key: 'psi_domain', label: 'Domain', type: 'text' },
+        { key: 'methodology.study_type', label: 'Study Type', type: 'text' },
+        { key: 'methodology.n', label: 'Sample Size (N)', type: 'number', metric: 'sample' },
+        { key: 'methodology.blinding', label: 'Blinding', type: 'categorical', metric: 'blinding' },
+        { key: 'methodology.pre_registered', label: 'Pre-registered', type: 'boolean', metric: 'binary' },
+        { key: 'methodology.effect_size', label: 'Effect Size (d/r)', type: 'number' },
+        { key: 'methodology.bayes_factor', label: 'Bayes Factor', type: 'number' },
       ];
 
       // Render Rows
@@ -198,7 +200,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
           const td = document.createElement('td');
           td.className = "px-6 py-4 whitespace-nowrap text-sm text-slate-300 border-l border-slate-800";
           
-          let value = paper[rowConfig.key];
+          let value = getter(paper, rowConfig.key);
           let displayValue = value;
           let colorClass = "";
 
@@ -271,6 +273,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
       selectedIds.push(id);
       saveToStorage();
       renderTable();
+      updateShareBtn();
       searchInput.value = '';
       searchResults.classList.add('hidden');
     }
@@ -279,6 +282,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
       selectedIds = selectedIds.filter(sid => sid != id);
       saveToStorage();
       renderTable();
+      updateShareBtn();
     }
 
     function saveToStorage() {
@@ -300,11 +304,20 @@ import Breadcrumb from '../components/Breadcrumb.astro';
       renderTable();
     });
 
-    shareBtn.addEventListener('click', () => {
+    function updateShareBtn() {
       if (selectedIds.length < 2) {
-        alert("Select at least 2 papers to share a comparison.");
-        return;
+        shareBtn.disabled = true;
+        shareBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        shareBtn.title = 'Select at least 2 papers to share';
+      } else {
+        shareBtn.disabled = false;
+        shareBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        shareBtn.title = '';
       }
+    }
+
+    shareBtn.addEventListener('click', () => {
+      if (selectedIds.length < 2) return;
       const url = window.location.href;
       navigator.clipboard.writeText(url).then(() => {
         const originalText = shareBtn.textContent;
@@ -316,6 +329,8 @@ import Breadcrumb from '../components/Breadcrumb.astro';
         }, 2000);
       });
     });
+
+    updateShareBtn();
 
     // --- Search Logic ---
     searchInput.addEventListener('input', (e) => {
