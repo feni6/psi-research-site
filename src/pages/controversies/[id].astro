@@ -96,8 +96,8 @@ function parseSections(content: string) {
     }
   }
 
-  // Extract Current Status
-  const statusMatch = content.match(/\*?\*?Current status:\*?\**\s*([^\n]+)/i);
+  // Extract Current Status (capture everything until next section break like --- or ## or end)
+  const statusMatch = content.match(/\*?\*?Current status:\*?\**\s*([\s\S]*?)(?=\n---|\n##|$)/i);
   if (statusMatch) {
     sections.status = statusMatch[1].trim();
   }
