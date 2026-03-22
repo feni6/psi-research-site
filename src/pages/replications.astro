@@ -72,7 +72,12 @@ for (const line of lines) {
 const htmlContent = marked(linkedContent);
 
 // Post-process HTML to add IDs to headers for deep linking
-const processedHtml = htmlContent.replace(/<h2>(.*?)<\/h2>/g, (match, text) => {
+// Convert h1 to h2 to avoid duplicate h1 elements on the page
+let processedHtml = htmlContent.replace(/<h1>(.*?)<\/h1>/g, (match, text) => {
+  return `<h2 class="text-xl font-bold text-slate-100 mb-2">${text}</h2>`;
+});
+
+processedHtml = processedHtml.replace(/<h2>(.*?)<\/h2>/g, (match, text) => {
   const slug = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').trim();
   return `<!--CHAIN_START--><h2 id="${slug}" class="text-xl font-bold text-slate-100 mb-2">${text}</h2><!--CHAIN_END-->`;
 });
