@@ -98,7 +98,7 @@ function getMobileLinkClasses(href: string): string {
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-amber-500 focus:text-slate-950 focus:px-4 focus:py-2 focus:rounded-lg focus:font-semibold">
       Skip to main content
     </a>
-    <nav class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+    <nav class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50" aria-label="Main navigation">
       <div class="max-w-6xl mx-auto px-4 py-4">
         
         <!-- Top Row: Logo + Mobile Toggle + Desktop Theme Toggle -->
@@ -122,7 +122,7 @@ function getMobileLinkClasses(href: string): string {
         </div>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex justify-center mt-4" aria-hidden="true">
+        <div class="hidden md:flex justify-center mt-4">
           <ul class="flex flex-wrap justify-center gap-6 items-center">
             {mainNavLinks.map((link) => (
               <li>
@@ -145,12 +145,14 @@ function getMobileLinkClasses(href: string): string {
                 id="more-menu-dropdown" 
                 class="hidden absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-md shadow-2xl py-2 z-50 backdrop-blur-none"
                 style="background-color: rgb(15 23 42);"
+                role="menu"
               >
                 {moreNavLinks.map((link) => (
                   <a 
                     href={link.href} 
                     class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-amber-400 transition"
                     style={link.href === '/replications' ? 'pointer-events: auto !important; opacity: 1 !important;' : ''}
+                    role="menuitem"
                   >
                     {link.label}
                   </a>
@@ -189,7 +191,7 @@ function getMobileLinkClasses(href: string): string {
     <main id="main-content" class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full">
       <slot />
     </main>
-    <footer class="border-t border-slate-800 bg-slate-900/50 py-12">
+    <footer class="border-t border-slate-800 bg-slate-900/50 py-12" aria-label="Site footer">
       <div class="max-w-6xl mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <!-- Column 1: Explore -->
