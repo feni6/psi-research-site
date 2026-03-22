@@ -135,6 +135,11 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
       ))}
     </nav>
 
+    <!-- Author Count Display -->
+    <div class="flex items-center justify-between text-sm text-slate-400">
+      <span id="author-count-display">Showing {Math.min(50, authors.length)} of {authors.length} authors</span>
+    </div>
+
     <!-- Main Author List -->
     <section class="space-y-12" id="author-list-container">
       {alphabet.map(letter => {
@@ -142,7 +147,7 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
         if (letterAuthors.length === 0) return null;
 
         return (
-          <div class="scroll-mt-24" id={`letter-${letter}`}>
+          <div class="scroll-mt-24 author-letter-section" id={`letter-${letter}`}>
             <h3 class="text-2xl font-bold text-slate-500 mb-6 border-b border-slate-800 pb-2 font-mono">
               {letter}
             </h3>
@@ -186,7 +191,6 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
                                 <a href={`/paper/${paper.id}`} class="text-slate-300 hover:text-amber-400 font-medium transition-colors line-clamp-2 focus:ring-2 focus:ring-amber-400 focus:outline-none">
                                   {paper.title}
                                 </a>
-                                <div class="text-xs text-slate-500 mt-1 font-mono">ID: {paper.id}</div>
                               </div>
                               <span class="text-xs font-mono bg-slate-800 text-slate-400 px-2 py-1 rounded whitespace-nowrap">
                                 {paper.year}
@@ -205,9 +209,117 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
       })}
     </section>
 
+    <!-- Show More Button -->
+    <div class="text-center pt-8" id="show-more-container">
+      <button 
+        id="show-more-btn"
+        class="bg-slate-900 border border-slate-700 text-slate-300 px-6 py-3 rounded-lg hover:border-amber-400 hover:text-amber-400 transition-all focus:ring-2 focus:ring-amber-400 focus:outline-none"
+        onclick="showMoreAuthors()"
+      >
+        Show More Authors
+      </button>
+    </div>
+
   </div>
 
   <script>
+    let currentAuthorLimit = 50;
+    const authorsPerPage = 50;
+    let isSearchActive = false;
+
+    // Initialize pagination on load
+    function initPagination() {
+      updateVisibleAuthors();
+      updateShowMoreButton();
+      updateCountDisplay();
+    }
+
+    // Update which authors are visible based on current limit
+    function updateVisibleAuthors() {
+      const container = document.getElementById('author-list-container');
+      if (!container) return;
+
+      const allCards = container.querySelectorAll('.author-card');
+      const isSearching = document.getElementById('authorSearch')?.value?.trim().length > 0;
+
+      allCards.forEach((card, index) => {
+        if (isSearching) {
+          // During search, show all matching results (pagination disabled)
+          const isHiddenBySearch = card.classList.contains('hidden');
+          if (!isHiddenBySearch) {
+            card.classList.remove('pagination-hidden');
+          }
+        } else {
+          // During normal browsing, apply pagination
+          if (index < currentAuthorLimit) {
+            card.classList.remove('pagination-hidden');
+          } else {
+            card.classList.add('pagination-hidden');
+          }
+        }
+      });
+
+      // Hide letter sections if all authors in that section are hidden
+      const sections = container.querySelectorAll('.author-letter-section');
+      sections.forEach(section => {
+        const cardsInSection = section.querySelectorAll('.author-card');
+        const visibleCards = section.querySelectorAll('.author-card:not(.hidden):not(.pagination-hidden)');
+        if (visibleCards.length === 0 && cardsInSection.length > 0) {
+          section.classList.add('hidden');
+        } else {
+          section.classList.remove('hidden');
+        }
+      });
+    }
+
+    // Update the Show More button visibility
+    function updateShowMoreButton() {
+      const container = document.getElementById('author-list-container');
+      const showMoreContainer = document.getElementById('show-more-container');
+      const searchInput = document.getElementById('authorSearch') as HTMLInputElement;
+      
+      if (!container || !showMoreContainer) return;
+
+      const allCards = container.querySelectorAll('.author-card');
+      const isSearching = searchInput?.value?.trim().length > 0;
+
+      // Hide button during search or if all authors are shown
+      if (isSearching || currentAuthorLimit >= allCards.length) {
+        showMoreContainer.classList.add('hidden');
+      } else {
+        showMoreContainer.classList.remove('hidden');
+      }
+    }
+
+    // Update the count display
+    function updateCountDisplay() {
+      const container = document.getElementById('author-list-container');
+      const countDisplay = document.getElementById('author-count-display');
+      const searchInput = document.getElementById('authorSearch') as HTMLInputElement;
+      
+      if (!countDisplay) return;
+
+      const allCards = container?.querySelectorAll('.author-card') || [];
+      const totalAuthors = allCards.length;
+      const isSearching = searchInput?.value?.trim().length > 0;
+
+      if (isSearching) {
+        const visibleCards = container?.querySelectorAll('.author-card:not(.hidden)') || [];
+        countDisplay.textContent = `Showing ${visibleCards.length} of ${totalAuthors} authors`;
+      } else {
+        const shownCount = Math.min(currentAuthorLimit, totalAuthors);
+        countDisplay.textContent = `Showing ${shownCount} of ${totalAuthors} authors`;
+      }
+    }
+
+    // Show more authors function
+    function showMoreAuthors() {
+      currentAuthorLimit += authorsPerPage;
+      updateVisibleAuthors();
+      updateShowMoreButton();
+      updateCountDisplay();
+    }
+
     // Filter Authors by Search Input
     function filterAuthors() {
       const input = document.getElementById('authorSearch') as HTMLInputElement;
@@ -231,15 +343,22 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
       });
 
       // Hide letter headers if no authors match in that section
-      const sections = container.querySelectorAll('[id^="letter-"]');
+      const sections = container.querySelectorAll('.author-letter-section');
       sections.forEach(section => {
-        const visibleCards = section.querySelectorAll('.author-card:not(.hidden)');
+        const visibleCards = section.querySelectorAll('.author-card:not(.hidden):not(.pagination-hidden)');
         if (visibleCards.length === 0) {
           section.classList.add('hidden');
         } else {
           section.classList.remove('hidden');
         }
       });
+
+      // Update pagination state based on search
+      updateShowMoreButton();
+      updateCountDisplay();
     }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initPagination);
   </script>
 </Layout>
