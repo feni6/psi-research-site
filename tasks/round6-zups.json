@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Fix glossary: missing aria-label + broken related term links + pluralization bug",
+    "description": "There are THREE issues to fix in this file:\n\n### Issue 1: Search input lacks aria-label\nThe glossary search input (id='search-input') has no aria-label and no associated <label>. Add aria-label=\"Search glossary terms\" to the input element.\n\n### Issue 2: Related terms link to non-existent anchors\nMany glossary terms have 'Related Terms' links that reference anchors for terms not defined in the glossary (e.g., #telepathy, #precognition, #psychokinesis, #consciousness, #healing, #parapsychology, #publication-bias, #clairvoyance, etc.). Clicking these scrolls to the top of the page.\n\nThe actually defined terms are: Bayes Factor, DMILS, Double-Blind, Effect Size, File Drawer Problem, Ganzfeld, Meta-analysis, NDE, OBE, p-value, Pre-registration, Presentiment, Psi, Remote Viewing, Replication, RNG.\n\nFix: In the terms data array (the array of objects with term/definition/related properties), remove any related term entries that don't correspond to a defined term. Only keep related entries whose anchor (lowercased, hyphenated version of the term name) matches one of the 16 defined terms above.\n\n### Issue 3: Section headers say '1 terms' instead of '1 term'\nThe letter section headers show '{count} terms' which produces '1 terms' for single-entry sections. Fix by using a ternary: `{count} {count === 1 ? 'term' : 'terms'}`.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/glossary.astro"
+  },
+  {
+    "title": "Fix stats page: dt/dd elements used without dl wrapper (invalid HTML)",
+    "description": "The overview stats section uses <dt> and <dd> elements inside <div> containers, but there is no wrapping <dl> (description list) element. This is invalid HTML — <dt> and <dd> must be inside a <dl>. Screen readers may not properly convey the term-definition relationship.\n\nFind the grid container that wraps the overview stats cards (the div with class 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4' that contains the Total Papers, Date Range, Psi Domains, and Journals stat cards). Change the wrapping <div> to <dl> and its closing </div> to </dl>. Keep all the same classes.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/stats.astro"
+  }
+]
