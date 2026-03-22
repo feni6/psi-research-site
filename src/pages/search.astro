@@ -15,7 +15,7 @@ const totalPapers = catalog.papers.length;
         Search the <span class="text-amber-400">Library</span>
       </h1>
       <p class="text-slate-400 text-lg max-w-2xl mx-auto" id="catalog-subtitle">
-        Explore ${totalPapers} papers, controversies, and glossary terms.
+        Explore {totalPapers} papers, controversies, and glossary terms.
       </p>
     </div>
 
@@ -493,9 +493,6 @@ const totalPapers = catalog.papers.length;
         loadingState.classList.add('hidden');
         resultsArea.classList.remove('hidden');
         input.disabled = false;
-        
-        // Auto-focus input
-        input.focus();
 
         // Render Filters
         renderFilterChips();
@@ -508,6 +505,8 @@ const totalPapers = catalog.papers.length;
           input.value = initialQuery;
           performSearch(initialQuery);
         } else {
+          // Auto-focus input only if no initial query
+          input.focus();
           // Show initial empty state with suggestions
           container.appendChild(createEmptyState('initial'));
         }
