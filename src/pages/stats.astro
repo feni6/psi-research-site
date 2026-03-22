@@ -158,7 +158,7 @@ const skepticalPercent = formatPercent(skepticalCount, totalPapers);
     </header>
 
     <!-- 1. Overview Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <dl class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-slate-900 border border-slate-800 rounded-lg p-6">
         <dt class="text-sm font-medium text-slate-400 uppercase tracking-wider">Total Papers</dt>
         <dd class="mt-2 text-3xl font-semibold text-amber-400">{totalPapers.toLocaleString()}</dd>
@@ -175,7 +175,7 @@ const skepticalPercent = formatPercent(skepticalCount, totalPapers);
         <dt class="text-sm font-medium text-slate-400 uppercase tracking-wider">Journals</dt>
         <dd class="mt-2 text-3xl font-semibold text-slate-100">{uniqueJournals}</dd>
       </div>
-    </div>
+    </dl>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       
