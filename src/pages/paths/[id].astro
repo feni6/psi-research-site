@@ -158,6 +158,18 @@ function getTransitionPhrase(index: number, total: number, paper: any): string {
   if (index >= 3 && index <= 5) return "Going deeper...";
   return "Next...";
 }
+
+// --- MARKDOWN TO HTML HELPER ---
+
+function convertMarkdownToHtml(text: string): string {
+  if (!text) return '';
+  let html = text;
+  // Convert **bold** to <strong>
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Convert *italic* to <em>
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  return html;
+}
 ---
 
 <Layout title={title} description={tagline}>
@@ -243,7 +255,7 @@ function getTransitionPhrase(index: number, total: number, paper: any): string {
               )}
               
               {paper.description && (
-                <p class="text-slate-500 text-sm leading-relaxed mb-4 border-l-2 border-slate-800 pl-4">{paper.description}</p>
+                <p class="text-slate-500 text-sm leading-relaxed mb-4 border-l-2 border-slate-800 pl-4" set:html={convertMarkdownToHtml(paper.description)}></p>
               )}
               
               <!-- Action Links -->
@@ -290,7 +302,7 @@ function getTransitionPhrase(index: number, total: number, paper: any): string {
           {relatedPaths.map(rp => (
             <a href={`/paths/${rp.id}`} class="block p-5 bg-slate-900 border border-slate-800 rounded-lg hover:border-amber-500/50 hover:bg-slate-800 transition-all group">
               <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-amber-400">{rp.title}</h3>
-              <p class="text-slate-500 text-sm line-clamp-2">{rp.tagline}</p>
+              <p class="text-slate-500 text-sm line-clamp-2" set:html={convertMarkdownToHtml(rp.tagline)}></p>
               <div class="mt-3 text-xs text-amber-500/80 font-medium flex items-center gap-1">
                 Explore Path <span class="group-hover:translate-x-1 transition-transform">→</span>
               </div>
