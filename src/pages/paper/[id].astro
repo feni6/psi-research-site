@@ -528,7 +528,7 @@ const bibtexCitation = `@article{${paper.id},
                   <li key={relatedPaper.id}>
                     <a 
                       href={`/paper/${relatedPaper.id}`}
-                      class="block text-slate-300 hover:text-amber-400 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 rounded"
+                      class="block text-amber-400 hover:text-amber-300 hover:underline transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 rounded"
                     >
                       <span class="font-medium">{relatedPaper.title}</span>
                       <span class="text-slate-500 text-sm"> — {relatedPaper.authors?.[0] || 'Unknown'} ({relatedPaper.year || 'n.d.'})</span>
