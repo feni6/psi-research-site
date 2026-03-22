@@ -126,8 +126,8 @@ const terms = [
   { 
     term: "p-value", 
     category: "Statistics",
-    definition: "The probability of obtaining test results at least as extreme as the results actually observed, under the assumption that the null hypothesis is correct. In psi, p < 0.05 is the standard threshold for significance.",
-    related: ["Bayes Factor", "Effect Size"],
+    definition: 'The probability of obtaining test results at least as extreme as the results actually observed, under the assumption that the <a href="/glossary#null-hypothesis" class="text-amber-400 underline hover:text-amber-300">null hypothesis</a> is correct. In psi, p &lt; 0.05 is the standard threshold for significance.',
+    related: ["Bayes Factor", "Effect Size", "Null Hypothesis"],
     link: { href: "/stats", text: "Significance Testing" }
   },
   {
@@ -178,6 +178,13 @@ const terms = [
     definition: "A measure of the strength and direction of a linear relationship between two variables, ranging from −1 (perfect negative correlation) to +1 (perfect positive correlation), with 0 meaning no relationship. In psi research, r is commonly used as an effect size metric — for example, ganzfeld hit rates are often converted to r values for meta-analysis. By convention, r = 0.1 is small, r = 0.3 is medium, and r = 0.5 is large. Most psi effects fall in the small range (r < 0.1).",
     related: ["Effect Size", "Cohen's d", "Hedges' g"],
     link: { href: "/stats", text: "Understanding Effect Sizes" }
+  },
+  {
+    term: "Null Hypothesis",
+    category: "Statistics",
+    definition: 'The default assumption that there is no effect or no difference — in psi research, that any deviation from chance is due to random variation rather than an anomalous process. Statistical tests calculate the probability (the <a href="/glossary#p-value" class="text-amber-400 underline hover:text-amber-300">p-value</a>) of observing the data if the null hypothesis were true. A low p-value suggests the null is unlikely, but does not prove the alternative; a high p-value does not prove the null is true either. The null hypothesis is never "accepted" — it can only fail to be rejected.',
+    related: ["p-value", "z-score", "Bayes Factor"],
+    link: { href: "/stats", text: "Significance Testing" }
   },
 ];
 

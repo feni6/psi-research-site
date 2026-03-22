@@ -23,6 +23,7 @@ const GLOSSARY_TERMS: { pattern: RegExp; href: string }[] = [
   { pattern: /\bDMILS\b/g, href: '/glossary#dmils' },
   { pattern: /\bsample sizes?\b/gi, href: '/glossary#sample-size' },
   { pattern: /\bz-scores?\b/gi, href: '/glossary#z-score' },
+  { pattern: /\bnull hypothesis\b/gi, href: '/glossary#null-hypothesis' },
 ];
 
 // Inline statistical notation (z=8.31, p<0.05, d=0.2, N=100, BF=13669)
