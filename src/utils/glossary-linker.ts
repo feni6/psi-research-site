@@ -1,7 +1,9 @@
 /**
- * Auto-links glossary terms in plain text or HTML strings.
+ * Auto-links glossary terms and paper citations in plain text or HTML strings.
  * Skips terms that are already inside an <a> tag.
  */
+
+import catalog from '../data/catalog.json';
 
 const LINK_CLASS = 'text-amber-400 underline decoration-amber-400/40 underline-offset-2 hover:text-amber-300 hover:decoration-amber-300/60';
 
@@ -42,6 +44,57 @@ const STAT_NOTATION: { pattern: RegExp; href: string }[] = [
   { pattern: /\b(BF[₁₀₀10]*)\s*([=<>≤≥])\s*([\d.,]+)/g, href: '/glossary#bayes-factor' },
 ];
 
+// --- Paper Citation Auto-Linker ---
+// Build a lookup from "AuthorLastName (Year)" -> paper ID
+// For duplicate author+year combos, first match wins
+
+type CitationEntry = { pattern: RegExp; id: string };
+let _citationCache: CitationEntry[] | null = null;
+
+function buildCitationPatterns(): CitationEntry[] {
+  if (_citationCache) return _citationCache;
+
+  const seen = new Set<string>();
+  const entries: CitationEntry[] = [];
+
+  for (const paper of (catalog as any).papers) {
+    if (!paper.authors || paper.authors.length === 0 || !paper.year) continue;
+
+    const lastName = paper.authors[0].split(',')[0].trim();
+    if (!lastName) continue;
+
+    const key = `${lastName.toLowerCase()}_${paper.year}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    // Escape special regex characters in the author name
+    const escaped = lastName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    // Match patterns like:
+    //   AuthorName (Year), AuthorName's (Year), AuthorName et al. (Year)
+    //   AuthorName & OtherName (Year), AuthorName, OtherName & Third (Year)
+    const pattern = new RegExp(
+      `${escaped}(?:'s|'s)?` +           // Author name, optionally possessive
+      `(?:\\s+(?:&|and)\\s+\\w+)*` +      // Optional "& CoAuthor"
+      `(?:,\\s+\\w+)*` +                  // Optional ", CoAuthor"
+      `(?:\\s+et\\s+al\\.?)?` +           // Optional "et al."
+      `\\s*\\(?\\s*\\(?(${paper.year})\\)?`, // (Year) with optional parens
+      'g'
+    );
+
+    entries.push({ pattern, id: paper.id });
+  }
+
+  // Sort by author name length descending so longer names match first
+  // (e.g., "Bem, Utts & Johnson" before "Bem")
+  entries.sort((a, b) => b.pattern.source.length - a.pattern.source.length);
+
+  _citationCache = entries;
+  return entries;
+}
+
+// --- Shared helpers ---
+
 function isInsideATag(text: string, offset: number): boolean {
   const before = text.slice(0, offset);
   const lastOpenA = before.lastIndexOf('<a ');
@@ -50,19 +103,20 @@ function isInsideATag(text: string, offset: number): boolean {
 }
 
 function isInsideHtmlTag(text: string, offset: number): boolean {
-  // Check if we're inside an HTML tag attribute (e.g., <a href="...">)
   const before = text.slice(0, offset);
   const lastOpenAngle = before.lastIndexOf('<');
   const lastCloseAngle = before.lastIndexOf('>');
   return lastOpenAngle > lastCloseAngle;
 }
 
+// --- Main export ---
+
 export function linkGlossaryTerms(text: string): string {
   if (!text) return '';
 
   let result = text;
 
-  // First pass: word/phrase terms
+  // First pass: word/phrase glossary terms
   for (const { pattern, href } of GLOSSARY_TERMS) {
     pattern.lastIndex = 0;
 
@@ -85,6 +139,20 @@ export function linkGlossaryTerms(text: string): string {
         return match;
       }
       return `<a href="${href}" class="${LINK_CLASS}">${match}</a>`;
+    });
+  }
+
+  // Third pass: paper citations — "Author (Year)" -> /paper/id
+  const citations = buildCitationPatterns();
+  for (const { pattern, id } of citations) {
+    pattern.lastIndex = 0;
+
+    result = result.replace(pattern, (match, ...args) => {
+      const offset = args[args.length - 2] as number;
+      if (isInsideATag(result, offset) || isInsideHtmlTag(result, offset)) {
+        return match;
+      }
+      return `<a href="/paper/${id}" class="${LINK_CLASS}">${match}</a>`;
     });
   }
 
