@@ -36,7 +36,7 @@ function parsePathContent(fileContent: string) {
       let rawTitle = line.replace('# ', '').trim();
       // Extract just the path name, removing "Path X:" prefix if present
       const pathMatch = rawTitle.match(/^Path\s+\d+:\s*[""]?(.+?)[""]?$/);
-      title = pathMatch ? pathMatch[1].trim() : rawTitle;
+      title = (pathMatch ? pathMatch[1].trim() : rawTitle).replace(/ -- /g, ' \u2014 ');
       continue;
     }
 
@@ -89,7 +89,7 @@ function parsePathContent(fileContent: string) {
       const catalogEntry = catalog.papers.find((c: any) => c.id === p.id);
       if (catalogEntry) {
         p.year = catalogEntry.year || p.authors.match(/\((\d{4})\)/)?.[1] || 'n.d.';
-        p.domain = catalogEntry.domain || 'General';
+        p.psi_domain = catalogEntry.psi_domain || 'General';
         p.pdf = catalogEntry.pdf || null;
         p.tags = catalogEntry.tags || [];
         p.folder = catalogEntry.folder || null;
