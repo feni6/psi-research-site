@@ -1,0 +1,17 @@
+[
+  {
+    "title": "Fix search page: literal '$354' shown instead of actual number + homepage search handoff broken",
+    "description": "There are TWO issues to fix in this file:\n\n### Issue 1: Subtitle shows '$354' instead of '354'\nLine 18 reads `Explore ${totalPapers} papers, controversies, and glossary terms.` but in Astro's template section, `${}` inside regular HTML is not interpolated — it renders literally as '$354'. Fix by using Astro's expression syntax: change to `Explore {totalPapers} papers, controversies, and glossary terms.`\n\n### Issue 2: Homepage search form submits to /search?q=term but search page ignores URL params\nThe homepage has a form that navigates to `/search?q=someterm` when submitted. But the search page loads data async via JS and doesn't read the `q` URL parameter on load. The user arrives at an empty search page.\n\nLook in the JS `initSearch()` function — there should be code that reads URL params after loading the catalog. Find where URL params are checked (look for `URLSearchParams` or `params.get('q')`) and make sure it sets the input value AND triggers a search. If there's already code for this, it may be in the wrong order (before the input is enabled). Make sure the flow is: load catalog → enable input → check URL params → if `q` exists, set input.value and call performSearch().\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/search.astro"
+  },
+  {
+    "title": "Fix reading paths: domain badge uses wrong field name + titles have double-dashes",
+    "description": "There are TWO issues to fix in this file:\n\n### Issue 1: Domain badge never renders\nThe enrichment code sets `p.domain = catalogEntry.domain || 'General'` but the catalog data uses `psi_domain`, not `domain`. The template later checks `paper.psi_domain` which is never set. Fix: change `p.domain = catalogEntry.domain || 'General'` to `p.psi_domain = catalogEntry.psi_domain || 'General'`.\n\n### Issue 2: Path titles show '--' instead of em dashes\nReading path titles contain double-dashes like 'I'm new -- give me the lay of the land'. Apply a `.replace(/ -- /g, ' \\u2014 ')` transformation to the path title where it's extracted from the markdown data, so all double-dashes become proper em dashes (—).\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/paths/[id].astro"
+  },
+  {
+    "title": "Fix about page: breadcrumb nav missing aria-label",
+    "description": "The about page uses a custom breadcrumb `<nav>` element (not the shared Breadcrumb.astro component) that has no `aria-label`. With two `<nav>` elements on the page (main nav + breadcrumb), screen readers cannot distinguish them.\n\nFind the breadcrumb `<nav>` element on the about page (it has class 'text-sm text-slate-500 font-medium' or similar) and add `aria-label=\"Breadcrumb\"` to it.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/about.astro"
+  }
+]
