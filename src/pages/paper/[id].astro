@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import catalog from '../../data/catalog.json';
+import paperImagesRaw from '../../data/paper-images.json';
+const paperImages: Record<string, { image: string | null; publisherUrl: string | null }> = paperImagesRaw as any;
 
 export function getStaticPaths() {
   return catalog.papers.map((paper: any) => ({
@@ -198,6 +200,8 @@ const domainIconMap: Record<string, string> = {
 };
 const thumbGradient = domainGradients[paper.psi_domain] || 'from-slate-600 to-slate-900';
 const thumbIcon = domainIconMap[paper.psi_domain] || '📄';
+const ogImageUrl = paperImages[paper.id]?.image || null;
+const publisherUrl = paperImages[paper.id]?.publisherUrl || (paper.doi ? `https://doi.org/${paper.doi}` : null);
 
 // Epistemic Status Logic
 const isSkepticalFolder = paper.folder === '10_Skeptical_and_Critical';
@@ -270,7 +274,7 @@ const bibtexCitation = `@article{${paper.id},
 }`;
 ---
 
-<Layout title={paper.title} description={paper.abstract?.substring(0, 160) || 'Psi Research Paper'} jsonLd={jsonLd}>
+<Layout title={paper.title} description={paper.abstract?.substring(0, 160) || 'Psi Research Paper'} jsonLd={jsonLd} ogImage={ogImageUrl}>
   <article class="max-w-4xl mx-auto px-4 py-8" data-paper-id={paper.id}>
     <!-- Breadcrumb -->
     <nav class="text-sm text-slate-500 mb-6">
@@ -284,13 +288,19 @@ const bibtexCitation = `@article{${paper.id},
     <!-- Paper Header -->
     <header class="mb-8">
       <div class="flex flex-col sm:flex-row sm:items-start gap-4 mb-2">
-        <div class={`hidden sm:flex flex-shrink-0 w-24 h-32 rounded-lg bg-gradient-to-br ${thumbGradient} items-center justify-center shadow-lg border border-white/10 transform -rotate-2 hover:rotate-0 transition-transform`}>
-          <div class="text-center">
-            <div class="text-3xl mb-1">{thumbIcon}</div>
-            <div class="text-[9px] text-white/70 px-2 truncate max-w-[5rem]">{paper.journal || ''}</div>
-            <div class="text-sm font-bold text-white/90 mt-1">{paper.year}</div>
+        {ogImageUrl ? (
+          <div class="hidden sm:block flex-shrink-0 w-24 h-32 rounded-lg overflow-hidden shadow-lg border border-white/10 transform -rotate-2 hover:rotate-0 transition-transform">
+            <img src={ogImageUrl} alt={`Cover image for ${paper.title}`} class="w-full h-full object-cover" loading="lazy" />
           </div>
-        </div>
+        ) : (
+          <div class={`hidden sm:flex flex-shrink-0 w-24 h-32 rounded-lg bg-gradient-to-br ${thumbGradient} items-center justify-center shadow-lg border border-white/10 transform -rotate-2 hover:rotate-0 transition-transform`}>
+            <div class="text-center">
+              <div class="text-3xl mb-1">{thumbIcon}</div>
+              <div class="text-[9px] text-white/70 px-2 truncate max-w-[5rem]">{paper.journal || ''}</div>
+              <div class="text-sm font-bold text-white/90 mt-1">{paper.year}</div>
+            </div>
+          </div>
+        )}
         <h1 class="text-3xl font-bold text-slate-100">{paper.title}</h1>
         {paper.source_url ? (
           <a 
