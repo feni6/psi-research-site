@@ -199,136 +199,123 @@ function getDomainIcon(d: string): string {
   <!-- Sentinel for sticky observer -->
   <div id="scroll-sentinel" class="h-0 absolute -top-1 left-0 w-full"></div>
 
-  <!-- Filters (Sticky) -->
-  <div id="filter-container" class="sticky top-0 z-20 bg-slate-950/95 backdrop-blur-md pb-4 pt-4 border-b border-slate-800 transition-shadow duration-300" role="search">
-    <div class="flex flex-wrap gap-3 mb-4 items-center">
-      <div class="relative flex-1 min-w-[200px]">
-        <input 
-          type="text" 
-          id="search" 
-          aria-label="Search papers by title, author, or abstract"
-          placeholder="Search title, authors, abstract..." 
-          class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none transition-all"
-        />
-        <svg class="w-4 h-4 text-slate-500 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-      </div>
-      
-      <div class="relative">
-        <select id="domain-filter" aria-label="Filter by research domain" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
-          <option value="">All Domains</option>
-          {domains.map((d: string) => (
-            <option value={d}>{d.replace(/_/g, ' ')}</option>
-          ))}
-        </select>
-        <!-- Custom Arrow for Domain Filter -->
-        <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center px-2 text-slate-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </div>
-      </div>
-      
-      <div class="relative">
-        <select id="folder-filter" aria-label="Filter by category folder" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
-          <option value="">All Categories</option>
-          {folders.map((f: string) => (
-            <option value={f}>{formatFolder(f)}</option>
-          ))}
-        </select>
-        <!-- Custom Arrow for Folder Filter -->
-        <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center px-2 text-slate-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </div>
-      </div>
-      
-      <div class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-amber-400 focus-within:border-amber-500 transition">
-        <input 
-          type="number" 
-          id="year-min" 
-          aria-label="Minimum publication year"
-          placeholder="From" 
-          min={minYear}
-          max={maxYear}
-          class="bg-transparent border-none text-sm w-16 text-slate-300 placeholder-slate-600 focus:ring-0 focus:outline-none"
-        />
-        <span class="text-slate-600">–</span>
-        <input 
-          type="number" 
-          id="year-max" 
-          aria-label="Maximum publication year"
-          placeholder="To" 
-          min={minYear}
-          max={maxYear}
-          class="bg-transparent border-none text-sm w-16 text-slate-300 placeholder-slate-600 focus:ring-0 focus:outline-none"
-        />
-      </div>
-      
-      <div class="h-6 w-px bg-slate-800 mx-1 hidden md:block"></div>
+  <!-- Controls (Sticky) -->
+  <div id="filter-container" class="sticky top-0 z-20 bg-slate-950/95 backdrop-blur-md pb-4 pt-4 border-b border-slate-800 transition-shadow duration-300 space-y-3" role="search">
 
-      <div class="relative">
-        <select id="prereg-filter" aria-label="Filter by pre-registration status" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
-          <option value="">Pre-reg: Any</option>
-          <option value="true">Pre-registered</option>
-          <option value="false">Not Pre-registered</option>
-        </select>
-        <!-- Custom Arrow for Prereg Filter -->
-        <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center px-2 text-slate-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </div>
-      </div>
-      
-      <div class="relative">
-        <select id="blinding-filter" aria-label="Filter by blinding method" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
-          <option value="">Blinding: Any</option>
-          <option value="double">Double-blind</option>
-          <option value="single">Single-blind</option>
-          <option value="none">Open/None</option>
-          <option value="unknown">Not Reported</option>
-        </select>
-        <!-- Custom Arrow for Blinding Filter -->
-        <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center px-2 text-slate-500">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </div>
-      </div>
-      
-      <label class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm text-slate-300 cursor-pointer hover:border-amber-500/30 hover:text-amber-400 transition select-none focus-within:ring-2 focus-within:ring-amber-400 focus-within:border-amber-500">
-        <input 
-          type="checkbox" 
-          id="doi-filter" 
-          aria-label="Filter to show only papers with DOI"
-          class="accent-amber-500 rounded focus:ring-2 focus:ring-amber-400"
-        />
-        <span>Has DOI</span>
-      </label>
-      
+    <!-- Row 1: Search -->
+    <div class="relative">
+      <input
+        type="text"
+        id="search"
+        aria-label="Search papers by title, author, or abstract"
+        placeholder="Search title, authors, abstract..."
+        class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none transition-all"
+      />
+      <svg class="w-4 h-4 text-slate-500 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+    </div>
+
+    <!-- Row 2: Sort + Filter toggle -->
+    <div class="flex items-center gap-3">
       <div class="relative">
         <select id="sort-filter" aria-label="Sort results" class="bg-slate-800 border border-amber-500/30 rounded-lg pl-4 pr-10 py-2.5 text-sm text-amber-100 font-medium focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:bg-slate-750 transition appearance-none">
-          <option value="year-desc">Newest First</option>
-          <option value="year-asc">Oldest First</option>
-          <option value="title-asc">Title (A-Z)</option>
-          <option value="title-desc">Title (Z-A)</option>
-          <option value="author-asc">Author (A-Z)</option>
-          <option value="author-desc">Author (Z-A)</option>
-          <option value="domain">Domain</option>
-          <option value="journal">Journal</option>
-          <option value="sample-size">Sample Size (largest)</option>
-          <option value="rigor-desc">Rigor (highest)</option>
-          <option value="rigor-asc">Rigor (lowest)</option>
+          <option value="year-desc">Sort: Newest First</option>
+          <option value="year-asc">Sort: Oldest First</option>
+          <option value="title-asc">Sort: Title (A-Z)</option>
+          <option value="title-desc">Sort: Title (Z-A)</option>
+          <option value="author-asc">Sort: Author (A-Z)</option>
+          <option value="author-desc">Sort: Author (Z-A)</option>
+          <option value="domain">Sort: Domain</option>
+          <option value="journal">Sort: Journal</option>
+          <option value="sample-size">Sort: Sample Size</option>
+          <option value="rigor-desc">Sort: Rigor (highest)</option>
+          <option value="rigor-asc">Sort: Rigor (lowest)</option>
         </select>
         <div class="pointer-events-none absolute right-3 top-3 text-amber-500">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
         </div>
       </div>
-    </div>
 
-    <!-- Active Filters & Results Count -->
-    <div class="flex flex-wrap items-center justify-between gap-4">
+      <button id="toggle-filters" class="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 bg-slate-900 border border-slate-700 rounded-lg hover:border-slate-600 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+        <span>Filters</span>
+        <span id="filter-badge" class="hidden px-1.5 py-0.5 text-xs font-bold bg-amber-500 text-slate-950 rounded-full">0</span>
+      </button>
+
+      <div class="flex-1"></div>
+
       <div class="flex items-center gap-2 text-sm text-slate-400">
         <span id="result-count">Showing 0 of {papers.length} papers</span>
         <button id="clear-filters" class="text-amber-400 hover:text-amber-300 underline decoration-amber-400/30 hover:decoration-amber-400 underline-offset-4 transition-all hidden">
-          Clear all filters
+          Clear all
         </button>
       </div>
-      <div id="active-filters" class="flex flex-wrap gap-2"></div>
     </div>
+
+    <!-- Row 3: Filters (collapsible) -->
+    <div id="filters-panel" class="hidden bg-slate-900/50 border border-slate-800 rounded-lg p-4">
+      <div class="flex flex-wrap gap-3 items-center">
+        <div class="relative">
+          <select id="domain-filter" aria-label="Filter by research domain" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
+            <option value="">All Domains</option>
+            {domains.map((d: string) => (
+              <option value={d}>{d.replace(/_/g, ' ')}</option>
+            ))}
+          </select>
+          <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </div>
+        </div>
+
+        <div class="relative">
+          <select id="folder-filter" aria-label="Filter by category" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
+            <option value="">All Categories</option>
+            {folders.map((f: string) => (
+              <option value={f}>{formatFolder(f)}</option>
+            ))}
+          </select>
+          <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 transition">
+          <input type="number" id="year-min" aria-label="Minimum year" placeholder="From" min={minYear} max={maxYear} class="bg-transparent border-none text-sm w-16 text-slate-300 placeholder-slate-600 focus:ring-0 focus:outline-none" />
+          <span class="text-slate-600">–</span>
+          <input type="number" id="year-max" aria-label="Maximum year" placeholder="To" min={minYear} max={maxYear} class="bg-transparent border-none text-sm w-16 text-slate-300 placeholder-slate-600 focus:ring-0 focus:outline-none" />
+        </div>
+
+        <div class="relative">
+          <select id="prereg-filter" aria-label="Pre-registration status" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
+            <option value="">Pre-reg: Any</option>
+            <option value="true">Pre-registered</option>
+            <option value="false">Not Pre-registered</option>
+          </select>
+          <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </div>
+        </div>
+
+        <div class="relative">
+          <select id="blinding-filter" aria-label="Blinding method" class="bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-400 focus:outline-none cursor-pointer hover:border-slate-600 transition appearance-none pr-8">
+            <option value="">Blinding: Any</option>
+            <option value="double">Double-blind</option>
+            <option value="single">Single-blind</option>
+            <option value="none">Open/None</option>
+            <option value="unknown">Not Reported</option>
+          </select>
+          <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </div>
+        </div>
+
+        <label class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-300 cursor-pointer hover:border-amber-500/30 hover:text-amber-400 transition select-none">
+          <input type="checkbox" id="doi-filter" aria-label="Only papers with DOI" class="accent-amber-500 rounded" />
+          <span>Has DOI</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="active-filters" class="flex flex-wrap gap-2"></div>
   </div>
 
   <!-- Paper Grid -->
@@ -416,6 +403,32 @@ function getDomainIcon(d: string): string {
     const showMoreBtn = document.getElementById('show-more-btn')!;
     const filterContainer = document.getElementById('filter-container')!;
     const sentinel = document.getElementById('scroll-sentinel')!;
+    const toggleFiltersBtn = document.getElementById('toggle-filters')!;
+    const filtersPanel = document.getElementById('filters-panel')!;
+    const filterBadge = document.getElementById('filter-badge')!;
+
+    // Toggle filters panel
+    toggleFiltersBtn.addEventListener('click', () => {
+      filtersPanel.classList.toggle('hidden');
+    });
+
+    // Update filter badge count
+    function updateFilterBadge() {
+      let count = 0;
+      if (domainFilter.value) count++;
+      if (folderFilter.value) count++;
+      if (yearMinInput.value) count++;
+      if (yearMaxInput.value) count++;
+      if (preregFilter.value) count++;
+      if (blindingFilter.value) count++;
+      if (doiFilter.checked) count++;
+      if (count > 0) {
+        filterBadge.textContent = String(count);
+        filterBadge.classList.remove('hidden');
+      } else {
+        filterBadge.classList.add('hidden');
+      }
+    }
 
     // Sticky Header Shadow Logic
     const observer = new IntersectionObserver(
@@ -546,6 +559,7 @@ function getDomainIcon(d: string): string {
       }
 
       updateActiveFilters();
+      updateFilterBadge();
     }
 
     // Show More Button Handler
