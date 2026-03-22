@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Fix Layout: More dropdown doesn't close on Escape + add OG meta tags",
+    "description": "There are TWO issues to fix in this file:\n\n### Issue 1: 'More' dropdown doesn't close on Escape key\nWhen the 'More' dropdown menu is opened (via click or keyboard), pressing Escape does not close it. This is a standard keyboard accessibility expectation. Find the JavaScript that handles the More dropdown and add a keydown event listener for the Escape key that closes the dropdown. The listener should:\n- Listen on `document` for 'keydown' events\n- Check if `event.key === 'Escape'`\n- If the dropdown is visible, hide it and set aria-expanded to false\n\n### Issue 2: Missing og:url meta tag\nThe Layout currently has og:title, og:description, og:type, and og:site_name meta tags, but is missing og:url. Add an og:url meta tag that uses the current page URL. In Astro, you can get this from `Astro.url.href` or construct it from `Astro.url.pathname`. Add it near the existing OG tags in the <head>.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/layouts/Layout.astro"
+  },
+  {
+    "title": "Fix author index: remove internal paper IDs + add pagination",
+    "description": "There are TWO issues to fix in this file:\n\n### Issue 1: Internal paper IDs shown to users\nWhen you expand an author on the Author Index page, each paper entry shows 'ID: tressoldi_2014_eeg_distant' — an internal slug that's meaningless to users. Find where the paper ID is displayed in the expanded author section and either remove it entirely, or replace it with the journal name and year.\n\n### Issue 2: All 728 authors load at once without pagination\nThe page renders all authors at once, creating heavy DOM weight. Add client-side pagination similar to the catalog page:\n1. Show only the first 50 authors initially\n2. Add a 'Show More' button at the bottom that loads 50 more\n3. Update a count display showing 'Showing X of Y authors'\n4. When the search/filter is active, show all matching results (disable pagination during search)\n\nThe simplest approach: use JavaScript to hide author entries beyond the current limit, and add a Show More button.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/authors.astro"
+  },
+  {
+    "title": "Add pagination to journals page",
+    "description": "The Journal Index renders all 118 journals in a single page load. Add client-side pagination:\n1. Show only the first 50 journals initially\n2. Add a 'Show More' button at the bottom that loads 50 more\n3. Update a count display showing 'Showing X of Y journals'\n4. When search/filter is active, show all matching results\n\nUse the same approach as the catalog: hide entries beyond the limit with JavaScript, add a Show More button.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/journals.astro"
+  },
+  {
+    "title": "Fix light mode contrast on Library Analytics hero section",
+    "description": "The Library Analytics (/method) page hero section heading is nearly invisible in light mode because the dark gradient background doesn't adapt. This is the same class of bug as the Paper of the Day section on the homepage.\n\nAdd [data-theme='light'] CSS overrides for the hero/banner section on this page:\n- Override the dark gradient background to a light color\n- Make heading text dark (e.g., #0f172a)\n- Make subtitle/description text dark enough to read (e.g., #334155)\n- Override any dark card backgrounds (bg-slate-900) to white\n- Override stat card backgrounds similarly\n\nThe hero section likely has classes like bg-gradient-to-r or bg-slate-950. Add a <style> block with [data-theme='light'] selectors targeting the hero section, similar to how the homepage Paper of the Day was fixed.\n\nDo NOT output any thinking or explanation. Output ONLY search/replace blocks.",
+    "file": "src/pages/method.astro"
+  }
+]
