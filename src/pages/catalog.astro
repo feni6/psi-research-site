@@ -351,10 +351,10 @@ function getDomainIcon(d: string): string {
           <div class="flex items-center justify-between pt-3 border-t border-slate-800">
             <div class="flex items-center gap-2 text-xs text-slate-500">
               {paper.doi && (
-                <span class="flex items-center gap-1">
+                <a href={`https://doi.org/${paper.doi}`} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 hover:text-amber-400 transition-colors" title={`DOI: ${paper.doi}`}>
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                  DOI
-                </span>
+                  {paper.doi}
+                </a>
               )}
               {getPreRegStatus(paper) === 'true' && (
                 <span class="flex items-center gap-1">
@@ -363,10 +363,6 @@ function getDomainIcon(d: string): string {
                 </span>
               )}
             </div>
-            <a href={paper.url} target="_blank" rel="noopener noreferrer" class="text-sm text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1 group/link">
-              Read Paper
-              <svg class="w-4 h-4 transform group-hover/link:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-            </a>
           </div>
         </div>
       </div>
