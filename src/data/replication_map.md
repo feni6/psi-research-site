@@ -16,12 +16,12 @@ Tracks all replication relationships documented in the catalog. Organized by par
 
 | # | Replication | Year | Outcome | Catalog link | Notes |
 |---|-------------|------|---------|--------------|-------|
-| 1 | `galak_2012_correcting` | 2012 | Failed | explicit | 7 experiments, N=3,289; replicated Exps 8 & 9 |
-| 2 | `galak_2012_correcting_past_meta` | 2012 | Failed | explicit | Same paper's meta-analytic component |
-| 3 | `maier_2014_no_precognition` | 2014 | Failed | explicit | No evidence for precognition across multiple experiments |
-| 4 | `ritchie_2012_failing_future` | 2012 | Failed | explicit | Three unsuccessful attempts to replicate retroactive facilitation of recall |
-| 5 | `savva_2014_retro_priming` | 2014 | Mixed | explicit | Overall non-significant (es=0.03); high scorers in session 1 did not replicate in session 2 |
-| 6 | `wagenmakers_2012_confirmatory_replication_bem` | 2012 | Failed | explicit | Pre-registered confirmatory replication; null result with Bayesian analysis |
+| 1 | `galak_2012_correcting` | 2012 | Failed | explicit | 7 experiments, N=3,289; includes both experimental replications and corrective meta-analysis |
+| 2 | `maier_2014_no_precognition` | 2014 | Failed | explicit | No evidence for precognition across multiple experiments |
+| 3 | `ritchie_2012_failing_future` | 2012 | Failed | explicit | Three unsuccessful attempts to replicate retroactive facilitation of recall |
+| 4 | `savva_2014_retro_priming` | 2014 | Mixed | explicit | Overall non-significant (es=0.03); high scorers in session 1 did not replicate in session 2 |
+| 5 | `wagenmakers_2012_confirmatory_replication_bem` | 2012 | Failed | explicit | Pre-registered confirmatory replication; null result with Bayesian analysis |
+| 6 | `kekecs_2023_transparent_psi` | 2023 | Failed | explicit | 10-lab pre-registered replication, 37,000+ trials, dead-on-chance result |
 
 ---
 
@@ -180,4 +180,4 @@ Tracks all replication relationships documented in the catalog. Organized by par
 
 ## Notes
 
-- `galak_2012_correcting` and `galak_2012_correcting_past_meta` appear to be the same publication split into two catalog entries (experimental component and meta-analytic component). Both now have explicit `replication_of` links.
+- `galak_2012_correcting` includes both the experimental replications and the corrective meta-analytic component in a single catalog entry.

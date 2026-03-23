@@ -98,8 +98,8 @@ const effectSizes = [];
 papers.forEach(p => {
   const m = p.methodology || {};
   
-  if (m.pre_registration === true) preRegTrue++;
-  else if (m.pre_registration === false) preRegFalse++;
+  if (m.pre_registered === true) preRegTrue++;
+  else if (m.pre_registered === false) preRegFalse++;
   else preRegNull++;
 
   const blindVal = String(m.blinding || '').toLowerCase();
@@ -221,7 +221,7 @@ papers.forEach(p => {
   data.count++;
 
   const m = p.methodology || {};
-  if (m.pre_registration === true) {
+  if (m.pre_registered === true) {
     data.preRegTrue++;
   }
 
@@ -330,9 +330,25 @@ const mostConnected = papersWithConnections
   .sort((a, b) => b._connectionCount - a._connectionCount)[0];
 
 // --- NEW: Methodology Quality Score Calculation ---
-const preRegScore = (preRegTrue / totalPapers) * 100;
-const blindScore = (blindDouble / totalPapers) * 100;
+// Only grade papers where pre-registration and blinding are applicable
+// (exclude reviews, meta-analyses, theoretical, surveys, editorials, etc.)
+const experimentalPapers = papers.filter(p => {
+  const st = ((p.methodology || {}).study_type || '').toLowerCase();
+  return !['meta', 'review', 'theoretical', 'survey', 'opinion', 'editorial', 'commentary', 'book', 'observational'].some(x => st.includes(x))
+    && st !== '' && st !== 'unknown';
+});
+const experimentalCount = experimentalPapers.length || 1; // avoid division by zero
+
+const expPreReg = experimentalPapers.filter(p => (p.methodology || {}).pre_registered === true).length;
+const expBlind = experimentalPapers.filter(p => {
+  const b = String((p.methodology || {}).blinding || '').toLowerCase();
+  return b.includes('double');
+}).length;
+
+const preRegScore = (expPreReg / experimentalCount) * 100;
+const blindScore = (expBlind / experimentalCount) * 100;
 const qualityScore = Math.round((preRegScore * 0.5) + (blindScore * 0.5));
+const qualityTooltip = `Grade based on experimental papers only (${experimentalCount} of ${totalPapers}). ${expPreReg} pre-registered (${Math.round(preRegScore)}%), ${expBlind} double-blind (${Math.round(blindScore)}%). Reviews, meta-analyses, and theoretical works are excluded from this calculation.`;
 
 let qualityGrade = 'F';
 let qualityColor = 'text-red-500';
@@ -682,7 +698,7 @@ const getDomainColor = (domain) => {
         <section class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm animate-on-scroll opacity-0 translate-y-4">
           <div class="flex justify-between items-center mb-6">
             <h2 class="text-xl font-semibold text-slate-100">Methodology Rigor</h2>
-            <div class={`px-3 py-1 rounded-full border text-sm font-bold ${qualityBg} ${qualityColor}`}>
+            <div class={`px-3 py-1 rounded-full border text-sm font-bold cursor-help ${qualityBg} ${qualityColor}`} title={qualityTooltip}>
               Grade: {qualityGrade}
             </div>
           </div>
@@ -702,6 +718,7 @@ const getDomainColor = (domain) => {
               <div class="flex justify-between text-xs text-slate-500 mt-1">
                 <span>{preRegTrue} Yes</span>
                 <span>{preRegFalse} No</span>
+                <span>{preRegNull} N/A</span>
               </div>
             </div>
 
