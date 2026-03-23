@@ -1,7 +1,7 @@
 {
       "library_name": "Psi Research Library",
       "last_updated": "2026-03-04",
-      "total_papers": 355,
+      "total_papers": 356,
       "papers": [
             {
                   "id": "achterberg_2005_evidence",
@@ -21468,6 +21468,67 @@
                   },
                   "plain_summary": "What if people who can't speak can still think — and maybe even read minds? This article tackles one of the most provocative questions in the field: whether nonspeaking autistic individuals, long assumed to lack complex thought, actually possess rich inner lives that include telepathic abilities. The authors argue that the real problem isn't cognition — it's a motor control disorder called apraxia that traps capable minds in uncooperative bodies. They describe two new test protocols: 'mind-discovery' trials that verify nonspeakers can communicate their own thoughts when their helper isn't in the room, and 'telepathy-discovery' trials where nonspeakers accurately describe stories being read by someone in a completely separate location. The early pilot results are striking, with multiple students succeeding at both tasks. Perhaps most refreshingly, the researchers treat nonspeakers as co-researchers who help design the experiments, rather than passive subjects to be tested.",
                   "actual_abstract": null
+            },
+            {
+                  "id": "mossbridge_2025_future_dreams",
+                  "title": "Future dreams of electric sheep: Case study of a possibly precognitive lucid dreamer with AI scoring",
+                  "authors": [
+                        "Mossbridge, Julia A.",
+                        "Green, Dave",
+                        "French, Christopher C.",
+                        "Pickering, Alan",
+                        "Abraham, Damon"
+                  ],
+                  "year": 2025,
+                  "journal": "International Journal of Dream Research",
+                  "doi": "10.11588/ijodr.2025.2.108750",
+                  "folder": "03_Precognition",
+                  "filename": "Mossbridge_et_al_2025_Future_Dreams_Electric_Sheep.pdf",
+                  "tags": [
+                        "precognition",
+                        "lucid_dreaming",
+                        "dream_precognition",
+                        "AI_scoring",
+                        "text_embedding",
+                        "free_response",
+                        "case_study",
+                        "pre_registered"
+                  ],
+                  "psi_domain": "precognition",
+                  "open_access": true,
+                  "source_url": "https://journals.ub.uni-heidelberg.de/index.php/IJoDR/article/view/108750",
+                  "abstract": "Pre-registered single-case experiment with co-author Dave Green, a skilled lucid dreamer with no prior precognition experience, performing 10 trials in two blocks of 5 (April-July 2023). In each trial, Green recorded a lucid dream transcript, emailed it to skeptic Chris French who randomly selected a target from a 478-item online database. Three judging methods: (1) two skilled human judges using proportional rating (pre-registered but flawed due to non-independent ratings, 3/10 hits), (2) 10 unskilled Amazon Mechanical Turk judges per dream (1/10 hits), and (3) five AI text-embedding models computing cosine similarity (best models achieved 5/10 hits, p=.033). Expanded 2,707-item database analysis found one 'bellwether' dream-target pair (women's backgammon dream / Iranian women's rugby target) with Z=4.99, Bonferroni-corrected p<1.2×10^-5. AI captured all human-judge hits plus additional matches. No clear improvement between blocks. Introduces AI text-embedding as a novel scoring method for free-response psi experiments.",
+                  "notes": "Published in the International Journal of Dream Research (peer-reviewed, open access). Extends the Maimonides precognitive dream paradigm (Krippner et al. 1971/1972) to lucid dreaming with AI scoring. Key innovation: using large language model text embeddings (OpenAI Ada, L3, Nomic, BAAI, Snowflake) to judge free-response psi trials, potentially solving the longstanding human judging bottleneck. Co-authored with skeptic Chris French (Goldsmiths) who served as blind target selector. Pre-registered with Goldsmiths, University of London. Key limitations: flawed pre-registered human judging method (non-independent ratings), AI analyses were exploratory not pre-registered, N=1 with only 10 trials, target pool may have thematic overlap inflating hits. The 'bellwether' match (Z=4.99) survived Bonferroni correction across 2,707 comparisons. Connects Mossbridge's PAA/precognition research program to dream precognition and AI methodology.",
+                  "related_papers": {
+                        "companion": [
+                              "mossbridge_2025_mindfield_nonspeakers",
+                              "mossbridge_2018_precognition",
+                              "schooler_2018_entertaining"
+                        ],
+                        "same_research_program": [
+                              "mossbridge_2012_predictive",
+                              "mossbridge_2014_predicting",
+                              "mossbridge_2015_we_did_see_coming"
+                        ],
+                        "extends": [
+                              "storm_2017_correspondence",
+                              "bem_2015_feeling",
+                              "bem_2011_feeling"
+                        ],
+                        "cited_by": []
+                  },
+                  "methodology": {
+                        "n": 1,
+                        "n_studies": null,
+                        "pre_registered": true,
+                        "effect_size": "AI best model: 5/10 hits (chance = 20%); bellwether match Z=4.99",
+                        "ci_95": null,
+                        "bayes_factor": null,
+                        "blinding": "Target selector (French) blind to dream content until after random selection; dreamer blind to target until after dream recorded",
+                        "study_type": "experimental/case_study"
+                  },
+                  "plain_summary": "Can a person dream about something that hasn't happened yet — and prove it? This study put that bold question to the test with a clever experimental setup. Dave Green, a skilled lucid dreamer (someone who can consciously control their dreams), agreed to participate in a pre-registered experiment — meaning the researchers committed to their methods before collecting any data, which helps prevent cherry-picking results.\n\nHere's how it worked: Green would enter a lucid dream and record what he experienced. He'd then email his dream report to Chris French, a well-known skeptic, who would randomly select a \"target\" — an item from a large online database — that Green had never seen. The question was whether Green's dream would match the randomly chosen target better than chance would predict.\n\nThree different judging methods were used to score the matches across 10 trials. Human judges produced mixed results — skilled judges found 3 out of 10 hits but their method turned out to be flawed, and a crowd of unskilled online judges found only 1 hit. But here's where it gets genuinely remarkable: AI text-embedding models (programs that measure how similar two pieces of text are in meaning) were also used to compare dream transcripts against targets. The best-performing AI models scored 5 out of 10 hits, a result that would happen by chance only about 3% of the time.\n\nEven more striking, when the researchers expanded their analysis to a much larger database of over 2,700 items, they found one dream-target pair so closely matched that the odds against it being coincidence were astronomical — surviving even the strictest statistical corrections for multiple comparisons. The AI also caught every match the skilled human judges found, plus additional ones they missed.\n\nImportant caveats: this involved just one dreamer across only 10 trials, the AI analyses weren't part of the original pre-registered plan (making them exploratory rather than confirmatory), and the target pool may have contained overlapping themes that could inflate apparent matches. Still, the combination of a skeptic controlling the target selection, pre-registration, and AI scoring that aligned with and exceeded human judgment makes this a genuinely intriguing piece of the precognitive dreaming puzzle.",
+                  "actual_abstract": "A precognitive dream is a dream about seemingly unpredictable future events that nonetheless seem to be predicted by the dream. It has been most convincingly replicated in two case studies using a single skilled precognitive dreamer (Maimonides studies by Krippner et al., 1971, 1972). Instead of repeating these original studies with another skilled precognitive dreamer, here we set out to determine whether an individual with another unusual dreaming skill – that of entering a lucid dream state almost at will and sketching images seen in that state upon awakening – could become a precognitive dreamer with practice. We pre-registered a formal experiment with two sets of 5 trials. In each trial: 1) the dreamer recorded the contents of his lucid dream in a transcript, 2) the dreamer emailed the transcript to a skeptical target-selector, 3) the target-selector used a random number generator to select a target, 4) the target-selector sent the URL for the target to the dreamer, 5) the target-selector sent the target URL and the dream transcript to the analyst, 6) the analyst stored the date, dream transcript, and target together in a database. We used three methods of judging – 1) a pre-registered but flawed judging method using two skilled human judges [producing 3 hits out of 10], 2) an exploratory method drawing on unskilled human judges [producing 1 hit out of 10], and 3) an exploratory method comparing judging performance across five different text embedding models within large language AI models [producing 5 hits out of 10]. AI-judged methods offered clear evidence for precognition, including a dream-target match conservatively calculated to be highly unlikely to be obtained by chance (p<1.2x10-5), but a confirmatory experiment is required before drawing firm conclusions. Further, several of the accurate transcript/target pair matches made by the top-performing text embedding models matched those of the skilled human judges, suggesting that the AI method captured human sensibilities and expanded on them. The differences in accuracy among the embedding models have implications for the selection of AI models for future free-response experiments and can begin to give shape to a future of AI participation in screening, training, performance, and analysis in multiple free-response contexts."
             }
       ],
       "paper_count": 196
