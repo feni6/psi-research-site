@@ -148,8 +148,8 @@ function parsePaperReference(text: string) {
   return { catalogId, year, description, fullTitle };
 }
 
-const proPapers = sections.pro.map(parsePaperReference);
-const conPapers = sections.con.map(parsePaperReference);
+const proPapers = sections.pro.map(parsePaperReference).sort((a, b) => Number(b.year || 0) - Number(a.year || 0));
+const conPapers = sections.con.map(parsePaperReference).sort((a, b) => Number(b.year || 0) - Number(a.year || 0));
 
 const proCount = proPapers.length;
 const conCount = conPapers.length;

@@ -27,6 +27,9 @@ const GLOSSARY_TERMS: { pattern: RegExp; href: string }[] = [
   { pattern: /\bz-scores?\b/gi, href: '/glossary#z-score' },
   { pattern: /\bnull hypothesis\b/gi, href: '/glossary#null-hypothesis' },
   { pattern: /\blinear convergence\b/gi, href: '/glossary#linear-convergence' },
+  { pattern: /\bconfidence intervals?\b/gi, href: '/glossary#confidence-interval-ci' },
+  { pattern: /\b\d+%\s*CI\b/g, href: '/glossary#confidence-interval-ci' },
+  { pattern: /\bCI\s*\[/g, href: '/glossary#confidence-interval-ci' },
   { pattern: /\bconvergent estimates?\b/gi, href: '/glossary#linear-convergence' },
   { pattern: /\bES\b/g, href: '/glossary#effect-size' },
 ];
