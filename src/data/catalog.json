@@ -101,7 +101,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.3389/fnhum.2013.00893",
                   "abstract": "Opinion article reviewing six functional neuroimaging studies testing the psi hypothesis: Standish et al. (2003), Richards et al. (2005), Achterberg et al. (2005), Venkatasubramanian et al. (2008), Bierman & Scholte (2002), and Moulton & Kosslyn (2008). Five of six reported psi-consistent results; only Moulton & Kosslyn (2008) reported null results. Identifies four categories of methodological weaknesses: inadequate counter-balancing, improper trial randomization, insufficient information shielding, and small sample sizes. Concludes that only Bierman & Scholte (2002) and Moulton & Kosslyn (2008) are methodologically sound, and no firm conclusions about psi can be drawn from the neuroimaging corpus.",
                   "notes": "Critical methodological review of fMRI psi studies. IMPORTANT: This paper was mis-attributed to Watt et al. in the original catalog — actual authors are Acunzo (Edinburgh), Evrard (Strasbourg), and Rabeyron (Nantes). Rabeyron later published a major psi evidence critique (rabeyron_2020_most). The 5 fabricated catalog authors (Watt, Dawson, Tuber, Gyollai, Tressoldi) appear to be from a different paper. Edited by Cardena, reviewed by John Palmer.",
                   "related_papers": {
@@ -219,7 +219,7 @@
                   ],
                   "psi_domain": "remote_viewing",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://skepticalinquirer.org/1982/01/remote-viewing-revisited/",
                   "abstract": "David Marks examines the SRI remote viewing (RV) experiments by Targ and Puthoff with subjects Pat Price and Hella Hammid. He documents data suppression—Targ and Puthoff refused to release raw transcripts—then demonstrates that the Hammid transcripts contain 24 identifiable sensory cues (dates, experimenter names, temporal references, cross-session comments) enabling correct ordering without ESP. Independent judges in New Zealand (12,000 km away) used only these cues to achieve p=.001 in blind transcript matching, equaling the original SRI judge's performance. A systematic review of replication attempts finds a clear pattern: all well-controlled RV studies fail (Allen 1976; Karnes 1979, 1980), while positive results appear only in flawed designs. Marks concludes remote viewing is a cognitive illusion produced entirely by methodological artifact.",
                   "notes": "Foundational skeptical critique of the Targ-Puthoff SRI remote viewing program, published in Summer 1982 in The Skeptical Inquirer (catalog ID carries legacy 'alcock_2003' name from a mislabeled PDF). The 'remote judging' demonstration—achieving p=.001 without psi using only transcript cues—is the paper's enduring contribution. Establishes cue-free transcript and randomized target-list standards for all subsequent RV research. Direct precursor to the Utts-Hyman SAIC evaluation debates of the 1990s.",
                   "related_papers": {
@@ -1886,7 +1886,7 @@
                   ],
                   "psi_domain": "healing",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://core.ac.uk/outputs/58894073",
                   "abstract": "Summarizes a 13-year research program (37 experiments, 655 sessions) investigating direct mental influence of living systems (DMILS). Influencers attempted to mentally affect remote biological targets — including human electrodermal activity, blood pressure, muscular tremor, fish orientation, gerbil locomotion, and red blood cell hemolysis — while isolated in separate rooms with randomized influence/non-influence epochs. Twenty-one of 37 experiments reached individual significance (57% vs. 5% by chance). The overall Stouffer z = 7.72 (p = 2.58 × 10⁻¹⁴) with mean effect size r = .33 across all systems. Additional studies showed electrodermal correlates of remote attention (staring detection). Results are interpreted as laboratory analogs of mental healing.",
                   "notes": "Foundational DMILS compendium — the most comprehensive source for Braud & Schlitz's bio-PK program at the Mind Science Foundation. Central to the distant healing and staring detection debates. Later meta-analyzed by Schmidt et al. (2004) and Roe et al. (2015). Introduced the lability hypothesis for target susceptibility.",
                   "related_papers": {
@@ -2000,7 +2000,7 @@
                   ],
                   "psi_domain": "telepathy",
                   "open_access": false,
-                  "source_url": "",
+                  "source_url": "https://www.sheldrake.org/research/animal-powers/the-anticipation-of-arrival",
                   "abstract": "A telephone survey of 200 randomly selected people in Santa Cruz County, California investigated the frequency and nature of anticipations of telephone calls. Results showed 78% had telephoned someone who said they were just thinking about calling them, 47% had known who was calling without any possible cue before the caller spoke, and 68% had thought about someone not seen for a while who then telephoned that same day. Women reported higher rates than men across all question types, though differences were not statistically significant. The proportion reporting other telepathic experiences was 45%, and those with other telepathic experiences were significantly more likely to report telephone-related intuition (p = 5 × 10⁻⁸). Unlike previous English surveys, no significant difference was found between pet owners and non-pet owners. The 20% participation rate may indicate self-selection bias. Results are compared with two English surveys and suggestions are made for empirical investigation through log books and controlled experiments where callers are randomly selected from a nominated pool.",
                   "notes": "This survey paper provides crucial baseline data for telephone telepathy research, establishing that seemingly telepathic experiences around phone calls are remarkably common (47-78% depending on type). It complements Sheldrake's English surveys and provides the American population data needed to assess cross-cultural patterns. The paper is methodologically important for proposing two empirical approaches: (1) log book studies where participants record intuitions before answering calls, and (2) controlled experiments with randomly selected callers from a nominated pool. The low participation rate (20%) is a limitation acknowledged by the authors. This paper connects directly to subsequent experimental work on telephone telepathy and fits into the broader research program on unexplained human and animal connections. The Santa Cruz sample's liberal, youthful demographics may explain higher positive response rates compared to English surveys.",
                   "related_papers": {
@@ -2602,7 +2602,7 @@
                   ],
                   "psi_domain": "mediumship",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.3389/fpsyg.2013.00834",
                   "abstract": "Six Windbridge Certified Research Mediums underwent two experiments combining double-blind accuracy testing with 32-channel EEG recording. In Experiment 1, each medium was given only the first name of a deceased person and answered 25 questions during 20-second silent intervals optimized for movement-free EEG collection. Blinded sitters scored both target and decoy transcripts. Three of four evaluated mediums scored significantly above chance (M5: +46.8% accuracy difference, p < 0.00005; M1: +14.2%, p = 0.008; M2: +3.1%, Wilcoxon p = 0.004). Medium M1 showed a significant correlation between frontal theta power and accuracy (p < 0.01, cluster-corrected), with theta decreasing monotonically as accuracy increased. In Experiment 2, all six mediums showed significant EEG differences across four mental states (communication, recollection, perception, fabrication), primarily in gamma and beta bands, though gamma effects could not be distinguished from muscle artifacts.",
                   "notes": "First published EEG study of mediumship accuracy under double-blind conditions. Extends Beischel's Windbridge accuracy protocol with neurophysiological measures. The M1 theta-accuracy finding offers a candidate neural correlate of the 'receptive' state mediums describe, but only appeared in one of six mediums. Speaks to Controversy #6 (mediumship) on the Pro side. IONS/Windbridge collaboration with Radin and Beischel as co-authors.",
                   "methodology": {
@@ -2892,7 +2892,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.1371/journal.pone.0026752",
                   "abstract": "A tunable, real-time, text-based 'hedonometer' was constructed using 10,222 English words rated for happiness (1-9 scale) by 50 Amazon Mechanical Turk evaluators each, validated against the established ANEW word set (Spearman r_s = 0.944, p < 10^-10). Applied to approximately 46 billion words from 4.6 billion tweets by over 63 million users across 33 months, the instrument revealed robust temporal patterns: a weekly cycle with Saturday happiest (h_avg ~ 6.06) and Tuesday least happy (h_avg ~ 6.03), a daily cycle peaking at 5-6 am (h_avg ~ 6.12), and sensitivity to major events (Christmas consistently happiest; Osama Bin Laden's death lowest overall). Happiness and information content (Simpson lexical size) were found to be statistically independent (r_s = -0.038, p ~ 0.71).",
                   "notes": "Not a psi paper per se — mainstream computational social science establishing the labMT hedonometer methodology for large-scale sentiment analysis. Included in the library because this tool was later adopted by Radin et al. (2023) to test for presentiment effects in collective Twitter sentiment. Relevant as methodological background for social media approaches to studying collective consciousness and anomalous temporal patterns in aggregate human behavior.",
                   "methodology": {
@@ -5644,7 +5644,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": false,
-                  "source_url": "",
+                  "source_url": "https://www.cmu.edu/dietrich/sds/docs/loewenstein/MssrgQRP.pdf",
                   "abstract": "Survey of 5,964 academic psychologists (N=2,155 respondents, 36% response rate) measured prevalence of questionable research practices (QRPs) using Bayesian Truth Serum (BTS) incentives for truthful disclosure. Admissions were surprisingly high: 94% of BTS respondents admitted at least one QRP, including failing to report all dependent measures (66.5%), collecting more data after checking significance (58%), and selectively reporting studies (50%). BTS incentives raised admissions most for less-defensible practices. Geometric-mean estimates suggest ~1 in 10 psychologists has falsified data. Items formed approximate Guttman scale (reproducibility=0.80). Findings suggest QRPs may constitute the de facto scientific norm, with researchers rationalizing borderline behaviors as defensible.",
                   "notes": "Landmark survey empirically grounding the replication crisis. Directly relevant to psi: skeptics cite it as explaining psi’s failure to replicate via QRP contamination; psi proponents note QRPs equally impair skeptical failed-replication studies. Cited by Kennedy papers in this library.",
                   "related_papers": {
@@ -5940,7 +5940,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://jeksite.org/psi/jp95.pdf",
                   "abstract": "Experimental parapsychology faces a fundamental challenge if psi is goal-oriented and operates within a hierarchy of goals ranging from individual trials to entire research programs. Drawing on Schmidt (1974), where single-event PK trials (55.93%, z=5.55) and 100-event majority-vote trials (53.16%, z=2.89) produced approximately equal scoring rates despite communication theory predicting >90% for majority votes, the paper demonstrates that psi bypasses redundant opportunities to achieve goals directly. If psi operates efficiently at higher levels of the goal hierarchy, standard experimental methods may be unable to identify optimum conditions for psi.",
                   "notes": "Foundational theoretical paper in Kennedy's research program arguing that goal-oriented psi undermines standard statistical assumptions. Directly motivates his later work on why psi is capricious (2001, 2003) and why meta-analyses may be inadequate (2013). Central to the library's methodology debates about whether experimental parapsychology can produce meaningful results.",
                   "related_papers": {
@@ -5995,7 +5995,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://jeksite.org/psi/jp01.pdf",
                   "abstract": "Eleven hypotheses for why psi phenomena are weak, unreliable, and rare are reviewed: methodological artifacts, rarity of ability, precarious psychological conditions, unnoticed psi, goal-oriented experimenter effects, fear of psi, evolutionary inhibition, ecological interconnectedness, spiritual growth, multiple-observer influence, and nonphysical beings. Meta-analyses consistently show z scores unrelated to sample size, contradicting standard statistical assumptions, and replication rates declined across paradigms despite decades of research. An integrative model proposes a bimodal distribution of anomalous experiences, with psi practitioners (~1%) forming a subset who reliably guide psi by intention and psi-conducive experimenters shaping outcomes via goal-oriented influence.",
                   "notes": "Central theoretical paper for the library's methodology/meta-debate controversy. Provides the most comprehensive taxonomy of elusiveness explanations in a single source. The bimodal model and goal-oriented experimenter psi framework recur throughout Kennedy's later work and connect directly to debates about replication failure across all psi domains.",
                   "related_papers": {
@@ -6133,7 +6133,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://jeksite.org/psi/jp04.pdf",
                   "abstract": "Pharmaceutical clinical trials, with FDA-mandated power analyses, pre-specified primary outcomes, and independent protocol review, offer a rigorous model for psi research trapped in cycles of inconclusive meta-analysis. Examining published psi meta-analyses reveals that 70-80% of constituent studies are non-significant and z scores fail to increase with sample size — violating a fundamental assumption of statistical testing. A committee of parapsychologists, moderate skeptics, and a statistician is proposed to review pivotal study protocols prospectively. Kennedy challenges skeptics to specify adequate protocols in advance and proponents to demonstrate psi effects are reliable enough for prospective planning.",
                   "notes": "Anticipated the pre-registration movement by nearly a decade. Central to the meta-debate controversy (#10) — argues that meta-analytic approaches alone cannot resolve the psi debate without prospective planning, power analysis, and agreed-upon protocols. Links Kennedy's broader research program on psi's capricious nature.",
                   "related_papers": {
@@ -6193,7 +6193,7 @@
                   ],
                   "psi_domain": "overview",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://jeksite.org/psi/jp06.pdf",
                   "abstract": "Book review of 'Irreducible Mind: Toward a Psychology for the 21st Century' by Kelly et al. (2007), an 800-page work attempting to understand consciousness and psi through F.W.H. Myers's concept of the subliminal mind. Kennedy endorses the book's approach of moving beyond narrow laboratory controversies toward a broader theoretical framework. The review examines the book's coverage of near-death experiences, mystical experiences, genius, automatism, and psychosomatic phenomena as evidence against materialistic models of consciousness. Kennedy identifies two areas needing further development: the role of biological evolution in consciousness/psi, and the implications of psi's capricious, evasive nature for understanding spiritual realms. The capricious nature of psi may reflect motivations fundamentally different from materialistic evolutionary drives, offering insight into profound aspects of consciousness.",
                   "notes": "Kennedy's review of the landmark 'Irreducible Mind' volume positions this book as a potential turning point for parapsychology—a serious effort to understand mind and consciousness rather than merely cataloging experimental controversies. Published in Journal of Parapsychology Vol. 70, pp. 373-377. Kennedy's discussion of psi's capricious, evasive nature builds on his earlier theoretical work (kennedy_2001_psi_elusive, kennedy_2003_capricious_psi, kennedy_2004_proposal) and suggests this characteristic may be evidence for spiritual dimensions of consciousness rather than a methodological nuisance to be overcome. Important for understanding the theoretical framework connecting psi research to consciousness studies and spirituality. The review notes that Irreducible Mind includes a CD with F.W.H. Myers's 1903 'Human Personality' volumes.",
                   "related_papers": {
@@ -6244,7 +6244,7 @@
                   ],
                   "psi_domain": "overview",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://jeksite.org/psi/jp11.pdf",
                   "abstract": "Information consists of symbols, media for storing and transmitting the symbols, and an interpretational infrastructure that establishes meaning. Information processing in living systems includes genetics, perception, behavior, memory, learning, communication, imagination, creativity, and culture. This article summarizes and clarifies concepts pertaining to information as they emerge in scientific research on life, consciousness, quantum physics, and paranormal phenomena. After extensive research, the hypothesis that an observer can sometimes paranormally influence the outcome of quantum events lacks convincing empirical support. Current experimental results in parapsychology do not have properties of a signal in noise and cannot be convincingly distinguished from methodological bias. The findings may be most consistent with a model where paranormal phenomena result from supernatural information processing agencies with relatively independent motivations that manifest as spirituality and influence the meaning and direction of an individual's life.",
                   "notes": "Foundational theoretical paper representing Kennedy's mature position after decades of psi research. Proposes shift from human-ability models to supernatural agency models to explain psi's capricious, evasive nature. Critically important for understanding why confirmatory experimental paradigms have consistently failed and what alternative research directions might be productive. Bridges information theory, quantum physics, biology, and parapsychology. Part of Kennedy's series on methodology and the nature of psi phenomena. The supernatural agency hypothesis, while unfalsifiable, offers explanation for why psi cannot be controlled or used for practical applications despite decades of effort.",
                   "related_papers": {
@@ -6438,7 +6438,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://jeksite.org/psi/jp16.pdf",
                   "abstract": "Prompted by Bem's (2011) 'feeling the future' experiments, psychology recognized the need for pre-registered confirmatory research. Eight additional methodological deficiencies remain unaddressed in both fields: deficient study registration, bias from dropouts and incomplete data, lack of software validation, absence of fraud prevention measures, inappropriate statistical methods for confirmatory studies, overlooked Bayesian inferential errors, weaknesses of retrospective meta-analysis versus prospective meta-analysis, and statistical dependence problems in outcome variables. Drawing on regulated medical research standards (FDA clinical trial guidance), specific practices are recommended for each deficiency. When confronted with the choice between psi and methodological flaws, psychologists will inevitably choose reform — making proactive adoption of these standards the efficient path forward.",
                   "notes": "Most systematic single-paper inventory of methodological weaknesses in psi research, applying FDA-level clinical trial standards. Directly extends Kennedy (2013) on retrospective meta-analysis and anticipates Kennedy (2017, 2024) on fraud standards. Central to the meta-debate (Controversy #10).",
                   "related_papers": {
@@ -7057,7 +7057,7 @@
                   ],
                   "psi_domain": "psychokinesis",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://www.scientificexploration.org/docs/25/jse_25_1_kugel.pdf",
                   "abstract": "Critique of the Bösch, Steinkamp, and Boller (BSB, 2006) PK meta-analysis in Psychological Bulletin, which concluded micro-PK evidence was attributable to publication bias. Examination of BSB's original SPSS data files reveals the database included at least 40 ESP (mainly precognition) studies despite being limited to PK, contained fabricated z-scores and arbitrarily coded control data, and excluded substantial portions of the PEAR database. The entire negative overall z-score (z = −3.67) resulted from three PEAR MegaREG studies using a potentially malfunctioning high-speed RNG contributing ~100× more trials than all other studies combined; without these three studies, z = +3.59.",
                   "notes": "The most detailed published rebuttal to BSB (2006) — the only major PK meta-analysis in a top-tier psychology journal. Uniquely credible because Kugel demonstrates coding errors using his own experimental data that BSB misclassified. Despite folder placement in 10_Skeptical, this paper defends PK evidence against a skeptical conclusion.",
                   "related_papers": {
@@ -7153,7 +7153,7 @@
                   "folder": "10_Skeptical_and_Critical",
                   "filename": "LeBel_Peters_2011_Fearing_Future.pdf",
                   "open_access": false,
-                  "source_url": "",
+                  "source_url": "https://www2.psych.ubc.ca/~elebel/downloads/lp2011.pdf",
                   "psi_domain": "methodology",
                   "abstract": "Bem's (2011) nine-experiment report of evidence for psi is used as a diagnostic case study for three systemic deficiencies in modal research practice (MRP) in empirical psychology: (a) overemphasis on conceptual rather than close replication, which allows failed extensions to be filed away while successful ones count as replications; (b) failure to independently verify measurement instrument integrity, with no reliability estimates reported for any dependent variable; and (c) flawed NHST implementation that tests against a nil hypothesis virtually guaranteed to be false, making rejection contingent only on sample size (e.g., a 51.7% hit rate reaching p < .05 at N = 150). These deficiencies produce an 'interpretation bias' that buffers any theory from falsification. Conservatism in theory choice favors revising beliefs about MRP over revising beliefs about causality and time.",
                   "notes": "A landmark methodological critique grounded in philosophy of science (Duhem-Quine underdetermination, Quine-Ullian conservatism) rather than statistics alone. The 'interpretation bias' framework became influential in the broader replication reform movement. Directly relevant to Controversy #2 (Bem) and #10 (meta-debate). Compare with Wagenmakers et al. (2011) for the Bayesian-statistical version of the same argument.",
@@ -7221,7 +7221,7 @@
                   ],
                   "psi_domain": "remote_viewing",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://www.acadintuition.com/wp-content/uploads/2020/12/Lee-et-al-2008-Remote-Viewing-as-Applied-to-Futures-Studies.pdf",
                   "abstract": "Reviews remote viewing protocols — Coordinate Remote Viewing (CRV), Associative Remote Viewing (ARV), Extended Remote Viewing (ERV), and Virtual Time Travel — as potential tools for technological forecasting. Summarizes key findings from Targ and Puthoff's SRI experiments (p < .05 in 5 of 6 experiments), Targ's ARV silver futures application (9/9 and 11/12 correct predictions, p = 0.003), Honorton and Ferrari's meta-analysis of 309 forced-choice precognition experiments (87.5% significant with all four success factors present), and Spottiswoode's discovery of a 340% increase in anomalous cognition effect size at 13.5h local sidereal time (p = 0.001). Concludes remote viewing merits further exploration as a futurist tool.",
                   "notes": "Opinion column in a mainstream Elsevier forecasting journal, providing a rare application-oriented perspective on RV. Authored by a graduate student in futures studies, not an experimental psychologist — accessible but lacking critical rigor. Useful for its synthesis of CRV/ARV/ERV protocols and the Spottiswoode sidereal time finding.",
                   "related_papers": {
@@ -7383,7 +7383,7 @@
                   ],
                   "psi_domain": "telepathy",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://www.atlantis-press.com/proceedings/ichess-22/125984684",
                   "abstract": "Meta-analysis of 16 telepathy experiments from 9 articles published over the prior 20 years, encompassing 21,441 total trials across telephone, email, SMS, card-guessing, and virtual-environment paradigms. Effect sizes were calculated as the deviation of observed from expected hit rates normalized by binomial standard deviation, then weighted by trial proportion. The overall weighted effect size was 0.091 (average unweighted 0.15), indicating a small positive effect. Twelve of 16 experiments (75%) showed statistically significant above-chance hit rates. Decline effects were observed when high-scoring participants were retested. The author notes limitations including possible cheating, confounds with precognition or clairvoyance, and variable replication success across labs.",
                   "notes": "A student-level conference meta-analysis that provides a recent quantitative synthesis of telephone/digital telepathy experiments. Methodologically weak by meta-analytic standards — no heterogeneity statistics, no publication bias assessment, no moderator analysis, non-standard effect size metric. Useful as a complement to Sheldrake's more comprehensive 2025 meta-analysis and as an example of the field's replication challenges.",
                   "related_papers": {
@@ -7430,7 +7430,7 @@
                   ],
                   "psi_domain": "telepathy",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://www.sheldrake.org/research/telepathy/the-invisible-gaze",
                   "abstract": "Prospective replication of Sheldrake & Smart (2003) telephone telepathy incorporating local sidereal time (LST) as an independent variable, following Spottiswoode's (1997) finding that anomalous cognition effect sizes peak around 13:30 LST. Six women completed 214 usable trials across 6 sessions (3 at peak LST, 3 at non-peak). Caller selection was randomized by dice at a separate location; an in-home experimenter monitored for signal leakage. Overall hit rate was 29.4% (p=0.05, one-tailed) above 25% chance; regular sessions: 32.7% (p<0.005). Peak-LST sessions yielded 34.6% vs. 25.2% non-peak (p=0.09). Emotional bond correlated with hit rate (r=0.41, p<0.05). Results tentatively support both telephone telepathy and the LST hypothesis, but LST was confounded with local time of day.",
                   "notes": "Only prospective test of Spottiswoode's LST peak hypothesis within the telephone telepathy paradigm. Small N=6 and the winter Amsterdam setting (peak LST = morning, non-peak = evening) prevent separating LST from local time. Effect size (Cohen's h ≈ 0.10) matches ganzfeld literature but the 214-trial dataset is underpowered. Included in Sheldrake's 2025 telecommunication telepathy meta-analysis.",
                   "related_papers": {
@@ -7622,7 +7622,7 @@
                   ],
                   "psi_domain": "nde",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://digital.library.unt.edu/ark:/67531/metadc799298/",
                   "abstract": "A detailed 35-page critique of Nelson, Mattingly, Lee, and Schmitt's (2006) Neurology paper proposing that NDEs result from REM-intrusion via arousal-system dysfunction, and their 2007 follow-up linking OBEs to the same system. Long and Holden identify eight major weaknesses: (1) 40% of NDErs denied any REM-intrusion experiences; (2) survey questions lacked validity — 'yes' answers may reflect post-NDE aftereffects rather than pre-existing diathesis; (3) the control group (medical personnel) likely underreported REM intrusion due to awareness of pathological implications (7% vs. 19-28% general population prevalence); (4) the control group was not matched for life-threatening event exposure; (5) NDEs occur when REM is suppressed (general anesthesia, barbiturate overdose, congenital blindness without REM); (6) NDE features (coherent narrative, profound peace, veridical perception) differ fundamentally from REM intrusion (brief, terrifying, bizarre hallucinations); (7) NDERF data show 73.5% of NDErs report the experience as 'more real than real' vs. dreams; (8) NDEs have a consistent deep structure across cultures, whereas REM dreams do not.",
                   "notes": "The most comprehensive published rebuttal of the Nelson et al. REM-intrusion hypothesis for NDEs, which became one of the most widely cited neuroscientific NDE explanations. Important for Controversy #7 as it challenges a key reductionist account on methodological grounds. The paper's critique of unvalidated instruments, inadequate controls, and temporal ambiguity (pre- vs. post-NDE REM intrusion) sets a standard for evaluating reductionist NDE hypotheses.",
                   "related_papers": {
@@ -7672,7 +7672,7 @@
                   ],
                   "psi_domain": "precognition",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://www.psy.lmu.de/pm/personen/lehrstuhlinhaber/maier_publications/maier-2014-retro-avoidance.pdf",
                   "abstract": "Seven double-blind experiments investigated whether masked negative stimuli presented 500 ms after a response could retroactively influence unconscious key-press selections, as predicted by the Orch-OR quantum-mind model. Using IAPS images and a simultaneous two-key press paradigm, four of seven studies found significant avoidance of negative future outcomes (Study 1: N=111, d=0.25; Study 2: N=201, d=0.21; Study 3: N=1222, d=0.07; Study 4 with quantum RNG: N=327, d=0.10). A meta-analysis across all seven experiments (total N≈2,970) yielded ES=0.07, z=3.79, p<.0001, with a combined Bayes factor of 293 favouring retroactive influence.",
                   "notes": "Independent European replication of Bem (2011) Exp 2, begun before awareness of Bem's work. Currently misplaced in 10_Skeptical_and_Critical despite reporting positive precognition results. The mixed pattern (4/7 significant) and prior-dependent Bayesian evidence are central to the Bem precognition controversy.",
                   "related_papers": {
@@ -8061,7 +8061,7 @@
                   ],
                   "psi_domain": "nde",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.3389/fpsyg.2025.1544438",
                   "abstract": "Perspective article arguing that near-death experiences warrant systematic identification and management in emergency and intensive care settings. Reviews NDE incidence data (approximately 20% of cardiac arrest survivors, 15% of ICU survivors, and possibly 58-64% of pediatric survivors) and discusses enduring psychological impacts including reduced death anxiety, increased meaning, and post-traumatic growth, while noting that at least 14% of NDEs are distressing. Proposes incorporating NDE screening via the NDE-C scale into clinical care plans, differentiating NDEs from delirium, and attending to set-and-setting factors that may modulate NDE valence. Draws parallels with psychedelic experiences and discusses pharmacological concerns around sedation suppressing potentially beneficial NDE recall.",
                   "notes": "Bridges NDE phenomenology research and clinical practice from the Coma Science Group at University of Liège. Notable for framing NDEs as clinically actionable events rather than mere curiosities, and for the psychedelic-NDE analogy that connects to the growing psychedelic therapy literature. A perspective piece without original data, but valuable for its clinical recommendations and identification of major research gaps (pediatric NDEs, psychiatric populations).",
                   "related_papers": {
@@ -8328,7 +8328,7 @@
                   ],
                   "psi_domain": "overview",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://emmind.net/openpapers_repos/Telepathy-ESP/Various/2015/Explicit_anomalous_cognition_A_review_of_the_best_evidence_in_ganzfeld_forced_choice_remote_viewing_and_dream_studies.pdf",
                   "abstract": "Comprehensive review of laboratory ESP evidence across four major paradigms: ganzfeld, forced-choice, remote viewing, and dream ESP. Synthesizes data from all existing meta-analyses through 2014, conducts new moderator variable and heterogeneity analyses, and identifies participant selection as a powerful moderator across paradigms. Selected participants consistently produce larger effect sizes — 40.1% ganzfeld hit rate (vs. 27.3% unselected), 87.5% forced-choice significance rate in optimal conditions, and experienced RV viewers achieving ES = 0.385 requiring only 33 trials for 80% power. Concludes with methodological prescriptions including pre-registration, power analysis, random-effects meta-analytic methods, and I² heterogeneity statistics.",
                   "notes": "The most comprehensive single-source review of laboratory ESP evidence across all four major paradigms, providing specific replication prescriptions for each. Chapter in the Cardeña, Palmer, & Marcusson-Clavertz handbook (2015); actual authors are Baptista, Derakhshani, and Tressoldi (not May/Marwaha, who are editors of a different volume).",
                   "related_papers": {
@@ -14713,7 +14713,7 @@
                   ],
                   "psi_domain": "telepathy",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://www.sheldrake.org/research/telepathy/experimental-tests-for-telephone-telepathy",
                   "abstract": "Experimental investigation of telephone telepathy with 63 participants in 571 trials. Participants identified callers from four possibilities before the caller spoke. Overall success rate was 40% (95% CI: 36-45%), significantly above chance (25%, p = 4 × 10⁻⁶). Familiar callers yielded 53% correct (p = 1 × 10⁻¹⁶) vs 25% for unfamiliar callers (chance level), difference p = 3 × 10⁻⁷. Overseas callers (1,000-11,000 miles) showed 65% success (p = 3 × 10⁻⁸), suggesting emotional closeness matters more than physical distance. No difference between random-time and fixed-time calls. Results rule out chance coincidence, selective memory, and unconscious expectation hypotheses.",
                   "notes": "Foundational experimental paper with largest telephone telepathy trial count. Establishes emotional familiarity as critical moderator and demonstrates no distance decay. Companion videotaped study (Sheldrake & Smart 2003 JP 67:187-206) addresses cheating/information leakage concerns. Frequently cited in meta-analyses and telephone telepathy research.",
                   "related_papers": {
@@ -15955,7 +15955,7 @@
                   ],
                   "psi_domain": "telepathy",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.4236/psych.2011.28130",
                   "abstract": "Two experiments at University of Padova testing non-local mental connection. Experiment 1 (N=40): participants identified real vs false Chinese ideograms in two sessions — one with a distant helper mentally suggesting correct answers, one without (single-blind, counterbalanced). Suggestion condition: M=11.33 (SD=1.62) vs no-suggestion M=10.55 (SD=1.84, MCE=10); paired t=2.25, ES=0.44, BF10=2.6; suggestion binomial z=3.7, BF10=23.8. Net increase 10.3% above MCE. Experiment 2 (N=70): simpler sun/moon task; M=5.44 vs MCE=5.0, t=2.27, ES=0.27, BF10=2.8; net increase 8.8%. Absorption (Tellegen) did not moderate the effect. Results comparable to ganzfeld effect sizes but without altered sensory states.",
                   "notes": "Part of Tressoldi's program at University of Padova testing non-local properties of human mind. Uses both frequentist and Bayesian statistical approaches. CRITICAL FIX (Session 50): catalog originally had wrong authors (Pederzoli, Caini, Ferrini, Melloni, Richeldi, Duma — from a different Tressoldi paper), wrong year (2014→2011), and wrong ID keyword (eeg_correlations — paper is behavioral, not EEG).",
                   "related_papers": {
@@ -16076,7 +16076,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.3389/fpsyg.2012.00218",
                   "abstract": "Analyzes whether the unreliability of replication in controversial psychological phenomena stems from insufficient statistical power rather than non-existence of the effects. Retrospective power analysis of meta-analyses covering four phenomena — subliminal semantic priming (d = 0.47–0.80), incubation effect (d = 0.29), unconscious thought theory (d = 0.22), and non-local perception across three protocols (d = 0.011–0.16) — reveals that except for semantic priming on categorization (power = 0.96), the typical study has power far below 0.90. Forced-choice ESP studies (d = 0.011) would require N = 3,450 participants for adequate power, yet average N = 128. Recommends alternatives to NHST including confidence intervals, equivalence testing, and Bayesian approaches.",
                   "notes": "Provides the statistical power argument frequently cited by psi proponents: failed replications may reflect inadequate sample sizes rather than absent phenomena. Strategically places psi alongside mainstream controversial phenomena (subliminal priming, unconscious thought) to normalize the power-deficit problem. Central to Controversy 10 (meta-debate).",
                   "related_papers": {
@@ -16257,7 +16257,7 @@
                   ],
                   "psi_domain": "meta_analysis",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.12688/f1000research.51746.4",
                   "abstract": "This Stage 2 Registered Report meta-analyzed 78 ganzfeld studies (113 effect sizes) from 1974-2020 involving 46 principal investigators. Both frequentist (REML with Knapp-Hartung adjustment) and Bayesian random-effects models yielded convergent estimates: ES ≈ 0.08 (95% CI [0.04, 0.12]; BF₁₀ = 89.5). Four publication bias tests (3PSM, p-uniform*, RoBMA, Mathur-VanderWeele sensitivity) indicated results are robust. Cumulative meta-analysis showed effect stabilization since 1997; meta-regression found no decline (slope = 0.0012, p = 0.53). Moderator analyses revealed selected participants produced ES = 0.13 vs. 0.04 for non-selected; telepathy-type tasks (Type 3) showed ES = 0.08 vs. 0.04 for clairvoyance (Type 2).",
                   "notes": "In plain terms, this study looked at over 40 years of ganzfeld telepathy experiments and found a small but consistent effect — people in sensory deprivation identified the correct target image about 31% of the time when chance would predict 25%. The result held up across multiple statistical methods and tests for publication bias, with a Bayes factor of 89.5 — meaning the data is about 90 times more likely under the hypothesis that the effect is real than under the hypothesis that it is due to chance alone. However, the effect is small enough that a single experiment would need hundreds of trials to reliably detect it, and substantial variation between studies remains unexplained.\n\nDefinitive registered-report ganzfeld meta-analysis. Key strengths: pre-registered protocol, 4 publication bias tests, both frequentist/Bayesian models, comprehensive 46-year database. Heterogeneity was medium-large (I² = 63.8%). Two influential outliers detected but removal had minimal impact. Statistical power analysis: 245 trials needed for 80% power with overall ES, but only 50 trials needed with selected participants in Type 3 (telepathy) tasks. Peer-review level did not moderate effects. One reviewer (neuroscience) did not approve; 2 approved (including parapsychology expert Dean Radin).",
                   "related_papers": {
@@ -17714,7 +17714,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.3389/fpsyg.2015.00173",
                   "abstract": "Opinion article on the first two years of the Koestler Parapsychology Unit study registry at the University of Edinburgh (opened fall 2012). Modeled on clinical trial standards (ICMJE 2005), the registry requires public, prospective, irreversibly public registration with independent review. Key recommendations: classify each hypothesis as exploratory or confirmatory; pre-specify all analysis decisions for confirmatory research; independently review registrations for completeness. Virtually all initial submissions had deficiencies. Critiques OSF registration for allowing experimenters to keep or revert registrations to private after viewing results, undermining the file-drawer protection that registration is meant to provide.",
                   "notes": "Foundational paper on pre-registration in parapsychology. Extends Kennedy (2004) advocacy for formal confirmatory research, which gained traction after the 2012 replication crisis. Practical critique of OSF registration model remains relevant. Directly discusses Bem (2011), Bosch (2006), and Storm (2010) as examples of high-profile parapsychology publications that did not resolve debates.",
                   "related_papers": {
@@ -18101,7 +18101,7 @@
                   ],
                   "psi_domain": "nde",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.1093/brain/awh040",
                   "abstract": "Six neurological patients experiencing out-of-body experiences (OBE) or autoscopy (AS) were studied with phenomenological interviews, EEG, electrical cortical stimulation, neuropsychological testing, and neuroimaging. In 5 of 6 patients, brain damage or dysfunction localized to the temporo-parietal junction (TPJ). OBE was always preceded by supine position and accompanied by vestibular sensations (elevation, floating); in Patient 3, OBE was reliably induced by electrical stimulation at the right TPJ at 3.5 mA. The authors propose that OBE requires both a disintegration of proprioceptive-tactile-visual body information and a vestibular dysfunction disrupting the relationship between personal and extrapersonal space, both due to paroxysmal TPJ dysfunction.",
                   "notes": "Key neurological paper providing the most specific brain localization of OBE to date (TPJ). Directly challenges survival/veridical interpretations by demonstrating that OBE can be induced by focal brain stimulation and is associated with multisensory integration failure. Central to controversy #7 (NDEs/consciousness/survival).",
                   "related_papers": {
@@ -18215,7 +18215,7 @@
                   ],
                   "psi_domain": "nonverbal",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://europepmc.org/article/med/22717469",
                   "abstract": "Argues that diminished social motivation — decomposed into social orienting, social reward (wanting/liking), and social maintaining — constitutes a primary deficit in Autism Spectrum Disorders, with downstream consequences for social cognition. Reviews behavioral evidence (reduced eye contact, social anhedonia, absent reputation management), neurobiological substrates (orbitofrontal-striatal-amygdala circuit abnormalities, disrupted oxytocin signaling), and an evolutionary framework explaining why affiliative motivation is selectively impaired while attachment and sexual drives are preserved. Concludes that boosting social attention enhances social cognitive performance, suggesting underlying competence is more intact than spontaneous behavior indicates.",
                   "notes": "Foundational statement of the social motivation theory that Jaswal & Akhtar (2019) directly challenge. Essential for understanding the dominant framework that treats reduced social behavior in autism as evidence of reduced social desire — a premise the library's facilitated communication and sensory-motor papers contest.",
                   "related_papers": {
@@ -18926,7 +18926,7 @@
                   ],
                   "psi_domain": "methodology",
                   "open_access": true,
-                  "source_url": "",
+                  "source_url": "https://doi.org/10.1073/pnas.1112029108",
                   "abstract": "Experienced mindfulness meditators (N=12, mean >10,000 h practice) were compared to 12 matched meditation-naive controls using fMRI during Concentration, Loving-Kindness, and Choiceless Awareness meditation. Main default mode network (DMN) nodes — the medial prefrontal cortex (mPFC) and posterior cingulate cortex (PCC) — showed relative deactivation in meditators across all conditions. Functional connectivity analyses revealed stronger PCC coupling with the dorsal anterior cingulate cortex (dACC) and dorsolateral prefrontal cortex (dlPFC), regions implicated in cognitive control, in both meditation and resting-state baseline. Meditators reported significantly less mind-wandering (F(1,22)=7.93, P=0.010). These findings suggest meditation may transform the resting-state default mode toward sustained present-centered awareness.",
                   "notes": "Foundational DMN-meditation study widely cited in psi research that uses experienced meditators as participants (e.g., Radin's double-slit and presentiment paradigms). Establishes the neural baseline — reduced DMN activity and enhanced control-network coupling — that distinguishes practiced meditators from controls, relevant to interpreting any psi effects that correlate with meditation experience.",
                   "related_papers": {
