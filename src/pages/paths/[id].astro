@@ -4,6 +4,8 @@ import Layout from '../../layouts/Layout.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 import catalog from '../../data/catalog.json';
+import { marked } from 'marked';
+import { linkGlossaryTerms } from '../../utils/glossary-linker';
 
 export function getStaticPaths() {
   const dir = path.join(process.cwd(), 'src/data/reading_paths');
@@ -97,12 +99,31 @@ function parsePathContent(fileContent: string) {
     }
   });
 
-  return { title, tagline, papers };
+  // If no papers were parsed, capture body as narrative prose
+  let narrativeBody = '';
+  if (papers.length === 0) {
+    // Everything after the title and tagline is the narrative
+    const bodyLines: string[] = [];
+    let pastHeader = false;
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!pastHeader) {
+        if (trimmed.startsWith('# ')) continue;
+        if (trimmed.startsWith('*') && trimmed.endsWith('*') && !pastHeader) { pastHeader = true; continue; }
+        if (trimmed === '') continue;
+        pastHeader = true;
+      }
+      bodyLines.push(line);
+    }
+    narrativeBody = bodyLines.join('\n');
+  }
+
+  return { title, tagline, papers, narrativeBody };
 }
 
 // Parse current path
 const parsed = parsePathContent(content);
-const { title, tagline, papers } = parsed;
+const { title, tagline, papers, narrativeBody } = parsed;
 
 // --- RELATED PATHS LOGIC ---
 
@@ -182,18 +203,18 @@ function convertMarkdownToHtml(text: string): string {
       {tagline && <p class="text-slate-300 text-lg italic max-w-2xl mx-auto leading-relaxed">{tagline}</p>}
     </div>
 
-    <!-- Progress Bar (Top) -->
-    <div class="mb-12 bg-slate-900/50 rounded-full p-1 border border-slate-800 sticky top-4 z-40 backdrop-blur-sm shadow-lg">
-      <div class="flex items-center justify-between px-4 py-2">
-        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Your Progress</span>
-        <span id="progress-text" class="text-xs font-mono text-amber-400">0 of {papers.length} papers explored</span>
-      </div>
-      <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-        <div id="progress-bar" class="bg-amber-500 h-2 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(245,158,11,0.5)]" style="width: 0%"></div>
-      </div>
-    </div>
+    <!-- Narrative Content (for prose-based paths like the Psi Debate) -->
+    {narrativeBody && papers.length === 0 && (
+      <article class="prose prose-invert prose-amber max-w-none mb-12 text-slate-300 prose-headings:text-amber-400 prose-a:text-amber-400 prose-a:underline prose-strong:text-slate-200" set:html={linkGlossaryTerms(marked(narrativeBody.replace(/\[catalog ID: ([^\]]+)\]/g, (_, id) => {
+        const paper = catalog.papers.find((p: any) => p.id === id.trim());
+        const title = paper ? paper.title : id;
+        const safeTitle = title.replace(/"/g, '&quot;');
+        const displayTitle = title.length > 35 ? title.substring(0, 32) + '...' : title;
+        return `<a href="/paper/${id.trim()}" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 transition-all cursor-pointer" title="${safeTitle}">${displayTitle}</a>`;
+      })))} />
+    )}
 
-    <!-- Paper List -->
+    <!-- Paper List (for numbered paper paths) -->
     <div class="space-y-2">
       {papers.map((paper, index) => (
         <>
