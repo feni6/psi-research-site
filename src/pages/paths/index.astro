@@ -9,15 +9,15 @@ const files = fs.readdirSync(dir).filter(f => f.startsWith('path_') && f.endsWit
 // Map filenames to audience labels, icons, difficulty, and theme colors
 const pathMetadata = {
   'path_1_steelman_psi': {
-    audience: 'For those who want the strongest case',
-    subtitle: 'Start here if you want to see the most compelling evidence first.',
+    audience: 'The strongest studies and meta-analyses',
+    subtitle: 'The most compelling evidence from decades of psi research, presented in order of strength.',
     icon: '💪',
     difficulty: 'Intermediate',
     theme: 'amber' // Default
   },
   'path_2_weak_spots': {
-    audience: 'For skeptics and critical thinkers',
-    subtitle: 'Start here if you want to examine the limitations and criticisms first.',
+    audience: 'The strongest critiques and failed replications',
+    subtitle: 'The best arguments against the evidence for psi, from methodological flaws to failed replications.',
     icon: '🔍',
     difficulty: 'Advanced',
     theme: 'slate'
@@ -197,44 +197,33 @@ const deepDivePaths = paths.filter(p => parseInt(p.num) > 3);
     <section class="mb-24">
       <div class="flex items-center gap-4 mb-10">
         <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
-        <h2 class="text-2xl font-bold text-slate-200 tracking-wide uppercase text-sm">Choose Your Perspective</h2>
+        <h2 class="text-2xl font-bold text-slate-200 tracking-wide uppercase text-sm">Choose Your Path</h2>
         <div class="h-px flex-1 bg-gradient-to-r from-transparent via-slate-700 to-transparent"></div>
       </div>
       
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {perspectivePaths.map((p) => {
-          const isRecommended = p.id === 'path_3_newcomer_survey';
           const theme = getThemeClasses(p.theme);
           const difficultyColor = p.difficulty === 'Beginner' ? 'text-emerald-400' : p.difficulty === 'Advanced' ? 'text-rose-400' : 'text-amber-400';
-          
+
           return (
-            <a 
-              href={`/paths/${p.id}`} 
+            <a
+              href={`/paths/${p.id}`}
               data-path-id={p.id}
               data-papers={p.paperIds.join(',')}
               class={`
-                group relative flex flex-col h-full 
-                bg-slate-900/50 backdrop-blur-sm border rounded-2xl p-8 
+                group relative flex flex-col h-full
+                bg-slate-900/50 backdrop-blur-sm border rounded-2xl p-8
                 transition-all duration-300 ease-out
                 hover:-translate-y-2 hover:shadow-2xl ${theme.shadow}
-                ${isRecommended 
-                  ? `border-amber-500/40 ring-1 ring-amber-500/20 ${theme.bg}` 
-                  : `border-slate-800 ${theme.border}`}
+                border-slate-800 ${theme.border}
               `}
             >
-              {isRecommended && (
-                <div class="absolute -top-4 right-6 px-4 py-1.5 bg-amber-500 text-slate-950 text-xs font-bold rounded-full shadow-lg z-10">
-                  Recommended Start
-                </div>
-              )}
 
               <div class="flex justify-between items-start mb-6">
                 <div class={`text-5xl transform group-hover:scale-110 transition-transform duration-300 ${theme.text}`}>
                   {p.icon}
                 </div>
-                <span class={`text-xs font-semibold px-2.5 py-1 rounded-full border ${difficultyColor.replace('text-', 'border-').replace('400', '500/20')} bg-slate-950/50 ${difficultyColor}`}>
-                  {p.difficulty}
-                </span>
               </div>
               
               <h3 class={`text-xl font-bold mb-3 transition-colors ${theme.text} group-hover:text-slate-100`}>
@@ -313,9 +302,6 @@ const deepDivePaths = paths.filter(p => parseInt(p.num) > 3);
                 <div class={`text-5xl transform group-hover:scale-110 transition-transform duration-300 ${theme.text}`}>
                   {p.icon}
                 </div>
-                <span class={`text-xs font-semibold px-2.5 py-1 rounded-full border ${difficultyColor.replace('text-', 'border-').replace('400', '500/20')} bg-slate-950/50 ${difficultyColor}`}>
-                  {p.difficulty}
-                </span>
               </div>
               
               <h3 class={`text-xl font-bold mb-3 transition-colors ${theme.text} group-hover:text-slate-100`}>

@@ -1,4 +1,4 @@
-# Path 2: "I'm sympathetic -- show me the weak spots"
+# Path 2: The Case Against Psi
 
 
 *Start with the strongest critical arguments, move through failed replications and methodology concerns, then see how proponents respond. This path is designed to stress-test your priors.*

@@ -1,4 +1,4 @@
-# Path 1: "I'm a skeptic -- steelman psi for me"
+# Path 1: The Best Evidence for Psi
 
 
 *Start with the strongest overview, move through the best meta-analyses, examine the most compelling individual studies, then read the sharpest critiques so you can weigh both sides.*
