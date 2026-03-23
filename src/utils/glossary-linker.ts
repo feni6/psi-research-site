@@ -26,22 +26,27 @@ const GLOSSARY_TERMS: { pattern: RegExp; href: string }[] = [
   { pattern: /\bsample sizes?\b/gi, href: '/glossary#sample-size' },
   { pattern: /\bz-scores?\b/gi, href: '/glossary#z-score' },
   { pattern: /\bnull hypothesis\b/gi, href: '/glossary#null-hypothesis' },
+  { pattern: /\blinear convergence\b/gi, href: '/glossary#linear-convergence' },
+  { pattern: /\bconvergent estimates?\b/gi, href: '/glossary#linear-convergence' },
+  { pattern: /\bES\b/g, href: '/glossary#effect-size' },
 ];
 
 // Inline statistical notation (z=8.31, p<0.05, d=0.2, N=100, BF=13669)
 const STAT_NOTATION: { pattern: RegExp; href: string }[] = [
   // z-scores: z = 8.31, Z=3.97, z=-4.9
-  { pattern: /(?<![a-zA-Z])([zZ])\s*([=<>≤≥])\s*([−\-]?\s*[\d.]+(?:\s*[×x]\s*10[⁻−\-]?\d+)?)/g, href: '/glossary#z-score' },
-  // p-values: p = 0.05, p<.001, P < 0.001
-  { pattern: /(?<![a-zA-Z])([pP])\s*([=<>≤≥])\s*([−\-]?\s*[\d.]+(?:\s*[×x]\s*10[⁻−\-]?\d+)?)/g, href: '/glossary#p-value' },
+  { pattern: /(?<![a-zA-Z])([zZ])\s*([=<>≤≥]|&lt;|&gt;)\s*([−\-]?\s*[\d.]+(?:\s*[×x]\s*10[⁻−\-]?\d+)?)/g, href: '/glossary#z-score' },
+  // p-values: p = 0.05, p<.001, P < 0.001, p&lt;0.001
+  { pattern: /(?<![a-zA-Z])([pP])\s*([=<>≤≥]|&lt;|&gt;)\s*([−\-]?\s*[\d.]+(?:\s*[×x]\s*10[⁻−\-]?\d+)?)/g, href: '/glossary#p-value' },
   // Sigma notation: 6-sigma, 6σ, 11σ
   { pattern: /\b(\d+)\s*[-–]?\s*(?:sigma|σ)/gi, href: '/glossary#standard-deviation' },
   // Cohen's d: d = 0.21, d=0.1-0.3, d ≈ 0.2
   { pattern: /(?<![a-zA-Z])(d)\s*([=≈])\s*([\d.]+(?:\s*[-–]\s*[\d.]+)?)/g, href: '/glossary#cohen-s-d' },
   // Sample size: N=100, n=45, N = 1,050
-  { pattern: /(?<![a-zA-Z])([nN])\s*([=<>≤≥])\s*([\d,]+)/g, href: '/glossary#sample-size' },
+  { pattern: /(?<![a-zA-Z])([nN])\s*([=<>≤≥]|&lt;|&gt;)\s*([\d,]+)/g, href: '/glossary#sample-size' },
   // Bayes factor: BF=13669, BF₁₀=60.5, BF10 = 16.6, BF01 = 0.63
-  { pattern: /\b(BF[₁₀₀10]*)\s*([=<>≤≥])\s*([\d.,]+)/g, href: '/glossary#bayes-factor' },
+  { pattern: /\b(BF[₁₀₀10]*)\s*([=<>≤≥]|&lt;|&gt;)\s*([\d.,]+)/g, href: '/glossary#bayes-factor' },
+  // Effect size notation: ES=0.209, ES≈0.35
+  { pattern: /\b(ES)\s*([=≈<>≤≥]|&lt;|&gt;)\s*([\d.,]+)/g, href: '/glossary#effect-size' },
 ];
 
 // --- Paper Citation Auto-Linker ---
@@ -95,6 +100,10 @@ function buildCitationPatterns(): CitationEntry[] {
 
 // --- Shared helpers ---
 
+function escapeHtml(str: string): string {
+  return str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
 function isInsideATag(text: string, offset: number): boolean {
   const before = text.slice(0, offset);
   const lastOpenA = before.lastIndexOf('<a ');
@@ -116,6 +125,15 @@ export function linkGlossaryTerms(text: string): string {
 
   let result = text;
 
+  // Pre-escape < and > in statistical contexts so they survive HTML rendering
+  // e.g., "p<0.001" -> "p&lt;0.001", "n<100" -> "n&lt;100", "d < 0.08" -> "d &lt; 0.08"
+  // Also escape standalone comparisons like "PPV < 50%", "< 0.05", "> 3"
+  result = result.replace(/(?<![a-zA-Z<\/])([pPnNzZdD])\s*(<)\s*([\d.])/g, '$1 &lt; $3');
+  result = result.replace(/(?<![a-zA-Z<\/])([pPnNzZdD])\s*(>)\s*([\d.])/g, '$1 &gt; $3');
+  // Catch remaining bare < > between spaces/parens and digits (e.g., "PPV < 50%", "< 0.05")
+  result = result.replace(/(\s|^)(<)\s*([\d.])/g, '$1&lt; $3');
+  result = result.replace(/(\s|^)(>)\s*([\d.])/g, '$1&gt; $3');
+
   // First pass: word/phrase glossary terms
   for (const { pattern, href } of GLOSSARY_TERMS) {
     pattern.lastIndex = 0;
@@ -129,7 +147,7 @@ export function linkGlossaryTerms(text: string): string {
     });
   }
 
-  // Second pass: inline statistical notation
+  // Second pass: inline statistical notation (escape < > in matched text for HTML safety)
   for (const { pattern, href } of STAT_NOTATION) {
     pattern.lastIndex = 0;
 
@@ -138,7 +156,7 @@ export function linkGlossaryTerms(text: string): string {
       if (isInsideATag(result, offset) || isInsideHtmlTag(result, offset)) {
         return match;
       }
-      return `<a href="${href}" class="${LINK_CLASS}">${match}</a>`;
+      return `<a href="${href}" class="${LINK_CLASS}">${escapeHtml(match)}</a>`;
     });
   }
 
