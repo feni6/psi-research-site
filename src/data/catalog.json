@@ -1,7 +1,7 @@
 {
       "library_name": "Psi Research Library",
       "last_updated": "2026-03-04",
-      "total_papers": 360,
+      "total_papers": 355,
       "papers": [
             {
                   "id": "achterberg_2005_evidence",
@@ -21410,6 +21410,64 @@
                   },
                   "plain_summary": "Can people pick up information through ESP when they're in a perfectly normal, everyday state of mind? This landmark meta-analysis (a study that combines results from many studies) gathered 78 experiments spanning nearly three decades, covering 2,682 trials with over a thousand participants. The overall result was statistically significant -- you'd need 866 unpublished negative studies hiding in file drawers to make it disappear, which is a lot. Impressively, study quality didn't correlate with effect size, meaning better-run experiments weren't less likely to find results. Telepathy and precognition (sensing future events) showed real effects, though clairvoyance didn't. Here's the big catch: a whopping 96% of studies failed to report whether they'd decided in advance what they were measuring, raising a serious red flag about possible cherry-picking of results. This tension between genuinely robust statistics and worrying methodological gaps set the stage for the heated ganzfeld telepathy debate that followed.",
                   "actual_abstract": "Seventy-eight free-response ESP studies in which participants were not in an altered state of consciousness were meta-analyzed, There was a highly significant cumulative effect (Stouffer z= 5.72, p< 5.4.x 10°, one-tailed), The mean effect size (Nn 5 was 0.16 (SD = 0.29). Crude selective reporting appears to be an implausible counterexplanation of the overall cumulation and there were no strong positive indications that methodological artifacts played a role in producing above-chance results. However, the failure to report that the outcome measure was preplanned in 96% of the studies and the frequent use of multiple measures raises the possibility of widespread post hoc data selection problems within the studies themselves. No data are available to resolve the question of whether this threat to the database's validity is merely potential. Because of this problem and the obstacles to obtaining statistical evidence of the effects of flaws in any meta-analysis, caution is recommended in drawing strong conclusions from this meta-analysis about the existence of a genuine anomaly. However, a number of possible moderator variables were identified that suggest directions for future research,"
+            },
+            {
+                  "id": "mossbridge_2025_mindfield_nonspeakers",
+                  "title": "Taking the Mindfield Literally: Discovering Minds by Assuming Competence Among Nonspeakers",
+                  "authors": [
+                        "Mossbridge, Julia",
+                        "Welch, Maria",
+                        "Tarrant, Jeff"
+                  ],
+                  "year": 2025,
+                  "journal": "Mindfield Bulletin",
+                  "doi": null,
+                  "folder": "11_Autism_and_Nonverbal",
+                  "filename": "Mossbridge_et_al_2025_Mindfield_Nonspeakers.txt",
+                  "tags": [
+                        "nonspeakers",
+                        "autism",
+                        "telepathy",
+                        "spelling_to_communicate",
+                        "facilitated_communication",
+                        "apraxia",
+                        "mind_discovery",
+                        "presumed_competence",
+                        "participatory_science"
+                  ],
+                  "psi_domain": "telepathy",
+                  "open_access": true,
+                  "source_url": "https://mindfieldbulletin.org/taking-the-mindfield-literally-discovering-minds-by-assuming-competence-among-nonspeakers/",
+                  "abstract": "Nonspeaking individuals, particularly those with autism and apraxia, have long been assumed to lack complex thought due to their inability to produce speech. This article argues that speech difficulty reflects a motor control problem rather than a cognitive deficit, and introduces two IRB-approved protocols for understanding nonspeakers' minds. The 'mind-discovery' protocol tests whether nonspeakers can report on stimuli presented when their communication partner was absent, while the 'telepathy-discovery' protocol tests whether nonspeakers can access information held only by a sender in another room. Preliminary pilot results from both protocols are reported as successful across multiple students. The authors emphasize working with nonspeakers as co-researchers, presuming competence, and using participatory science methods. The article also discusses the limitations of traditional message-passing tests and proposes improved approaches that account for apraxia and individual sensory preferences.",
+                  "notes": "Published in the Parapsychological Association's Mindfield Bulletin. The three co-authors bridge parapsychology (Mossbridge), speech-language pathology (Welch), and neurofeedback (Tarrant). Central to the Telepathy Tapes controversy (#9). Introduces two novel protocols: 'mind-discovery' trials that verify nonspeakers can communicate their own thoughts, and 'telepathy-discovery' trials that test for information transfer between rooms. Not yet peer-reviewed in a traditional journal. Key methodological features: IRB-approved, nonspeakers choose their own communication partners and senders, stimuli are tailored to individual sensory preferences, AI cosine similarity scoring developed with collaborator Damon Abraham. The article frames the work within a 'presume competence' philosophy and positions nonspeakers as co-researchers rather than subjects.",
+                  "related_papers": {
+                        "companion": [
+                              "weiler_woollacott_2025_telepathy_tapes",
+                              "jaswal_2019_being_appearing",
+                              "jaswal_2020_eyetracking"
+                        ],
+                        "same_research_program": [
+                              "mossbridge_2018_precognition",
+                              "mossbridge_2012_predictive"
+                        ],
+                        "extends": [
+                              "chen_2012_nonverbal_autism",
+                              "donnellan_2013_rethinking",
+                              "robledo_2012_sensory_movement"
+                        ]
+                  },
+                  "methodology": {
+                        "n": null,
+                        "n_studies": null,
+                        "pre_registered": false,
+                        "effect_size": null,
+                        "ci_95": null,
+                        "bayes_factor": null,
+                        "blinding": "Communication partner absent during stimulus presentation; sender in separate room for telepathy trials",
+                        "study_type": "exploratory/pilot"
+                  },
+                  "plain_summary": "What if people who can't speak can still think — and maybe even read minds? This article tackles one of the most provocative questions in the field: whether nonspeaking autistic individuals, long assumed to lack complex thought, actually possess rich inner lives that include telepathic abilities. The authors argue that the real problem isn't cognition — it's a motor control disorder called apraxia that traps capable minds in uncooperative bodies. They describe two new test protocols: 'mind-discovery' trials that verify nonspeakers can communicate their own thoughts when their helper isn't in the room, and 'telepathy-discovery' trials where nonspeakers accurately describe stories being read by someone in a completely separate location. The early pilot results are striking, with multiple students succeeding at both tasks. Perhaps most refreshingly, the researchers treat nonspeakers as co-researchers who help design the experiments, rather than passive subjects to be tested.",
+                  "actual_abstract": null
             }
       ],
       "paper_count": 196

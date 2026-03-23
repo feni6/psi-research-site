@@ -12,7 +12,7 @@ const KEY_QUESTIONS: Record<string, string> = {
   '06': "Can mediums genuinely access information from deceased persons?",
   '07': "Do NDEs provide evidence for consciousness beyond the brain?",
   '08': "Does collective human attention influence random systems worldwide?",
-  '09': "Can facilitator-assisted communication reveal hidden cognitive abilities?",
+  '09': "Can nonspeaking individuals communicate information received telepathically?",
   '10': "Do meta-analyses actually support the existence of psi?",
   '11': "Can people detect when they're being stared at?",
   '12': "Do pets genuinely anticipate their owner's return?",
@@ -175,8 +175,8 @@ allControversies.sort((a, b) => b.total - a.total);
 // Identify Top 3 for badges
 const top3Ids = new Set(allControversies.slice(0, 3).map(c => c.id));
 
-// Identify "Start Here" recommendation (Meta-analysis #10)
-const startHereItem = allControversies.find(c => c.num === '10');
+// Identify "Start Here" recommendation (Non-Speaker Telepathy #09)
+const startHereItem = allControversies.find(c => c.num === '09');
 
 // Organize into groups (items within groups will retain sort order if we map carefully)
 const groupedControversies = GROUP_DEFINITIONS.map(group => {
@@ -227,10 +227,10 @@ const totalControversies = allControversies.length;
           </div>
           <h3 class="text-xl font-bold text-slate-100 mb-2">{startHereItem.title}</h3>
           <p class="text-slate-400 text-sm mb-4 max-w-2xl">
-            New to psi research? Start here. This debate covers the statistical foundation of the entire field, analyzing hundreds of studies to determine if the effect is real or an artifact.
+            The hottest debate in psi research right now. Can nonspeaking autistic individuals describe information known only to someone in another room? New pilot studies and The Telepathy Tapes podcast have brought this question to a wide audience.
           </p>
           <a href={`/controversies/${startHereItem.id}`} class="inline-flex items-center text-amber-400 font-semibold hover:text-amber-300 transition-colors text-sm group/link">
-            Read the Meta-Analysis Debate 
+            Read the Non-Speaker Telepathy Debate
             <svg class="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
           </a>
         </div>
