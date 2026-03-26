@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { linkGlossaryTerms } from '../utils/glossary-linker';
 
 interface Story {
   id: string;
@@ -10,6 +11,11 @@ interface Story {
   domainColor: string;
   paperIds: string[];
   body: string; // HTML content — two paragraphs
+  image?: {
+    src: string;
+    alt: string;
+    credit: string;  // attribution line
+  };
 }
 
 const stories: Story[] = [
@@ -21,7 +27,12 @@ const stories: Story[] = [
     domainIcon: '🧠',
     domainColor: 'purple',
     paperIds: ['sheldrake_2000_that', 'sheldrake_smart_1998_dog_preliminary', 'wiseman_1998_jaytee_dog', 'sheldrake_smart_2000_testing_kane'],
-    body: '<p>When Pam Smart went out, her terrier Jaytee ignored the front window — cameras recorded him there just 4% of the time across hundreds of hours of tape. But something happened the moment Pam decided to come home. From over seven kilometers away, at randomly chosen times nobody in the house could have known, Jaytee walked to the window and waited. He was there 55% of the time during her return journeys, across more than 100 videotaped experiments. In one trial filmed for Austrian television, he reached the window within 11 seconds of Pam being told — at a randomly selected instant — to head home. He did this when he was home alone. He did this when Pam returned at non-routine times of her own choosing. His anticipation typically began before she even started her journey — at the moment of her decision to leave. Over 200 hours of time-coded footage, scored blind, documented the same impossible thing: this dog knew.</p><p>Skeptic Richard Wiseman tested the same dog with the same cameras and the same random-return protocol. He published a paper declaring the results negative. But his own videotapes showed Jaytee at the window 4% of the time during absences and 78% during returns — an even larger effect than Sheldrake had found. Wiseman reached his conclusion by applying a binary pass/fail threshold that did not capture the behavioral shift the tapes clearly showed; the dog behaved the same in both teams\' experiments. A separate replication with a Rhodesian ridgeback named Kane found the same pattern: 1% during absences, 26% during returns, at odds of 5,000 to 1 against chance. Two dogs, two owners, hundreds of hours of footage, and a skeptic whose own data confirmed what he set out to disprove. If these tapes mean what they appear to mean — that a dog can detect the moment its owner decides to come home, across miles, through walls, with no sensory cue — then something is passing between them that no branch of science can currently explain.</p>'
+    image: {
+      src: '/images/stories/terrier.jpg',
+      alt: 'A scruffy mixed-breed terrier similar to Jaytee, the dog at the center of Sheldrake\'s telepathy experiments',
+      credit: 'Photo: Chris Barber, CC BY 2.0, via Wikimedia Commons. Not the actual Jaytee — a similar terrier.',
+    },
+    body: '<p>When Pam Smart went out, her terrier Jaytee ignored the front window — cameras recorded him there just 4% of the time across hundreds of hours of tape. But something happened the moment Pam decided to come home. From over seven kilometers away, at randomly chosen times nobody in the house could have known, Jaytee walked to the window and waited. He was there 55% of the time during her return journeys (p < 0.0001), across more than 100 videotaped experiments. In one trial filmed for Austrian television, he reached the window within 11 seconds of Pam being told — at a randomly selected instant — to head home. He did this when he was home alone. He did this when Pam returned at non-routine times of her own choosing. His anticipation typically began before she even started her journey — at the moment of her decision to leave. Over 200 hours of time-coded footage, <a href="/glossary#double-blind">scored blind</a>, documented the same impossible thing: this dog knew.</p><p>Skeptic Richard Wiseman tested the same dog with the same cameras and the same random-return protocol. He published a paper declaring the results negative. But his own videotapes showed Jaytee at the window 4% of the time during absences and 78% during returns — an even larger effect than Sheldrake had found. Wiseman reached his conclusion by applying a binary pass/fail threshold that did not capture the behavioral shift the tapes clearly showed; the dog behaved the same in both teams\' experiments. A separate replication with <a href="/paper/sheldrake_smart_2000_testing_kane">a Rhodesian ridgeback named Kane</a> found the same pattern: 1% during absences, 26% during returns (p = 0.0002). Two dogs, two owners, hundreds of hours of footage, and a skeptic whose own data confirmed what he set out to disprove. If these tapes mean what they appear to mean — that a dog can detect the moment its owner decides to come home, across miles, through walls, with no sensory cue — then something is passing between them that no branch of science can currently explain.</p>'
   },
 ];
 
@@ -56,6 +67,15 @@ function getPaper(id: string) {
       <div class="space-y-12">
         {stories.map((story) => (
           <article class="group bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500/30 transition-all duration-300" id={story.id}>
+            <!-- Card Image -->
+            {story.image && (
+              <div class="relative">
+                <img src={story.image.src} alt={story.image.alt} class="w-full h-64 sm:h-80 object-cover" loading="lazy" />
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950/90 to-transparent px-4 py-2">
+                  <p class="text-xs text-slate-500 italic">{story.image.credit}</p>
+                </div>
+              </div>
+            )}
             <!-- Card Header -->
             <div class="px-6 sm:px-8 pt-6 sm:pt-8">
               <div class="flex items-center gap-2 mb-3">
@@ -75,7 +95,7 @@ function getPaper(id: string) {
             <!-- Card Body -->
             <div class="px-6 sm:px-8 pb-6 sm:pb-8">
               {story.body ? (
-                <div class="prose-custom space-y-4 text-base leading-relaxed text-slate-300" set:html={story.body} />
+                <div class="prose-custom space-y-4 text-base leading-relaxed text-slate-300" set:html={linkGlossaryTerms(story.body)} />
               ) : (
                 <div class="bg-slate-800/50 border border-dashed border-slate-700 rounded-xl p-8 text-center">
                   <p class="text-slate-500 italic">Story coming soon.</p>
