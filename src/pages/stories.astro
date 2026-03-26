@@ -16,6 +16,7 @@ interface Story {
     src: string;
     alt: string;
     credit: string;  // attribution line
+    position?: string; // CSS object-position override, e.g. 'center 70%'
   };
   externalLinks?: {
     label: string;
@@ -86,6 +87,12 @@ const stories: Story[] = [
     domainColor: 'blue',
     domainUrl: '/domain/precognition',
     paperIds: ['mossbridge_2025_future_dreams'],
+    image: {
+      src: '/images/stories/womens-rugby.jpg',
+      alt: 'Women competing in a rugby lineout at the 2025 Rugby World Cup — the kind of scene a lucid dreamer described before a skeptic randomly selected it as a target',
+      credit: 'Photo: JHock93, CC0, via Wikimedia Commons. 2025 Women\'s Rugby World Cup, Canada vs Australia.',
+      position: 'center 75%',
+    },
     body: '<p>Dave Green can enter a lucid dream almost at will. In a pre-registered experiment in 2023, he fell asleep, recognized he was dreaming, and walked to a computer in his dream house. He asked to see a photograph he had not yet been shown. What appeared: women seated around a table playing backgammon — but the table had markings like a football pitch, and they sat in the center of a large stadium with an audience watching. He woke, recorded the scene, and emailed it to Chris French — professor at Goldsmiths, University of London, and one of Britain\'s most prominent skeptics. French would then select a target using random.org, picking from a database of hundreds of news stories. The target he selected: Iranian women in hijabs playing rugby at a tournament in Italy. Women. A sport on a rectangular pitch. An audience. When AI text-embedding models compared Green\'s dream against all 2,707 items in the target database, the match scored Z = 4.99 — odds of roughly 80,000 to one after correcting for every comparison. The dream was recorded, timestamped, and in the skeptic\'s inbox before the target was chosen.</p><p>This was one of ten trials in a study by Green, French, and Mossbridge, published in the peer-reviewed International Journal of Dream Research. Across all ten, five of Green\'s lucid dreams matched their randomly selected targets by AI scoring (p = .033). Green recruited French himself, wanting a skeptic to close every loophole. In one miss, Green dreamed of a townhouse with a &ldquo;For Sale&rdquo; sign. French said nothing until the experiment ended, then revealed the sketch matched his own house, which at that moment had a real estate sign out front. He called it &ldquo;remarkably coincidental.&rdquo; The study has real limitations: ten trials from one dreamer, exploratory AI scoring, and flawed human judging. The skeptics on the team said the case for precognition remains unestablished. But one result sits in the published record: a dream of women on a football pitch in a stadium, sent to a skeptic whose random number generator then selected — from thousands of possibilities — Iranian women playing rugby. Whatever produced that dream, it described a target that did not yet exist, chosen by a man recruited because he did not believe such things were possible.</p>'
   },
 ];
@@ -124,7 +131,7 @@ function getPaper(id: string) {
             <!-- Card Image -->
             {story.image && (
               <div class="relative">
-                <img src={story.image.src} alt={story.image.alt} class="w-full h-64 sm:h-80 object-cover object-top" loading="lazy" />
+                <img src={story.image.src} alt={story.image.alt} class="w-full h-64 sm:h-80 object-cover" style={`object-position: ${story.image.position || 'top'}`} loading="lazy" />
                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950/90 to-transparent px-4 py-2">
                   <p class="text-xs text-slate-500 italic">{story.image.credit}</p>
                 </div>
