@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro'
 import Breadcrumb from '../../components/Breadcrumb.astro'
 import catalog from '../../data/catalog.json'
+import authorImages from '../../data/author-images.json'
 
 // Helper functions for ID generation (must be duplicated for getStaticPaths scope)
 function _generateAuthorId(name: string): string {
@@ -94,6 +95,10 @@ const coAuthors = Array.from(coAuthorMap.entries())
   .sort((a, b) => b[1] - a[1])
   .slice(0, 10) // Top 10
 
+// 5. Author Image
+const authorImageData = (authorImages as Record<string, any>)[authorName]
+const authorImage = authorImageData?.image || null
+
 // --- Helpers for UI ---
 
 const domainColors: Record<string, string> = {
@@ -150,7 +155,20 @@ const getMethodologyStatus = (paper: any) => {
     <!-- 1. Author Profile Header Card -->
     <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 md:p-8 shadow-lg">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-6">
-        <div>
+        <div class="flex items-center gap-5">
+          {authorImage ? (
+            <img
+              src={authorImage}
+              alt={`Photo of ${authorName}`}
+              class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-slate-700 flex-shrink-0"
+              loading="lazy"
+            />
+          ) : (
+            <div class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-3xl md:text-4xl font-bold border-2 border-slate-700 flex-shrink-0">
+              {authorName.charAt(0)}
+            </div>
+          )}
+          <div>
           <h1 class="text-3xl md:text-4xl font-bold text-slate-100 mb-2">{authorName}</h1>
           <div class="flex flex-wrap items-center gap-2 text-sm">
             <span class="px-2 py-1 rounded bg-slate-950 text-slate-400 text-xs font-mono border border-slate-800">ID: {authorId}</span>
@@ -161,6 +179,7 @@ const getMethodologyStatus = (paper: any) => {
             )}
             <span class="text-slate-600">•</span>
             <span class="text-slate-400">{yearRange}</span>
+          </div>
           </div>
         </div>
 
@@ -222,6 +241,12 @@ const getMethodologyStatus = (paper: any) => {
             ))}
           </div>
         </div>
+      )}
+
+      {authorImageData && (
+        <p class="text-[10px] text-slate-600 mt-4">
+          Photo: {authorImageData.attribution} &middot; {authorImageData.license}
+        </p>
       )}
     </div>
 

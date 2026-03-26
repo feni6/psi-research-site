@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import catalog from '../data/catalog.json';
+import authorImages from '../data/author-images.json';
 
 // Helper function to generate URL-safe author IDs
 function generateAuthorId(name: string): string {
@@ -36,6 +37,12 @@ const authors = Object.entries(authorMap)
 
 // Get top 20 for the highlight section
 const topAuthors = [...authors].sort(([,a], [,b]) => b.count - a.count).slice(0, 20);
+
+// Helper to get author image path
+const imageMap = authorImages as Record<string, any>;
+function getAuthorImage(name: string): string | null {
+  return imageMap[name]?.image || null;
+}
 
 // Calculate max count for relative bar visualization
 const maxPaperCount = Math.max(...authors.map(([, data]) => data.count));
@@ -108,8 +115,18 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
                 <div class="text-amber-400 text-2xl font-bold">{data.count}</div>
                 <div class="text-xs text-slate-500 font-mono">papers</div>
               </div>
-              <div class="text-slate-200 font-medium text-sm truncate mb-3 group-hover:text-amber-200 transition-colors">
-                {name}
+              <div class="flex items-center gap-2 mb-3">
+                {getAuthorImage(name) ? (
+                  <img
+                    src={getAuthorImage(name)!}
+                    alt=""
+                    class="w-7 h-7 rounded-full object-cover border border-slate-700 flex-shrink-0"
+                    loading="lazy"
+                  />
+                ) : null}
+                <span class="text-slate-200 font-medium text-sm truncate group-hover:text-amber-200 transition-colors">
+                  {name}
+                </span>
               </div>
               <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
                 <div 
@@ -160,9 +177,18 @@ const activeLetters = alphabet.filter(l => authorsByLetter[l].length > 0);
                   <details class="author-card group bg-slate-900/50 border border-slate-800 rounded-lg overflow-hidden transition-all hover:border-slate-700" data-name={name.toLowerCase()}>
                     <summary class="p-4 flex items-center justify-between cursor-pointer list-none focus:ring-2 focus:ring-amber-400 focus:outline-none" id={anchorId}>
                       <div class="flex items-center space-x-4">
-                        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 font-bold border border-slate-700 group-hover:border-amber-400/50 transition-colors">
-                          {name.charAt(0)}
-                        </div>
+                        {getAuthorImage(name) ? (
+                          <img
+                            src={getAuthorImage(name)!}
+                            alt={`Photo of ${name}`}
+                            class="w-10 h-10 rounded-full object-cover border border-slate-700 group-hover:border-amber-400/50 transition-colors flex-shrink-0"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 font-bold border border-slate-700 group-hover:border-amber-400/50 transition-colors flex-shrink-0">
+                            {name.charAt(0)}
+                          </div>
+                        )}
                         <div>
                           <h4 class="text-lg font-semibold">
                             <a href={`/author/${authorId}`} aria-label={`View papers by ${name}, ${data.count} papers`} class="text-slate-200 hover:text-amber-400 transition-colors focus:ring-2 focus:ring-amber-400 focus:outline-none">

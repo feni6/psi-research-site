@@ -15,7 +15,10 @@ Astro static site with Tailwind CSS. No SSR — builds to plain static HTML.
 ## Hosting & Deployment
 
 - **Host:** Cloudflare Pages (free tier)
-- **URL:** https://psi-research-site.pages.dev
+- **Domain:** thepsifiles.org (registered via Cloudflare Registrar, 2026-03-23)
+- **URL:** https://thepsifiles.org (also accessible via www.thepsifiles.org)
+- **Legacy URL:** https://psi-research-site.pages.dev (still works)
+- **DNS:** Two CNAME records (@ and www) → psi-research-site.pages.dev, proxied via Cloudflare
 - **Repo:** https://github.com/feni6/psi-research-site (public)
 - **Auto-deploy:** GitHub Actions workflow at `.github/workflows/deploy.yml`
   - Triggers on every push to `main`

@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "description": "Author portrait images with CC license attribution. Keys are normalized author names matching catalog format.",
+    "instructions": "To add a new author photo: add an entry with their normalized name, save the image to /public/images/authors/, and include full license/attribution info."
+  },
+  "Sheldrake, Rupert": {
+    "image": "/images/authors/sheldrake_rupert.jpg",
+    "license": "CC BY 3.0 / GFDL 1.2+",
+    "attribution": "Zereshk, via Wikimedia Commons",
+    "source": "https://commons.wikimedia.org/wiki/File:Sheldrake_TASC2008.JPG"
+  },
+  "Delorme, Arnaud": {
+    "image": "/images/authors/delorme_arnaud.jpg",
+    "license": "CC BY-SA 3.0 / GFDL 1.2+",
+    "attribution": "Arnodelorme, via Wikimedia Commons",
+    "source": "https://commons.wikimedia.org/wiki/File:Arnaud_Delorme.jpg"
+  },
+  "Walach, Harald": {
+    "image": "/images/authors/walach_harald.jpg",
+    "license": "CC BY-SA 3.0 DE",
+    "attribution": "Harald Walach, via Wikimedia Commons",
+    "source": "https://commons.wikimedia.org/wiki/File:Prof_Dr_Harald_Walach.jpeg"
+  },
+  "Bem, Daryl": {
+    "image": "/images/authors/bem_daryl.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Robert Sheaffer, via Wikimedia Commons",
+    "source": "https://commons.wikimedia.org/wiki/File:DarylBem_(cropped).jpg"
+  },
+  "Hyman, Ray": {
+    "image": "/images/authors/hyman_ray.jpg",
+    "license": "CC BY-SA 3.0",
+    "attribution": "Rouven Schafer, via Wikimedia Commons",
+    "source": "https://commons.wikimedia.org/wiki/File:Rayhyman.jpg"
+  },
+  "Wiseman, Richard": {
+    "image": "/images/authors/wiseman_richard.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "Karl Withakay, via Wikimedia Commons",
+    "source": "https://commons.wikimedia.org/wiki/File:Richard_Wiseman_at_CSICon_2022.jpg"
+  },
+  "Wagenmakers, Eric-Jan": {
+    "image": "/images/authors/wagenmakers_eric-jan.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "RJRyder, via Wikimedia Commons",
+    "source": "https://commons.wikimedia.org/wiki/File:EJ_Wagenmakers.jpg"
+  },
+  "Laureys, Steven": {
+    "image": "/images/authors/laureys_steven.jpg",
+    "license": "CC BY-SA 4.0",
+    "attribution": "MatiasLaureys, via Wikimedia Commons",
+    "source": "https://commons.wikimedia.org/wiki/File:Dr._Steven_Laureys_(2022).jpg"
+  }
+}
