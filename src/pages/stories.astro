@@ -9,6 +9,7 @@ interface Story {
   domain: string;
   domainIcon: string;
   domainColor: string;
+  domainUrl: string;
   paperIds: string[];
   body: string; // HTML content — two paragraphs
   image?: {
@@ -30,6 +31,7 @@ const stories: Story[] = [
     domain: 'Telepathy',
     domainIcon: '🧠',
     domainColor: 'purple',
+    domainUrl: '/domain/telepathy',
     paperIds: ['sheldrake_2000_that', 'sheldrake_smart_1998_dog_preliminary', 'wiseman_1998_jaytee_dog', 'sheldrake_smart_2000_testing_kane'],
     image: {
       src: '/images/stories/terrier.jpg',
@@ -44,19 +46,20 @@ const stories: Story[] = [
     body: '<p>When Pam Smart went out, her terrier Jaytee ignored the front window — cameras recorded him there just 4% of the time across hundreds of hours of tape. But something happened the moment Pam decided to come home. From over seven kilometers away, at randomly chosen times nobody in the house could have known, Jaytee walked to the window and waited. He was there 55% of the time during her return journeys (p < 0.0001), across more than 100 videotaped experiments. In one trial filmed for Austrian television, he reached the window within 11 seconds of Pam being told — at a randomly selected instant — to head home. He did this when he was home alone. He did this when Pam returned at non-routine times of her own choosing. His anticipation typically began before she even started her journey — at the moment of her decision to leave. Over 200 hours of time-coded footage, <a href="/glossary#double-blind">scored blind</a>, documented the same impossible thing: this dog knew.</p><p>Skeptic Richard Wiseman tested the same dog with the same cameras and the same random-return protocol. He published a paper declaring the results negative. But his own videotapes showed Jaytee at the window 4% of the time during absences and 78% during returns — an even larger effect than Sheldrake had found. Wiseman reached his conclusion by applying a binary pass/fail threshold that did not capture the behavioral shift the tapes clearly showed; the dog behaved the same in both teams\' experiments. A separate replication with <a href="/paper/sheldrake_smart_2000_testing_kane">a Rhodesian ridgeback named Kane</a> found the same pattern: 1% during absences, 26% during returns (p = 0.0002). Two dogs, two owners, hundreds of hours of footage, and a skeptic whose own data confirmed what he set out to disprove. If these tapes mean what they appear to mean — that a dog can detect the moment its owner decides to come home, across miles, through walls, with no sensory cue — then something is passing between them that no branch of science can currently explain.</p>'
   },
   {
-    id: 'what-the-dead-saw',
-    title: "What the Dead Saw",
-    subtitle: "Patients in cardiac arrest — with no measurable brain function — describe specific details about their resuscitations, identify objects they couldn't have seen, and encounter the recently dead before anyone knows they've died. When researchers check, the accounts keep turning out to be right.",
-    domain: 'Near-Death Experiences',
-    domainIcon: '✨',
-    domainColor: 'cyan',
-    paperIds: ['parnia_2014_aware', 'ring_1997_near_death_blind', 'greyson_2010_peak_in_darien', 'greyson_2011_western_approaches_nde', 'lommel_2001_neardeath'],
+    id: 'when-the-ball-drops',
+    title: "When the Ball Drops",
+    subtitle: "For 27 consecutive years, random number generators around the world deviated from chance at the stroke of midnight on New Year\u2019s Eve. The effect appeared where billions celebrated. Where few did, it vanished.",
+    domain: 'Mind & Matter',
+    domainIcon: '\uD83C\uDF10',
+    domainColor: 'teal',
+    domainUrl: '/domain/psychokinesis',
+    paperIds: ['radin_2025_years', 'nelson_2011_effects', 'nelson_2014_gcp_invited', 'bancel_2017_searching', 'scargle_2002_gcp_sept11'],
     image: {
-      src: '/images/stories/tunnel-light.jpg',
-      alt: 'A lone figure silhouetted against bright white light at the end of a dark tunnel — the image most commonly described by near-death experience survivors',
-      credit: 'Illustration: Jesse Krauss, public domain, via Wikimedia Commons',
+      src: '/images/stories/disco-ball.jpg',
+      alt: 'A disco ball casting scattered light against a dark background, evoking the celebratory energy of New Year\u2019s Eve',
+      credit: 'Photo: NEOSiAM 2024+ on Pexels (free license)',
     },
-    body: '<p>When Sam Parnia\'s <a href="/paper/parnia_2014_aware">AWARE study</a> tracked over 2,000 cardiac arrests across 15 hospitals, one patient stood out: during a three-minute period of clinical death with no measurable brain function, this person described the resuscitation team\'s actions in specific detail — and the medical staff confirmed every point. But this wasn\'t the first verified case, or the strangest. In <a href="/paper/ring_1997_near_death_blind">Kenneth Ring\'s study of blind NDE survivors</a>, a totally blind man identified the color and pattern of a necktie in his hospital room — something he could never have seen. A woman who had recently lost her sight described a hospital corridor in visual detail that an independent witness confirmed. When researcher Janice Holden reviewed all published cases of people reporting verifiable perceptions during NDEs, 92% proved completely accurate.</p><p>The cases that are hardest to explain may be what Bruce Greyson calls <a href="/paper/greyson_2010_peak_in_darien">&ldquo;Peak in Darien&rdquo; experiences</a>: NDE survivors who encounter someone they believed to be alive, only for everyone to discover afterward that person had just died — and nobody present knew it yet. Some met deceased people they had never seen in life. Out of 665 NDEs in the University of Virginia\'s collection, 21% included encounters with the deceased but just 4% with the living — the opposite of what expectation-driven hallucination would produce. Two major prospective studies — <a href="/paper/lommel_2001_neardeath">van Lommel\'s in <em>The Lancet</em></a> and Parnia\'s AWARE — were designed to test these reports under controlled conditions. Both found verified cases. The brain flatlines within seconds of cardiac arrest, and CPR provides a fraction of normal blood flow. Whatever is producing these perceptions — specific, accurate, and confirmed by independent witnesses — it is not coming through the ordinary channels of a functioning brain.</p>'
+    body: '<p>In time zones where billions of people ring in the New Year, random number generators become measurably less random at the stroke of midnight. In time zones where few people celebrate, they don\'t. That is the central finding of Dean Radin\'s <a href="/paper/radin_2025_years">analysis of 27 years of data</a> from the Global Consciousness Project \u2014 a worldwide network of quantum-noise devices that produce streams of truly random ones and zeros, running continuously in dozens of countries since 1998. Radin applied seven independent statistical methods to 33 billion samples (6.6 trillion bits), comparing every New Year\'s Eve midnight to every other midnight of the year. The principal components analysis flagged the deviation at z = \u22124.9 \u2014 less than one chance in two million. The mean-shift analysis found a 6-sigma anomaly in the four and a half minutes centered on midnight. No other night produced anything comparable. When Radin partitioned the data by population, time zones with 6.8 billion people counting down showed significant deviations; zones with only 629 million did not. More minds focused on the same joyful instant, bigger signal \u2014 the same dose-response relationship that, in any other field, would be treated as evidence that something real is happening.</p><p>The Global Consciousness Project has faced serious critique. NASA astrophysicist <a href="/paper/scargle_2002_gcp_sept11">Jeffrey Scargle argued</a> that the project\'s flagship cumulative-sum analyses can generate impressive-looking structure from pure noise. GCP insider <a href="/paper/bancel_2017_searching">Peter Bancel went further</a>: his reanalysis of the project\'s 7-sigma cumulative result argued the anomaly tracks the intentions of the handful of researchers running the experiment, not humanity\'s collective mood. The New Year\'s Eve study addresses both objections. Unlike post-hoc event selections such as September 11, New Year\'s Eve is as predictable as it gets \u2014 no cherry-picking, no ambiguity about when the window opens. And the population partition tests Bancel\'s reinterpretation directly: if the effect came from the experimenters\' minds rather than the celebrants\', it should appear equally in all time zones. Instead, it scaled with the crowd. The study is not pre-registered, and the choice of seven analytical methods introduces some flexibility \u2014 but those methods converge on the same answer across 27 independent replications of the same event. If random numbers respond to New Year\'s Eve because billions of minds are focused on the same moment \u2014 and fall silent where few minds are present \u2014 then something is coupling human consciousness to the behavior of machines specifically designed to be immune to outside influence.</p>'
   },
   {
     id: 'nkisi',
@@ -65,6 +68,7 @@ const stories: Story[] = [
     domain: 'Telepathy',
     domainIcon: '🧠',
     domainColor: 'purple',
+    domainUrl: '/domain/telepathy',
     paperIds: ['sheldrake_2003_parrot_telepathy'],
     image: {
       src: '/images/stories/african-grey.jpg',
@@ -72,6 +76,17 @@ const stories: Story[] = [
       credit: 'Photo: Pexels (free license). Not the actual N\'kisi — a similar African Grey.',
     },
     body: '<p>N\'kisi was an African Grey parrot and, his owner Aim\u00e9e Morgana believed, a mind reader. Rupert Sheldrake designed an experiment to test this under conditions that left no room for cues. Aim\u00e9e sat in a sealed room on a different floor from N\'kisi, opened a randomly selected photograph from a sealed envelope, and looked at it in silence for two minutes. Downstairs, N\'kisi talked — and was filmed. Three independent transcribers, who had no idea which photograph was being viewed, wrote down what the parrot said. Across 147 trials, N\'kisi\'s words matched the photograph 23 times. Chance predicted 12. The odds against a fluke were roughly 4,000 to 1 (p = 0.0002). The photographs had been randomized by a third party. The statistics were checked by an independent analyst at the Free University of Amsterdam. N\'kisi also repeated his key words more often when they were hits than misses — as if he was more certain when he was right. A parrot, alone in a room, was describing photographs he could not see, viewed by a person he could not hear, in a room he could not access.</p><p>NASA astrophysicist Jeffrey Scargle, one of three peer reviewers, raised a real concern: could biases in how N\'kisi\'s known vocabulary was matched to the photograph categories have inflated the results? Statistician Mikel Aickin applied an entirely different analytical method to the same data and reached the same conclusion — the effect held. The study made TIME magazine but has never been independently replicated, and that is its one genuine weakness. The controls, however, were unusually stringent for an animal study: sealed envelopes, synchronized time-coded video of both parrot and owner, blind transcription by three independent judges, and third-party randomization. If an African Grey parrot can reliably say what a person is looking at in a sealed room on another floor — through no sensory channel anyone can identify — then the bond between N\'kisi and Aim\u00e9e involved something that the word &ldquo;communication&rdquo; does not begin to cover.</p>'
+  },
+  {
+    id: 'dreamer-skeptic',
+    title: "The Dreamer and the Skeptic",
+    subtitle: "In a pre-registered experiment, a lucid dreamer described women playing a game on a football pitch in a stadium. A prominent skeptic then randomly selected the target: Iranian women playing rugby. Out of 2,707 targets, the match was 80,000 to one.",
+    domain: 'Precognition',
+    domainIcon: '🌙',
+    domainColor: 'blue',
+    domainUrl: '/domain/precognition',
+    paperIds: ['mossbridge_2025_future_dreams'],
+    body: '<p>Dave Green can enter a lucid dream almost at will. In a pre-registered experiment in 2023, he fell asleep, recognized he was dreaming, and walked to a computer in his dream house. He asked to see a photograph he had not yet been shown. What appeared: women seated around a table playing backgammon — but the table had markings like a football pitch, and they sat in the center of a large stadium with an audience watching. He woke, recorded the scene, and emailed it to Chris French — professor at Goldsmiths, University of London, and one of Britain\'s most prominent skeptics. French would then select a target using random.org, picking from a database of hundreds of news stories. The target he selected: Iranian women in hijabs playing rugby at a tournament in Italy. Women. A sport on a rectangular pitch. An audience. When AI text-embedding models compared Green\'s dream against all 2,707 items in the target database, the match scored Z = 4.99 — odds of roughly 80,000 to one after correcting for every comparison. The dream was recorded, timestamped, and in the skeptic\'s inbox before the target was chosen.</p><p>This was one of ten trials in a study by Green, French, and Mossbridge, published in the peer-reviewed International Journal of Dream Research. Across all ten, five of Green\'s lucid dreams matched their randomly selected targets by AI scoring (p = .033). Green recruited French himself, wanting a skeptic to close every loophole. In one miss, Green dreamed of a townhouse with a &ldquo;For Sale&rdquo; sign. French said nothing until the experiment ended, then revealed the sketch matched his own house, which at that moment had a real estate sign out front. He called it &ldquo;remarkably coincidental.&rdquo; The study has real limitations: ten trials from one dreamer, exploratory AI scoring, and flawed human judging. The skeptics on the team said the case for precognition remains unestablished. But one result sits in the published record: a dream of women on a football pitch in a stadium, sent to a skeptic whose random number generator then selected — from thousands of possibilities — Iranian women playing rugby. Whatever produced that dream, it described a target that did not yet exist, chosen by a man recruited because he did not believe such things were possible.</p>'
   },
 ];
 
@@ -118,10 +133,10 @@ function getPaper(id: string) {
             <!-- Card Header -->
             <div class="px-6 sm:px-8 pt-6 sm:pt-8">
               <div class="flex items-center gap-2 mb-3">
-                <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-${story.domainColor}-500/10 text-${story.domainColor}-400 border border-${story.domainColor}-500/20`}>
+                <a href={story.domainUrl} class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-${story.domainColor}-500/10 text-${story.domainColor}-400 border border-${story.domainColor}-500/20 hover:bg-${story.domainColor}-500/20 transition-colors`}>
                   <span>{story.domainIcon}</span>
                   {story.domain}
-                </span>
+                </a>
               </div>
               <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-3">
                 {story.title}
