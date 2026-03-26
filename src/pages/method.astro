@@ -506,22 +506,22 @@ const getDomainColor = (domain) => {
 
       <!-- Hero Stats Grid -->
       <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-700/50 border-t border-slate-700/50 bg-slate-950/30 backdrop-blur-sm">
-        <div class="p-6 text-center hover:bg-slate-800/30 transition-colors">
+        <a href="/catalog" class="p-6 text-center hover:bg-slate-800/30 transition-colors">
           <div class="text-3xl font-bold text-amber-400 count-up" data-target={totalPapers}>0</div>
           <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Total Papers</div>
-        </div>
-        <div class="p-6 text-center hover:bg-slate-800/30 transition-colors">
+        </a>
+        <a href="/authors" class="p-6 text-center hover:bg-slate-800/30 transition-colors">
           <div class="text-3xl font-bold text-blue-400 count-up" data-target={uniqueAuthors}>0</div>
           <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Unique Authors</div>
-        </div>
-        <div class="p-6 text-center hover:bg-slate-800/30 transition-colors">
+        </a>
+        <a href="/timeline" class="p-6 text-center hover:bg-slate-800/30 transition-colors">
           <div class="text-3xl font-bold text-emerald-400 count-up" data-target={maxYear - minYear}>0</div>
           <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Year Span</div>
-        </div>
-        <div class="p-6 text-center hover:bg-slate-800/30 transition-colors">
+        </a>
+        <a href="/stats" class="p-6 text-center hover:bg-slate-800/30 transition-colors">
           <div class="text-3xl font-bold text-purple-400">{topDomain?.domain || 'N/A'}</div>
           <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-1">Top Domain</div>
-        </div>
+        </a>
       </div>
     </header>
 
@@ -565,7 +565,7 @@ const getDomainColor = (domain) => {
           <div class="text-lg font-medium text-slate-200">
             <span class="count-up" data-target={effectSizeStats?.avg} data-decimals="2">0</span>
           </div>
-          <div class="text-sm text-emerald-400 mt-1">Across {effectSizeStats?.count} reported papers</div>
+          <div class="text-sm text-emerald-400 mt-1">Across {effectSizeStats?.count} papers with numeric effect sizes</div>
         </div>
 
         <!-- Most Connected -->
