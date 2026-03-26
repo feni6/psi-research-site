@@ -267,7 +267,7 @@ const randomAuthorIds = uniqueAuthors.filter((_: any, i: number) => i % 7 === 0)
             <a href={`/domain/${domain}`} role="listitem" aria-label={`${config.label} - ${count} papers`} class={`group relative bg-slate-900 border border-slate-800 ${config.color} rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden focus:ring-2 focus:ring-amber-400 focus:outline-none`}>
               <div class="relative z-10">
                 <div class="flex items-center justify-between mb-3">
-                  <span class="text-2xl filter grayscale group-hover:grayscale-0 transition-all">{config.icon}</span>
+                  <span class="text-2xl">{config.icon}</span>
                   <span class="text-xs font-bold bg-slate-800 text-slate-300 px-2 py-1 rounded-md group-hover:bg-amber-500 group-hover:text-slate-900 transition-colors">{count}</span>
                 </div>
                 <div class="font-bold text-slate-200 text-sm mb-1 group-hover:text-amber-400 transition-colors">{config.label}</div>
