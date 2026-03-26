@@ -16,6 +16,10 @@ interface Story {
     alt: string;
     credit: string;  // attribution line
   };
+  externalLinks?: {
+    label: string;
+    url: string;
+  }[];
 }
 
 const stories: Story[] = [
@@ -32,7 +36,22 @@ const stories: Story[] = [
       alt: 'A scruffy mixed-breed terrier similar to Jaytee, the dog at the center of Sheldrake\'s telepathy experiments',
       credit: 'Photo: Chris Barber, CC BY 2.0, via Wikimedia Commons. Not the actual Jaytee — a similar terrier.',
     },
+    externalLinks: [
+      { label: 'Full paper on sheldrake.org', url: 'https://www.sheldrake.org/research/animal-powers/a-dog-that-seems-to-know-when-his-owner-is-coming-home-videotaped-experiments-and-observations' },
+      { label: 'Video: The ORF experiment', url: 'https://www.sheldrake.org/videos/jaytee-a-dog-who-knew-when-his-owner-was-coming-home-the-orf-experiment' },
+      { label: 'Dogs That Know When Their Owners Are Coming Home', url: 'https://www.sheldrake.org/books-by-rupert-sheldrake/dogs-that-know-when-their-owners-are-coming-home' },
+    ],
     body: '<p>When Pam Smart went out, her terrier Jaytee ignored the front window — cameras recorded him there just 4% of the time across hundreds of hours of tape. But something happened the moment Pam decided to come home. From over seven kilometers away, at randomly chosen times nobody in the house could have known, Jaytee walked to the window and waited. He was there 55% of the time during her return journeys (p < 0.0001), across more than 100 videotaped experiments. In one trial filmed for Austrian television, he reached the window within 11 seconds of Pam being told — at a randomly selected instant — to head home. He did this when he was home alone. He did this when Pam returned at non-routine times of her own choosing. His anticipation typically began before she even started her journey — at the moment of her decision to leave. Over 200 hours of time-coded footage, <a href="/glossary#double-blind">scored blind</a>, documented the same impossible thing: this dog knew.</p><p>Skeptic Richard Wiseman tested the same dog with the same cameras and the same random-return protocol. He published a paper declaring the results negative. But his own videotapes showed Jaytee at the window 4% of the time during absences and 78% during returns — an even larger effect than Sheldrake had found. Wiseman reached his conclusion by applying a binary pass/fail threshold that did not capture the behavioral shift the tapes clearly showed; the dog behaved the same in both teams\' experiments. A separate replication with <a href="/paper/sheldrake_smart_2000_testing_kane">a Rhodesian ridgeback named Kane</a> found the same pattern: 1% during absences, 26% during returns (p = 0.0002). Two dogs, two owners, hundreds of hours of footage, and a skeptic whose own data confirmed what he set out to disprove. If these tapes mean what they appear to mean — that a dog can detect the moment its owner decides to come home, across miles, through walls, with no sensory cue — then something is passing between them that no branch of science can currently explain.</p>'
+  },
+  {
+    id: 'blind-who-saw',
+    title: "The Blind Who Saw",
+    subtitle: "Of fourteen people blind from birth, nine reported seeing for the first time during near-death experiences — and in two cases, their visual descriptions were independently confirmed.",
+    domain: 'Near-Death Experiences',
+    domainIcon: '✨',
+    domainColor: 'cyan',
+    paperIds: ['ring_1997_near_death_blind'],
+    body: '<p>Kenneth Ring and Sharon Cooper tracked down 31 blind people who had experienced clinical death or an out-of-body episode and asked them a simple question: did you see anything? Eighty percent said yes. Among the 14 who had been blind from birth — had never seen a face, a color, a room — nine reported vivid visual perception during their experience. They described the classic near-death pattern: tunnels of light, life reviews, encountering deceased relatives. One man, blind since birth, correctly identified the color and pattern of a necktie in his hospital room — something he had never seen and could not have touched. A woman who had recently lost her sight described a hospital corridor in specific visual detail, later confirmed by an independent witness. Ring and Cooper tested every conventional explanation: dreaming, guessing, reconstructing from sound. None held. The seeing was too specific, too immediate, and in at least two cases, independently verified.</p><p>The standard neurological explanations for near-death experiences — oxygen deprivation triggering a cortical surge, REM sleep intruding on consciousness, the <a href="/paper/blanke_2004_oobe_neurological">temporo-parietal junction</a> misfiring — all require one thing: a visual system. These patients did not have one. There was no visual cortex to overstimulate. No stored images to replay. No retinal pathway for ischemia to disrupt. The skeptical toolkit that works tolerably well against sighted NDE reports simply does not apply to people who were born without sight. The brain flatlines within 15 seconds of cardiac arrest, and CPR restores less than a tenth of normal cerebral blood flow. If the man who described that necktie had never received a single photon of visual information through his eyes, then the information came from somewhere else — and whatever was doing the perceiving was not operating through any neural mechanism that current science can name.</p>'
   },
 ];
 
@@ -118,6 +137,21 @@ function getPaper(id: string) {
                         <span class="text-xs text-slate-600">{pid}</span>
                       );
                     })}
+                  </div>
+                </div>
+              )}
+
+              <!-- External Links -->
+              {story.externalLinks && story.externalLinks.length > 0 && (
+                <div class="mt-4 pt-4 border-t border-slate-800">
+                  <span class="text-xs uppercase tracking-wider text-slate-500 font-medium">Learn more</span>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    {story.externalLinks.map((link) => (
+                      <a href={link.url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-amber-400 hover:border-amber-500/30 transition-all">
+                        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        {link.label}
+                      </a>
+                    ))}
                   </div>
                 </div>
               )}
