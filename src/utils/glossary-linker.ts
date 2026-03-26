@@ -13,6 +13,7 @@ const GLOSSARY_TERMS: { pattern: RegExp; href: string }[] = [
   { pattern: /\bCohen'?s d\b/g, href: '/glossary#cohen-s-d' },
   { pattern: /\beffect sizes?\b/gi, href: '/glossary#effect-size' },
   { pattern: /\bmeta-analy(?:sis|ses)\b/gi, href: '/glossary#meta-analysis' },
+  { pattern: /\brandom-effects model(?:ing|s)?\b/gi, href: '/glossary#random-effects-model' },
   { pattern: /\bBayes [Ff]actors?\b/g, href: '/glossary#bayes-factor' },
   { pattern: /\bp-values?\b/gi, href: '/glossary#p-value' },
   { pattern: /\bpre-registration\b/gi, href: '/glossary#pre-registration' },

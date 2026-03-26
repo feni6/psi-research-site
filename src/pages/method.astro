@@ -298,6 +298,7 @@ papers.forEach(p => {
 const uniqueAuthors = Object.keys(authorCounts).length;
 const sortedAuthors = Object.entries(authorCounts).sort((a, b) => b[1] - a[1]);
 const topAuthor = sortedAuthors[0] ? { name: sortedAuthors[0][0], count: sortedAuthors[0][1] } : null;
+const topAuthorUrl = topAuthor ? '/author/' + topAuthor.name.toLowerCase().replace(/[ ,.]+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '') : null;
 
 // 2. Most Used Journal (FIXED: Ensure p.journal is used)
 const journalCounts = {};
@@ -533,58 +534,58 @@ const getDomainColor = (domain) => {
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Oldest Paper -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
+        <a href={`/paper/${oldestPaper?.id}`} class="block bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5 transition-all duration-300">
           <div class="text-xs text-slate-500 uppercase font-bold mb-1">Oldest Paper</div>
           <div class="text-lg font-medium text-slate-200 truncate" title={oldestPaper?.title}>{oldestPaper?.title || 'N/A'}</div>
           <div class="text-sm text-amber-400 mt-1">
             <span class="count-up" data-target={oldestPaper?.year}>0</span> • {oldestPaper?.first_author || (oldestPaper?.authors ? oldestPaper.authors[0] : 'Unknown')}
           </div>
-        </div>
+        </a>
 
         <!-- Most Prolific Author -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
+        <a href={topAuthorUrl || '#'} class="block bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300">
           <div class="text-xs text-slate-500 uppercase font-bold mb-1">Most Prolific Author</div>
           <div class="text-lg font-medium text-slate-200">{topAuthor?.name || 'N/A'}</div>
           <div class="text-sm text-blue-400 mt-1">
             <span class="count-up" data-target={topAuthor?.count}>0</span> papers published
           </div>
-        </div>
+        </a>
 
         <!-- Top Journal -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300">
+        <a href={`/catalog?journal=${encodeURIComponent(topJournal?.name || '')}`} class="block bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300">
           <div class="text-xs text-slate-500 uppercase font-bold mb-1">Top Journal</div>
           <div class="text-lg font-medium text-slate-200 truncate" title={topJournal?.name}>{topJournal?.name || 'N/A'}</div>
           <div class="text-sm text-purple-400 mt-1">
             <span class="count-up" data-target={topJournal?.count}>0</span> papers published
           </div>
-        </div>
+        </a>
 
         <!-- Avg Effect Size -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
-          <div class="text-xs text-slate-500 uppercase font-bold mb-1">Avg. Effect Size</div>
+        <a href="#effect-sizes" class="block bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/5 transition-all duration-300">
+          <div class="text-xs text-slate-500 uppercase font-bold mb-1">Avg. <a href="/glossary#effect-size" class="underline hover:text-amber-400 transition-colors">Effect Size</a></div>
           <div class="text-lg font-medium text-slate-200">
             <span class="count-up" data-target={effectSizeStats?.avg} data-decimals="2">0</span>
           </div>
           <div class="text-sm text-emerald-400 mt-1">Across {effectSizeStats?.count} papers with numeric effect sizes</div>
-        </div>
+        </a>
 
         <!-- Most Connected -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-pink-500/30 hover:shadow-lg hover:shadow-pink-500/5 transition-all duration-300">
+        <a href={`/paper/${mostConnected?.id}`} class="block bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-pink-500/30 hover:shadow-lg hover:shadow-pink-500/5 transition-all duration-300">
           <div class="text-xs text-slate-500 uppercase font-bold mb-1">Most Connected Paper</div>
           <div class="text-lg font-medium text-slate-200 truncate" title={mostConnected?.title}>{mostConnected?.title || 'No Data'}</div>
           <div class="text-sm text-pink-400 mt-1">
             <span class="count-up" data-target={mostConnected?._connectionCount}>0</span> direct relationships
           </div>
-        </div>
+        </a>
 
         <!-- DOI Coverage -->
-        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-orange-500/30 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300">
+        <a href="#doi-coverage" class="block bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-orange-500/30 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300">
           <div class="text-xs text-slate-500 uppercase font-bold mb-1">DOI Coverage</div>
           <div class="text-lg font-medium text-slate-200">
             <span class="count-up" data-target={doiCount}>0</span>
           </div>
           <div class="text-sm text-orange-400 mt-1">{doiCount} papers have a DOI</div>
-        </div>
+        </a>
       </div>
     </section>
 
@@ -741,7 +742,7 @@ const getDomainColor = (domain) => {
             </div>
 
             <!-- DOI Coverage -->
-            <div>
+            <div id="doi-coverage">
               <div class="flex justify-between text-sm mb-2">
                 <span class="text-slate-300 font-medium">Has DOI</span>
                 <span class="text-amber-400 font-mono">
@@ -756,7 +757,7 @@ const getDomainColor = (domain) => {
 
           <!-- Effect Size Stats -->
           {effectSizeStats && (
-            <div class="mt-8 pt-6 border-t border-slate-800">
+            <div id="effect-sizes" class="mt-8 pt-6 border-t border-slate-800">
               <h3 class="text-sm font-medium text-slate-300 mb-3">Effect Sizes (n={effectSizeStats.count})</h3>
               <div class="grid grid-cols-3 gap-2">
                 <div class="bg-slate-950 rounded-lg p-3 text-center border border-slate-800">

@@ -43,10 +43,16 @@ const terms = [
     term: "Meta-analysis", 
     category: "Statistics",
     definition: "A statistical technique that combines results from multiple independent studies to estimate an overall effect size. Addresses the 'file drawer problem' by aggregating evidence across experiments to find patterns invisible in single studies.",
-    related: ["Effect Size", "File Drawer Problem"],
+    related: ["Effect Size", "File Drawer Problem", "Random-Effects Model"],
     link: { href: "/controversies/10_meta_debate", text: "The Meta-Analysis Debate" }
   },
-  { 
+  {
+    term: "Random-Effects Model",
+    category: "Statistics",
+    definition: "A meta-analytic framework that assumes the true effect size varies across studies (due to differences in participants, methods, or settings) rather than being a single fixed value. REML (Restricted Maximum Likelihood) is a common method for estimating the between-study variance. Hartung-Knapp adjustments correct the confidence intervals to account for uncertainty in that variance estimate, producing more conservative (and more accurate) significance tests — especially important when the number of studies is small. Random-effects models are standard in psi meta-analyses because experimental conditions vary widely across labs.",
+    related: ["Meta-analysis", "Effect Size", "Confidence Interval"],
+  },
+  {
     term: "Bayes Factor", 
     category: "Statistics",
     definition: "A ratio expressing how much more likely the observed data is under one hypothesis (e.g., psi exists) versus another (e.g., chance). BF > 3 is considered moderate evidence; BF > 10 is strong evidence.",
