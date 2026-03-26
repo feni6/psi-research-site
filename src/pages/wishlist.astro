@@ -54,17 +54,33 @@ processedPapers.sort((a, b) => {
   const pA = (a.priority || "low").toLowerCase();
   const pB = (b.priority || "low").toLowerCase();
   const priorityWeight = { "high": 3, "medium": 2, "low": 1 };
-  
+
   if (priorityWeight[pA] !== priorityWeight[pB]) {
     return priorityWeight[pB] - priorityWeight[pA];
   }
   return (b.year || 0) - (a.year || 0);
 });
 
-// "Most Wanted": Top 24 High Priority Papers
-const mostWanted = processedPapers
-  .filter(p => (p.priority || "low").toLowerCase() === "high")
-  .slice(0, 24);
+// Papers available behind paywalls (have DOIs from known paywall publishers)
+const paywallDoiPrefixes = [
+  '10.1016/', '10.1007/', '10.1002/', '10.1080/', '10.1177/',
+  '10.1111/', '10.1037/', '10.1146/', '10.1126/', '10.1017/',
+  '10.3758/', '10.1086/', '10.3109/'
+];
+function isPaywalled(paper: { doi?: string | null }): boolean {
+  const doi = paper.doi || '';
+  return !!doi && paywallDoiPrefixes.some(prefix => doi.startsWith(prefix));
+}
+
+// Combined "Featured" section: high-priority OR paywalled, deduplicated
+const seenIds = new Set<string>();
+const featuredPapers = processedPapers.filter(p => {
+  const dominated = (p.priority || "low").toLowerCase() === "high" || isPaywalled(p);
+  if (!dominated) return false;
+  if (seenIds.has(p.id)) return false;
+  seenIds.add(p.id);
+  return true;
+});
 
 // Calculate category counts
 const categoryCounts: Record<string, number> = {};
@@ -167,17 +183,91 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
       </div>
     )}
 
+    <!-- Featured Papers: Most Wanted + Behind Paywalls -->
+    {featuredPapers.length > 0 && (
+      <div class="mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="h-px flex-1 bg-slate-800"></div>
+          <h2 class="text-lg font-bold text-slate-300 uppercase tracking-wider">Featured Papers</h2>
+          <div class="h-px flex-1 bg-slate-800"></div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-8 text-sm text-slate-400">
+          <span class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-500"></span>
+            Most Wanted — high-priority papers
+          </span>
+          <span class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+            Behind Paywall — available with institutional access
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" role="list">
+          {featuredPapers.map(paper => {
+            const isMostWanted = (paper.priority || "low").toLowerCase() === "high";
+            const isPW = isPaywalled(paper);
+            const stripeColor = isMostWanted ? "bg-red-500" : "bg-blue-500";
+            const hoverBorder = isMostWanted ? "hover:border-red-500/40" : "hover:border-blue-500/40";
+            const titleHover = isMostWanted ? "group-hover:text-amber-400" : "group-hover:text-blue-400";
+            return (
+              <div class={`group relative bg-slate-900 border border-slate-800 rounded-xl p-5 ${hoverBorder} hover:bg-slate-800/50 hover:shadow-2xl transition-all duration-300 flex flex-col h-full overflow-hidden`} role="listitem">
+                <div class={`absolute left-0 top-0 bottom-0 w-1 ${stripeColor}`}></div>
+
+                <div class="pl-3 flex justify-between items-start gap-2 mb-3">
+                  <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year || "N/A"}</span>
+                  <div class="flex flex-wrap gap-1 justify-end">
+                    {isMostWanted && (
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500 text-white border border-red-400 shadow-sm shadow-red-900/20 whitespace-nowrap">MOST WANTED</span>
+                    )}
+                    {isPW && (
+                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500 text-white border border-blue-400 shadow-sm shadow-blue-900/20 whitespace-nowrap">PAYWALLED</span>
+                    )}
+                  </div>
+                </div>
+
+                <h3 class={`pl-3 text-slate-200 font-bold mb-2 ${titleHover} transition-colors line-clamp-2 flex-grow leading-snug`}>
+                  {paper.title}
+                </h3>
+
+                <p class="pl-3 text-xs text-slate-500 mb-3 line-clamp-1">{(paper.authors || []).join(', ')}</p>
+
+                <div class="pl-3 mt-auto pt-3 border-t border-slate-800/50 space-y-2">
+                  {paper.why_needed && (
+                    <p class="text-xs text-slate-400 line-clamp-2 italic bg-slate-950/30 p-2 rounded border border-slate-800/50">
+                      "{paper.why_needed}"
+                    </p>
+                  )}
+                  {isPW && paper.doi && (
+                    <a
+                      href={`https://doi.org/${paper.doi}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1.5 text-xs font-mono text-blue-400 hover:text-blue-300 transition-colors break-all"
+                    >
+                      <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                      {paper.doi}
+                    </a>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    )}
+
     <!-- CTA Banner -->
     <div class="mb-12 bg-gradient-to-r from-slate-900 to-slate-900/50 border border-amber-500/30 rounded-2xl p-8 flex flex-col md:flex-row gap-8 items-start shadow-2xl relative overflow-hidden">
       <div class="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl -mr-16 -mt-16"></div>
-      
+
       <div class="flex-shrink-0 p-4 bg-amber-500/10 rounded-xl border border-amber-500/20 shadow-inner">
         <svg class="w-10 h-10 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
       </div>
       <div class="flex-1 z-10">
         <h3 class="text-2xl font-bold text-amber-400 mb-3">Help us find these papers</h3>
         <p class="text-slate-300 leading-relaxed mb-6 text-lg">
-          Do you have access to academic databases (JSTOR, PubMed, university libraries) or physical archives? 
+          Do you have access to academic databases (JSTOR, PubMed, university libraries) or physical archives?
           If you can locate and digitize any of the papers listed below, your contribution helps preserve the history of psi research.
         </p>
         <a href="mailto:?subject=Psi%20Research%20Library%20—%20Paper%20Contribution" class="inline-flex items-center text-base font-bold text-slate-900 bg-amber-400 hover:bg-amber-300 px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-amber-400/20 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-slate-950">
@@ -186,46 +276,6 @@ const recentlyAcquired = acquiredPapers.slice(0, 6);
         </a>
       </div>
     </div>
-
-    <!-- MOST WANTED SECTION (Always Visible) -->
-    {mostWanted.length > 0 && (
-      <div class="mb-16">
-        <div class="flex items-center gap-3 mb-8">
-          <div class="h-px flex-1 bg-slate-800"></div>
-          <div class="flex items-center gap-2 bg-red-500/10 px-4 py-1.5 rounded-full border border-red-500/20">
-            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            <h2 class="text-lg font-bold text-red-400 uppercase tracking-wider">Most Wanted</h2>
-          </div>
-          <div class="h-px flex-1 bg-slate-800"></div>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" role="list">
-          {mostWanted.map(paper => (
-            <div class="group relative bg-slate-900 border border-slate-800 rounded-xl p-5 hover:border-red-500/40 hover:bg-slate-800/50 hover:shadow-2xl hover:shadow-red-900/10 transition-all duration-300 flex flex-col h-full overflow-hidden" role="listitem">
-              <!-- Priority Stripe -->
-              <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>
-              
-              <div class="pl-3 flex justify-between items-start mb-4">
-                <span class="text-xs font-mono text-slate-500 bg-slate-950 px-2 py-1 rounded border border-slate-800">{paper.year || "N/A"}</span>
-                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500 text-white border border-red-400 shadow-sm shadow-red-900/20">HIGH PRIORITY</span>
-              </div>
-              
-              <h3 class="pl-3 text-slate-200 font-bold mb-3 group-hover:text-amber-400 transition-colors line-clamp-2 flex-grow text-lg leading-snug">
-                {paper.title}
-              </h3>
-              
-              <p class="pl-3 text-xs text-slate-500 mb-4 line-clamp-1 font-medium">{(paper.authors || []).join(', ')}</p>
-              
-              <div class="pl-3 mt-auto pt-4 border-t border-slate-800/50">
-                <p class="text-xs text-slate-400 line-clamp-3 italic bg-slate-950/30 p-2 rounded border border-slate-800/50">
-                  "{paper.why_needed}"
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
 
     <!-- CONTROLS: Tabs & Search -->
     <div class="sticky top-4 z-20 bg-slate-950/95 backdrop-blur-md border border-slate-800 rounded-2xl p-6 mb-8 shadow-2xl">

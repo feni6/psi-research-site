@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-03-04",
-  "total_wanted": 514,
+  "last_updated": "2026-03-23",
+  "total_wanted": 520,
   "papers_wanted": [
     {
       "id": "french_2003_fantastic_memories",
@@ -25,7 +25,7 @@
         {
           "source": "Internet Archive",
           "date": "2026-02-25",
-          "result": "WRONG PAPER: Downloaded frenchmemoriesof00she.pdf which is Charles Sherrill (1915) \"French Memories of Eighteenth-Century America\" \u2014 a completely unrelated 416-page historical book. URL was a false match on the word \"french\"."
+          "result": "WRONG PAPER: Downloaded frenchmemoriesof00she.pdf which is Charles Sherrill (1915) \"French Memories of Eighteenth-Century America\" — a completely unrelated 416-page historical book. URL was a false match on the word \"french\"."
         }
       ],
       "sources_not_yet_tried": [
@@ -44,7 +44,7 @@
         "Ertel, Suitbert"
       ],
       "year": 2009,
-      "why_needed": "Addresses the decline effect in psi research \u2014 important methodological concern cited across debates.",
+      "why_needed": "Addresses the decline effect in psi research — important methodological concern cited across debates.",
       "priority": "medium",
       "sources_tried": [
         {
@@ -55,7 +55,7 @@
         {
           "source": "Previous agent error",
           "date": "2026-02-28",
-          "result": "Was incorrectly marked acquired \u2014 no PDF found, no catalog entry exists"
+          "result": "Was incorrectly marked acquired — no PDF found, no catalog entry exists"
         }
       ],
       "sources_not_yet_tried": [
@@ -107,7 +107,7 @@
         "storm_2020_metaanalysis",
         "tressoldi_2024_ganzfeld_meta",
         "bosch_2006_examining",
-        "carde\u00f1a_2018_experimental"
+        "cardeña_2018_experimental"
       ],
       "cited_by": [
         "schlitz_2006_two_minds",
@@ -183,7 +183,7 @@
       "cited_by_in_library": [
         "bem_2011_feeling",
         "bem_2015_feeling",
-        "carde\u00f1a_2018_experimental"
+        "cardeña_2018_experimental"
       ],
       "cited_by": [
         "kennedy_2001_psi_elusive",
@@ -340,7 +340,7 @@
       "target_folder": "09_Methodology_and_Theory",
       "type": "book",
       "cited_by_in_library": [
-        "carde\u00f1a_2018_experimental"
+        "cardeña_2018_experimental"
       ]
     },
     {
@@ -419,7 +419,7 @@
       "target_folder": "12_Books_and_Overviews",
       "type": "book",
       "cited_by_in_library": [
-        "carde\u00f1a_2018_experimental"
+        "cardeña_2018_experimental"
       ]
     },
     {
@@ -681,7 +681,7 @@
       "year": 1999,
       "journal": "Proceedings of the 42nd Annual Convention of the Parapsychological Association",
       "doi": null,
-      "why_needed": "Second in the Wiseman\u2013Schlitz experimenter-effects series. Conducted at Schlitz's lab (IONS), N=35/condition. Again found Schlitz significant (es=.33, p=.05), Wiseman null (es=.07, p=.69). Together with the 1997 study, this forms the empirical basis that the 2006 British Journal of Psychology paper (schlitz_2006_two_minds) attempts to explain. Essential for the complete experimenter-effects narrative.",
+      "why_needed": "Second in the Wiseman–Schlitz experimenter-effects series. Conducted at Schlitz's lab (IONS), N=35/condition. Again found Schlitz significant (es=.33, p=.05), Wiseman null (es=.07, p=.69). Together with the 1997 study, this forms the empirical basis that the 2006 British Journal of Psychology paper (schlitz_2006_two_minds) attempts to explain. Essential for the complete experimenter-effects narrative.",
       "priority": "high",
       "sources_tried": [],
       "sources_not_yet_tried": [
@@ -707,7 +707,7 @@
       "year": 1993,
       "journal": "Journal of Parapsychology",
       "doi": null,
-      "why_needed": "Foundational paper establishing the EDA remote staring paradigm \u2014 the exact methodology used in the Schlitz\u2013Wiseman series and subsequent DMILS work. Reviews prior research and presents new EDA data. Cited by Schlitz et al. (2006) as the methodological foundation of the remote staring detection paradigm. Also cited in Schmidt et al. (2004) meta-analysis.",
+      "why_needed": "Foundational paper establishing the EDA remote staring paradigm — the exact methodology used in the Schlitz–Wiseman series and subsequent DMILS work. Reviews prior research and presents new EDA data. Cited by Schlitz et al. (2006) as the methodological foundation of the remote staring detection paradigm. Also cited in Schmidt et al. (2004) meta-analysis.",
       "priority": "high",
       "sources_tried": [],
       "sources_not_yet_tried": [
@@ -996,14 +996,14 @@
     },
     {
       "id": "radin_2019_double_slit_missing",
-      "title": "Psychophysical Interactions with a Double-Slit Interference Pattern (2019 \u2014 phantom catalog reference)",
+      "title": "Psychophysical Interactions with a Double-Slit Interference Pattern (2019 — phantom catalog reference)",
       "authors": [
         "Radin, Dean I."
       ],
       "year": 2019,
-      "journal": "Unknown \u2014 likely Physics Essays",
+      "journal": "Unknown — likely Physics Essays",
       "doi": null,
-      "why_needed": "Listed in _CONTROVERSIES/04_double_slit_pk.md as catalog ID 'radin_2019_double_slit' but not in catalog \u2014 a phantom reference. Must be tracked down to fix the broken controversy entry. Likely a 2015 or 2019 Physics Essays paper in Radin's double-slit series.",
+      "why_needed": "Listed in _CONTROVERSIES/04_double_slit_pk.md as catalog ID 'radin_2019_double_slit' but not in catalog — a phantom reference. Must be tracked down to fix the broken controversy entry. Likely a 2015 or 2019 Physics Essays paper in Radin's double-slit series.",
       "priority": "high",
       "target_folder": "05_Psychokinesis",
       "cited_by": [],
@@ -1019,13 +1019,13 @@
       "title": "Anomalous anticipatory skin conductance response to acoustic stimuli: Experimental results and speculation about a mechanism",
       "authors": [
         "May, Edwin C.",
-        "Paulinyi, Tam\u00e1s",
-        "Vassy, Zolt\u00e1n"
+        "Paulinyi, Tamás",
+        "Vassy, Zoltán"
       ],
       "year": 2005,
       "journal": "Journal of Alternative and Complementary Medicine",
       "doi": "10.1089/acm.2005.11.695",
-      "why_needed": "Independent replication of electrodermal presentiment from a different lab (not Radin's IONS) \u2014 Edwin May's group; important for showing the effect is not lab-specific. Directly cited by radin_2023_sentiment. Adds a skeptic-proximate researcher (May authored decision augmentation theory as an alternative to psi) reporting a positive finding.",
+      "why_needed": "Independent replication of electrodermal presentiment from a different lab (not Radin's IONS) — Edwin May's group; important for showing the effect is not lab-specific. Directly cited by radin_2023_sentiment. Adds a skeptic-proximate researcher (May authored decision augmentation theory as an alternative to psi) reporting a positive finding.",
       "priority": "medium",
       "target_folder": "03_Precognition",
       "cited_by": [
@@ -1233,7 +1233,7 @@
       "publisher": "Routledge",
       "pages": null,
       "doi": null,
-      "why_needed": "Velmans's 'reflexive model' \u2014 in which perceptual images are projected outward into phenomenal space rather than represented inside the brain \u2014 is one of the two theoretical frameworks Sheldrake (stared_part2) argues is compatible with SOBA (along with Gibson's ecological perception). Key theoretical reference for the philosophy-of-perception dimension of the staring detection debate.",
+      "why_needed": "Velmans's 'reflexive model' — in which perceptual images are projected outward into phenomenal space rather than represented inside the brain — is one of the two theoretical frameworks Sheldrake (stared_part2) argues is compatible with SOBA (along with Gibson's ecological perception). Key theoretical reference for the philosophy-of-perception dimension of the staring detection debate.",
       "priority": "medium",
       "sources_tried": [],
       "sources_not_yet_tried": [
@@ -1432,7 +1432,7 @@
       "title": "Weak Quantum Theory: A Complementarity Framework for Mind and Matter",
       "authors": [
         "Atmanspacher, H.",
-        "R\u00f6mer, H.",
+        "Römer, H.",
         "Walach, H."
       ],
       "year": 2002,
@@ -1456,7 +1456,7 @@
       "title": "Complementarity as a General Concept for Understanding Nonlocal Correlations in Psi Research",
       "authors": [
         "von Lucadou, W.",
-        "R\u00f6mer, H.",
+        "Römer, H.",
         "Walach, H."
       ],
       "year": 2007,
@@ -1583,7 +1583,7 @@
       ],
       "sources_tried": [],
       "sources_not_yet_tried": [
-        "Book \u2014 library/Amazon"
+        "Book — library/Amazon"
       ]
     },
     {
@@ -1603,7 +1603,7 @@
       ],
       "sources_tried": [],
       "sources_not_yet_tried": [
-        "Book \u2014 library/Amazon"
+        "Book — library/Amazon"
       ]
     },
     {
@@ -1623,7 +1623,7 @@
       ],
       "sources_tried": [],
       "sources_not_yet_tried": [
-        "Book \u2014 library/Amazon"
+        "Book — library/Amazon"
       ]
     },
     {
@@ -1779,7 +1779,7 @@
       "authors": [
         "Kramer, W.H.",
         "Bauer, E.",
-        "H\u00f6velmann, G.H."
+        "Hövelmann, G.H."
       ],
       "year": 2012,
       "journal": "Unknown",
@@ -1899,7 +1899,7 @@
       "year": 2021,
       "journal": "Journal of Scientific Exploration",
       "doi": null,
-      "why_needed": "Cited by radin_2025_years (p=5\u00d710^-12 for 4 dozen experiments). Important evidence for goal-oriented/retroactive intention effects with pre-recorded RNG data. Related to Schmidt's PK work. Relevant for controversy #4 (psychokinesis) and #8 (GCP).",
+      "why_needed": "Cited by radin_2025_years (p=5×10^-12 for 4 dozen experiments). Important evidence for goal-oriented/retroactive intention effects with pre-recorded RNG data. Related to Schmidt's PK work. Relevant for controversy #4 (psychokinesis) and #8 (GCP).",
       "priority": "medium",
       "target_folder": "05_Psychokinesis",
       "cited_by": [
@@ -2063,7 +2063,7 @@
       "year": 2022,
       "journal": "Preprint (ResearchGate)",
       "doi": null,
-      "why_needed": "Preprint directly connecting anomalous experience and telepathy to the autism spectrum \u2014 the only paper specifically bridging these domains empirically. Cited by Weiler & Woollacott (2025). Would fill a unique niche in folder 11.",
+      "why_needed": "Preprint directly connecting anomalous experience and telepathy to the autism spectrum — the only paper specifically bridging these domains empirically. Cited by Weiler & Woollacott (2025). Would fill a unique niche in folder 11.",
       "priority": "medium",
       "target_folder": "11_Autism_and_Nonverbal",
       "cited_by": [
@@ -2177,7 +2177,7 @@
       "year": 2001,
       "journal": "Proceedings of the 44th Annual Convention of the Parapsychological Association",
       "doi": null,
-      "why_needed": "Methodological critique of Grinberg-Zylberbaum et al. (1994) showing that violations of hypothesis-testing assumptions led to effect overestimation \u2014 the same type of statistical bias Ambach (2008) independently identified in the Wackermann bootstrap method. Important for the methodology/skeptical literature.",
+      "why_needed": "Methodological critique of Grinberg-Zylberbaum et al. (1994) showing that violations of hypothesis-testing assumptions led to effect overestimation — the same type of statistical bias Ambach (2008) independently identified in the Wackermann bootstrap method. Important for the methodology/skeptical literature.",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -2384,7 +2384,7 @@
       "year": 1974,
       "journal": "Journal of the American Society for Psychical Research",
       "doi": "",
-      "why_needed": "Founding paper of the Ganzfeld paradigm for psi research \u2014 the single most influential experimental method in parapsychology. Cited by Moulton & Kosslyn 2008, Bem & Honorton 1994, and referenced throughout the ganzfeld literature.",
+      "why_needed": "Founding paper of the Ganzfeld paradigm for psi research — the single most influential experimental method in parapsychology. Cited by Moulton & Kosslyn 2008, Bem & Honorton 1994, and referenced throughout the ganzfeld literature.",
       "priority": "high",
       "target_folder": "02_Telepathy",
       "cited_by": [
@@ -2409,7 +2409,7 @@
       "year": 1998,
       "journal": "Journal of Parapsychology",
       "doi": "",
-      "why_needed": "Direct precursor to Moulton & Kosslyn 2008 fMRI study \u2014 the ERP guessing-task paradigm that Moulton adapted for neuroimaging. Part of the Warren/Don/McDonough ERP-psi series that found differential brain responses to psi targets.",
+      "why_needed": "Direct precursor to Moulton & Kosslyn 2008 fMRI study — the ERP guessing-task paradigm that Moulton adapted for neuroimaging. Part of the Warren/Don/McDonough ERP-psi series that found differential brain responses to psi targets.",
       "priority": "medium",
       "target_folder": "02_Telepathy",
       "cited_by": [
@@ -2431,7 +2431,7 @@
       "year": 1995,
       "journal": "American Institutes for Research",
       "doi": "",
-      "why_needed": "The AIR evaluation of the Stargate remote viewing program \u2014 the government-commissioned review that led to program termination. Foundational reference for remote viewing debate. Cited by Moulton 2008 and relevant to Controversy #10.",
+      "why_needed": "The AIR evaluation of the Stargate remote viewing program — the government-commissioned review that led to program termination. Foundational reference for remote viewing debate. Cited by Moulton 2008 and relevant to Controversy #10.",
       "priority": "high",
       "target_folder": "04_Remote_Viewing",
       "cited_by": [
@@ -2456,7 +2456,7 @@
       "year": 2005,
       "journal": "British Journal of Psychology",
       "doi": "10.1348/000712605X36361",
-      "why_needed": "Skeptical mediumship study \u2014 null result using controlled methods. Provides the skeptical counterpoint to Beischel's positive AIRII results (2015). Would improve balance in Controversy #6 (Mediumship).",
+      "why_needed": "Skeptical mediumship study — null result using controlled methods. Provides the skeptical counterpoint to Beischel's positive AIRII results (2015). Would improve balance in Controversy #6 (Mediumship).",
       "priority": "high",
       "target_folder": "10_Skeptical_and_Critical",
       "cited_by": [
@@ -2475,7 +2475,7 @@
       "title": "A Controlled Long-Distance Test of a Professional Medium",
       "authors": [
         "Jensen, Christopher G.",
-        "Carde\u00f1a, Etzel."
+        "Cardeña, Etzel."
       ],
       "year": 2009,
       "journal": "European Journal of Parapsychology",
@@ -2491,7 +2491,7 @@
       "sources_not_yet_tried": [
         "EJP archive",
         "Google Scholar",
-        "Carde\u00f1a publications"
+        "Cardeña publications"
       ]
     },
     {
@@ -2540,7 +2540,7 @@
       ],
       "sources_tried": [],
       "sources_not_yet_tried": [
-        "Book \u2014 may not be available as PDF"
+        "Book — may not be available as PDF"
       ]
     },
     {
@@ -2566,7 +2566,7 @@
       ],
       "sources_tried": [],
       "sources_not_yet_tried": [
-        "Book \u2014 unlikely available as PDF"
+        "Book — unlikely available as PDF"
       ]
     },
     {
@@ -2776,7 +2776,7 @@
       "year": 2009,
       "journal": "Journal of the Society for Psychical Research",
       "doi": "",
-      "why_needed": "Direct precursor to Tressoldi 2011 pupil dilation study \u2014 used heart rate to predict alerting vs. neutral sounds with 56% accuracy. First in the Tressoldi prediction-accuracy research line that the 2011 study extends.",
+      "why_needed": "Direct precursor to Tressoldi 2011 pupil dilation study — used heart rate to predict alerting vs. neutral sounds with 56% accuracy. First in the Tressoldi prediction-accuracy research line that the 2011 study extends.",
       "priority": "high",
       "target_folder": "03_Precognition",
       "cited_by": [
@@ -2996,7 +2996,7 @@
         "Duma, Gian Marco"
       ],
       "year": 2014,
-      "why_needed": "The actual Tressoldi 2014 EEG correlations paper (F1000Research) \u2014 the catalog had its authors confused with the 2011 behavioral study. These 8 authors belong to this paper, not the ideogram study.",
+      "why_needed": "The actual Tressoldi 2014 EEG correlations paper (F1000Research) — the catalog had its authors confused with the 2011 behavioral study. These 8 authors belong to this paper, not the ideogram study.",
       "priority": "high",
       "sources_tried": [],
       "cited_by": [
@@ -3008,7 +3008,7 @@
       "id": "vassy_1978_extrasensory",
       "title": "Method for measuring the probability of 1 bit extrasensory information transfer between living organisms",
       "authors": [
-        "Vassy, Zolt\u00e1n"
+        "Vassy, Zoltán"
       ],
       "year": 1978,
       "why_needed": "Pioneered the proportional SCR analysis method used by Spottiswoode & May (2003). Foundational for the presentiment/physiological psi detection paradigm. Published in Journal of Parapsychology.",
@@ -3099,7 +3099,7 @@
         "Jeffers, Stanley"
       ],
       "year": 2003,
-      "why_needed": "Published in the same JCS special issue as Alcock 2003. Reports null results from double-slit consciousness experiments at York University \u2014 directly relevant to Radin's double-slit program. Alcock cites Jeffers' null results as evidence against psi.",
+      "why_needed": "Published in the same JCS special issue as Alcock 2003. Reports null results from double-slit consciousness experiments at York University — directly relevant to Radin's double-slit program. Alcock cites Jeffers' null results as evidence against psi.",
       "priority": "high",
       "sources_tried": []
     },
@@ -3129,7 +3129,9 @@
       "why_wanted": "Foundational healing-intention study cited by Schwartz 2015 as precursor to water IR spectroscopy research. Demonstrated biological effects of laying-on-of-hands on wound healing in mice and plant growth. One of the earliest controlled experiments in healing intention.",
       "cited_by_in_library": [
         "schwartz_2015_infrared"
-      ]
+      ],
+      "priority": "high",
+      "why_needed": "Seminal paper by Bernard Grad on healing effects in animals and plants — foundational study for the healing/intention research domain (folder 06)."
     },
     {
       "id": "bierman_2010_cirts",
@@ -3145,7 +3147,9 @@
       ],
       "cited_by": [
         "houran_2018_crossexamining"
-      ]
+      ],
+      "priority": "medium",
+      "why_needed": "Dick Bierman's theoretical framework (CIRTS) for presentiment and retrocausal effects. Important for methodology and theory (folder 09)."
     },
     {
       "id": "hinterberger_2007_presentiment",
@@ -3162,7 +3166,9 @@
       "why_wanted": "EEG presentiment study using slow cortical potentials cited by Radin 2011. Would add an independent lab's perspective on EEG-based presentiment to complement the IONS program.",
       "cited_by_in_library": [
         "radin_2011_electrocortical"
-      ]
+      ],
+      "priority": "medium",
+      "why_needed": "EEG-based presentiment experiment — contributes to the neurophysiological evidence base for precognition (folder 03)."
     },
     {
       "id": "harris_1999_prayer",
@@ -3337,7 +3343,7 @@
     },
     {
       "id": "may_spottiswoode_2001_911_analysis",
-      "title": "Memorandum for the Record, re: Analysis of the Global Consciousness Project\u2019s Data near the 11 September 2001 Events",
+      "title": "Memorandum for the Record, re: Analysis of the Global Consciousness Project’s Data near the 11 September 2001 Events",
       "authors": [
         "May, Edwin C.",
         "Spottiswoode, S. James P."
@@ -3345,7 +3351,7 @@
       "year": 2001,
       "journal": null,
       "doi": null,
-      "why_needed": "Critical/independent assessment of the GCP Sept 11 data; confirmed statistics but questioned timing \u2014 would provide balance to Nelson 2002.",
+      "why_needed": "Critical/independent assessment of the GCP Sept 11 data; confirmed statistics but questioned timing — would provide balance to Nelson 2002.",
       "priority": "high",
       "target_folder": "10_Skeptical_and_Critical",
       "cited_by": [
@@ -3549,7 +3555,7 @@
       "year": 2018,
       "journal": "Current Topics in Behavioral Neurosciences",
       "doi": "10.1007/7854_2017_474",
-      "why_needed": "Comprehensive review linking classic hallucinogens to mystical experience phenomenology and DMN deactivation \u2014 the most-cited reference in Woollacott 2020. Key to the psychedelic-NDE-meditation convergence argument in Controversy #7.",
+      "why_needed": "Comprehensive review linking classic hallucinogens to mystical experience phenomenology and DMN deactivation — the most-cited reference in Woollacott 2020. Key to the psychedelic-NDE-meditation convergence argument in Controversy #7.",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -3571,7 +3577,7 @@
       "year": 1963,
       "journal": "International Journal of Parapsychology",
       "doi": null,
-      "why_needed": "Foundational study measuring EDA, blood volume, and heart rate during agent-receiver psi tasks\u2014the direct experimental precursor to Radin's 1997 presentiment paradigm. Cited in radin_1997_unconscious_presentiment as the earliest example of physiological psi detection.",
+      "why_needed": "Foundational study measuring EDA, blood volume, and heart rate during agent-receiver psi tasks—the direct experimental precursor to Radin's 1997 presentiment paradigm. Cited in radin_1997_unconscious_presentiment as the earliest example of physiological psi detection.",
       "priority": "medium",
       "target_folder": "03_Precognition",
       "cited_by": [
@@ -3680,12 +3686,12 @@
       "authors": [
         "Moreira-Almeida, Alexander.",
         "Lotufo Neto, Francisco.",
-        "Carde\u00f1a, Etzel."
+        "Cardeña, Etzel."
       ],
       "year": 2008,
       "journal": "Journal of Nervous and Mental Disease",
       "doi": "10.1097/NMD.0b013e31816b85c3",
-      "why_needed": "Key study distinguishing healthy mediumistic dissociation from pathological DID; directly relevant to Controversy #6 (mediumship) and the differential diagnosis question. Cited by Peres 2012 for mental health screening methodology. Co-authored by Moreira-Almeida (Peres co-author) and Carde\u00f1a.",
+      "why_needed": "Key study distinguishing healthy mediumistic dissociation from pathological DID; directly relevant to Controversy #6 (mediumship) and the differential diagnosis question. Cited by Peres 2012 for mental health screening methodology. Co-authored by Moreira-Almeida (Peres co-author) and Cardeña.",
       "priority": "medium",
       "target_folder": "07_Mediumship_and_Survival",
       "cited_by": [
@@ -3731,7 +3737,7 @@
       "suggested_folder": "10_Skeptical_and_Critical",
       "sources_tried": [],
       "sources_not_yet_tried": [
-        "PLoS ONE (open access \u2014 should be freely available)",
+        "PLoS ONE (open access — should be freely available)",
         "PubMed Central"
       ],
       "cited_by": [
@@ -3897,7 +3903,7 @@
       "id": "wahbeh_2023_persuasiveness_survival",
       "title": "Rating the Persuasiveness of Empirical Evidence for the Survival of Consciousness After Bodily Death: A cross-sectional study",
       "authors": [
-        "Wahbeh, Helan\u00e9",
+        "Wahbeh, Helané",
         "Delorme, Arnaud",
         "Radin, Dean"
       ],
@@ -3917,7 +3923,7 @@
       "id": "batthyany_2021_terminal_lucidity",
       "title": "Spontaneous remission of dementia before death: Results from a study on terminal lucidity",
       "authors": [
-        "Batthy\u00e1ny, Alexander",
+        "Batthyány, Alexander",
         "Greyson, Bruce"
       ],
       "year": 2021,
@@ -3942,7 +3948,7 @@
         "Kocsor, Ferenc"
       ],
       "year": 2023,
-      "why_needed": "Directly cited in Kennedy 2024: Kennedy conducted a formal research audit of this study (finding a significant software error) and uses it as a model of how FDA-style quality control applies in academic psi research. A pre-registered, high-quality Bem replication attempt \u2014 critical for replication chain of bem_2011_feeling.",
+      "why_needed": "Directly cited in Kennedy 2024: Kennedy conducted a formal research audit of this study (finding a significant software error) and uses it as a model of how FDA-style quality control applies in academic psi research. A pre-registered, high-quality Bem replication attempt — critical for replication chain of bem_2011_feeling.",
       "priority": "high",
       "sources_tried": [],
       "sources_not_yet_tried": [
@@ -3966,7 +3972,7 @@
         "Paul, G.I."
       ],
       "year": 1961,
-      "why_needed": "Foundational animal healing study cited explicitly in Bengston & Krinsley (2000) as the pioneer for animal healing research. Grad studied Hungarian healer Oskar Estebany's ability to accelerate wound healing in mice \u2014 the methodological template Bengston extended to cancer.",
+      "why_needed": "Foundational animal healing study cited explicitly in Bengston & Krinsley (2000) as the pioneer for animal healing research. Grad studied Hungarian healer Oskar Estebany's ability to accelerate wound healing in mice — the methodological template Bengston extended to cancer.",
       "priority": "medium",
       "sources_tried": [],
       "sources_not_yet_tried": [
@@ -3990,7 +3996,7 @@
         "Spears, Russell"
       ],
       "year": 2012,
-      "why_needed": "Extensively cited throughout Kennedy 2024 as the key post-Stapel analysis of research misconduct. Provides the sociological/psychological analysis of why fraud is common and why self-correction in science fails \u2014 foundational for evaluating data integrity standards in parapsychology.",
+      "why_needed": "Extensively cited throughout Kennedy 2024 as the key post-Stapel analysis of research misconduct. Provides the sociological/psychological analysis of why fraud is common and why self-correction in science fails — foundational for evaluating data integrity standards in parapsychology.",
       "priority": "medium",
       "sources_tried": [],
       "sources_not_yet_tried": [
@@ -4279,7 +4285,7 @@
       "authors": [
         "Kramer, W.",
         "Bauer, E.",
-        "H\u00f6velmann, G."
+        "Hövelmann, G."
       ],
       "year": 2012,
       "journal": null,
@@ -4301,7 +4307,7 @@
       "id": "cardea_2014_varieties_anomalous_experience",
       "title": "Varieties of Anomalous Experience: Examining the Scientific Evidence (2nd ed.)",
       "authors": [
-        "Carde\u00f1a, E.",
+        "Cardeña, E.",
         "Lynn, S. J.",
         "Krippner, S."
       ],
@@ -4815,7 +4821,7 @@
         "Dagnall, N.",
         "Drinkwater, K.",
         "Denovan, A.",
-        "Escol\u00e1 Gasc\u00f3n, A."
+        "Escolá Gascón, A."
       ],
       "year": 2025,
       "journal": "Frontiers in Psychology",
@@ -5284,7 +5290,7 @@
       "year": 1970,
       "journal": "Journal of Parapsychology",
       "doi": null,
-      "why_needed": "Foundational paper that introduced electronic REG testing for psychokinesis \u2014 the paradigm used by PEAR and virtually every subsequent PK experiment in the library. Cited by Jahn et al. 1987, Radin 1989, Bosch 2006 meta-analysis, and many others.",
+      "why_needed": "Foundational paper that introduced electronic REG testing for psychokinesis — the paradigm used by PEAR and virtually every subsequent PK experiment in the library. Cited by Jahn et al. 1987, Radin 1989, Bosch 2006 meta-analysis, and many others.",
       "priority": "high",
       "target_folder": "05_Psychokinesis",
       "cited_by": [
@@ -5309,7 +5315,7 @@
       "year": 2008,
       "journal": "Memory",
       "doi": "10.1080/09658210802013492",
-      "why_needed": "This paper presents the adapted MCQ version actually used in martial_2017_intensity_memory and other Li\u00e8ge group NDE studies (thonnard_2013_nde_memory_reality). The adaptation encompasses 16 rating scales assessing phenomenological memory characteristics. Needed to properly cite the methodology used in multiple library papers.",
+      "why_needed": "This paper presents the adapted MCQ version actually used in martial_2017_intensity_memory and other Liège group NDE studies (thonnard_2013_nde_memory_reality). The adaptation encompasses 16 rating scales assessing phenomenological memory characteristics. Needed to properly cite the methodology used in multiple library papers.",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -5324,16 +5330,16 @@
     },
     {
       "id": "grinberg_zylberbaum_1989_transferred_potential",
-      "title": "Comunicaci\u00f3n Directa y Potencial Transferido [Direct Communication and Transferred Potential]",
+      "title": "Comunicación Directa y Potencial Transferido [Direct Communication and Transferred Potential]",
       "authors": [
         "Grinberg-Zylberbaum, Jacobo.",
         "Delaflor, Montserrat.",
         "Sanchez, Maria Elena."
       ],
       "year": 1989,
-      "journal": "Rivista Intercontinental de Psicolog\u00eda y Educaci\u00f3n",
+      "journal": "Rivista Intercontinental de Psicología y Educación",
       "doi": null,
-      "why_needed": "Direct precursor to the 1994 transferred potential paper \u2014 first demonstration of transferred potentials between subjects in Faraday chambers at 3m distance. Essential for understanding the development of the paradigm and for comparison with the 14.5m replication.",
+      "why_needed": "Direct precursor to the 1994 transferred potential paper — first demonstration of transferred potentials between subjects in Faraday chambers at 3m distance. Essential for understanding the development of the paradigm and for comparison with the 14.5m replication.",
       "priority": "high",
       "target_folder": "02_Telepathy",
       "cited_by": [
@@ -5472,7 +5478,7 @@
       "year": 2000,
       "journal": "The Lancet",
       "doi": "10.1016/S0140-6736(00)02021-6",
-      "why_needed": "Greyson's Lancet paper linking dissociative tendencies to NDE occurrence \u2014 the primary psychological-model evidence cited in greyson_2003_incidence_nde_cardiac. Key for understanding whether NDEs reflect a dissociative defense mechanism.",
+      "why_needed": "Greyson's Lancet paper linking dissociative tendencies to NDE occurrence — the primary psychological-model evidence cited in greyson_2003_incidence_nde_cardiac. Key for understanding whether NDEs reflect a dissociative defense mechanism.",
       "priority": "medium",
       "target_folder": "08_NDE_and_OBE",
       "cited_by": [
@@ -5542,7 +5548,7 @@
       "year": 1976,
       "journal": "Irvington Publishers (book)",
       "doi": null,
-      "why_needed": "Foundational text on experimenter expectancy effects\u2014the key mechanism Kennedy (1981) invokes to explain how skeptics' biases produce errors toward chance. Relevant to multiple library papers on experimenter effects (Kennedy 2017, Schlitz 2006) and the meta-debate controversy (#10).",
+      "why_needed": "Foundational text on experimenter expectancy effects—the key mechanism Kennedy (1981) invokes to explain how skeptics' biases produce errors toward chance. Relevant to multiple library papers on experimenter effects (Kennedy 2017, Schlitz 2006) and the meta-debate controversy (#10).",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -5564,7 +5570,7 @@
       "year": 1952,
       "journal": "Journal of Abnormal and Social Psychology",
       "doi": "10.1037/h0053609",
-      "why_needed": "Original sheep-goat effect paper establishing that ESP believers score higher than skeptics\u2014the foundational finding that Wilson (1964) replicated (p<.005) before sabotaging with an underpowered follow-up, as documented in Kennedy (1981). The sheep-goat paradigm is referenced across multiple library papers.",
+      "why_needed": "Original sheep-goat effect paper establishing that ESP believers score higher than skeptics—the foundational finding that Wilson (1964) replicated (p<.005) before sabotaging with an underpowered follow-up, as documented in Kennedy (1981). The sheep-goat paradigm is referenced across multiple library papers.",
       "priority": "medium",
       "target_folder": "02_Telepathy",
       "cited_by": [
@@ -5795,7 +5801,7 @@
       "year": 2016,
       "journal": "Journal of Parapsychology",
       "doi": null,
-      "why_needed": "Editorial that Kennedy (2017) directly responds to \u2014 argues that fraud prevention measures create a 'paranoid work environment' and that discussing fraud about specific studies is unethical without strong evidence. Without this paper, the Kennedy 2017 rebuttal in the library lacks its target.",
+      "why_needed": "Editorial that Kennedy (2017) directly responds to — argues that fraud prevention measures create a 'paranoid work environment' and that discussing fraud about specific studies is unethical without strong evidence. Without this paper, the Kennedy 2017 rebuttal in the library lacks its target.",
       "priority": "high",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -5822,7 +5828,7 @@
       "year": 1996,
       "journal": "Journal of Parapsychology",
       "doi": null,
-      "why_needed": "Demonstrates practical implementation of fraud prevention measures in ganzfeld telepathy experiments \u2014 the very standard Kennedy (2017) advocates. Bridges Controversy #1 (ganzfeld) and #10 (meta-debate). Co-authored by both proponents (Radin, Morris) and a skeptic (Wiseman), making it a rare collaborative security design.",
+      "why_needed": "Demonstrates practical implementation of fraud prevention measures in ganzfeld telepathy experiments — the very standard Kennedy (2017) advocates. Bridges Controversy #1 (ganzfeld) and #10 (meta-debate). Co-authored by both proponents (Radin, Morris) and a skeptic (Wiseman), making it a rare collaborative security design.",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -6041,7 +6047,7 @@
       "sources_not_yet_tried": [
         "WorldCat",
         "library search for Spanish-language consciousness books",
-        "contact Universidad Nacional Aut\u00f3noma de M\u00e9xico library"
+        "contact Universidad Nacional Autónoma de México library"
       ]
     },
     {
@@ -6167,7 +6173,7 @@
       "year": 2005,
       "journal": "Mind and Matter",
       "doi": null,
-      "why_needed": "One of four independent re-examinations of the RNG meta-analytic data discussed in radin_2006_assessing. Provides a statistical modeling critique distinct from B\u00f6sch et al.'s approach. Fills a gap in the skeptical/methodological critique literature for Controversy #8.",
+      "why_needed": "One of four independent re-examinations of the RNG meta-analytic data discussed in radin_2006_assessing. Provides a statistical modeling critique distinct from Bösch et al.'s approach. Fills a gap in the skeptical/methodological critique literature for Controversy #8.",
       "priority": "medium",
       "target_folder": "10_Skeptical_and_Critical",
       "cited_by": [
@@ -6237,7 +6243,7 @@
       "year": 2005,
       "journal": "Journal of Parapsychology",
       "doi": null,
-      "why_needed": "Addresses attitude polarization toward psi \u2014 a unique angle not covered by other Kennedy papers in the library. Supports Conclusion 7 of Kennedy 2020 about personality-driven belief/disbelief patterns.",
+      "why_needed": "Addresses attitude polarization toward psi — a unique angle not covered by other Kennedy papers in the library. Supports Conclusion 7 of Kennedy 2020 about personality-driven belief/disbelief patterns.",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -6258,7 +6264,7 @@
       "year": 2000,
       "journal": "Journal of the American Society for Psychical Research",
       "doi": null,
-      "why_needed": "Foundational paper for Kennedy's 'purpose of psi' thesis \u2014 argues psi may serve life-guiding functions rather than utilitarian goals. Cited by Kennedy 2020 (Conclusions 1, 4, 6) and likely by kennedy_2006_spirituality.",
+      "why_needed": "Foundational paper for Kennedy's 'purpose of psi' thesis — argues psi may serve life-guiding functions rather than utilitarian goals. Cited by Kennedy 2020 (Conclusions 1, 4, 6) and likely by kennedy_2006_spirituality.",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -6280,7 +6286,7 @@
       "year": 2002,
       "journal": "Journal of Parapsychology",
       "doi": null,
-      "why_needed": "Key example of software artifact producing false positive psi results \u2014 directly cited by Kennedy (2016) as evidence for why software validation is essential. Foundational case study for the software validation argument in methodology debates.",
+      "why_needed": "Key example of software artifact producing false positive psi results — directly cited by Kennedy (2016) as evidence for why software validation is essential. Foundational case study for the software validation argument in methodology debates.",
       "priority": "high",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -6301,7 +6307,7 @@
       "year": 2014,
       "journal": "Psychological Science",
       "doi": "10.1177/0956797613504966",
-      "why_needed": "Widely influential advocacy for abandoning hypothesis testing in favor of effect-size estimation \u2014 Kennedy (2016) critiques this as a 'major retreat from the basic principles of good science.' Central to the statistical methods debate relevant to evaluating psi evidence.",
+      "why_needed": "Widely influential advocacy for abandoning hypothesis testing in favor of effect-size estimation — Kennedy (2016) critiques this as a 'major retreat from the basic principles of good science.' Central to the statistical methods debate relevant to evaluating psi evidence.",
       "priority": "medium",
       "target_folder": "10_Skeptical_and_Critical",
       "cited_by": [
@@ -6370,7 +6376,7 @@
       "year": 1997,
       "journal": "European Journal of Parapsychology",
       "doi": null,
-      "why_needed": "Key review of experimenter psi effects cited by Kennedy 2013 and others. Directly relevant to the experimenter effects theme and the question of whether experimenters can use psi to influence their own experiments \u2014 a central issue in the meta-debate.",
+      "why_needed": "Key review of experimenter psi effects cited by Kennedy 2013 and others. Directly relevant to the experimenter effects theme and the question of whether experimenters can use psi to influence their own experiments — a central issue in the meta-debate.",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -6597,7 +6603,7 @@
       "year": 1962,
       "journal": "Journal of the Society for Psychical Research",
       "doi": null,
-      "why_needed": "Formulated the foundational principle that skills are incommunicable paranormally \u2014 the key axiom challenged by Braude 1992. Central philosophical reference in the survival-vs-super-psi debate.",
+      "why_needed": "Formulated the foundational principle that skills are incommunicable paranormally — the key axiom challenged by Braude 1992. Central philosophical reference in the survival-vs-super-psi debate.",
       "priority": "high",
       "target_folder": "07_Mediumship_and_Survival",
       "cited_by": [
@@ -6641,7 +6647,7 @@
       "year": 1983,
       "journal": "North Atlantic Books (book)",
       "doi": null,
-      "why_needed": "Contains Eisenbud's depth-psychological analysis of the Cagliostro persona \u2014 the model case Braude 1992 uses to demonstrate how survival evidence dissolves under psychodynamic scrutiny. Key reference for depth-psychological approaches to mediumship.",
+      "why_needed": "Contains Eisenbud's depth-psychological analysis of the Cagliostro persona — the model case Braude 1992 uses to demonstrate how survival evidence dissolves under psychodynamic scrutiny. Key reference for depth-psychological approaches to mediumship.",
       "priority": "medium",
       "target_folder": "07_Mediumship_and_Survival",
       "cited_by": [
@@ -6690,7 +6696,7 @@
       "year": 1979,
       "journal": "Psychological Bulletin",
       "doi": "10.1037/0033-2909.86.3.638",
-      "why_needed": "Coined the 'file drawer problem' \u2014 foundational to every publication bias debate in psi meta-analyses. Cited by OSC (2015), and almost certainly by multiple library papers on ganzfeld and Bem meta-analyses. Essential for Controversy #10 (meta-debate).",
+      "why_needed": "Coined the 'file drawer problem' — foundational to every publication bias debate in psi meta-analyses. Cited by OSC (2015), and almost certainly by multiple library papers on ganzfeld and Bem meta-analyses. Essential for Controversy #10 (meta-debate).",
       "priority": "high",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -7292,7 +7298,7 @@
       "year": 2009,
       "journal": "Journal of Nervous and Mental Disease",
       "doi": null,
-      "why_needed": "Documents unexplained return of mental clarity before death in patients with severe brain damage \u2014 terminal lucidity. Provides additional evidence for the mind-brain dissociation argument central to controversy #7. By Greyson and colleague.",
+      "why_needed": "Documents unexplained return of mental clarity before death in patients with severe brain damage — terminal lucidity. Provides additional evidence for the mind-brain dissociation argument central to controversy #7. By Greyson and colleague.",
       "priority": "medium",
       "target_folder": "08_NDE_and_OBE",
       "cited_by": [
@@ -7445,7 +7451,7 @@
     },
     {
       "id": "haraldsson_stevenson_1974_experiment_icelandic",
-      "title": "An Experiment with the Icelandic Medium Hafsteinn Bj\u00f6rnsson",
+      "title": "An Experiment with the Icelandic Medium Hafsteinn Björnsson",
       "authors": [
         "Haraldsson, Erlendur.",
         "Stevenson, Ian."
@@ -7512,7 +7518,7 @@
     },
     {
       "id": "richet_1884_suggestion_mentale",
-      "title": "La Suggestion Mentale et le Calcul des Probabilit\u00e9s",
+      "title": "La Suggestion Mentale et le Calcul des Probabilités",
       "authors": [
         "Richet, Charles"
       ],
@@ -7613,7 +7619,7 @@
       "year": 2002,
       "journal": "Nature",
       "doi": "10.1038/419269a",
-      "why_needed": "Nature paper demonstrating that electrical stimulation of the right angular gyrus can induce out-of-body experiences. Foundational study for neurobiological OBE explanations; cited by Bokkon 2013 and relevant to controversy #7 (Con side \u2014 OBE as brain-generated phenomenon).",
+      "why_needed": "Nature paper demonstrating that electrical stimulation of the right angular gyrus can induce out-of-body experiences. Foundational study for neurobiological OBE explanations; cited by Bokkon 2013 and relevant to controversy #7 (Con side — OBE as brain-generated phenomenon).",
       "priority": "high",
       "target_folder": "08_NDE_and_OBE",
       "cited_by": [
@@ -7759,7 +7765,7 @@
       "year": 2001,
       "journal": "Mayo Clinic Proceedings",
       "doi": "10.4065/76.12.1192",
-      "why_needed": "High-profile failure to replicate Byrd 1988 intercessory prayer effects. Fills a critical skeptical gap in Controversy #5 \u2014 the library has mostly positive healing studies but needs key null results. Constituent study in Roe et al. 2015 meta-analysis.",
+      "why_needed": "High-profile failure to replicate Byrd 1988 intercessory prayer effects. Fills a critical skeptical gap in Controversy #5 — the library has mostly positive healing studies but needs key null results. Constituent study in Roe et al. 2015 meta-analysis.",
       "priority": "high",
       "target_folder": "10_Skeptical_and_Critical",
       "cited_by": [
@@ -7782,7 +7788,7 @@
       "year": 2004,
       "journal": "Skeptical Inquirer",
       "doi": null,
-      "why_needed": "Expos\u00e9 of Daniel P. Wirth's fraudulent healing research \u2014 the scandal that directly motivated Roe et al. 2015 to exclude Wirth's 5 studies from their meta-analysis. Essential context for understanding why the updated meta-analysis was needed.",
+      "why_needed": "Exposé of Daniel P. Wirth's fraudulent healing research — the scandal that directly motivated Roe et al. 2015 to exclude Wirth's 5 studies from their meta-analysis. Essential context for understanding why the updated meta-analysis was needed.",
       "priority": "medium",
       "target_folder": "10_Skeptical_and_Critical",
       "cited_by": [
@@ -7854,12 +7860,12 @@
       "authors": [
         "Steinkamp, Fiona.",
         "Boller, Emil.",
-        "B\u00f6sch, Holger."
+        "Bösch, Holger."
       ],
       "year": 2002,
       "journal": "Proceedings of the 45th Convention of the Parapsychological Association",
       "doi": null,
-      "why_needed": "RNG intention meta-analysis (357 experimental studies, 142 controls) finding Stouffer Z=13.09 but weighted Z=2.70 (p=.004) with very small effect (\u03c0=.50003) and significant curvilinear relationship between study size and effect size. Key evidence for small-study/publication bias in PK/RNG literature. Speaks to Controversy #8 (GCP/RNG).",
+      "why_needed": "RNG intention meta-analysis (357 experimental studies, 142 controls) finding Stouffer Z=13.09 but weighted Z=2.70 (p=.004) with very small effect (π=.50003) and significant curvilinear relationship between study size and effect size. Key evidence for small-study/publication bias in PK/RNG literature. Speaks to Controversy #8 (GCP/RNG).",
       "priority": "medium",
       "target_folder": "05_Psychokinesis",
       "cited_by": [
@@ -7931,7 +7937,7 @@
       "year": 1940,
       "journal": "Book (Boston: Bruce Humphries; reprinted 1966)",
       "doi": null,
-      "why_needed": "Foundational text that established modern experimental parapsychology. Introduced the card-guessing paradigm and statistical methods that Rhine used at Duke University. Cited extensively across the library: Alcock (2003), multiple methodology papers, and historical surveys reference Rhine's work as the starting point of laboratory parapsychology. Fills a historical gap \u2014 the library has many papers that critique or build on Rhine but lacks the primary source.",
+      "why_needed": "Foundational text that established modern experimental parapsychology. Introduced the card-guessing paradigm and statistical methods that Rhine used at Duke University. Cited extensively across the library: Alcock (2003), multiple methodology papers, and historical surveys reference Rhine's work as the starting point of laboratory parapsychology. Fills a historical gap — the library has many papers that critique or build on Rhine but lacks the primary source.",
       "priority": "medium",
       "target_folder": "12_Books_and_Overviews",
       "cited_by": [
@@ -7994,13 +8000,13 @@
         "Rosenthal, Robert"
       ],
       "year": 1988,
-      "why_needed": "Meta-analytic overview of experimenter expectancy effects \u2014 directly relevant to methodology debates in parapsychology (experimenter effects, demand characteristics). Previously had a bogus download (HTML saved as .pdf from National Academies site).",
+      "why_needed": "Meta-analytic overview of experimenter expectancy effects — directly relevant to methodology debates in parapsychology (experimenter effects, demand characteristics). Previously had a bogus download (HTML saved as .pdf from National Academies site).",
       "priority": "medium",
       "sources_tried": [
         {
           "source": "National Academies Press",
           "date": "2026-03-02",
-          "result": "Failed download \u2014 HTML landing page saved instead of PDF"
+          "result": "Failed download — HTML landing page saved instead of PDF"
         }
       ],
       "sources_not_yet_tried": [
@@ -8062,7 +8068,7 @@
       "title": "Weak Quantum Theory: Complementarity and Entanglement in Physics and Beyond",
       "authors": [
         "Atmanspacher, Harald.",
-        "R\u00f6mer, Hartmann.",
+        "Römer, Hartmann.",
         "Walach, Harald."
       ],
       "year": 2002,
@@ -8090,7 +8096,7 @@
       "title": "Generalized Quantum Theory: Overview and Latest Developments",
       "authors": [
         "Filk, Thomas.",
-        "R\u00f6mer, Hartmann."
+        "Römer, Hartmann."
       ],
       "year": 2011,
       "journal": "Axiomathes",
@@ -8118,7 +8124,7 @@
       "year": 1996,
       "journal": "Journal of Parapsychology",
       "doi": null,
-      "why_needed": "Key skeptical analysis of possible sensory leakage in the Psychophysical Research Laboratories autoganzfeld experiments. Foundational critique for the ganzfeld debate (controversy #1). Cited by Carde\u00f1a 2014 and likely referenced by multiple other library papers.",
+      "why_needed": "Key skeptical analysis of possible sensory leakage in the Psychophysical Research Laboratories autoganzfeld experiments. Foundational critique for the ganzfeld debate (controversy #1). Cited by Cardeña 2014 and likely referenced by multiple other library papers.",
       "priority": "high",
       "target_folder": "10_Skeptical_and_Critical",
       "cited_by": [
@@ -8140,7 +8146,7 @@
       "year": 1978,
       "journal": "Zetetic Scholar",
       "doi": null,
-      "why_needed": "Original source of the 'extraordinary claims require extraordinary evidence' principle, frequently invoked in psi debates. Carde\u00f1a 2014 argues the principle is typically misapplied. Foundational for the meta-debate (controversy #10).",
+      "why_needed": "Original source of the 'extraordinary claims require extraordinary evidence' principle, frequently invoked in psi debates. Cardeña 2014 argues the principle is typically misapplied. Foundational for the meta-debate (controversy #10).",
       "priority": "medium",
       "target_folder": "10_Skeptical_and_Critical",
       "cited_by": [
@@ -8156,7 +8162,7 @@
     },
     {
       "id": "timm_2006_bsb_critique",
-      "title": "Kommentar zu B\u00f6sch, H., Steinkamp, F., & Boller (2006)",
+      "title": "Kommentar zu Bösch, H., Steinkamp, F., & Boller (2006)",
       "authors": [
         "Timm, Ulrich."
       ],
@@ -8178,7 +8184,7 @@
     },
     {
       "id": "ertel_2006_bsb_critique",
-      "title": "Kritischer Kommentar zu einer Meta-Analyse von B\u00f6sch, Steinkamp & Boller",
+      "title": "Kritischer Kommentar zu einer Meta-Analyse von Bösch, Steinkamp & Boller",
       "authors": [
         "Ertel, Suitbert."
       ],
@@ -8361,7 +8367,7 @@
       "year": 1994,
       "journal": "Journal of the American Society for Psychical Research",
       "doi": null,
-      "why_needed": "Key early articulation of the concept that psi is 'actively evasive' \u2014 a direct precursor to Kennedy 2003's framework. Beloff proposed that paranormal phenomena may be 'not just elusive, but actively evasive.' Essential for understanding the intellectual lineage of the elusiveness debate.",
+      "why_needed": "Key early articulation of the concept that psi is 'actively evasive' — a direct precursor to Kennedy 2003's framework. Beloff proposed that paranormal phenomena may be 'not just elusive, but actively evasive.' Essential for understanding the intellectual lineage of the elusiveness debate.",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -8535,7 +8541,7 @@
         "Schmidt, Stefan.",
         "Schneider, Rainer.",
         "Binder, Manfred.",
-        "B\u00fcrkle, Daniel.",
+        "Bürkle, Daniel.",
         "Walach, Harald."
       ],
       "year": 2001,
@@ -8731,7 +8737,7 @@
     },
     {
       "id": "wilson_shadish_2006_blowing_trumpets",
-      "title": "On Blowing Trumpets to the Tulips: To Prove or Not to Prove the Null Hypothesis\u2014Comment on B\u00f6sch, Steinkamp, and Boller (2006)",
+      "title": "On Blowing Trumpets to the Tulips: To Prove or Not to Prove the Null Hypothesis—Comment on Bösch, Steinkamp, and Boller (2006)",
       "authors": [
         "Wilson, David B.",
         "Shadish, William R."
@@ -8890,12 +8896,12 @@
       "id": "cardena_2015_unbearable",
       "title": "The Unbearable Fear of Psi: On Scientific Suppression in the 21st Century",
       "authors": [
-        "Carde\u00f1a, Etzel."
+        "Cardeña, Etzel."
       ],
       "year": 2015,
       "journal": "Journal of Scientific Exploration",
       "doi": null,
-      "why_needed": "Directly addresses scientific suppression of psi research \u2014 cited by wahbeh_2018_exceptional, schooler_2018_entertaining, and other library papers. Documents specific instances of institutional resistance to anomalous cognition research. Fills a gap in the methodology/theory folder on sociological barriers to psi investigation.",
+      "why_needed": "Directly addresses scientific suppression of psi research — cited by wahbeh_2018_exceptional, schooler_2018_entertaining, and other library papers. Documents specific instances of institutional resistance to anomalous cognition research. Fills a gap in the methodology/theory folder on sociological barriers to psi investigation.",
       "priority": "high",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -8940,7 +8946,7 @@
       "authors": [
         "Negro, Paulo J.",
         "Palladino-Negro, Paula.",
-        "Louz\u00e3, M\u00e1rio R."
+        "Louzã, Mário R."
       ],
       "year": 2002,
       "journal": "Journal of Trauma & Dissociation",
@@ -8962,15 +8968,15 @@
       "id": "bastos_2016_frontal_eeg",
       "title": "Frontal Electroencephalographic (EEG) Activity and Mediumship: A Comparative Study Between Spiritist Mediums and Controls",
       "authors": [
-        "Bastos, Marco Aur\u00e9lio V.",
+        "Bastos, Marco Aurélio V.",
         "Bastos, Paulo Roberto H.",
-        "Os\u00f3rio, Isabel Helena S.",
+        "Osório, Isabel Helena S.",
         "Muass, Klaus A. R. C.",
-        "Iandoli Jr., D\u00e9cio.",
+        "Iandoli Jr., Décio.",
         "Lucchetti, Giancarlo."
       ],
       "year": 2016,
-      "journal": "Archives of Clinical Psychiatry (S\u00e3o Paulo)",
+      "journal": "Archives of Clinical Psychiatry (São Paulo)",
       "doi": "10.1590/0101-60830000000076",
       "why_needed": "One of very few EEG studies of trance channeling/mediumship. Found greater beta power in channelers vs. controls. Directly discussed in wahbeh_2018_mixed as preliminary physiological evidence. Fills gap in mediumship physiology literature.",
       "priority": "low",
@@ -9012,7 +9018,7 @@
     },
     {
       "id": "hemsley_2018_systematic_review_fc",
-      "title": "Systematic Review of Facilitated Communication 2014\u20132018 Finds No New Evidence That Messages Delivered Using Facilitated Communication Are Authored by the Person with Disability",
+      "title": "Systematic Review of Facilitated Communication 2014–2018 Finds No New Evidence That Messages Delivered Using Facilitated Communication Are Authored by the Person with Disability",
       "authors": [
         "Hemsley, Bronwyn.",
         "Bryant, Lucy.",
@@ -9044,7 +9050,7 @@
       "title": "Authorship in Facilitated Communication: An Analysis of 11 Cases",
       "authors": [
         "Saloviita, Timo.",
-        "Lepp\u00e4nen, Matti.",
+        "Leppänen, Matti.",
         "Ojalammi, Ulla."
       ],
       "year": 2014,
@@ -9115,7 +9121,7 @@
       "title": "Effectiveness of Distant Healing for Patients with Chronic Fatigue Syndrome: A Randomised Controlled Partially Blinded Trial (EUHEALS)",
       "authors": [
         "Walach, Harald.",
-        "B\u00f6sch, Holger.",
+        "Bösch, Holger.",
         "Lewith, George.",
         "Naumann, Johannes.",
         "Schwarzer, Barbara.",
@@ -9255,7 +9261,7 @@
       "year": 1998,
       "journal": "JAMA",
       "doi": "10.1001/jama.279.13.1005",
-      "why_needed": "Famous JAMA study where a 9-year-old (Emily Rosa) tested whether Therapeutic Touch practitioners could detect a human energy field \u2014 they could not (correct identification rate no better than chance). Key skeptical paper for the TT component of Controversy #5; cited by Astin et al. 2000 (ref 15).",
+      "why_needed": "Famous JAMA study where a 9-year-old (Emily Rosa) tested whether Therapeutic Touch practitioners could detect a human energy field — they could not (correct identification rate no better than chance). Key skeptical paper for the TT component of Controversy #5; cited by Astin et al. 2000 (ref 15).",
       "priority": "medium",
       "target_folder": "10_Skeptical_and_Critical",
       "cited_by": [
@@ -9393,7 +9399,7 @@
     },
     {
       "id": "coover_1913_feeling_stared",
-      "title": "The Feeling of Being Stared At \u2014 Experimental",
+      "title": "The Feeling of Being Stared At — Experimental",
       "authors": [
         "Coover, John Edgar."
       ],
@@ -9463,7 +9469,7 @@
       "id": "cardena_2017_psychology_anomalous",
       "title": "The Psychology of Anomalous Experiences: A Rediscovery",
       "authors": [
-        "Carde\u00f1a, Etzel.",
+        "Cardeña, Etzel.",
         "Lynn, Steven Jay.",
         "Krippner, Stanley."
       ],
@@ -9568,7 +9574,7 @@
       "year": 1997,
       "journal": "Journal of Near-Death Studies",
       "doi": "10.1023/A:1025010015662",
-      "why_needed": "Foundational NDE study in blind persons \u2014 one of the strongest evidence cases for veridical perception during NDEs. Received a perfect 10/10 quality rating in Hashemi et al. 2023 systematic review. Directly relevant to controversy #7 and provides unique evidence that NDE perceptions cannot be explained by prior visual experience.",
+      "why_needed": "Foundational NDE study in blind persons — one of the strongest evidence cases for veridical perception during NDEs. Received a perfect 10/10 quality rating in Hashemi et al. 2023 systematic review. Directly relevant to controversy #7 and provides unique evidence that NDE perceptions cannot be explained by prior visual experience.",
       "priority": "high",
       "target_folder": "08_NDE_and_OBE",
       "cited_by": [
@@ -9700,7 +9706,7 @@
       "title": "Comparing Meta-Analyses and Preregistered Multiple-Laboratory Replication Projects",
       "authors": [
         "Kvarven, Amanda.",
-        "Str\u00f8mland, Eirik.",
+        "Strømland, Eirik.",
         "Johannesson, Magnus."
       ],
       "year": 2020,
@@ -9774,7 +9780,7 @@
       "year": 2010,
       "journal": "Psychological Bulletin",
       "doi": "10.1037/a0019840",
-      "why_needed": "Completes the Storm\u2013Hyman exchange in Psychological Bulletin. The library already holds Hyman (2010) critique (hyman_2010_meta_analysis_conceals) and the original Storm et al. (2010) meta-analysis (storm_2010_metaanalysis), but is missing this direct reply. Essential for balanced coverage of Controversy #1.",
+      "why_needed": "Completes the Storm–Hyman exchange in Psychological Bulletin. The library already holds Hyman (2010) critique (hyman_2010_meta_analysis_conceals) and the original Storm et al. (2010) meta-analysis (storm_2010_metaanalysis), but is missing this direct reply. Essential for balanced coverage of Controversy #1.",
       "priority": "high",
       "target_folder": "02_Telepathy",
       "cited_by": [
@@ -9962,7 +9968,7 @@
       "year": 2010,
       "journal": "Journal of Scientific Exploration",
       "doi": "",
-      "why_needed": "Second precursor to Tressoldi 2011 \u2014 extends the HR prediction paradigm. Part of the Tressoldi prediction-accuracy program that culminates in the pupil dilation study. JSE papers are generally accessible.",
+      "why_needed": "Second precursor to Tressoldi 2011 — extends the HR prediction paradigm. Part of the Tressoldi prediction-accuracy program that culminates in the pupil dilation study. JSE papers are generally accessible.",
       "priority": "medium",
       "target_folder": "03_Precognition",
       "cited_by": [
@@ -10130,7 +10136,7 @@
       "title": "Do You Know Who Is on the Phone? Replication of an Experiment on Telephone Telepathy",
       "authors": [
         "Schmidt, Stefan.",
-        "M\u00fcller, Sabine.",
+        "Müller, Sabine.",
         "Walach, Harald."
       ],
       "year": 2004,
@@ -10152,7 +10158,7 @@
       "id": "wahbeh_2022_genetics_psychic",
       "title": "Genetics of Psychic Ability: A Pilot Case-Control Exome Sequencing Study",
       "authors": [
-        "Wahbeh, Helan\u00e9.",
+        "Wahbeh, Helané.",
         "Radin, Dean.",
         "Yount, Garret.",
         "Woodley of Menie, Michael A.",
@@ -10184,7 +10190,7 @@
       "year": 1997,
       "journal": "Journal of the Society for Psychical Research",
       "doi": null,
-      "why_needed": "Direct companion study to brown_sheldrake_1998_perceptive_pets \u2014 the Ramsbottom, Greater Manchester survey whose results are cross-culturally compared in the California paper. Essential for Controversy #12 (animal telepathy).",
+      "why_needed": "Direct companion study to brown_sheldrake_1998_perceptive_pets — the Ramsbottom, Greater Manchester survey whose results are cross-culturally compared in the California paper. Essential for Controversy #12 (animal telepathy).",
       "priority": "high",
       "target_folder": "02_Telepathy",
       "cited_by": [
@@ -10535,7 +10541,7 @@
       "year": 2010,
       "journal": "Anesthesia & Analgesia",
       "doi": "10.1213/ANE.0b013e3181d27067",
-      "why_needed": "Key companion paper cited by Borjigin 2013 \u2014 reports EEG surges (bispectral index) in humans undergoing organ donation after cardiac death; the only direct human parallel to Borjigin's rat findings",
+      "why_needed": "Key companion paper cited by Borjigin 2013 — reports EEG surges (bispectral index) in humans undergoing organ donation after cardiac death; the only direct human parallel to Borjigin's rat findings",
       "priority": "medium",
       "target_folder": "08_NDE_and_OBE",
       "cited_by": [
@@ -10718,7 +10724,7 @@
       "title": "Near-death experience as a probe to explore (disconnected) consciousness",
       "authors": [
         "Martial, Charlotte.",
-        "Cassol, H\u00e9l\u00e9na.",
+        "Cassol, Héléna.",
         "Laureys, Steven.",
         "Gosseries, Olivia."
       ],
@@ -10859,7 +10865,7 @@
       "year": 1987,
       "journal": "Journal of Near-Death Studies",
       "doi": null,
-      "why_needed": "Direct precursor to Ring & Cooper 1997; the only prior systematic attempt to survey OBEs in blind persons. Irwin found 3 OBErs among 21 blind respondents but none congenitally blind \u2014 Ring & Cooper explicitly set out to extend this study. Essential for the NDE/OBE-in-blind research lineage.",
+      "why_needed": "Direct precursor to Ring & Cooper 1997; the only prior systematic attempt to survey OBEs in blind persons. Irwin found 3 OBErs among 21 blind respondents but none congenitally blind — Ring & Cooper explicitly set out to extend this study. Essential for the NDE/OBE-in-blind research lineage.",
       "priority": "medium",
       "target_folder": "08_NDE_and_OBE",
       "cited_by": [
@@ -11119,7 +11125,7 @@
       "year": 1997,
       "journal": "Neuropsychopharmacology",
       "doi": "10.1016/S0893-133X(96)00246-1",
-      "why_needed": "Key PET predecessor to Carhart-Harris 2012; found increased glucose metabolism under psilocybin \u2014 the opposite of the fMRI decreases found in 2012. The discrepancy between these two studies is a central interpretive puzzle in psychedelic neuroscience.",
+      "why_needed": "Key PET predecessor to Carhart-Harris 2012; found increased glucose metabolism under psilocybin — the opposite of the fMRI decreases found in 2012. The discrepancy between these two studies is a central interpretive puzzle in psychedelic neuroscience.",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -11380,7 +11386,7 @@
       "year": 2012,
       "journal": "Perspectives on Psychological Science",
       "doi": "10.1177/1745691612460688",
-      "why_needed": "Provides the key statistic that only 1.07% of psychology papers are replications, with only 18% being direct replications \u2014 foundational data for the replication crisis debate. Cited by Ioannidis 2012 and central to the meta-debate controversy (#10).",
+      "why_needed": "Provides the key statistic that only 1.07% of psychology papers are replications, with only 18% being direct replications — foundational data for the replication crisis debate. Cited by Ioannidis 2012 and central to the meta-debate controversy (#10).",
       "priority": "medium",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -11521,7 +11527,7 @@
       "year": 1963,
       "journal": "Harvard University (doctoral dissertation)",
       "doi": null,
-      "why_needed": "The original Good Friday experiment \u2014 the first controlled study of hallucinogen-occasioned mystical experience. Historical foundation for the entire line of research reviewed in Barrett & Griffiths 2018. Replicated and extended by Griffiths et al. 2006.",
+      "why_needed": "The original Good Friday experiment — the first controlled study of hallucinogen-occasioned mystical experience. Historical foundation for the entire line of research reviewed in Barrett & Griffiths 2018. Replicated and extended by Griffiths et al. 2006.",
       "priority": "low",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -11538,7 +11544,7 @@
       "title": "Complementarity is a Useful Concept for Consciousness Studies. A Reminder",
       "authors": [
         "Walach, Harald.",
-        "R\u00f6mer, Hartmann."
+        "Römer, Hartmann."
       ],
       "year": 2000,
       "journal": "Neuroendocrinology Letters",
@@ -11581,7 +11587,7 @@
     },
     {
       "id": "jung_pauli_1952_naturerklarung",
-      "title": "Naturerkl\u00e4rung und Psyche",
+      "title": "Naturerklärung und Psyche",
       "authors": [
         "Jung, Carl Gustav.",
         "Pauli, Wolfgang."
@@ -11653,7 +11659,7 @@
       "title": "Accuracy and Replicability of Anomalous After-Death Communication Across Highly Skilled Mediums: A Critique",
       "authors": [
         "Wiseman, Richard.",
-        "O'Keeffe, Ciar\u00e1n."
+        "O'Keeffe, Ciarán."
       ],
       "year": 2001,
       "journal": "Paranormal Review",
@@ -11728,7 +11734,7 @@
       "year": 2009,
       "journal": "Science",
       "doi": "10.1126/science.1166127",
-      "why_needed": "Published in Science; established DMT as endogenous sigma-1 receptor ligand (KD = 14.75 \u00b5M). Key pro-DMT evidence that Nichols 2017 critiques as insufficient for endogenous activation. Central to the DMT-consciousness debate.",
+      "why_needed": "Published in Science; established DMT as endogenous sigma-1 receptor ligand (KD = 14.75 µM). Key pro-DMT evidence that Nichols 2017 critiques as insufficient for endogenous activation. Central to the DMT-consciousness debate.",
       "priority": "high",
       "target_folder": "09_Methodology_and_Theory",
       "cited_by": [
@@ -11873,7 +11879,7 @@
       "year": 1996,
       "journal": "Mental Retardation",
       "doi": null,
-      "why_needed": "Foundational journal article establishing the sensory-movement differences framework for autism. Directly cited by both robledo_2012_sensory_movement and donnellan_2013_rethinking as a theoretical foundation. The core argument \u2014 that movement disturbance can profoundly affect communication and social behavior, and that behaviors may not be what they seem \u2014 underpins the library's entire autism/nonverbal section.",
+      "why_needed": "Foundational journal article establishing the sensory-movement differences framework for autism. Directly cited by both robledo_2012_sensory_movement and donnellan_2013_rethinking as a theoretical foundation. The core argument — that movement disturbance can profoundly affect communication and social behavior, and that behaviors may not be what they seem — underpins the library's entire autism/nonverbal section.",
       "priority": "high",
       "target_folder": "11_Autism_and_Nonverbal",
       "cited_by": [
@@ -11914,6 +11920,152 @@
         "HathiTrust",
         "SPR online archive (psychicalresearch.org.uk)"
       ]
+    },
+    {
+      "id": "mossbridge_2025_mindfield_nonspeakers",
+      "title": "Taking the Mindfield Literally: Discovering Minds by Assuming Competence Among Nonspeakers",
+      "authors": [
+        "Mossbridge, Julia.",
+        "Welch, Maria.",
+        "Tarrant, Jeff."
+      ],
+      "year": 2025,
+      "journal": "Mindfield Bulletin",
+      "doi": null,
+      "why_needed": "Introduces 'mind-discovery' and 'telepathy-discovery' protocols for researching cognition and potential telepathic capacities among nonspeakers. Directly relevant to Controversy #9 (facilitated communication) and folder 11 (Autism and Nonverbal). Mossbridge is a major figure in the library's presentiment literature; this extends her work into the nonspeaker/FC domain.",
+      "priority": "medium",
+      "target_folder": "11_Autism_and_Nonverbal",
+      "cited_by": [],
+      "sources_tried": [
+        {
+          "source": "Mindfield Bulletin website (open access)",
+          "date": "2026-03-23",
+          "result": "Found. Full text saved as .txt (no PDF available on site)."
+        }
+      ],
+      "sources_not_yet_tried": [],
+      "status": "acquired"
+    },
+    {
+      "id": "pavon_2023_probing_facilitated",
+      "title": "Probing facilitated communication beyond the state of the art: New scientific approaches to test limits, potentials and underlying mechanisms",
+      "authors": [
+        "Pavon, Giulio."
+      ],
+      "year": 2023,
+      "journal": "Doctoral dissertation, Nottingham Trent University",
+      "doi": null,
+      "why_needed": "Key empirical reference for improved message-passing test protocols that presume competence among nonspeakers. Cited by Mossbridge et al. (2025) as evidence that most nonspeakers with autism and severe apraxia can pass authorship verification tests. Directly relevant to Controversy #9 (facilitated communication).",
+      "priority": "high",
+      "target_folder": "11_Autism_and_Nonverbal",
+      "cited_by": [
+        "mossbridge_2025_mindfield_nonspeakers"
+      ],
+      "sources_tried": [],
+      "sources_not_yet_tried": [
+        "https://irep.ntu.ac.uk/id/eprint/52453/",
+        "Nottingham Trent University repository"
+      ],
+      "status": "wanted"
+    },
+    {
+      "id": "graber_2024_ethics_spelling",
+      "title": "Ethics dialogue: Spelling to communicate -- Reply by Abraham Graber",
+      "authors": [
+        "Graber, Abraham."
+      ],
+      "year": 2024,
+      "journal": "Behavior Analysis in Practice",
+      "doi": "10.1007/s40617-024-01022-z",
+      "why_needed": "Argues that pressure from ASHA against spelling methods is unethically applied to parents. Cited by Mossbridge et al. (2025). Provides the ethical/policy dimension of the FC controversy (#9) from the pro-spelling side.",
+      "priority": "medium",
+      "target_folder": "11_Autism_and_Nonverbal",
+      "cited_by": [
+        "mossbridge_2025_mindfield_nonspeakers"
+      ],
+      "sources_tried": [],
+      "sources_not_yet_tried": [
+        "https://doi.org/10.1007/s40617-024-01022-z",
+        "Unpaywall",
+        "PubMed"
+      ],
+      "status": "wanted"
+    },
+    {
+      "id": "krippner_1971_precognitive_dream_bessent",
+      "title": "A precognitive dream study with a single subject",
+      "authors": [
+        "Krippner, Stanley.",
+        "Ullman, Montague.",
+        "Honorton, Charles."
+      ],
+      "year": 1971,
+      "journal": "Journal of the American Society for Psychical Research",
+      "doi": null,
+      "why_needed": "First Maimonides precognitive dream study with Malcolm Bessent — foundational experiment that Mossbridge et al. (2025) directly extends to lucid dreaming. The Bessent studies are the most convincingly replicated precognitive dream case studies and the explicit model for the new protocol. Cited by Storm et al. (2017) dream-ESP meta-analysis already in the library.",
+      "priority": "high",
+      "target_folder": "03_Precognition",
+      "cited_by": [
+        "mossbridge_2025_future_dreams",
+        "storm_2017_correspondence"
+      ],
+      "sources_tried": [],
+      "sources_not_yet_tried": [
+        "JSTOR",
+        "ASPR archives",
+        "Google Scholar"
+      ],
+      "status": "wanted"
+    },
+    {
+      "id": "krippner_1972_second_precognitive_bessent",
+      "title": "A second precognitive dream study with Malcolm Bessent",
+      "authors": [
+        "Krippner, Stanley.",
+        "Honorton, Charles.",
+        "Ullman, Montague."
+      ],
+      "year": 1972,
+      "journal": "Journal of the American Society for Psychical Research",
+      "doi": null,
+      "why_needed": "Confirmatory replication of the first Maimonides precognitive dream study. Together with Krippner et al. (1971), provides the only prior successful controlled precognitive dream case studies. Directly cited by Mossbridge et al. (2025) as the benchmark for their lucid dreaming protocol.",
+      "priority": "high",
+      "target_folder": "03_Precognition",
+      "cited_by": [
+        "mossbridge_2025_future_dreams",
+        "storm_2017_correspondence"
+      ],
+      "sources_tried": [],
+      "sources_not_yet_tried": [
+        "JSTOR",
+        "ASPR archives",
+        "Google Scholar"
+      ],
+      "status": "wanted"
+    },
+    {
+      "id": "vernon_2024_home_dream_precognition",
+      "title": "Testing home dream precognition and exploring links to psychological factors",
+      "authors": [
+        "Vernon, David.",
+        "Roxburgh, Elizabeth C.",
+        "Schofield, Matthew."
+      ],
+      "year": 2024,
+      "journal": "International Journal of Dream Research",
+      "doi": null,
+      "why_needed": "Most recent controlled at-home precognitive dreaming study, published in same journal as Mossbridge et al. (2025). Cited as evidence that innovative dream precognition research is ongoing. Relevant to Controversy #2 (precognition).",
+      "priority": "medium",
+      "target_folder": "03_Precognition",
+      "cited_by": [
+        "mossbridge_2025_future_dreams"
+      ],
+      "sources_tried": [],
+      "sources_not_yet_tried": [
+        "https://journals.ub.uni-heidelberg.de/index.php/IJoDR/article/view/100871",
+        "IJoDR open access"
+      ],
+      "status": "wanted"
     }
   ]
 }
