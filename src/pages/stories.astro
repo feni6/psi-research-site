@@ -1,0 +1,122 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+interface Story {
+  id: string;
+  title: string;
+  subtitle: string;
+  domain: string;
+  domainIcon: string;
+  domainColor: string;
+  paperIds: string[];
+  body: string; // HTML content — two paragraphs
+}
+
+const stories: Story[] = [
+  {
+    id: 'jaytee',
+    title: "The Dog Who Knew",
+    subtitle: "In over 100 videotaped experiments, a terrier named Jaytee went to the window when his owner decided to come home — from seven kilometers away, at randomly chosen times, with nobody in the house who knew she was coming.",
+    domain: 'Telepathy',
+    domainIcon: '🧠',
+    domainColor: 'purple',
+    paperIds: ['sheldrake_2000_that', 'sheldrake_smart_1998_dog_preliminary', 'wiseman_1998_jaytee_dog', 'sheldrake_smart_2000_testing_kane'],
+    body: '<p>When Pam Smart went out, her terrier Jaytee ignored the front window — cameras recorded him there just 4% of the time across hundreds of hours of tape. But something happened the moment Pam decided to come home. From over seven kilometers away, at randomly chosen times nobody in the house could have known, Jaytee walked to the window and waited. He was there 55% of the time during her return journeys, across more than 100 videotaped experiments. In one trial filmed for Austrian television, he reached the window within 11 seconds of Pam being told — at a randomly selected instant — to head home. He did this when he was home alone. He did this when Pam returned at non-routine times of her own choosing. His anticipation typically began before she even started her journey — at the moment of her decision to leave. Over 200 hours of time-coded footage, scored blind, documented the same impossible thing: this dog knew.</p><p>Skeptic Richard Wiseman tested the same dog with the same cameras and the same random-return protocol. He published a paper declaring the results negative. But his own videotapes showed Jaytee at the window 4% of the time during absences and 78% during returns — an even larger effect than Sheldrake had found. Wiseman reached his conclusion by applying a binary pass/fail threshold that did not capture the behavioral shift the tapes clearly showed; the dog behaved the same in both teams\' experiments. A separate replication with a Rhodesian ridgeback named Kane found the same pattern: 1% during absences, 26% during returns, at odds of 5,000 to 1 against chance. Two dogs, two owners, hundreds of hours of footage, and a skeptic whose own data confirmed what he set out to disprove. If these tapes mean what they appear to mean — that a dog can detect the moment its owner decides to come home, across miles, through walls, with no sensory cue — then something is passing between them that no branch of science can currently explain.</p>'
+  },
+];
+
+// Load catalog to resolve paper links
+import catalog from '../data/catalog.json';
+const papers = catalog.papers;
+
+function getPaper(id: string) {
+  return papers.find((p: any) => p.id === id);
+}
+---
+
+<Layout title="Remarkable Experiments" description="The most striking cases from psi research — specific experiments and individuals that produced results difficult to explain by any conventional means.">
+  <section class="py-16" role="region" aria-label="Remarkable Experiments">
+    <div class="max-w-4xl mx-auto px-4">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <div class="inline-block mb-4 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold tracking-wide uppercase">
+          The Standout Cases
+        </div>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-100 mb-6">
+          Remarkable Experiments
+        </h1>
+        <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          Not every psi experiment is ambiguous. Some produced results so specific, so well-documented,
+          and so resistant to conventional explanation that they deserve to be examined on their own terms.
+          These are their stories.
+        </p>
+      </div>
+
+      <!-- Story Cards -->
+      <div class="space-y-12">
+        {stories.map((story) => (
+          <article class="group bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500/30 transition-all duration-300" id={story.id}>
+            <!-- Card Header -->
+            <div class="px-6 sm:px-8 pt-6 sm:pt-8">
+              <div class="flex items-center gap-2 mb-3">
+                <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-${story.domainColor}-500/10 text-${story.domainColor}-400 border border-${story.domainColor}-500/20`}>
+                  <span>{story.domainIcon}</span>
+                  {story.domain}
+                </span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-3">
+                {story.title}
+              </h2>
+              <p class="text-base sm:text-lg text-amber-400/80 italic leading-relaxed mb-6">
+                {story.subtitle}
+              </p>
+            </div>
+
+            <!-- Card Body -->
+            <div class="px-6 sm:px-8 pb-6 sm:pb-8">
+              {story.body ? (
+                <div class="prose-custom space-y-4 text-base leading-relaxed text-slate-300" set:html={story.body} />
+              ) : (
+                <div class="bg-slate-800/50 border border-dashed border-slate-700 rounded-xl p-8 text-center">
+                  <p class="text-slate-500 italic">Story coming soon.</p>
+                </div>
+              )}
+
+              <!-- Source Papers -->
+              {story.paperIds.length > 0 && (
+                <div class="mt-6 pt-6 border-t border-slate-800">
+                  <span class="text-xs uppercase tracking-wider text-slate-500 font-medium">Source papers</span>
+                  <div class="mt-2 flex flex-wrap gap-2">
+                    {story.paperIds.map((pid) => {
+                      const paper = getPaper(pid);
+                      return paper ? (
+                        <a href={`/paper/${pid}`} class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-amber-400 hover:border-amber-500/30 transition-all">
+                          <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                          {(paper as any).authors?.[0]?.split(',')[0]} {(paper as any).year}
+                        </a>
+                      ) : (
+                        <span class="text-xs text-slate-600">{pid}</span>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .prose-custom p {
+      margin-bottom: 1rem;
+    }
+    .prose-custom p:last-child {
+      margin-bottom: 0;
+    }
+    [data-theme="light"] .prose-custom p {
+      color: #334155 !important;
+    }
+  </style>
+</Layout>

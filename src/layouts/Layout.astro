@@ -18,13 +18,14 @@ const currentPath = Astro.url.pathname;
 const mainNavLinks = [
   { href: '/', label: 'Home' },
   { href: '/catalog', label: 'Catalog' },
+  { href: '/stories', label: 'Remarkable Experiments' },
   { href: '/controversies', label: 'Controversies' },
-  { href: '/paths', label: 'Reading Paths' },
   { href: '/search', label: 'Search' },
 ];
 
 // Dropdown "More" Links
 const moreNavLinks = [
+  { href: '/paths', label: '🧭 Reading Paths' },
   { href: '/timeline', label: '📅 Timeline' },
   { href: '/replications', label: '🔄 Replications' },
   { href: '/stats', label: '📊 Stats' },
@@ -200,7 +201,7 @@ function getMobileLinkClasses(href: string): string {
             <ul class="space-y-2 text-slate-400">
               <li><a href="/catalog" class="hover:text-amber-400 transition">Catalog</a></li>
               <li><a href="/controversies" class="hover:text-amber-400 transition">Controversies</a></li>
-              <li><a href="/paths" class="hover:text-amber-400 transition">Reading Paths</a></li>
+              <li><a href="/stories" class="hover:text-amber-400 transition">Remarkable Experiments</a></li>
               <li><a href="/timeline" class="hover:text-amber-400 transition">Timeline</a></li>
             </ul>
           </div>
