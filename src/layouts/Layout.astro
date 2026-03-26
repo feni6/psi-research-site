@@ -167,7 +167,7 @@ function getMobileLinkClasses(href: string): string {
         <div id="mobile-menu-backdrop" class="hidden fixed inset-0 bg-black/60 z-40 md:hidden"></div>
         
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden mt-4 border-t border-slate-800 pt-4 relative z-50 bg-slate-900 px-4" aria-hidden="true">
+        <div id="mobile-menu" class="hidden md:hidden mt-4 border-t border-slate-800 pt-4 relative z-50 bg-slate-900 px-4 max-h-[70vh] overflow-y-auto overscroll-contain" aria-hidden="true">
           <div class="flex flex-col gap-2">
             {mainNavLinks.map((link) => (
               <a href={link.href} class={getMobileLinkClasses(link.href)}>{link.label}</a>
@@ -333,12 +333,14 @@ function getMobileLinkClasses(href: string): string {
             if (mobileMenuBackdrop) mobileMenuBackdrop.classList.remove('hidden');
             mobileMenuBtn.setAttribute('aria-expanded', 'true');
             if (desktopNav) desktopNav.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = 'hidden';
           } else {
             mobileMenu.classList.add('hidden');
             mobileMenu.setAttribute('aria-hidden', 'true');
             if (mobileMenuBackdrop) mobileMenuBackdrop.classList.add('hidden');
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
             if (desktopNav) desktopNav.removeAttribute('aria-hidden');
+            document.body.style.overflow = '';
           }
         });
 
@@ -349,6 +351,7 @@ function getMobileLinkClasses(href: string): string {
             mobileMenu.classList.add('hidden');
             if (mobileMenuBackdrop) mobileMenuBackdrop.classList.add('hidden');
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
           });
         });
 
@@ -358,6 +361,7 @@ function getMobileLinkClasses(href: string): string {
             mobileMenu.classList.add('hidden');
             mobileMenuBackdrop.classList.add('hidden');
             mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
           });
         }
       }
