@@ -29,12 +29,6 @@ const dayOfYear = Math.floor(diff / oneDay);
 const podIndex = dayOfYear % papers.length;
 const paperOfDay = papers[podIndex];
 
-// Notable Papers lookup
-const notableIds = ['bem_2011_feeling', 'cardena_2018_experimental', 'bem_1994_does'];
-const notablePapers = notableIds
-  .map(id => papers.find((p: any) => p.id === id))
-  .filter(Boolean);
-
 // Recently Added (Top 5 by Year)
 const recentPapers = [...papers]
   .sort((a: any, b: any) => (b.year || 0) - (a.year || 0))
@@ -56,8 +50,15 @@ const domainConfig: Record<string, { icon: string, color: string, label: string,
   meta_analysis: { icon: '📊', color: 'border-yellow-500/30 hover:border-yellow-400', label: 'Meta-Analyses', badgeColor: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' },
 };
 
-// Deterministic random paper selection for the "Feeling Adventurous?" feature
+// Deterministic random paper selection for the "Surprise Me" feature
 const randomPaperIds = papers.filter((_: any, i: number) => i % 17 === 0).slice(0, 20).map((p: any) => p.id);
+
+// Author IDs for the "Random Author" button
+function generateAuthorId(name: string): string {
+  return name.toLowerCase().replace(/[ ,.]+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+}
+const uniqueAuthors = [...new Set(allAuthors)];
+const randomAuthorIds = uniqueAuthors.filter((_: any, i: number) => i % 7 === 0).slice(0, 30).map((name: string) => generateAuthorId(name));
 
 ---
 
@@ -250,40 +251,44 @@ const randomPaperIds = papers.filter((_: any, i: number) => i % 17 === 0).slice(
     </div>
   </section>
 
-  <!-- Where Do You Start? -->
-  <section class="py-16 border-b border-slate-800">
+  <!-- Domain Explorer -->
+  <section class="py-16 border-b border-slate-800" role="region" aria-label="Research Domains">
     <div class="max-w-6xl mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-2 text-center text-slate-200">Where Do You Start?</h2>
-      <p class="text-slate-500 text-center mb-10 max-w-2xl mx-auto">Choose a path based on your current perspective or research goals.</p>
-      
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <a href="/paths/path_2_weak_spots" class="group bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-orange-500/50 hover:bg-slate-800/50 transition-all duration-300 hover:-translate-y-1 shadow-lg">
-          <div class="w-12 h-12 bg-orange-500/10 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🔍</div>
-          <div class="font-bold text-lg text-slate-200 mb-1 group-hover:text-orange-400 transition-colors">I'm Skeptical</div>
-          <div class="text-xs text-orange-400/80 font-medium mb-3 uppercase tracking-wider">~15 min read</div>
-          <p class="text-slate-400 text-sm leading-relaxed">Start with the weakest links. See where the evidence falls short and where the debates are fiercest.</p>
-        </a>
-        
-        <a href="/paths/path_3_newcomer_survey" class="group bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-blue-500/50 hover:bg-slate-800/50 transition-all duration-300 hover:-translate-y-1 shadow-lg">
-          <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🗺️</div>
-          <div class="font-bold text-lg text-slate-200 mb-1 group-hover:text-blue-400 transition-colors">I'm New Here</div>
-          <div class="text-xs text-blue-400/80 font-medium mb-3 uppercase tracking-wider">~20 min read</div>
-          <p class="text-slate-400 text-sm leading-relaxed">A balanced overview. Understand the landscape, key terms, and major findings without bias.</p>
-        </a>
-        
-        <a href="/paths/path_1_steelman_psi" class="group bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-amber-500/50 hover:bg-slate-800/50 transition-all duration-300 hover:-translate-y-1 shadow-lg">
-          <div class="w-12 h-12 bg-amber-500/10 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">💪</div>
-          <div class="font-bold text-lg text-slate-200 mb-1 group-hover:text-amber-400 transition-colors">Show Me Evidence</div>
-          <div class="text-xs text-amber-400/80 font-medium mb-3 uppercase tracking-wider">~25 min read</div>
-          <p class="text-slate-400 text-sm leading-relaxed">The strongest case for psi. Dive into high-quality studies published in top-tier journals.</p>
-        </a>
-        
-        <a href="/catalog" class="group bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-purple-500/50 hover:bg-slate-800/50 transition-all duration-300 hover:-translate-y-1 shadow-lg">
-          <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📊</div>
-          <div class="font-bold text-lg text-slate-200 mb-1 group-hover:text-purple-400 transition-colors">I'm a Researcher</div>
-          <div class="text-xs text-purple-400/80 font-medium mb-3 uppercase tracking-wider">Full Access</div>
-          <p class="text-slate-400 text-sm leading-relaxed">Full catalog with methodology data, effect sizes, cross-references, and raw metadata.</p>
-        </a>
+      <h2 class="text-2xl font-bold mb-2 text-slate-200">Research Domains</h2>
+      <p class="text-slate-500 mb-8">Explore specific areas of psi research.</p>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" role="list">
+        {domains.sort().map((domain: string) => {
+          const count = papers.filter((p: any) => p.psi_domain === domain).length;
+          const config = domainConfig[domain] || { icon: '📄', color: 'border-slate-500/30 hover:border-slate-400', label: domain, badgeColor: 'bg-slate-500/10 text-slate-400 border-slate-500/20' };
+          const topPaper = papers.find((p: any) => p.psi_domain === domain);
+
+          return (
+            <a href={`/domain/${domain}`} role="listitem" aria-label={`${config.label} - ${count} papers`} class={`group relative bg-slate-900 border border-slate-800 ${config.color} rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden focus:ring-2 focus:ring-amber-400 focus:outline-none`}>
+              <div class="relative z-10">
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-2xl filter grayscale group-hover:grayscale-0 transition-all">{config.icon}</span>
+                  <span class="text-xs font-bold bg-slate-800 text-slate-300 px-2 py-1 rounded-md group-hover:bg-amber-500 group-hover:text-slate-900 transition-colors">{count}</span>
+                </div>
+                <div class="font-bold text-slate-200 text-sm mb-1 group-hover:text-amber-400 transition-colors">{config.label}</div>
+                <div class="text-xs text-slate-500 group-hover:text-slate-400">Explore domain</div>
+              </div>
+
+              <!-- Hover Preview Overlay -->
+              <div class="absolute inset-0 bg-slate-900/95 backdrop-blur-sm p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center">
+                {topPaper ? (
+                  <>
+                    <div class="text-xs text-amber-400 font-semibold mb-1 uppercase">Featured Paper</div>
+                    <div class="text-sm text-slate-300 line-clamp-3 font-medium">{topPaper.title}</div>
+                    <div class="text-xs text-slate-500 mt-2">{topPaper.year}</div>
+                  </>
+                ) : (
+                  <div class="text-sm text-slate-400 italic">No papers found</div>
+                )}
+              </div>
+            </a>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -324,79 +329,6 @@ const randomPaperIds = papers.filter((_: any, i: number) => i % 17 === 0).slice(
               <p class="text-xs text-slate-500 mt-1 truncate">{paper.authors?.[0]}{paper.authors?.length > 1 ? ' et al.' : ''} • {paper.journal}</p>
             </div>
           </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Domain Explorer -->
-  <section class="py-16 border-b border-slate-800" role="region" aria-label="Research Domains">
-    <div class="max-w-6xl mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-2 text-slate-200">Research Domains</h2>
-      <p class="text-slate-500 mb-8">Explore specific areas of psi research.</p>
-      
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" role="list">
-        {domains.sort().map((domain: string) => {
-          const count = papers.filter((p: any) => p.psi_domain === domain).length;
-          const config = domainConfig[domain] || { icon: '📄', color: 'border-slate-500/30 hover:border-slate-400', label: domain, badgeColor: 'bg-slate-500/10 text-slate-400 border-slate-500/20' };
-          const topPaper = papers.find((p: any) => p.psi_domain === domain);
-          
-          return (
-            <a href={`/domain/${domain}`} role="listitem" aria-label={`${config.label} - ${count} papers`} class={`group relative bg-slate-900 border border-slate-800 ${config.color} rounded-xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden focus:ring-2 focus:ring-amber-400 focus:outline-none`}>
-              <div class="relative z-10">
-                <div class="flex items-center justify-between mb-3">
-                  <span class="text-2xl filter grayscale group-hover:grayscale-0 transition-all">{config.icon}</span>
-                  <span class="text-xs font-bold bg-slate-800 text-slate-300 px-2 py-1 rounded-md group-hover:bg-amber-500 group-hover:text-slate-900 transition-colors">{count}</span>
-                </div>
-                <div class="font-bold text-slate-200 text-sm mb-1 group-hover:text-amber-400 transition-colors">{config.label}</div>
-                <div class="text-xs text-slate-500 group-hover:text-slate-400">Explore domain</div>
-              </div>
-              
-              <!-- Hover Preview Overlay -->
-              <div class="absolute inset-0 bg-slate-900/95 backdrop-blur-sm p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center">
-                {topPaper ? (
-                  <>
-                    <div class="text-xs text-amber-400 font-semibold mb-1 uppercase">Featured Paper</div>
-                    <div class="text-sm text-slate-300 line-clamp-3 font-medium">{topPaper.title}</div>
-                    <div class="text-xs text-slate-500 mt-2">{topPaper.year}</div>
-                  </>
-                ) : (
-                  <div class="text-sm text-slate-400 italic">No papers found</div>
-                )}
-              </div>
-            </a>
-          );
-        })}
-      </div>
-    </div>
-  </section>
-
-  <!-- Notable Papers -->
-  <section class="py-16 border-b border-slate-800 bg-slate-900/30">
-    <div class="max-w-6xl mx-auto px-4">
-      <h2 class="text-2xl font-bold mb-2 text-slate-200">Notable Papers</h2>
-      <p class="text-slate-500 mb-8">Landmark studies that shaped the field — and the debates that followed.</p>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {notablePapers.map((paper: any) => (
-          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col h-full hover:border-amber-500/30 transition-colors">
-            <div class="mb-4">
-              <span class="text-xs bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-full border border-amber-500/20 capitalize font-medium">
-                {paper.psi_domain?.replace(/_/g, ' ')}
-              </span>
-            </div>
-            <a href={`/paper/${paper.id}`} class="font-bold text-lg text-slate-200 hover:text-amber-400 mb-3 block line-clamp-2 transition-colors">
-              {paper.title}
-            </a>
-            <div class="text-slate-500 text-sm mb-4 font-medium">
-              {paper.authors?.slice(0, 3).join(', ')}{paper.authors?.length > 3 ? ' et al.' : ''}, {paper.year}
-            </div>
-            <p class="text-slate-400 text-sm flex-grow leading-relaxed line-clamp-4">
-              {paper.abstract?.substring(0, 180)}...
-            </p>
-            <div class="mt-4 pt-4 border-t border-slate-800">
-              <span class="text-amber-400 text-sm font-semibold group-hover:underline">Read Analysis →</span>
-            </div>
-          </div>
         ))}
       </div>
     </div>
@@ -478,13 +410,13 @@ const randomPaperIds = papers.filter((_: any, i: number) => i % 17 === 0).slice(
     <div class="max-w-2xl mx-auto px-4">
       <h2 class="text-3xl font-bold text-slate-200 mb-3">Feeling Adventurous?</h2>
       <p class="text-slate-400 mb-8 text-lg">Discover something unexpected in the collection.</p>
-      <button 
-        id="random-paper-btn"
-        aria-label="Navigate to a random paper"
+      <button
+        id="random-author-btn"
+        aria-label="Navigate to a random author page"
         class="group relative inline-flex items-center justify-center px-10 py-5 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 rounded-2xl text-xl font-bold hover:from-amber-400 hover:to-orange-400 transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_50px_rgba(245,158,11,0.6)]"
       >
         <span class="mr-3 text-2xl group-hover:rotate-180 transition-transform duration-700">🎲</span>
-        Random Paper
+        Random Author
       </button>
     </div>
   </section>
@@ -510,13 +442,13 @@ const randomPaperIds = papers.filter((_: any, i: number) => i % 17 === 0).slice(
   </section>
 </Layout>
 
-<script define:vars={{ randomPaperIds }}>
-  // Random Paper Button Logic
-  const btn = document.getElementById('random-paper-btn');
-  if (btn) {
-    btn.addEventListener('click', () => {
-      const randomId = randomPaperIds[Math.floor(Math.random() * randomPaperIds.length)];
-      window.location.href = `/paper/${randomId}`;
+<script define:vars={{ randomPaperIds, randomAuthorIds }}>
+  // Random Author Button Logic
+  const authorBtn = document.getElementById('random-author-btn');
+  if (authorBtn) {
+    authorBtn.addEventListener('click', () => {
+      const randomId = randomAuthorIds[Math.floor(Math.random() * randomAuthorIds.length)];
+      window.location.href = `/author/${randomId}`;
     });
   }
 
