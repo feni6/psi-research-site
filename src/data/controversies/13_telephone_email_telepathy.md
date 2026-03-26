@@ -26,6 +26,8 @@ Rupert Sheldrake and Pamela Smart developed a simple, repeatable protocol to tes
 **Con:**
 - Schmidt, Erath, Ivanova & Walach (2009) -- Independent replication attempt at University of Freiburg with pre-deposited protocols and videotaped trials: Study 1 (N=21, office) 26.7% hit rate (ns, h=0.04); Study 2 (N=8, home) 30% (p=.15, h=0.11); overall 557 trials yielded p=.02 driven entirely by one exceptional participant (42.5% over 80 trials, p=.00015); no group-level anomalous cognition detected [catalog ID: schmidt_2009_who_is_calling]
 
+**See also:** [Who's Calling?](/stories#telephone-telepathy) (Remarkable Experiments story) | [Replication chain](/replications#8-telephone-telepathy)
+
 **Current status:** The telephone telepathy evidence base now includes a full 2025 quantitative synthesis: across 23 telepathy-condition experiments, performance was 8.7% above chance (standardized ES = 0.17), with moderator patterns favoring selected participants and emotionally bonded pairs; three precognition-condition datasets were near chance. This strengthens the aggregate pro-psi signal while preserving key skeptical concerns: substantial heterogeneity, a relatively small independent-replication subset, and inconsistent group-level performance in Freiburg (Schmidt et al., 2009). The main unresolved issue is whether preregistered multi-lab studies can reliably identify high-performing participants without post hoc selection. The foundational population surveys (Sheldrake 2000; Brown & Sheldrake 2001) establish that spontaneous telephone telepathy experiences are common in the general population (45-65% depending on question), providing ecological context for the laboratory experiments.
 
 ---
