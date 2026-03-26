@@ -109,7 +109,7 @@ function getPaper(id: string) {
             <!-- Card Image -->
             {story.image && (
               <div class="relative">
-                <img src={story.image.src} alt={story.image.alt} class="w-full h-64 sm:h-80 object-cover" loading="lazy" />
+                <img src={story.image.src} alt={story.image.alt} class="w-full h-64 sm:h-80 object-cover object-top" loading="lazy" />
                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950/90 to-transparent px-4 py-2">
                   <p class="text-xs text-slate-500 italic">{story.image.credit}</p>
                 </div>
