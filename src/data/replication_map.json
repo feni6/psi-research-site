@@ -20,7 +20,7 @@
         {
           "id": "galak_2012_correcting",
           "result": "failure",
-          "description": "Seven replication attempts across multiple labs, none found significant precognition effects."
+          "description": "Seven replication attempts by a single research team across multiple university sites; six of seven found no significant effect, one reached p = .04 one-tailed but Bayesian analysis still favored the null."
         },
         {
           "id": "maier_2014_no_precognition",
@@ -378,7 +378,7 @@
         },
         {
           "id": "bosch_2006_examining",
-          "description": "Critical meta-analysis examining psychokinesis and human-RNG interaction, finding that the effect largely disappears when controlling for methodological quality and selective reporting."
+          "description": "Critical meta-analysis of 380 RNG-PK studies finding a significant but very small overall effect with a strong small-study effect; a Monte Carlo simulation showed publication bias could in principle account for the findings. Concluded 'not proven.'"
         }
       ],
       "critiques": [

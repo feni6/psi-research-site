@@ -4,7 +4,7 @@ Daryl Bem's 2011 publication of nine experiments appearing to show retroactive i
 
 **Pro:**
 - Bem (2011) -- Nine experiments, eight yielding statistically significant evidence of retroactive influence on cognition and affect [catalog ID: bem_2011_feeling]
-- Bem, Tressoldi, Rabeyron & Duggan (2015) -- Meta-analysis of 90 experiments from 33 laboratories in 14 countries yields overall d = 0.09 with Bayesian support exceeding 10^9 to 1 [catalog ID: bem_2015_feeling]
+- Bem, Tressoldi, Rabeyron & Duggan (2015) -- Meta-analysis of 90 experiments from 33 laboratories in 14 countries yields overall Hedges' g = 0.09 with Bayesian support exceeding 10^9 to 1 [catalog ID: bem_2015_feeling]
 - Mossbridge, Tressoldi & Utts (2012) -- Independent meta-analysis of predictive anticipatory activity corroborates the general class of effects Bem reported [catalog ID: mossbridge_2012_predictive]
 - Storm, Tressoldi & Di Risio (2020) -- Updated meta-analysis of forced-choice psi experiments supports small but consistent effects [catalog ID: storm_2020_metaanalysis]
 - Honorton & Ferrari (1989) -- Meta-analysis of 309 forced-choice precognition experiments (1935-1987) finds combined z = 11.41 (p = 6.3 x 10^-31) across 62 investigators; fail-safe N of 14,268; no relationship between study quality and effect size; establishes the 50-year evidence base that Bem's work extended [catalog ID: honorton_1989_future]
