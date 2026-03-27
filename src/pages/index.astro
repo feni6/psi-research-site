@@ -69,9 +69,8 @@ const randomAuthorIds = uniqueAuthors.filter((_: any, i: number) => i % 7 === 0)
       <p class="text-xs sm:text-sm text-slate-300">
         <span class="font-bold text-amber-400">👋 Welcome!</span>
         <span class="hidden sm:inline"> New here? Check out our</span>
-        <a href="/guide" class="underline hover:text-amber-300 transition-colors ml-1">Guide</a>
-        <span class="mx-1">or</span>
-        <a href="/stories" class="underline hover:text-amber-300 transition-colors">Remarkable Experiments</a>
+        <a href="/guide" class="underline hover:text-amber-300 transition-colors ml-1">Guide</a><span class="mx-1">or</span><a href="/stories" class="underline hover:text-amber-300 transition-colors">Remarkable Experiments</a><span class="mx-1">or</span><a href="/controversies" class="underline hover:text-amber-300 transition-colors">controversies</a>
+        <span class="hidden sm:inline"> section</span>
       </p>
       <button id="dismiss-banner" class="text-slate-500 hover:text-slate-300 transition-colors p-1 hover:bg-slate-800 rounded shrink-0" aria-label="Dismiss banner">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -372,21 +371,21 @@ const randomAuthorIds = uniqueAuthors.filter((_: any, i: number) => i % 7 === 0)
     <div class="max-w-6xl mx-auto px-4">
       <h2 class="text-2xl font-bold mb-8 text-center text-slate-200">What Makes This Different</h2>
       <div class="grid md:grid-cols-3 gap-8">
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:border-amber-500/20 transition-colors">
+        <a href="/controversies" class="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:border-amber-500/20 transition-colors block">
           <div class="text-3xl mb-4">⚖️</div>
           <h3 class="font-bold text-xl text-amber-400 mb-3">Both Sides</h3>
           <p class="text-slate-400 leading-relaxed">14 controversy maps present papers on both sides of every major debate. This is not advocacy — it's structured evidence.</p>
-        </div>
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:border-amber-500/20 transition-colors">
+        </a>
+        <a href="/about" class="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:border-amber-500/20 transition-colors block">
           <div class="text-3xl mb-4">🔍</div>
           <h3 class="font-bold text-xl text-amber-400 mb-3">Transparent Method</h3>
           <p class="text-slate-400 leading-relaxed">Complete documentation of how papers were selected, sourced, and processed — including known biases and limitations.</p>
-        </div>
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:border-amber-500/20 transition-colors">
+        </a>
+        <a href="/api/catalog.json" class="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:border-amber-500/20 transition-colors block">
           <div class="text-3xl mb-4">🤖</div>
           <h3 class="font-bold text-xl text-amber-400 mb-3">AI-Readable</h3>
           <p class="text-slate-400 leading-relaxed">Full JSON catalog with structured metadata, effect sizes, and cross-references. Designed for both human and machine navigation.</p>
-        </div>
+        </a>
       </div>
     </div>
   </section>
