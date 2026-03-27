@@ -458,10 +458,10 @@ const bibtexCitation = `@article{${paper.id},
       </section>
     )}
 
-    <!-- Actual Paper Abstract -->
+    <!-- Abstract -->
     {paper.actual_abstract && (
       <section class="mb-8">
-        <h2 class="text-xs uppercase tracking-wider text-slate-500 font-medium mb-2">Actual Paper Abstract</h2>
+        <h2 class="text-xs uppercase tracking-wider text-slate-500 font-medium mb-2">Abstract</h2>
         <div class="border-l-4 border-purple-500/30 pl-5 bg-slate-900/30 rounded-r-lg py-4 space-y-3">
           {paper.actual_abstract.split('\n\n').map((para: string) => (
             <p class="text-base leading-relaxed text-slate-300" set:html={linkGlossaryTerms(para)} />
@@ -470,20 +470,6 @@ const bibtexCitation = `@article{${paper.id},
       </section>
     )}
 
-    <!-- Research Notes (notes + abstract combined) -->
-    {(paper.notes || paper.abstract) && (
-      <section class="mb-8">
-        <h2 class="text-xs uppercase tracking-wider text-slate-500 font-medium mb-2">Research Notes</h2>
-        <div class="border-l-4 border-blue-500/30 pl-5 bg-slate-900/30 rounded-r-lg py-4 space-y-3">
-          {paper.notes && paper.notes.split('\n\n').map((para: string) => (
-            <p class="text-base leading-relaxed text-slate-300" set:html={linkGlossaryTerms(para)} />
-          ))}
-          {paper.abstract && (
-            <p class="text-base leading-relaxed text-slate-300" set:html={linkGlossaryTerms(paper.abstract)} />
-          )}
-        </div>
-      </section>
-    )}
 
     <!-- Links -->
     {(paper.doi || paper.url || paper.pdf_url) && (
