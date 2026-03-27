@@ -189,14 +189,15 @@ const totalPapers = catalog.papers.length;
           );
         }
 
-        // 2. Filter by Search Term
+        // 2. Filter by Search Term — each word must match at least one field
+        const terms = term.split(/\s+/).filter(Boolean);
         const results = filteredByDomain.filter(item => {
-          const titleMatch = item.title.toLowerCase().includes(term);
-          const content = item.abstract || item.text || '';
-          const contentMatch = content.toLowerCase().includes(term);
-          const authorsMatch = item.authors ? (Array.isArray(item.authors) ? item.authors.join(', ') : item.authors).toLowerCase().includes(term) : false;
-          const domainMatch = item.domain ? item.domain.toLowerCase().includes(term) : false;
-          return titleMatch || contentMatch || authorsMatch || domainMatch;
+          const title = item.title.toLowerCase();
+          const content = (item.abstract || item.text || '').toLowerCase();
+          const authors = item.authors ? (Array.isArray(item.authors) ? item.authors.join(', ') : item.authors).toLowerCase() : '';
+          const domain = item.domain ? item.domain.toLowerCase() : '';
+          const year = item.year ? String(item.year) : '';
+          return terms.every(t => title.includes(t) || content.includes(t) || authors.includes(t) || domain.includes(t) || year.includes(t));
         });
 
         // 3. Render Suggestions (Top 5 matches)
@@ -463,15 +464,16 @@ const totalPapers = catalog.papers.length;
         const data = await response.json();
         
         const catalogItems = (data.papers || []).map(p => {
-          if (p.domain) allDomains.add(p.domain);
+          const domain = p.psi_domain || p.domain;
+          if (domain) allDomains.add(domain);
           return {
             type: 'paper',
             id: p.id,
             title: p.title,
             authors: p.authors,
             year: p.year,
-            journal: p.journal, // Map journal if available
-            domain: p.domain,
+            journal: p.journal,
+            domain: domain,
             abstract: p.abstract,
             url: `/paper/${p.id}`
           };

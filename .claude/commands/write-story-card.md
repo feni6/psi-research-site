@@ -1,6 +1,6 @@
-# Write a Remarkable Experiments Story Card
+# Write a Featured Experiments Story Card
 
-You are writing a story card for the "Remarkable Experiments" page (`src/pages/stories.astro`). Each card tells a short, vivid, factually precise story about a specific experiment or individual performance that produced results difficult to explain by conventional means.
+You are writing a story card for the "Featured Experiments" page (`src/pages/stories.astro`). Each card tells a short, vivid, factually precise story about a specific experiment or individual performance that produced results difficult to explain by conventional means.
 
 The goal of this page is to make a visitor gasp. To make them say "oh my god." To present cases where the evidence is so specific, so well-documented, and so resistant to dismissal that the reader has to sit with it. These are not summaries of research. They are stories about something extraordinary that happened to a specific person or animal, in a specific place, under specific conditions — and was measured.
 
@@ -114,7 +114,7 @@ Every great story has a turn. For these stories, the turn is usually: someone tr
 
 But how you handle the critique depends on whether the critique is actually good. You read the full text of the critical papers in step 2. Now evaluate them honestly:
 
-- **If the critique is strong and was never adequately rebutted** — say so. Not every story on this page needs a clean vindication. An honest acknowledgment of a real weakness is more credible than pretending every objection was demolished. (But if the critique is truly devastating, this case probably shouldn't be on the "Remarkable Experiments" page at all.)
+- **If the critique is strong and was never adequately rebutted** — say so. Not every story on this page needs a clean vindication. An honest acknowledgment of a real weakness is more credible than pretending every objection was demolished. (But if the critique is truly devastating, this case probably shouldn't be on the "Featured Experiments" page at all.)
 - **If the critique is strong but was rebutted with evidence** — present the challenge, the rebuttal, and why the rebuttal is convincing. This is the best dramatic arc.
 - **If the critique is weak, methodologically flawed, or based on a misunderstanding** — do NOT present it as an equal-weight challenge that was heroically overcome. That gives it more credibility than it deserves. Instead, you can mention it briefly and explain why it doesn't hold up, or you can skip it and focus on the strength of the original evidence. A bad critique is not a plot device — it's a distraction. For example: if a skeptic re-analyzed data using criteria that were never part of the original study design, or applied a statistical framework that the original authors (and other statisticians) have shown to be inappropriate for this type of data, say that plainly. Don't frame a flawed critique as a serious challenge just for the sake of narrative balance.
 - **If the critic's own data actually supports the effect** — this is the most powerful version of the story. Say it directly: the skeptic tested it themselves, and their own numbers showed the effect. That's not "balance" — that's evidence.

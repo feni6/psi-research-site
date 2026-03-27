@@ -107,7 +107,7 @@ Tracks all replication relationships documented in the catalog. Organized by par
 
 **Original:** `sheldrake_2003_videotaped` — Sheldrake & Smart (2003), "Videotaped Experiments on Telephone Telepathy"
 **Co-original:** `sheldrake_smart_2003_experimental_tests_telephone` — Sheldrake & Smart (2003), "Experimental Tests for Telephone Telepathy"
-**Story:** [Who's Calling?](/stories#telephone-telepathy) — Remarkable Experiments card
+**Story:** [Who's Calling?](/stories#telephone-telepathy) — Featured Experiments card
 **Controversy:** [#13 — Telephone/Email Telepathy](/controversies/13_telephone_email_telepathy)
 
 | # | Replication | Year | Outcome | Catalog link | Notes |

@@ -490,7 +490,9 @@ function getDomainIcon(d: string): string {
         const authors = card.dataset.authors || '';
         const abstract = card.dataset.abstract || '';
 
-        const matchesSearch = !searchTerm || title.includes(searchTerm) || authors.includes(searchTerm) || abstract.includes(searchTerm);
+        const searchTerms = searchTerm ? searchTerm.split(/\s+/).filter(Boolean) : [];
+        const yearStr = card.dataset.year || '';
+        const matchesSearch = searchTerms.length === 0 || searchTerms.every(t => title.includes(t) || authors.includes(t) || abstract.includes(t) || yearStr.includes(t) || domain.includes(t));
         const matchesDomain = !selectedDomain || domain === selectedDomain;
         const matchesFolder = !selectedFolder || folder === selectedFolder;
         const matchesYear = year >= minYear && year <= maxYear;
@@ -503,7 +505,7 @@ function getDomainIcon(d: string): string {
         if (isMatch) {
           visibleMatchCount++;
           if (visibleMatchCount <= visibleCount) {
-            card.style.display = 'flex'; // Changed from block to flex
+            card.style.display = 'flex';
             card.classList.remove('hidden');
           } else {
             card.style.display = 'none';
@@ -533,7 +535,9 @@ function getDomainIcon(d: string): string {
         const authors = card.dataset.authors || '';
         const abstract = card.dataset.abstract || '';
 
-        const matchesSearch = !searchTerm || title.includes(searchTerm) || authors.includes(searchTerm) || abstract.includes(searchTerm);
+        const searchTerms2 = searchTerm ? searchTerm.split(/\s+/).filter(Boolean) : [];
+        const yearStr2 = card.dataset.year || '';
+        const matchesSearch = searchTerms2.length === 0 || searchTerms2.every(t => title.includes(t) || authors.includes(t) || abstract.includes(t) || yearStr2.includes(t) || domain.includes(t));
         const matchesDomain = !selectedDomain || domain === selectedDomain;
         const matchesFolder = !selectedFolder || folder === selectedFolder;
         const matchesYear = year >= minYear && year <= maxYear;
