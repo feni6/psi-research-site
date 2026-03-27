@@ -193,13 +193,13 @@
         },
         {
           "id": "radin_2021_psychophysical",
-          "result": "success",
-          "description": "Further double-slit replication with additional methodological refinements, reporting significant results."
+          "result": "mixed",
+          "description": "Further double-slit experiment; planned analysis found no significant effect after FDR adjustment, but two exploratory post hoc analyses were positive."
         },
         {
           "id": "radin_2025_observer",
-          "result": "success",
-          "description": "Most recent double-slit experiment testing observer influence on quantum interference patterns."
+          "result": "mixed",
+          "description": "Pre-registered diffraction grating experiment; three primary hypotheses not supported overall, but exploratory trend analysis found progressive interference decline."
         }
       ],
       "conceptual_replications": [
@@ -427,7 +427,7 @@
         {
           "id": "benson_2006_therapeutic",
           "result": "failure",
-          "description": "Largest intercessory prayer RCT (STEP), finding no effect of prayer on cardiac bypass outcomes and a possible nocebo effect in patients who knew they were receiving prayer."
+          "description": "Largest intercessory prayer RCT (STEP), finding no effect of prayer on cardiac bypass outcomes. Patients who knew they were receiving prayer had significantly more complications, though the paper offered no clear explanation for this finding."
         },
         {
           "id": "radin_2006_doubleblind",
