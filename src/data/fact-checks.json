@@ -1,0 +1,1122 @@
+{
+  "description": "Tracks which papers have been fact-checked against their original PDFs in the Psi Research Library. Each entry records the paper ID, the date it was last verified, and any issues found and fixed.",
+  "last_updated": "2026-03-27",
+  "total_checked": 131,
+  "checks": [
+    {
+      "id": "bem_1994_does",
+      "title": "Does Psi Exist? Replicable Evidence for an Anomalous Process of Information Transfer",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "plain_summary: '500 billion' corrected to '48 billion' (p=2.1e-11)"
+      ]
+    },
+    {
+      "id": "bem_2011_feeling",
+      "title": "Feeling the Future: Experimental Evidence for Anomalous Retroactive Influences on Cognition and Affect",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "mossbridge_2012_predictive",
+      "title": "Predictive Physiological Anticipation Preceding Seemingly Unpredictable Stimuli",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2012_consciousness",
+      "title": "Consciousness and the Double-Slit Interference Pattern: Six Experiments",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "abstract: EEG correlation now notes post-hoc status and full-sample p=0.09",
+        "plain_summary: 'one in a million' corrected to 'one in 167,000' (p=6e-6)",
+        "plain_summary: absorption corrected from confirmed to marginal (p=0.07)",
+        "plain_summary: added meditation-experience null (p=0.75)",
+        "abstract + plain_summary: added Experiment 4 retrocausal design"
+      ]
+    },
+    {
+      "id": "benson_2006_therapeutic",
+      "title": "Study of the Therapeutic Effects of Intercessory Prayer (STEP)",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "abstract + notes + plain_summary: removed '$2.4 million' (not in PDF)",
+        "notes + tags: removed 'nocebo' attribution (word not in paper)",
+        "replication_map: removed 'nocebo' from description"
+      ]
+    },
+    {
+      "id": "bem_2015_feeling",
+      "title": "Feeling the Future: A Meta-Analysis of 90 Experiments",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "abstract: z=6.33 corrected to z=6.40 (per PDF abstract)",
+        "controversy 02: 'd = 0.09' corrected to 'Hedges' g = 0.09'"
+      ]
+    },
+    {
+      "id": "galak_2012_correcting",
+      "title": "Correcting the Past: Failures to Replicate Psi",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map: 'none found significant' corrected to 'six of seven null, one p=.04'",
+        "replication_map: 'multiple labs' corrected to 'single team across multiple sites'"
+      ]
+    },
+    {
+      "id": "bosch_2006_examining",
+      "title": "Examining Psychokinesis: The Interaction of Human Intention with Random Number Generators",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map: 'effect largely disappears when controlling for quality' replaced with accurate Monte Carlo description",
+        "plain_summary: 'perfectly reproduce all patterns' softened to 'could in principle account for' with heterogeneity caveat"
+      ]
+    },
+    {
+      "id": "targ_1974_information",
+      "title": "Information Transmission Under Conditions of Sensory Shielding",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "abstract + effect_size + plain_summary: P=3e-4 corrected to P=5.6e-4 (conservative permutation value from PDF)"
+      ]
+    },
+    {
+      "id": "duane_1965_extrasensory",
+      "title": "Extrasensory Electroencephalographic Induction between Identical Twins",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "related_papers: removed 1987 paper from precursor of 1965 paper (chronologically impossible)"
+      ]
+    },
+    {
+      "id": "rouder_2013_bayes_factor_esp",
+      "title": "A Bayes Factor Meta-Analysis of Recent Extrasensory Perception Experiments",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "controversy 02 + replication_map: \"Bayesian reanalysis of Bem's data\" corrected to Storm et al.'s ganzfeld data (paper analyzes Storm 2010, not Bem 2011)",
+        "controversy 02 + timeline era_5: \"Rouder & Morey\" corrected to \"Rouder, Morey & Province\" (3 authors, not 2)"
+      ]
+    },
+    {
+      "id": "hyman_1994_anomaly",
+      "title": "Anomaly or Artifact? Comments on Bem and Honorton",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map: \"sensory leakage\" and \"statistical methods\" replaced with actual concerns (randomization testing, target frequency artifact, experimenter prompting) \u2014 Hyman explicitly disclaims sensory leakage in footnote 2"
+      ]
+    },
+    {
+      "id": "nelson_2002_correlations",
+      "title": "Correlations of Continuous Random Data with Major World Events",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "utts_1996_assessment",
+      "title": "An Assessment of the Evidence for Psychic Functioning",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "timeline era_4: SAIC program start year corrected from 1991 to 1990 (per Utts paper)"
+      ]
+    },
+    {
+      "id": "reber_2019_searching",
+      "title": "Searching for the Impossible: Parapsychology's Elusive Quest",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "jahn_1982_persistent",
+      "title": "The Persistent Paradox of Psychic Phenomena: An Engineering Perspective",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "related_papers: removed schmidt_1987_strange from cites (chronologically impossible \u2014 1982 cannot cite 1987)"
+      ]
+    },
+    {
+      "id": "milton_1999_does",
+      "title": "Does Psi Exist? Lack of Replication of an Anomalous Process of Information Transfer",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2025_observer",
+      "title": "Observer Influence on Quantum Interference: Testing the von Neumann-Wigner Consciousness-Collapse Theory",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "abstract: 'differential skew was significant after FDR correction' corrected to outward-focus subgroup finding (p=0.008) per PDF abstract",
+        "replication_map.md: 'Successful' corrected to 'Mixed' \u2014 preregistered hypotheses not supported"
+      ]
+    },
+    {
+      "id": "cardena_2018_experimental",
+      "title": "The Experimental Evidence for Parapsychological Phenomena: A Review",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_1989_evidence",
+      "title": "Evidence for Consciousness-Related Anomalies in Random Physical Systems",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "path_1: removed 'trillions to one' odds claim (not stated in the paper; replaced with actual effect size and filedrawer figures)"
+      ]
+    },
+    {
+      "id": "alcock_2003_give",
+      "title": "Give the Null Hypothesis a Chance: Reasons to Remain Doubtful about the Existence of Psi",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "related_papers: removed radin_2012_consciousness from critiques (chronologically impossible \u2014 2003 cannot critique 2012)",
+        "related_papers: removed child_1985 from critiqued_by (chronologically impossible \u2014 1985 cannot critique 2003)",
+        "abstract + timeline: argument count corrected from 8/9 to 12, added 4 missing sections",
+        "controversy 12: removed fabricated claim about Sheldrake/animal telepathy (not in PDF)",
+        "controversy 06: removed fabricated claim about mediumship cold-reading (not in PDF)"
+      ]
+    },
+    {
+      "id": "ioannidis_2005_false",
+      "title": "Why Most Published Research Findings Are False",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2006_reexamining",
+      "title": "Reexamining Psychokinesis: Commentary on the B\u00f6sch, Steinkamp and Boller Meta-Analysis",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "related_papers: removed jahn_1987_engineering from cites (not in PDF references)"
+      ]
+    },
+    {
+      "id": "escola_gascon_2023_cia_remote_viewing",
+      "title": "Follow-up on the U.S. Central Intelligence Agency's (CIA) Remote Viewing Experiments",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "abstract + path_4 + controversy 10 + plain_summary: '19.5% predicted by experiential EI' corrected to 'total EI (experiential + strategic)' \u2014 experiential alone predicted 9.1% in Group 2"
+      ]
+    },
+    {
+      "id": "jahn_1997_correlations",
+      "title": "Correlations of Random Binary Sequences with Pre-Stated Operator Intention: A Review of a 12-Year Program",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "authors: added Dobyns, York H and Bradish, G. J. (paper has 5 authors, site listed only 3)",
+        "controversy 08: updated attribution from 'Jahn, Dunne & Nelson' to include all 5 authors"
+      ]
+    },
+    {
+      "id": "maier_2014_no_precognition",
+      "title": "Feeling the Future Again: Retroactive Avoidance of Negative Stimuli",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json + .md + _REPLICATION_MAP.json: result corrected from 'failure' to 'success' \u2014 paper found 4/7 experiments significant (BF=293), not null",
+        "replication_map: 'pre-registered' removed (paper is not pre-registered)",
+        "replication_map: 'retroactive priming' corrected to 'retroactive avoidance' (distinct paradigm)"
+      ]
+    },
+    {
+      "id": "ritchie_2012_failing_future",
+      "title": "Failing the Future: Three Unsuccessful Attempts to Replicate Bem's 'Retroactive Facilitation of Recall' Effect",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json abstract: Replication 3 DR% corrected from '2.58%' to '\u22120.58%' (sign and magnitude wrong)"
+      ]
+    },
+    {
+      "id": "schlitz_2006_two_minds",
+      "title": "Of Two Minds: Sceptic-Proponent Collaboration within Parapsychology",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json notes: Study 1 lab corrected from 'IONS lab' to 'Wiseman's lab at Hertfordshire'",
+        "replication_map.md: outcome corrected from 'Experimenter-dependent' to 'Failure' (2006 study was null for both experimenters)",
+        "10_meta_debate.md: replaced one-sided artifact framing with paper's own balanced conclusion"
+      ]
+    },
+    {
+      "id": "standish_2004_electroencephalographic",
+      "title": "Electroencephalographic Evidence of Correlated Event-Related Signals Between the Brains of Spatially and Sensory Isolated Human Subjects",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.md: z-score corrected from -3.05 to -3.28",
+        "catalog.json notes: replicating subject corrected from 'DJ' to 'CW, pair 19'"
+      ]
+    },
+    {
+      "id": "maier_2020_preregistered",
+      "title": "A Preregistered Multi-Lab Replication of Maier et al. (2014, Exp. 4) Testing Retroactive Avoidance",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json + _REPLICATION_MAP.json: result corrected from 'mixed' to 'failure' (BF01=4.38, clear null)",
+        "replication_map.json + _REPLICATION_MAP.json + replication_map.md: moved from global_consciousness_rng chain to bem_feeling_future chain",
+        "04_double_slit_pk.md: removed misplaced entry (paper tests retroactive avoidance, not double-slit PK)",
+        "04_double_slit_pk.md: 'Maier & Dechamps (2020)' removed (10 authors, wrong controversy)"
+      ]
+    },
+    {
+      "id": "tressoldi_2011_extraordinary",
+      "title": "Extraordinary Claims Require Extraordinary Evidence: The Case of Non-Local Perception",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json abstract: 'dream-ESP' and 'implicit precognition' replaced with actual PDF protocol names",
+        "catalog.json plain_summary: '2.89 trillion' corrected to '28.9 trillion' (off by factor of 10)",
+        "catalog.json: study_type corrected from 'narrative_review' to 'meta_analysis' (both entries)"
+      ]
+    },
+    {
+      "id": "radin_2021_psychophysical",
+      "title": "Psychophysical Interactions with a Double-Slit Interference Pattern",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json + 04_double_slit_pk.md + era_6_current.md: Spearman p corrected from 0.0003 to 0.0001",
+        "replication_map.md: outcome corrected from 'Successful' to 'Mixed' (planned analysis was null)",
+        "_REPLICATION_MAP.json: result corrected from 'success' to 'mixed'"
+      ]
+    },
+    {
+      "id": "storm_2010_metaanalysis",
+      "title": "Meta-Analysis of Free-Response Studies, 1992\u20132008: Assessing the Noise Reduction Model in Parapsychology",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json abstract: 'supporting the noise reduction model' corrected to 'partially supporting' (only Cat1 vs Cat3 significant)",
+        "path_7_psi_debate.md: ganzfeld date range corrected from '1992 onward' to '1997 onward'"
+      ]
+    },
+    {
+      "id": "houran_2018_crossexamining",
+      "title": "Cross-Examining the Case for Precognition: Comment on Mossbridge and Radin (2018)",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json + _REPLICATION_MAP.json: description corrected from 'Bem's precognition claims' to 'Mossbridge & Radin (2018)'",
+        "path_2_weak_spots.md: scope corrected from 'focused critique of presentiment literature' to broader precognition critique"
+      ]
+    },
+    {
+      "id": "kennedy_2003_capricious_psi",
+      "title": "The Capricious, Actively Evasive, Unsustainable Nature of Psi: A Summary and Hypotheses",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "12_animal_telepathy.md: 'unfalsifiable' and 'Sheldrake-type' replaced with accurate 'unsustainable/actively evasive' framing (Sheldrake not in PDF)",
+        "08_global_consciousness_project.md: 'unfalsifiable' replaced with 'unsustainable' (Kennedy's argument is empirical, not philosophical)"
+      ]
+    },
+    {
+      "id": "open_science_2015_reproducibility",
+      "title": "Estimating the Reproducibility of Psychological Science",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "tressoldi_2024_ganzfeld_meta",
+      "title": "Stage 2 Registered Report: Anomalous Perception in a Ganzfeld Condition",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "standish_2003_evidence",
+      "title": "Evidence of Correlated Functional Magnetic Resonance Imaging Signals Between Distant Human Brains",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "schmidt_1987_strange",
+      "title": "The Strange Properties of Psychokinesis",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "schmidt_2004_distant",
+      "title": "Distant intentionality and the feeling of being stared at: Two meta-analyses",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "11_sense_of_being_stared_at.md: mischaracterized reason for no BES (was quality, corrected to homogeneity)",
+        "path_5_deep_dive_psychokinesis.md: removed misplaced entry (DMILS/telepathy paper, not PK)"
+      ]
+    },
+    {
+      "id": "honorton_1989_future",
+      "title": "Future Telling: A Meta-Analysis of Forced-Choice Precognition Experiments",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: p-value exponent corrected from 10^-31 to 10^-25",
+        "replication_map.json: removed as ganzfeld_telepathy chain original (precognition paper, not ganzfeld); replaced with bem_1994_does"
+      ]
+    },
+    {
+      "id": "hyman_2010_meta_analysis_conceals",
+      "title": "Meta-Analysis That Conceals More Than It Reveals",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "ambach_2008_correlations",
+      "title": "Correlations Between the EEGs of Two Spatially Separated Subjects",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json + _REPLICATION_MAP.json: result corrected from 'success' to 'failure' (explicit failed replication)",
+        "replication_map.json + _REPLICATION_MAP.json: description corrected from 'finding EEG correlations' to 'no significant EEG correlations'"
+      ]
+    },
+    {
+      "id": "beischel_2007_anomalous",
+      "title": "Anomalous Information Reception by Research Mediums",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: actual_abstract 'p < 0.007, effect size < 0.5' corrected to 'p = 0.007, effect size = 0.5' (less-than signs were wrong)"
+      ]
+    },
+    {
+      "id": "beischel_2015_anomalous",
+      "title": "Anomalous Information Reception by Research Mediums Under Blinded Conditions II",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.md: item accuracy 52.6% (p=0.09) corrected to 52.8% (p=.002)",
+        "replication_map.md: forced-choice p<0.001 corrected to p=.01"
+      ]
+    },
+    {
+      "id": "dobyns_2004_megareg",
+      "title": "The MegaREG Experiment",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.md: D=-0.90 corrected to D=-0.0971 (decimal place error)"
+      ]
+    },
+    {
+      "id": "radin_2004_electrodermal",
+      "title": "Electrodermal Presentiments of Future Emotions",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: combined p-value corrected from 1.3 x 10^-5 to 3 x 10^-5 (per Table 2)",
+        "catalog.json: plain_summary odds corrected from '1 in 100,000' to '1 in 33,000'"
+      ]
+    },
+    {
+      "id": "radin_2004_event",
+      "title": "Event-Related EEG Correlations Between Isolated Human Subjects",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.md: r=0.037 corrected to r=0.20 (fabricated value replaced with PDF value)"
+      ]
+    },
+    {
+      "id": "radin_2006_doubleblind",
+      "title": "Double-Blind Test of the Effects of Distant Intention on Water Crystal Formation",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json + _REPLICATION_MAP.json: description corrected from 'chocolate effects' to 'water crystal formation' (copy-paste error)"
+      ]
+    },
+    {
+      "id": "radin_2008_effects",
+      "title": "Effects of Distant Intention on Water Crystal Formation: A Triple-Blind Replication",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: blinding field updated to note footnote 10 qualification (may be only double-blind)",
+        "catalog.json: notes removed 'stronger blinding' claim",
+        "replication_map.json: result changed from 'success' to 'marginal' per paper's own hedged language"
+      ]
+    },
+    {
+      "id": "radin_2011_electrocortical",
+      "title": "Electrocortical Activity Prior to Unpredictable Stimuli in Meditators and Nonmeditators",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: removed chronologically impossible citation (mossbridge_2012_predictive cited by 2011 paper)",
+        "catalog.json: abstract changed '15 of 32' to '14 of 32' to match PDF abstract (Results section says 15)"
+      ]
+    },
+    {
+      "id": "savva_2014_retro_priming",
+      "title": "Retro-priming, priming, and double testing: psi and replication",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json + _REPLICATION_MAP.json: result corrected from 'success' to 'failure' (Study 2 was explicitly negative)",
+        "replication_map.md: fabricated es=0.03 replaced with correct es=-0.25",
+        "era_5_modern.md: 'Savva et al. (2014)' corrected to 'Rabeyron (2014)' (sole author)"
+      ]
+    },
+    {
+      "id": "wackermann_2003_correlations",
+      "title": "Correlations between brain electrical activities of two spatially separated human subjects",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "walleczek_2019_false_positive_amp",
+      "title": "False-Positive Effect in the Radin Double-Slit Experiment (AMP)",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "wiseman_schlitz_1997_experimenter_staring",
+      "title": "Experimenter Effects and the Remote Detection of Staring",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "walleczek_2019_false_positive",
+      "title": "False-Positive Effect in the Radin Double-Slit Experiment",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: methodology.n corrected from 250 (sessions) to 1250 (test trials per PDF)"
+      ]
+    },
+    {
+      "id": "bem_palmer_broughton_2001_updating_ganzfeld",
+      "title": "Updating the Ganzfeld Database: A Victim of Its Own Success?",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "path_1_steelman_psi.md + era_5_modern.md: trial count corrected from 3,146 to 1,661",
+        "path_1_steelman_psi.md + path_3_newcomer_survey.md + era_5_modern.md: wrong title corrected to actual PDF title"
+      ]
+    },
+    {
+      "id": "utts_1991_replication_meta_analysis",
+      "title": "Replication and Meta-Analysis in Parapsychology",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "rabeyron_2020_most",
+      "title": "Why Most Research Findings About Psi Are False",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: removed false ioannidis_2005_false from cites (paper cites only Ioannidis 2016a/b)",
+        "03_presentiment.md: removed false claim that Rabeyron 'explicitly cites Ioannidis (2005)'; rewrote description"
+      ]
+    },
+    {
+      "id": "schooler_2018_entertaining",
+      "title": "Entertaining Without Endorsing",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "schwarzkopf_2014_should",
+      "title": "We Should Have Seen This Coming",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "path_2_weak_spots.md: misidentified paper target (was Bem 2011, corrected to Mossbridge et al. presentiment meta-analysis)"
+      ]
+    },
+    {
+      "id": "simmons_2011_false_positive",
+      "title": "False-Positive Psychology",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: plain_summary 'nearly 13% each' corrected to 'between 7.7% and 12.6% individually'"
+      ]
+    },
+    {
+      "id": "radin_2025_years",
+      "title": "New Year's Eve as a Case Study in Experimental Metaphysics",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "n_studies 27\u219226 (PDF computes 23\u00d726=598)",
+        "Removed chronologically impossible critiqued_by (2017 papers can't critique 2025 paper)"
+      ]
+    },
+    {
+      "id": "nelson_2011_effects",
+      "title": "Effects of Mass Consciousness: Changes in Random Data During Global Events",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed incorrect cites link to schmidt_1987_strange (not in PDF reference list)"
+      ]
+    },
+    {
+      "id": "sheldrake_2003_videotaped",
+      "title": "Videotaped Experiments on Telephone Telepathy",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2004_nolan_telephone",
+      "title": "Filmed Telephone Telepathy: Nolan Sisters",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Anne's score: 0 of 1\u21921 of 4 (25%) in abstract, plain_summary, and stories.astro"
+      ]
+    },
+    {
+      "id": "sheldrake_smart_1998_dog_preliminary",
+      "title": "A Dog That Seems to Know When Its Owner Is Coming Home: Preliminary Investigations",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_smart_2003_experimental_tests_telephone",
+      "title": "Experimental Tests for Telephone Telepathy",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "CRITICAL: p-value 4\u00d710\u207b\u2076\u21924\u00d710\u207b\u00b9\u2076 in 5 locations (10 orders of magnitude)",
+        "Odds 'one in 250,000'\u2192'one in 2.5 quadrillion'"
+      ]
+    },
+    {
+      "id": "sheldrake_2003_parrot_telepathy",
+      "title": "Testing a Language-Using Parrot for Telepathy",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Phantom 3rd author removed in 3 files (Sheldrake, Morgana & Sheldrake\u2192Sheldrake & Morgana)",
+        "Odds/p-value mismatch fixed: 4,000:1\u21925,000:1 to match p=0.0002"
+      ]
+    },
+    {
+      "id": "sheldrake_2025_telecommunication_telepathy_meta",
+      "title": "Telecommunication Telepathy Meta-Analysis",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2000_that",
+      "title": "A Dog That Seems to Know When Its Owner Is Coming Home",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "wiseman_1998_jaytee_dog",
+      "title": "Can Animals Detect When Their Owners Are Returning Home?",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Fixed attribution of 4%/78% figures from 'his own videotapes showed' to 'Sheldrake's reanalysis of Wiseman's footage'"
+      ]
+    },
+    {
+      "id": "bancel_2017_global_consciousness",
+      "title": "Searching for Global Consciousness",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Controversy text 'effect is fragile' corrected to accurately describe Bancel's finding of goal-oriented psi"
+      ]
+    },
+    {
+      "id": "jahn_2005_pear",
+      "title": "The PEAR Proposition",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "28 years\u219226 years in path_5",
+        "25 years\u219226 years in era_5 (2 locations)"
+      ]
+    },
+    {
+      "id": "may_1995_decision",
+      "title": "Decision Augmentation Theory: Toward a Model of Anomalous Mental Phenomena",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed wrong extends link to puthoff_1976_perceptual (paper extends Stanford PMIR, not Puthoff)"
+      ]
+    },
+    {
+      "id": "radin_1991_effects",
+      "title": "Effects of Consciousness on the Fall of Dice",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "walach_2020_evidence",
+      "title": "Evidence for Anomalistic Correlations Between Human Behaviour and RNG Output",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed wrong replication_of link to jahn_2000 (replicates von Lucadou, not PEAR)"
+      ]
+    },
+    {
+      "id": "hyman_1996_evaluation",
+      "title": "Evaluation of a Program on Anomalous Mental Phenomena",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "baptista_2015_explicit_anomalous_cognition",
+      "title": "Explicit Anomalous Cognition: A Review",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "schwartz_2019_location",
+      "title": "The Location and Reconstruction of a Byzantine Structure",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "lommel_2001_neardeath",
+      "title": "Near-Death Experience in Survivors of Cardiac Arrest",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "parnia_2014_aware",
+      "title": "AWARE: AWAreness during REsuscitation",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed chronologically impossible cited_by (van_lommel_2013 can't cite 2014 paper)",
+        "Removed incorrect extends link to ring_1997",
+        "Fixed 46%\u219255% for 'any mental experience' in plain_summary"
+      ]
+    },
+    {
+      "id": "josephson_1991_biological",
+      "title": "Biological Utilisation of Quantum Nonlocality",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2023_sentiment",
+      "title": "Sentiment and Presentiment: Twitter Analysis",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "wagenmakers_2011_why_psychologists",
+      "title": "Why Psychologists Must Change the Way They Analyze Their Data",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Fixed 'anecdotal at best' to accurately reflect 3 tests with substantial evidence for null"
+      ]
+    },
+    {
+      "id": "bancel_2017_searching",
+      "title": "Searching for Global Consciousness: A Seventeen Year Exploration",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "DOI corrected from 10.1016/j.explore.2017.04.006 to 10.1016/j.explore.2016.12.003"
+      ]
+    },
+    {
+      "id": "kauffman_2023_quantum",
+      "title": "Quantum Aspects: The Brain-Mind Relationship",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "storm_2020_metaanalysis",
+      "title": "Meta-Analysis of Free-Response Studies 2009-2018",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Fixed 'forced-choice' to 'free-response' in controversy 02",
+        "Removed phantom author Di Risio from controversy 02",
+        "Changed 'through 2019' to 'through 2018' in replication_map.json description"
+      ]
+    },
+    {
+      "id": "yu_2024_effects",
+      "title": "Effects of Intentionally Treated Water",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "bierman_2003_does",
+      "title": "Does Consciousness Collapse the Wave Packet?",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Changed 'Thirty volunteer pairs' to 'Thirty volunteers' in catalog abstract/plain_summary",
+        "Removed wrong precursor link ibison_jeffers_1998_double_slit",
+        "Moved from 'theory' to 'conceptual_replications' in replication_map.json",
+        "Fixed mischaracterized purpose in controversy 10"
+      ]
+    },
+    {
+      "id": "francis_2012_publication_bias",
+      "title": "Publication Bias in Psi Research",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "richards_2005_replicable",
+      "title": "Replicable fMRI Evidence of Correlated Brain Signals",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "tressoldi_2011_extraordinary_claims",
+      "title": "Extraordinary Claims Require Extraordinary Evidence",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Changed quality-ES correlations from 'positive' to 'mixed' in plain_summary"
+      ]
+    },
+    {
+      "id": "hinterberger_2010_searching",
+      "title": "Searching for Neuronal Markers of Psi",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed phantom citation richards_2005_replicable from cites",
+        "Fixed mischaracterization of correction survival in controversy 10"
+      ]
+    },
+    {
+      "id": "jahn_2000_replication",
+      "title": "PortREG Replication Experiments",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Changed Z=0.809 to Z=0.596 in replication_map.md"
+      ]
+    },
+    {
+      "id": "schmidt_2009_who_is_calling",
+      "title": "Who Is Calling? Anomalous Cognition",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Changed outcome from 'Successful' to 'Mixed' in replication_map.md",
+        "Fixed description to reflect failed group-level replication"
+      ]
+    },
+    {
+      "id": "sheldrake_smart_2000_testing_kane",
+      "title": "Testing a Return-Anticipating Dog (Kane)",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "wagenmakers_2012_confirmatory_replication_bem",
+      "title": "Confirmatory Replication of Bem",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kekecs_2023_transparent_psi",
+      "title": "Transparent Psi Project",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "cardena_2014_call_open_consciousness",
+      "title": "A Call for an Open, Informed Study of All Aspects of Consciousness",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "grinberg_zylberbaum_1994_transferred_potential",
+      "title": "The EPR Paradox in the Brain",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "parker_2003_compendium",
+      "title": "A Compendium of the Evidence for Psi",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_1997_unconscious_presentiment",
+      "title": "Unconscious Perception of Future Emotions",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_smart_avraamides_2015_automated_telephone",
+      "title": "Automated Tests of Telephone Telepathy",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2014_telepathy_phone_text",
+      "title": "Telepathy in Connection with Telephone Calls, Text Messages and Emails",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Changed p<10^-10 to p<10^-15 in catalog abstract (off by 5 orders of magnitude)"
+      ]
+    },
+    {
+      "id": "storm_2017_correspondence",
+      "title": "The Correspondence Between Dream Content and Target Material",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2011_information_consciousness",
+      "title": "The Capricious, Actively Evasive, Unsustainable Nature of Psi",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "lakens_2017_equivalence",
+      "title": "Equivalence Tests: A Practical Primer",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "protzko_2017_decline_effects",
+      "title": "Decline Effects: Types, Mechanisms, and Personal Reflections",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "freedman_2003_effects",
+      "title": "Effects of Frontal Lobe Lesions on Intentionality and REGs",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "freedman_2018_mindmatter",
+      "title": "Mind-Matter Interactions and the Frontal Lobes",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "jahn_1987_engineering",
+      "title": "Engineering Anomalies Research",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "maier_2018_intentional_observer",
+      "title": "The Intentional Observer Effect on Quantum Randomness",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "nelson_2002_coherent_consciousness_911",
+      "title": "Coherent Consciousness and Reduced Randomness: Sept 11, 2001",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2016_double_slit",
+      "title": "Consciousness and the Double-Slit Interference Pattern",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Changed 'one in a billion' to 'roughly one in 100 million' in plain_summary (was 10x overstated)"
+      ]
+    },
+    {
+      "id": "radin_2022_psychophysical",
+      "title": "Psychophysical Interactions with Electrical Plasma",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Replaced wrong actual_abstract (was McCue 'Paranormal Contagion' from same journal issue)"
+      ]
+    },
+    {
+      "id": "puthoff_1976_perceptual",
+      "title": "A Perceptual Channel for Information Transfer over Kilometer Distances",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "braude_1992_survival",
+      "title": "Survival or Super-Psi?",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "greyson_2007_consistency_nde",
+      "title": "Consistency of NDE Accounts over Two Decades",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "greyson_2010_peak_in_darien",
+      "title": "Seeing Dead People Not Known to Have Died",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "greyson_2011_western_approaches_nde",
+      "title": "Cosmological Implications of Near-Death Experiences",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "facco_2015_nde_epistemological",
+      "title": "Near-Death Experiences: Epistemological Implications",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Replaced phantom citation van_lommel_2013 with correct lommel_2001_neardeath in cites"
+      ]
+    },
+    {
+      "id": "kondziella_2023_nde_systematic_analysis",
+      "title": "NDE Systematic Analysis of Case Reports",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Fixed miscategorization of heightened senses as Supernatural (should be Cognitive)"
+      ]
+    },
+    {
+      "id": "lommel_2006_neardeath",
+      "title": "Near-Death Experience, Consciousness, and the Brain",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "martial_2017_nde_features",
+      "title": "NDE Feature Content Analysis",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Changed '27 different four-feature orderings' to '34' in path_6 (27 was count of narratives, not orderings)"
+      ]
+    },
+    {
+      "id": "palmieri_2022_neurofunctional_nde",
+      "title": "Neuro-Functional Modeling of NDE",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "thonnard_2013_nde_memory_reality",
+      "title": "NDE Memories: More Real Than Reality?",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "timmermann_2018_dmt_nde",
+      "title": "DMT Models the Near-Death Experience",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "borjigin_2013_surge_dying",
+      "title": "Surge of Neurophysiological Coherence in the Dying Brain",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "blanke_2002_stimulating_obe",
+      "title": "Stimulating Illusory Own-Body Perceptions",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed chronologically impossible critique link ring_1997 (1997 can't critique 2002 paper)"
+      ]
+    },
+    {
+      "id": "rao_1987_anomaly",
+      "title": "The Anomaly Called Psi: Recent Research and Criticism",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    }
+  ]
+}

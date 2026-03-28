@@ -17,11 +17,12 @@ Tracks all replication relationships documented in the catalog. Organized by par
 | # | Replication | Year | Outcome | Catalog link | Notes |
 |---|-------------|------|---------|--------------|-------|
 | 1 | `galak_2012_correcting` | 2012 | Failed | explicit | 7 experiments, N=3,289; includes both experimental replications and corrective meta-analysis |
-| 2 | `maier_2014_no_precognition` | 2014 | Failed | explicit | No evidence for precognition across multiple experiments |
+| 2 | `maier_2014_no_precognition` | 2014 | Positive | explicit | Independent replication: 4/7 experiments significant, retroactive avoidance paradigm, combined BF₁₀=293, ES=0.07 |
 | 3 | `ritchie_2012_failing_future` | 2012 | Failed | explicit | Three unsuccessful attempts to replicate retroactive facilitation of recall |
-| 4 | `savva_2014_retro_priming` | 2014 | Mixed | explicit | Overall non-significant (es=0.03); high scorers in session 1 did not replicate in session 2 |
+| 4 | `savva_2014_retro_priming` | 2014 | Failed | explicit | Rabeyron (2014): Study 2 retro-priming negative and non-significant (es=-0.25, ns); high scorers from Study 1 failed to replicate |
 | 5 | `wagenmakers_2012_confirmatory_replication_bem` | 2012 | Failed | explicit | Pre-registered confirmatory replication; null result with Bayesian analysis |
-| 6 | `kekecs_2023_transparent_psi` | 2023 | Failed | explicit | 10-lab pre-registered replication, 37,000+ trials, dead-on-chance result |
+| 6 | `maier_2020_preregistered` | 2020 | Failed | explicit | Pre-registered multi-lab replication of Maier et al. (2014, Exp. 4) retroactive avoidance; N=2,004 across 5 labs; BF01=4.38 |
+| 7 | `kekecs_2023_transparent_psi` | 2023 | Failed | explicit | 10-lab pre-registered replication, 37,000+ trials, dead-on-chance result |
 
 ---
 
@@ -43,8 +44,8 @@ Tracks all replication relationships documented in the catalog. Organized by par
 |---|-------------|------|---------|--------------|-------|
 | 1 | `wackermann_2003_correlations` | 2003 | Successful | explicit | Significant EEG correlations between spatially separated pairs |
 | 2 | `standish_2003_evidence` | 2003 | Successful | explicit | First fMRI study; significant activation in one pair (single pair, not transitive) |
-| 3 | `standish_2004_electroencephalographic` | 2004 | Successful | explicit | Largest EEG study (60 subjects); 5/30 pairs significant; overall Stouffer z=-3.05, p=0.0005 |
-| 4 | `radin_2004_event` | 2004 | Successful | explicit | Triple-blind EEG; significant sender-receiver correlation (r=0.037); 3/13 pairs significant |
+| 3 | `standish_2004_electroencephalographic` | 2004 | Successful | explicit | Largest EEG study (60 subjects); 5/30 pairs significant; overall Stouffer z=-3.28, p=0.0005 |
+| 4 | `radin_2004_event` | 2004 | Successful | explicit | Triple-blind EEG; significant sender-receiver correlation (r=0.20, p=0.0005); 3/13 pairs significant |
 
 **Second-generation original:** `wackermann_2003_correlations` — Wackermann et al. (2003)
 
@@ -61,8 +62,8 @@ Tracks all replication relationships documented in the catalog. Organized by par
 
 | # | Replication | Year | Outcome | Catalog link | Notes |
 |---|-------------|------|---------|--------------|-------|
-| 1 | `radin_2021_psychophysical` | 2021 | Successful | explicit | Continued exploratory positive results |
-| 2 | `radin_2025_observer` | 2025 | Successful | explicit | Testing von Neumann-Wigner consciousness-collapse theory |
+| 1 | `radin_2021_psychophysical` | 2021 | Mixed | explicit | Planned analysis null after FDR; two exploratory post hoc analyses positive |
+| 2 | `radin_2025_observer` | 2025 | Mixed | explicit | Preregistered hypotheses not supported; exploratory trend analysis significant (p=5.9×10⁻¹⁴); outward-focus subgroup p=0.008 |
 | 3 | `walleczek_2019_false_positive_amp` | 2019 | Failed | explicit | Sham experiment without observers produced significant false-positive effect (p=0.02, N=1,250); 0% true-positive match rate |
 
 ---
@@ -75,9 +76,8 @@ Tracks all replication relationships documented in the catalog. Organized by par
 |---|-------------|------|---------|--------------|-------|
 | 1 | `jahn_1997_correlations` | 1997 | Successful | explicit | 12-year PEAR program review; positive operator-intention correlations |
 | 2 | `nelson_2002_correlations` | 2002 | Successful | explicit | GCP field-REG data; significant inter-node correlations (e.g., 9/11: t=3.81, p=0.0002) |
-| 3 | `jahn_2000_replication` | 2000 | Failed | explicit | Three-lab consortium failed primary replication (Z=0.809); authors report structural anomalies |
-| 4 | `dobyns_2004_megareg` | 2004 | Anomalous | explicit | Significant reversed intentional effect (D=-0.90) |
-| 5 | `maier_2020_preregistered` | 2020 | Failed | explicit | Pre-registered multi-lab replication; null result |
+| 3 | `jahn_2000_replication` | 2000 | Failed | explicit | Three-lab consortium failed primary replication (Z=0.596); authors report structural anomalies |
+| 4 | `dobyns_2004_megareg` | 2004 | Anomalous | explicit | Significant reversed intentional effect (D=-0.0971) |
 
 ---
 
@@ -113,7 +113,7 @@ Tracks all replication relationships documented in the catalog. Organized by par
 | # | Replication | Year | Outcome | Catalog link | Notes |
 |---|-------------|------|---------|--------------|-------|
 | 1 | `sheldrake_2004_nolan_telephone` | 2004 | Successful | explicit | Filmed experiment with the Nolan Sisters; replicates sheldrake_2003_videotaped |
-| 2 | `schmidt_2009_who_is_calling` | 2009 | Successful | explicit | Replicates both originals; anomalous cognition in phone call receivers |
+| 2 | `schmidt_2009_who_is_calling` | 2009 | Mixed | explicit | Failed group-level replication (26.7%, 30%, both ns); overall p=.02 driven by one exceptional participant (42.5%, 80 trials) |
 | 3 | `lobach_bierman_2004_lst_telephone` | 2004 | Successful | explicit | Prospective replication with added LST variable; hit rate 29.7% (p<0.05) |
 
 ---
@@ -154,7 +154,7 @@ Tracks all replication relationships documented in the catalog. Organized by par
 
 | # | Replication | Year | Outcome | Catalog link | Notes |
 |---|-------------|------|---------|--------------|-------|
-| 1 | `beischel_2015_anomalous` | 2015 | Successful | explicit | Quintuple-blind protocol; item accuracy 52.6% (p=0.09), forced-choice 65.5% (p<0.001) |
+| 1 | `beischel_2015_anomalous` | 2015 | Successful | explicit | Quintuple-blind protocol; calculated item accuracy 52.8% vs. 36.6% (p=.002), forced-choice 65.5% (p=.01) |
 
 ---
 
@@ -164,7 +164,7 @@ Tracks all replication relationships documented in the catalog. Organized by par
 
 | # | Replication | Year | Outcome | Catalog link | Notes |
 |---|-------------|------|---------|--------------|-------|
-| 1 | `schlitz_2006_two_minds` | 2006 | Experimenter-dependent | explicit | Third in series; Schlitz (proponent) obtained significant EDA effects, Wiseman (skeptic) did not; tagged `replication_failure` |
+| 1 | `schlitz_2006_two_minds` | 2006 | Failure | explicit | Third in series; 2×2 cross-over design (N=100) found no significant effect for anyone — Schlitz condition es=−0.03 (p=.87), Wiseman condition es=−0.07 (p=.72); failed to replicate the experimenter-dependent pattern seen in 1997 and 1999 |
 
 ---
 
@@ -176,8 +176,8 @@ Tracks all replication relationships documented in the catalog. Organized by par
 | Original studies | 15 (including co-originals and second-generation) |
 | Total replication links | 31 |
 | With explicit `replication_of`/`replicated_by` catalog link | 31 |
-| Outcome: Successful | 15 |
-| Outcome: Failed | 11 |
+| Outcome: Successful | 14 |
+| Outcome: Failed | 12 |
 | Outcome: Mixed / Partial / Marginal | 3 |
 | Outcome: Anomalous (unexpected reversal) | 1 |
 | Outcome: Experimenter-dependent | 1 |

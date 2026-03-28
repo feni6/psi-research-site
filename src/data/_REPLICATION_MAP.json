@@ -20,17 +20,22 @@
         {
           "id": "galak_2012_correcting",
           "result": "failure",
-          "description": "Seven replication attempts across multiple labs, none found significant precognition effects."
+          "description": "Seven replication attempts by a single research team across multiple university sites; six of seven found no significant effect, one reached p = .04 one-tailed but Bayesian analysis still favored the null."
         },
         {
           "id": "maier_2014_no_precognition",
+          "result": "success",
+          "description": "Independent European replication of Bem's retroactive avoidance paradigm; 4/7 experiments significant, combined BF₁₀=293, meta-analytic ES=0.07 (p<.0001)."
+        },
+        {
+          "id": "maier_2020_preregistered",
           "result": "failure",
-          "description": "Pre-registered replication of Bem's retroactive priming paradigm yielding null results."
+          "description": "Pre-registered multi-lab replication of Maier et al. (2014, Exp. 4) retroactive avoidance; N=2,004 across 5 labs; BF01=4.38, moderate evidence for null, ES=0.008."
         },
         {
           "id": "savva_2014_retro_priming",
-          "result": "success",
-          "description": "Successful replication of retroactive priming from Bem's Experiment 9, with a significant effect in the predicted direction."
+          "result": "failure",
+          "description": "Test-retest retro-priming study: 28 high scorers from initial study (N=162) failed to replicate on retest (es=-0.25, ns); overall negative results for all subgroups."
         }
       ],
       "conceptual_replications": [],
@@ -43,11 +48,11 @@
       "critiques": [
         {
           "id": "rouder_2013_bayes_factor_esp",
-          "description": "Bayesian reanalysis of Bem's data arguing that the evidence for ESP is weak and sensitive to prior specification."
+          "description": "Bayesian reanalysis of Storm et al.'s (2010) ganzfeld meta-analysis of 67 studies; the full dataset yields BF ≈ 6 billion to 1 for psi, but excluding manually randomized studies and adding omitted null conditions reduces this to at most 328 to 1, argued unpersuasive given no known mechanism."
         },
         {
           "id": "houran_2018_crossexamining",
-          "description": "Critical commentary examining methodological and statistical concerns with Bem's precognition claims."
+          "description": "Critical commentary on Mossbridge & Radin's (2018) review of precognition evidence, arguing the touted effects are neither meaningful, interpretable, nor replicable on statistical grounds, and that retrocausation is discredited by modern physics."
         },
         {
           "id": "rabeyron_2020_most",
@@ -74,16 +79,11 @@
       "chain_id": "ganzfeld_telepathy",
       "label": "Ganzfeld Telepathy",
       "original": {
-        "id": "honorton_1989_future",
-        "year": 1989,
-        "description": "Meta-analysis of forced-choice precognition experiments establishing a baseline for anomalous information transfer under sensory restriction."
+        "id": "bem_1994_does",
+        "year": 1994,
+        "description": "Reviews competing meta-analyses of 28 ganzfeld studies and presents 11 new autoganzfeld experiments achieving 32% hit rate (MCE = 25%), published in Psychological Bulletin."
       },
       "direct_replications": [
-        {
-          "id": "bem_1994_does",
-          "result": "success",
-          "description": "Autoganzfeld experiments at Psychophysical Research Laboratories reporting hit rates of 32% (MCE = 25%), published in Psychological Bulletin."
-        },
         {
           "id": "milton_1999_does",
           "result": "failure",
@@ -103,7 +103,7 @@
         },
         {
           "id": "storm_2020_metaanalysis",
-          "description": "Updated cumulative meta-analysis of ganzfeld studies extending the evidence base through 2019."
+          "description": "Updated cumulative meta-analysis of ganzfeld studies extending the evidence base through 2018."
         },
         {
           "id": "tressoldi_2024_ganzfeld_meta",
@@ -113,7 +113,7 @@
       "critiques": [
         {
           "id": "hyman_1994_anomaly",
-          "description": "Detailed critique of the autoganzfeld experiments, raising concerns about randomization, sensory leakage, and statistical methods."
+          "description": "Detailed critique of the autoganzfeld experiments, raising concerns about inadequate randomization testing, target occurrence frequency artifact, and experimenter prompting bias."
         },
         {
           "id": "hyman_2010_meta_analysis_conceals",
@@ -193,19 +193,23 @@
         },
         {
           "id": "radin_2021_psychophysical",
-          "result": "success",
-          "description": "Further double-slit replication with additional methodological refinements, reporting significant results."
+          "result": "mixed",
+          "description": "Further double-slit experiment; planned analysis found no significant effect after FDR adjustment, but two exploratory post hoc analyses were positive."
         },
         {
           "id": "radin_2025_observer",
-          "result": "success",
-          "description": "Most recent double-slit experiment testing observer influence on quantum interference patterns."
+          "result": "mixed",
+          "description": "Pre-registered diffraction grating experiment; three primary hypotheses not supported overall, but exploratory trend analysis found progressive interference decline."
         }
       ],
       "conceptual_replications": [
         {
           "id": "radin_2008_testing",
           "description": "Earlier experiment testing nonlocal observation as a source of influence on a physical system, conceptual precursor to the double-slit line."
+        },
+        {
+          "id": "bierman_2003_does",
+          "description": "EEG experiment (N=30) testing whether conscious observation collapses the quantum wave-packet; found significant pre-observer effects in early brain components (exact binomial p=0.0115)."
         }
       ],
       "meta_analyses": [],
@@ -218,10 +222,6 @@
         {
           "id": "kauffman_2023_quantum",
           "description": "Theoretical exploration of quantum aspects of the brain-mind relationship, relevant to interpreting double-slit PK findings."
-        },
-        {
-          "id": "bierman_2003_does",
-          "description": "Theoretical paper examining whether consciousness collapses the wave packet, directly relevant to the double-slit paradigm."
         }
       ],
       "replies_and_defenses": [],
@@ -273,8 +273,8 @@
         },
         {
           "id": "ambach_2008_correlations",
-          "result": "success",
-          "description": "Replication study finding EEG correlations between two spatially separated subjects."
+          "result": "failure",
+          "description": "Failed replication finding no significant EEG correlations between two spatially separated subjects; revealed bootstrap sampling bias in original method."
         },
         {
           "id": "moulton_2008_using",
@@ -334,11 +334,6 @@
           "id": "nelson_2011_effects",
           "result": "success",
           "description": "Extended GCP analysis reporting effects of mass consciousness on changes in random data over a decade of data collection."
-        },
-        {
-          "id": "maier_2020_preregistered",
-          "result": "mixed",
-          "description": "Pre-registered RNG experiment testing mind-matter interaction, with mixed results."
         }
       ],
       "conceptual_replications": [
@@ -378,7 +373,7 @@
         },
         {
           "id": "bosch_2006_examining",
-          "description": "Critical meta-analysis examining psychokinesis and human-RNG interaction, finding that the effect largely disappears when controlling for methodological quality and selective reporting."
+          "description": "Critical meta-analysis of 380 RNG-PK studies finding a significant but very small overall effect with a strong small-study effect; a Monte Carlo simulation showed publication bias could in principle account for the findings. Concluded 'not proven.'"
         }
       ],
       "critiques": [
@@ -427,17 +422,17 @@
         {
           "id": "benson_2006_therapeutic",
           "result": "failure",
-          "description": "Largest intercessory prayer RCT (STEP), finding no effect of prayer on cardiac bypass outcomes and a possible nocebo effect in patients who knew they were receiving prayer."
+          "description": "Largest intercessory prayer RCT (STEP), finding no effect of prayer on cardiac bypass outcomes. Patients who knew they were receiving prayer had significantly more complications, though the paper offered no clear explanation for this finding."
         },
         {
           "id": "radin_2006_doubleblind",
           "result": "success",
-          "description": "Double-blind study of intentional chocolate effects, reporting positive results for intention-treated samples."
+          "description": "Double-blind study of distant intention on water crystal formation, reporting positive results for intention-treated samples."
         },
         {
           "id": "radin_2008_effects",
-          "result": "success",
-          "description": "Reports effects of distant intention on water crystal formation, extending the healing intention paradigm."
+          "result": "marginal",
+          "description": "Reports 'modestly significant' (p=0.03) effects of distant intention on water crystal formation; primary comparison 'confirmed, weakly' (p=0.05 one-tailed). Distant controls anomalously scored slightly higher than treated samples."
         },
         {
           "id": "schlitz_2012_distant",
