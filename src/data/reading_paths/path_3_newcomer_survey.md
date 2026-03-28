@@ -45,7 +45,7 @@
 13. **Milton & Wiseman (1999)** -- *Does Psi Exist? Lack of Replication*
     `milton_1999_does` | The replication crisis hits ganzfeld. A meta-analysis of newer studies finds no significant effect.
 
-12b. **Bem, Palmer & Broughton (2001)** -- *Updating the Ganzfeld Meta-Analysis: A Response to Milton and Wiseman*
+12b. **Bem, Palmer & Broughton (2001)** -- *Updating the Ganzfeld Database: A Victim of Its Own Success?*
     `bem_palmer_broughton_2001_updating_ganzfeld` | Direct response to Milton & Wiseman showing the ganzfeld effect persists (31.2% hit rate, Z=3.49, p=.0002) when protocol adherence is maintained. Demonstrates that study quality, not year, predicts outcomes.
 
 14. **van Lommel et al. (2001)** -- *Near-Death Experience in Survivors of Cardiac Arrest*
@@ -57,7 +57,7 @@
 16. **Parker & Brusewitz (2003)** -- *A Compendium of the Evidence for Psi*
     `parker_2003_compendium` | A 2003 annotated review covering all major paradigms from classical studies through then-current meta-analyses. A natural survey point between the GCP launch (2002) and the Bem era (2011). Effect sizes across domains: free-response d=0.16, DMILS d=0.11, dream-ESP d=0.33, extraversion d=0.20. Provides historical depth before you enter the modern statistical debates.
 
-17. **Sheldrake, Morgana & Sheldrake (2003)** -- *Testing a Language-Using Parrot for Telepathy*
+17. **Sheldrake & Morgana (2003)** -- *Testing a Language-Using Parrot for Telepathy*
     `sheldrake_2003_parrot_telepathy` | Same year as Parker's compendium — a single-experiment study that illustrates what a controlled behavioral psi claim looks like at its best. The African Grey parrot N'kisi names what his owner (in a separate room) is viewing in sealed photographs; 131 trials, 23 hits vs. 12.2 expected, three blind transcribers, independent statistician. Stands in contrast to the statistical landscape of meta-analyses: one animal, one ability, clearly stated success criterion.
 
 18. **Standish et al. (2004)** -- *Electroencephalographic Evidence of Correlated Event-Related Signals Between the Brains of Spatially and Sensory Isolated Human Subjects*

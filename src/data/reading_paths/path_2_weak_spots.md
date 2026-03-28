@@ -34,7 +34,7 @@
    `bosch_2006_examining` | Meta-analysis of 380 RNG-PK studies in *Psychological Bulletin*. Finds a significant but tiny overall effect, then demonstrates via Monte Carlo simulation that publication bias could account for the small effect, extreme heterogeneity, and small-study effect. Concludes "not proven."
 
 9. **Schwarzkopf (2014)** -- *We Should Have Seen This Coming*
-   `schwarzkopf_2014_should` | Argues that Bem (2011) exposed weaknesses in standard statistical practice rather than demonstrating psi. A lessons-learned piece for methodology.
+   `schwarzkopf_2014_should` | A systematic critique of the Mossbridge et al. (2012, 2014) presentiment meta-analysis, arguing that trial imbalance, baseline correction artifacts, expectation bias, and implausible cross-measure pooling undermine the claimed evidence for predictive anticipatory activity.
 
 9b. **Ioannidis (2005)** -- *Why Most Published Research Findings Are False*
      `ioannidis_2005_false` | The mathematical foundation for the replication crisis. Derives PPV formulas proving that for most research designs, statistically significant findings are more likely false than true. Six corollaries map directly onto psi research: small samples, small effects, multiple testing, analytical flexibility, investigator commitment, and competitive fields. Essential before reading Simmons (2011) and Rabeyron (2020), which build on this framework.
@@ -49,7 +49,7 @@
     `rabeyron_2020_most` | Applies Ioannidis-style reasoning to psi research, arguing that low base rates and researcher degrees of freedom make most positive findings illusory.
 
 10b. **Houran et al. (2018)** -- *Cross-Examining the Case for Precognition*
-      `houran_2018_crossexamining` | A focused critique of the presentiment literature, questioning both the meta-analytic methods and the underlying experimental designs.
+      `houran_2018_crossexamining` | A multidisciplinary critique of Mossbridge & Radin's (2018) case for precognition, arguing that the statistical evidence is undermined by the "crap factor," that meta-analyses of small ambiguous effects prove nothing, and that retrocausation is ruled out by modern physics.
 
 11. **Open Science Collaboration (2015)** -- *Estimating the Reproducibility of Psychological Science*
      `open_science_2015_reproducibility` | The broader replication crisis in psychology. Context for understanding that psi's problems are partly psychology's problems.

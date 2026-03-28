@@ -39,14 +39,11 @@
 8. **Bancel (2017)** -- *Searching for Global Consciousness: A Seventeen Year Exploration*
    `bancel_2017_global_consciousness` | Critical reanalysis from GCP insider challenging the "global consciousness" interpretation. Argues 7-sigma result (491 events, 17 years) reflects goal-oriented psi (experimenter/agent engagement) rather than collective consciousness field. Introduces self-referential fine-tuning (SFT) tests: surrogate events show null, alternate statistics only significant when designated, variance peaks at exactly specified 15-minute blocking, correlations decline with timestamp shifts. Essential for understanding internal critique of GCP claims.
 
-9. **Schmidt (2004)** -- *Distant Intentionality and the Feeling of Being Stared At: Two Meta-Analyses*
-   `schmidt_2004_distant` | Meta-analyses of distant intentionality and staring detection. Bridges PK with the "feeling of being stared at" literature.
-
 8b. **Dobyns et al. (2004)** -- *The MegaREG Experiment: Replication and Interpretation*
    `dobyns_2004_megareg` | PEAR's largest-scale REG intention experiment (149 series, 24 operators) testing whether anomalous effects scale with bit count per bitwise probability model. Double-blind protocol with 2-million-bit and 200-bit trials interspersed randomly. High-density trials produced robust *reversed* intentional effect (D = -0.0971, T = -3.90, p = 9.4×10⁻⁵) contrary to intention; low-density matched standard REG results. Effect 2.77× larger per trial but 30× smaller per bit than REG200. New operators showed 3× larger effects, but both groups showed reversal. Companion MegaMega experiment replicated the reversal. Critical test that refutes simple scaling models while confirming anomalous effects are real but highly parameter-sensitive.
 
 10. **Jahn & Dunne (2005)** -- *The PEAR Proposition*
-   `jahn_2005_pear` | Jahn and Dunne's summary statement after closing the PEAR lab. Reviews 28 years of findings and their interpretation.
+   `jahn_2005_pear` | Jahn and Dunne's summary statement after closing the PEAR lab. Reviews 26 years of findings and their interpretation.
 
 11. **Bösch, Steinkamp & Boller (2006)** -- *Examining Psychokinesis: The Interaction of Human Intention With Random Number Generators — A Meta-Analysis*
    `bosch_2006_examining` | The most comprehensive independent meta-analysis of the RNG-PK database (380 studies, 1959-2004). Finds a very small significant effect but attributes it to publication bias via Monte Carlo simulation. The turning point in this path: read it back-to-back with the Radin rebuttal below.

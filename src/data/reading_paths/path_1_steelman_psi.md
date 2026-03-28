@@ -34,7 +34,7 @@
    `mossbridge_2012_predictive` | A meta-analysis of "presentiment" studies showing the body responds to future events before they happen. Crosses from behavioral into physiological data.
 
 7. **Radin & Nelson (1989)** -- *Evidence for Consciousness-Related Anomalies in Random Physical Systems*
-   `radin_1989_evidence` | The foundational meta-analysis of micro-PK (mind-over-RNG) studies. Odds against chance are reported in the trillions to one.
+   `radin_1989_evidence` | The foundational meta-analysis of micro-PK (mind-over-RNG) studies. Reports a quality-weighted mean effect size of 3.18×10⁻⁴ across 597 experimental studies with a filedrawer tolerance of 54,000 unreported studies.
 
 8. **Targ & Puthoff (1974)** -- *Information Transmission Under Conditions of Sensory Shielding*
    `targ_1974_information` | Published in *Nature*. The original SRI remote viewing paper that launched the U.S. government program. Hard to dismiss the venue.
@@ -42,8 +42,8 @@
 9. **Bem & Honorton (1994)** -- *Does Psi Exist? Replicable Evidence for an Anomalous Process of Information Transfer*
     `bem_1994_does` | Published in *Psychological Bulletin*. Summarizes the autoganzfeld experiments with tight protocols designed to answer every prior criticism.
 
-9b. **Bem, Palmer & Broughton (2001)** -- *Updating the Ganzfeld Meta-Analysis: A Response to Milton and Wiseman*
-    `bem_palmer_broughton_2001_updating_ganzfeld` | Direct rebuttal to Milton & Wiseman's (1999) null meta-analysis. Analyzes 40 studies (3,146 trials) separating standard (n=29, 31.2% hit rate, ES=.096, Z=3.49, p=.0002) from non-standard protocols (n=9, 24.0%, ES=−.10, ns). Protocol adherence emerges as key moderator (r=.31, p=.024). Demonstrates the ganzfeld effect persists in post-1987 studies when quality controls are maintained. Read immediately after Milton & Wiseman to see the proponent response.
+9b. **Bem, Palmer & Broughton (2001)** -- *Updating the Ganzfeld Database: A Victim of Its Own Success?*
+    `bem_palmer_broughton_2001_updating_ganzfeld` | Direct rebuttal to Milton & Wiseman's (1999) null meta-analysis. Analyzes 40 studies (1,661 trials) separating standard (n=29, 31.2% hit rate, ES=.096, Z=3.49, p=.0002) from non-standard protocols (n=9, 24.0%, ES=−.10, ns). Protocol adherence emerges as key moderator (r=.31, p=.024). Demonstrates the ganzfeld effect persists in post-1987 studies when quality controls are maintained. Read immediately after Milton & Wiseman to see the proponent response.
 
 9c. **Utts (1991)** -- *Replication and Meta-Analysis in Parapsychology*
     `utts_1991_replication_meta_analysis` | Published in *Statistical Science* with invited commentary from Diaconis, Mosteller, Berger, and other distinguished statisticians. Synthesizes four independent meta-analyses (ganzfeld, precognition, RNG-PK, dice-PK) all showing significant effects. The ganzfeld effect size (h=0.20) is triple that of aspirin on heart attacks. Bayarri & Berger's Bayes factor: 100-200:1 favoring psi. Read for the strongest statistical case in a top-tier statistics journal.
@@ -60,7 +60,7 @@
 12b. **Grinberg-Zylberbaum et al. (1994)** -- *The Einstein-Podolsky-Rosen Paradox in the Brain: The Transferred Potential*
    `grinberg_zylberbaum_1994_transferred_potential` | Extends Duane's twin EEG paradigm to non-twin pairs: 7 pairs in soundproof Faraday chambers 14.5 m apart after meditative interaction; ~25% show 'transferred potentials' (r = 0.70-0.93, p < 0.005) morphologically matching partner's evoked potentials. Launched the entire EEG brain-to-brain correlation research program replicated by Wackermann, Standish, Radin, and Achterberg.
 
-13. **Sheldrake, Morgana & Sheldrake (2003)** -- *Testing a Language-Using Parrot for Telepathy*
+13. **Sheldrake & Morgana (2003)** -- *Testing a Language-Using Parrot for Telepathy*
     `sheldrake_2003_parrot_telepathy` | An African Grey parrot (N'kisi) scores 23 hits vs. 12.2 expected in 131 double-blind trials while his owner views sealed photographs in a separate room (p=0.00025, RPA; p=0.0002, BRA). Three independent blind transcribers and an independent statistician. One of the most controlled single-subject animal studies in the literature — and a useful test of the skeptic's methodological objections because the scoring is language-based rather than judgment-based.
 
 13b. **Storm, Sherwood, Roe, Tressoldi, Rock & Di Risio (2017)** -- *On the Correspondence Between Dream Content and Target Material Under Laboratory Conditions: A Meta-Analysis of Dream-ESP Studies, 1966-2016*
@@ -73,7 +73,7 @@
     `brown_sheldrake_2001_anticipation` | Telephone survey of 200 randomly selected California residents establishing baseline prevalence: 78% reported calling someone who said they were just thinking of calling them, 47% knew who was calling without cues, 68% thought of someone who then called same day. Provides the American population data that complements Sheldrake's English surveys and motivates the experimental protocols that follow.
 
 13e. **Sheldrake & Smart (2003)** -- *Experimental Tests for Telephone Telepathy*
-    `sheldrake_smart_2003_experimental_tests_telephone` | The foundational controlled experiment testing telephone telepathy: 63 participants, 571 trials with 4-caller die-throw protocol; 40% hits vs 25% chance (Stouffer combined p = 4x10⁻⁶, 95% CI 36-45%). Familiar callers 53% correct vs unfamiliar 25% (chance level, p = 3x10⁻⁷ for difference); overseas callers (1,000-11,000 miles) 65% correct. Introduced the protocol that became standard for all subsequent telephone/email/SMS telepathy experiments. Read between the surveys and the email study to see how the observational claims were first tested experimentally.
+    `sheldrake_smart_2003_experimental_tests_telephone` | The foundational controlled experiment testing telephone telepathy: 63 participants, 571 trials with 4-caller die-throw protocol; 40% hits vs 25% chance (Stouffer combined p = 4x10⁻¹⁶, 95% CI 36-45%). Familiar callers 53% correct vs unfamiliar 25% (chance level, p = 3x10⁻⁷ for difference); overseas callers (1,000-11,000 miles) 65% correct. Introduced the protocol that became standard for all subsequent telephone/email/SMS telepathy experiments. Read between the surveys and the email study to see how the observational claims were first tested experimentally.
 
 14. **Sheldrake & Smart (2005)** -- *Testing for Telepathy in Connection with E-mails*
    `sheldrake_2005_email_telepathy` | Two-series study using time-stamped e-mail records to confirm that guesses precede messages. Series 1 (552 trials, unfilmed): 43% vs. 25% chance, p=2×10⁻¹⁹, d=0.42. Series 2 (137 trials, continuous video surveillance): 47%, p=3×10⁻⁸, d=0.50. The familiar-sender advantage survives a permutation-based response-bias correction. An unusually clean protocol for everyday-life psi: timestamp records are server-side and cannot be altered, and filmed sessions excluded the possibility of coordinated signals. *[Companion: Sheldrake, Godwin & Rockell (2004) — filmed TV replication of the telephone protocol with the Nolan Sisters, 12 trials, 50% hit rate, p=0.05, with blind video evaluation by Pam Smart; catalog ID: `sheldrake_2004_nolan_telephone`.]*

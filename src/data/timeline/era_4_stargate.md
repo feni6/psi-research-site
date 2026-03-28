@@ -4,7 +4,7 @@
 - **1972** — The **CIA** funds Hal Puthoff and Russell Targ at **Stanford Research Institute (SRI)** to investigate remote viewing for intelligence applications. The program eventually operates under code names including SCANATE, GONDOLA WISH, GRILL FLAME, CENTER LANE, SUN STREAK, and finally STARGATE.
 - **1975** — Ingo Swann develops **Coordinate Remote Viewing (CRV)**, a structured protocol using geographic coordinates as targets.
 - **1978** — The Army's Intelligence and Security Command (INSCOM) establishes an operational unit of military remote viewers at Fort Meade, Maryland.
-- **1984** — Edwin May takes over as principal investigator at SRI. The program moves to **Science Applications International Corporation (SAIC)** in 1991.
+- **1984** — Edwin May takes over as principal investigator at SRI. The program moves to **Science Applications International Corporation (SAIC)** in 1990.
 - **1985** — The National Research Council publishes *Enhancing Human Performance*, a largely negative evaluation of parapsychology, though the remote viewing data receives more nuanced treatment.
 - **1995** — The CIA commissions an external review by Jessica Utts (statistician, UC Davis) and Ray Hyman (skeptical psychologist, U of Oregon). Utts concludes the evidence for anomalous cognition is statistically robust. Hyman disagrees on interpretation but acknowledges the data are not easily dismissed. The **Stargate program is declassified and terminated**.
 - **1995** — Declassification makes thousands of pages of remote viewing research publicly available, spawning civilian research programs and ongoing debate.

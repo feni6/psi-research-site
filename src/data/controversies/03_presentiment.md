@@ -23,8 +23,8 @@ Presentiment (or "predictive anticipatory activity") refers to the claim that th
 
 **Con:**
 - Schwarzkopf (2014) -- Methodological critique arguing presentiment effects are artifacts of baseline correction, stimulus timing, and data analysis choices [catalog ID: schwarzkopf_2014_should]
-- Rabeyron (2020) -- Analysis of why most presentiment results cannot withstand methodological scrutiny, explicitly citing Ioannidis (2005) to argue that presentiment exhibits all six risk factors for false positives [catalog ID: rabeyron_2020_most]
-- Ioannidis (2005) -- The foundational mathematical framework showing why small effects (d=0.21), small samples, and multiple paradigms tested make presentiment findings likely false positives; directly cited by Rabeyron (2020) [catalog ID: ioannidis_2005_false]
+- Rabeyron (2020) -- Philosophical analysis arguing that the "psi paradox" makes standard scientific methodology inherently inadequate for proving psi; discusses the replication crisis, decline effect, and QRPs as they apply to psi research broadly, including presentiment [catalog ID: rabeyron_2020_most]
+- Ioannidis (2005) -- The foundational mathematical framework showing why small effects, small samples, analytical flexibility, and competitive fields make research findings likely false positives; the six corollaries apply to presentiment research (d=0.21, small samples, multiple physiological measures) [catalog ID: ioannidis_2005_false]
 - Bierman (2020) -- Reports an absence of predictive anticipatory activity under tightly controlled conditions
 - Houran, Lange & Hooper (2018) -- Multidisciplinary commentary (with Fermi Lab physicist Dan Hooper) arguing precognition/presentiment effects are neither meaningful nor interpretable: small effect sizes do not exceed the "crap factor" in measurement, and retrocausation violates special/general relativity and the second law of thermodynamics; proposes transliminality and intuitive thinking as conventional explanations [catalog ID: houran_2018_crossexamining]
 
