@@ -114,7 +114,7 @@ Tracks all replication relationships documented in the catalog. Organized by par
 |---|-------------|------|---------|--------------|-------|
 | 1 | `sheldrake_2004_nolan_telephone` | 2004 | Successful | explicit | Filmed experiment with the Nolan Sisters; replicates sheldrake_2003_videotaped |
 | 2 | `schmidt_2009_who_is_calling` | 2009 | Mixed | explicit | Failed group-level replication (26.7%, 30%, both ns); overall p=.02 driven by one exceptional participant (42.5%, 80 trials) |
-| 3 | `lobach_bierman_2004_lst_telephone` | 2004 | Successful | explicit | Prospective replication with added LST variable; hit rate 29.7% (p<0.05) |
+| 3 | `lobach_bierman_2004_lst_telephone` | 2004 | Successful | explicit | Prospective replication with added LST variable; hit rate 29.4% (p=0.05, one-tailed) |
 
 ---
 
@@ -144,7 +144,7 @@ Tracks all replication relationships documented in the catalog. Organized by par
 
 | # | Replication | Year | Outcome | Catalog link | Notes |
 |---|-------------|------|---------|--------------|-------|
-| 1 | `parker_2013_further` | 2013 | Marginal | explicit | 6/24 hits vs 3 expected (P=0.09); result driven primarily by a single pair |
+| 1 | `parker_2013_further` | 2013 | Marginal | explicit | 6/24 hits vs 3 expected (P=0.07, one-tailed); result driven primarily by a single pair |
 
 ---
 

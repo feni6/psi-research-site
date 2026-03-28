@@ -1,7 +1,7 @@
 {
   "description": "Tracks which papers have been fact-checked against their original PDFs in the Psi Research Library. Each entry records the paper ID, the date it was last verified, and any issues found and fixed.",
   "last_updated": "2026-03-27",
-  "total_checked": 176,
+  "total_checked": 202,
   "checks": [
     {
       "id": "bem_1994_does",
@@ -1449,6 +1449,202 @@
     {
       "id": "gurney_myers_podmore_1886_phantasms",
       "title": "Phantasms of the Living",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "jensen_2012_entangled",
+      "title": "Entangled in the Womb: A Pilot Study",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "lobach_bierman_2004_lst_telephone",
+      "title": "The Invisible Gaze: Three Attempts to Replicate Sheldrake's Staring Effects",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.md: hit rate 29.7% corrected to 29.4%, p<0.05 corrected to p=0.05 one-tailed"
+      ]
+    },
+    {
+      "id": "parker_2013_further",
+      "title": "Further Possible Physiological Connectedness Between Identical Twins",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.md: P=0.09 corrected to P=0.07 one-tailed"
+      ]
+    },
+    {
+      "id": "alibalaei_2025_experimental",
+      "title": "Experimental Investigation of Precognition in Yoga Practitioners",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "bem_2017_five_years_later",
+      "title": "Feeling the Future: Five Years Later",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "cassol_2018_nde_memory",
+      "title": "NDE Memories as Real Events",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "delorme_2018_intuitive",
+      "title": "Intuitive Assessment of Mortality Based on Photos",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "delorme_2021_survival_consciousness",
+      "title": "Advancing the Evidence for Survival of Consciousness",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: removed chronologically impossible citation link to greyson_2022_nde_fear_death (2021 paper cannot cite 2022 paper)"
+      ]
+    },
+    {
+      "id": "greyson_2022_nde_fear_death",
+      "title": "Which NDE Features Are Associated with Reduced Fear of Death?",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: removed chronologically impossible cited_by link to delorme_2021_survival_consciousness"
+      ]
+    },
+    {
+      "id": "heino_2017_reproducibility",
+      "title": "Commentary: Reproducibility in Psychological Science",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "jaswal_2019_being_appearing",
+      "title": "Being vs. Appearing Socially Uninterested",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "jaswal_2020_eyetracking",
+      "title": "Eye-Tracking Reveals Agency in Assisted Autistic Communication",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2017_experimenter_fraud",
+      "title": "Experimenter Fraud: What Are Appropriate Standards?",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2024_falsifiable_research",
+      "title": "Planning Falsifiable Confirmatory Research",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2024_research_fraud",
+      "title": "Addressing Research Fraud",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "martial_2025_nde_clinical_relevance",
+      "title": "The Central Clinical Relevance of NDEs in Acute Care Contexts",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "07_ndes_consciousness_survival.md: 'less PTSD' corrected to 'not more likely to develop PTSD despite more intrusive thoughts'"
+      ]
+    },
+    {
+      "id": "moore_2017_nde_memory",
+      "title": "Characteristics of Memories for Near-Death Experiences",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "mossbridge_2018_precognition",
+      "title": "Precognition as a Form of Prospection",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "pehlivanova_2024_cognitive_styles",
+      "title": "Cognitive Styles of Psi Researchers and Skeptics",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2022_psychophysical_effects_double_slit",
+      "title": "Psychophysical Effects in Double-Slit Exploratory Reanalysis",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "roney_dougal_2011_meditation_tibetan",
+      "title": "Meditation, the Tibetan Way",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "tressoldi_2016_brain_interaction",
+      "title": "Brain-to-Brain Interaction at Distance",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "tressoldi_2021_umbrella_review",
+      "title": "Anomalous Cognition: An Umbrella Review",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "vieten_2018_future",
+      "title": "Future Directions in Meditation Research",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "era_6_current.md: phantom authors 'Batcheldor, Atmanspacher' replaced with correct authors 'Sapiro, Bays, Russell, Vago, Travis, Walsh'"
+      ]
+    },
+    {
+      "id": "wahbeh_2018_exceptional",
+      "title": "Exceptional Experiences Reported by Scientists and Engineers",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "era_6_current.md: title corrected from 'Exceptional Experiences of Mediums' to 'Exceptional Experiences Reported by Scientists and Engineers' with accurate description"
+      ]
+    },
+    {
+      "id": "wahbeh_2018_mixed",
+      "title": "A Mixed Methods Phenomenological and Exploratory Study of Channeling",
       "checked": "2026-03-27",
       "result": "clean",
       "fixes": []
