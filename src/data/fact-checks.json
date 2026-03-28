@@ -1,7 +1,7 @@
 {
   "description": "Tracks which papers have been fact-checked against their original PDFs in the Psi Research Library. Each entry records the paper ID, the date it was last verified, and any issues found and fixed.",
   "last_updated": "2026-03-27",
-  "total_checked": 131,
+  "total_checked": 176,
   "checks": [
     {
       "id": "bem_1994_does",
@@ -1114,6 +1114,341 @@
     {
       "id": "rao_1987_anomaly",
       "title": "The Anomaly Called Psi: Recent Research and Criticism",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "rhine_1934_extrasensory_perception",
+      "title": "Extra-Sensory Perception",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "beseme_2018_transcriptional",
+      "title": "Transcriptional Changes in Cancer Cells Induced by Exposure to a Healing Method",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "duggan_2018_paa_update",
+      "title": "A Meta-Analysis Update of Predictive Anticipatory Activity",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "plain_summary: 'million-to-one odds' corrected to 'more than 100,000-to-one' (p=8e-6 gives ~125,000:1)"
+      ]
+    },
+    {
+      "id": "holmberg_2020_stock",
+      "title": "Stock Returns and the Mind",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2023_anomalous",
+      "title": "Anomalous Entropic Effects in Physical Systems",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "schwartz_2019_water",
+      "title": "Water, Wine, and the Sacred",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "achterberg_2005_evidence",
+      "title": "Evidence for Correlations Between Distant Intentionality and Brain Function",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "astin_2000_efficacy",
+      "title": "The Efficacy of Distant Healing",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "gelman_2013_forking_paths",
+      "title": "The Garden of Forking Paths",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "krucoff_2001_integrative",
+      "title": "Integrative Noetic Therapies as Adjuncts to PCI",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json: result code 'success' changed to 'mixed' (primary result was null \u2014 no significant outcomes)"
+      ]
+    },
+    {
+      "id": "krucoff_2005_music",
+      "title": "Music, Imagery, Touch and Prayer (MANTRA II)",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "lebel_peters_2011_fearing_future",
+      "title": "Fearing the Future of Empirical Psychology",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "masters_2007_prayer",
+      "title": "Prayer and Health: Review, Meta-Analysis, and Research Agenda",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "mccraty_2004_electrophysiological",
+      "title": "Electrophysiological Evidence of Intuition Part 1",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "mossbridge_2014_predicting",
+      "title": "Predicting the Unpredictable",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json: moved from 'critiques' to 'replies_and_defenses' (paper is a pro-PAA defense, not a critique)"
+      ]
+    },
+    {
+      "id": "moulton_2008_using",
+      "title": "Using Neuroimaging to Resolve the Psi Debate",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "pashler_2012_replicability_crisis",
+      "title": "Editors' Introduction: Replicability in Psychological Science",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2004_possible",
+      "title": "Possible Effects of Healing Intention on Cell Cultures and Truly Random Events",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2005_sense",
+      "title": "The Sense of Being Stared At",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "roe_2015_distant_healing",
+      "title": "Two Meta-Analyses of Noncontact Healing Studies",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "scargle_2002_gcp_sept11",
+      "title": "Was There Evidence of Global Consciousness on September 11, 2001?",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "schmidt_2012_help",
+      "title": "Can We Help Just by Good Intentions?",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "schwartz_2015_infrared",
+      "title": "Infrared Spectra Alteration in Water Proximate to Palms of Therapeutic Practitioners",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "spottiswoode_2003_skin",
+      "title": "Skin Conductance Prestimulus Response",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json: clarified description \u2014 study predates chain anchor (2003 vs 2004), replicates Radin 1997"
+      ]
+    },
+    {
+      "id": "storm_2001_does",
+      "title": "Does Psi Exist? Comments on Milton and Wiseman's Meta-Analysis",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "replication_map.json: result code 'mixed' changed to 'success' (paper explicitly confirms psi with p=7.78e-9)"
+      ]
+    },
+    {
+      "id": "tressoldi_2011_your",
+      "title": "Let Your Eyes Predict: Prediction Accuracy of Pupillary Responses",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2019_morphic_fields_telepathy",
+      "title": "Morphic Fields, Telepathy, and Staring",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "brown_sheldrake_2001_anticipation",
+      "title": "The Anticipation of Telephone Calls",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: p-value exponent corrected from 10^-8 to 10^-6 in abstract"
+      ]
+    },
+    {
+      "id": "sheldrake_2000_telephone_surveys",
+      "title": "Telephone Telepathy: Two Surveys",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2005_email_telepathy",
+      "title": "Testing for Telepathy in Connection with E-mails",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2005_stared_part1",
+      "title": "The Sense of Being Stared At Part 1: Is It Real or Illusory?",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2005_stared_part2",
+      "title": "The Sense of Being Stared At Part 2: Its Implications for Theories of Vision",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "path_1: corrected Winer 92% figure \u2014 was labeled as extramission belief rate, actually prevalence of feeling unseen stares"
+      ]
+    },
+    {
+      "id": "wahbeh_2022_consciousness_not_emergent",
+      "title": "What if Consciousness is Not an Emergent Property?",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "nelson_1996_field_reg",
+      "title": "FieldREG Anomalies in Group Situations",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "CRITICAL: p-value exponent corrected from 2x10^-5 to 2x10^-4 in catalog, controversies/08, path_5; odds corrected from 50,000:1 to 5,000:1"
+      ]
+    },
+    {
+      "id": "nelson_2001_gathering_global_mind",
+      "title": "Gathering the Global Mind",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog.json: removed chronologically impossible cited_by entry (nelson_1996 in 2001 paper's cited_by)"
+      ]
+    },
+    {
+      "id": "tremblay_2019_reanalysis_double_slit",
+      "title": "Reanalysis of the Double-Slit Experiment",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kolodziejzyk_2012_greg",
+      "title": "Greg Kolodziejzyk's 13-Year ARV Experiment",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "may_1990_advances",
+      "title": "Advances in Remote Viewing Analysis",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "simmonds_moore_2024_psychometry",
+      "title": "Psychometry and Anomalous Interactions",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "greyson_1983_nde_scale",
+      "title": "The Near-Death Experience Scale",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "hou_2013_nde_features",
+      "title": "Infrequent Near-Death Experiences in Severe Brain Injury",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "martial_2017_intensity_memory",
+      "title": "NDE Intensity and Memory Characteristics",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "palmieri_2014_reality_nde",
+      "title": "Reality of NDE Memories",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "ring_1997_near_death_blind",
+      "title": "Near-Death and Out-of-Body Experiences in the Blind",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "catalog, path_6, controversies/07: Frank tie case corrected from 'corroborated' to 'suggestive but inconclusive' per authors' own assessment"
+      ]
+    },
+    {
+      "id": "gurney_myers_podmore_1886_phantasms",
+      "title": "Phantasms of the Living",
       "checked": "2026-03-27",
       "result": "clean",
       "fixes": []

@@ -91,7 +91,7 @@
         },
         {
           "id": "storm_2001_does",
-          "result": "mixed",
+          "result": "success",
           "description": "Reanalysis and commentary on Milton & Wiseman's meta-analysis, arguing that methodological inclusion criteria affected the conclusion."
         }
       ],
@@ -135,7 +135,7 @@
         {
           "id": "spottiswoode_2003_skin",
           "result": "success",
-          "description": "Independent replication finding significant skin conductance pre-stimulus responses, with artifact analysis ruling out conventional explanations."
+          "description": "Independent study (predating the chain anchor; replicates Radin 1997) finding significant skin conductance pre-stimulus responses in 125 first-time participants, with artifact analysis ruling out conventional explanations."
         },
         {
           "id": "mccraty_2004_electrophysiological",
@@ -166,15 +166,16 @@
       ],
       "critiques": [
         {
-          "id": "mossbridge_2014_predicting",
-          "description": "Critical self-analysis by the meta-analysis authors examining potential artifacts and alternative explanations for PAA findings."
-        },
-        {
           "id": "schwarzkopf_2014_should",
           "description": "Argues that the presentiment literature has methodological issues that should have been anticipated, including expectation artifacts and analysis flexibility."
         }
       ],
-      "replies_and_defenses": [],
+      "replies_and_defenses": [
+        {
+          "id": "mossbridge_2014_predicting",
+          "description": "Pro-PAA review by the original meta-analysis authors: addresses criticisms (p-hacking, expectation bias, order effects), defends the core finding, explores potential mechanisms, and proposes practical applications."
+        }
+      ],
       "verdict_summary": "Presentiment research reports that the body shows physiological responses (skin conductance, heart rate, EEG) seconds before randomly selected future emotional stimuli. Mossbridge et al.'s 2012 meta-analysis of 26 studies found a small but significant effect. However, critics like Schwarzkopf argue that subtle methodological artifacts (stimulus predictability, physiological baseline issues, analysis choices) may explain the results. The authors themselves published a critical analysis acknowledging some concerns while defending the core finding."
     },
     {
@@ -406,8 +407,8 @@
         },
         {
           "id": "krucoff_2001_integrative",
-          "result": "success",
-          "description": "MANTRA pilot study finding that noetic therapies showed a trend toward reduced adverse outcomes in cardiac patients."
+          "result": "mixed",
+          "description": "MANTRA pilot study: no outcomes reached statistical significance, but a 25-30% directional reduction in short-term adverse events was observed; however, all 6-month mortality occurred in the noetic therapy groups."
         },
         {
           "id": "radin_2004_possible",
