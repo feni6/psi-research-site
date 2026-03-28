@@ -1,7 +1,7 @@
 {
   "description": "Tracks which papers have been fact-checked against their original PDFs in the Psi Research Library. Each entry records the paper ID, the date it was last verified, and any issues found and fixed.",
   "last_updated": "2026-03-27",
-  "total_checked": 202,
+  "total_checked": 228,
   "checks": [
     {
       "id": "bem_1994_does",
@@ -1648,6 +1648,206 @@
       "checked": "2026-03-27",
       "result": "clean",
       "fixes": []
+    },
+    {
+      "id": "wahbeh_2019_noetic",
+      "title": "The Noetic Experience and Belief Scale",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "walleczek_2020_false_positive_radin",
+      "title": "False-Positive Effect in Radin Double-Slit Response",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "watt_2015_lessons",
+      "title": "Lessons from the First Two Years of Operating a Study Registry",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "weiler_woollacott_2025_telepathy_tapes",
+      "title": "Rethinking Communication Consciousness: The Telepathy Tapes",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Fixed era_6_current.md date from 2019 to 2024 for Telepathy Tapes podcast"
+      ]
+    },
+    {
+      "id": "bengston_2000_laying_on_hands",
+      "title": "The Effect of the Laying On of Hands on Transplanted Breast Cancer in Mice",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "bierman_2002_fmri_presentiment",
+      "title": "A fMRI Brain Imaging Study of Presentiment",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed chronologically impossible cites: radin_2004_event and bem_2011_feeling (2002 paper cannot cite 2004/2011 works)"
+      ]
+    },
+    {
+      "id": "bokkon_2013_nde_multidisciplinary",
+      "title": "NDE Multidisciplinary Hypothesis",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "charland_verville_2014_nde_non_life_threatening",
+      "title": "NDE in Non-Life-Threatening Conditions",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "chen_2012_nonverbal_autism",
+      "title": "Nonverbal Communication in Autism",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "crawford_2003_alterations",
+      "title": "Alterations in Random Event Measures Associated with a Healing Practice",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "delorme_2013_electrocortical",
+      "title": "Electrocortical Activity Associated with Subjective Communication with the Deceased",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed fabricated cites link to braude_1992_survival (not in PDF references)"
+      ]
+    },
+    {
+      "id": "donnellan_2013_rethinking",
+      "title": "Rethinking Autism",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "facco_2012_neardeath",
+      "title": "Near-Death Experiences Between Science and Prejudice",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "gigerenzer_2004_mindless_statistics",
+      "title": "Mindless Statistics",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "john_2012_questionable_practices",
+      "title": "Measuring the Prevalence of Questionable Research Practices",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kelly_2010_some",
+      "title": "Some Directions for Mediumship Research",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2014_nature_psi",
+      "title": "The Nature of Psi Research",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Replaced wrong cites link: bem_2011_feeling -> bem_utts_johnson_2011_must_psychologists (different Bem 2011 paper)"
+      ]
+    },
+    {
+      "id": "leibovici_2001_retroactive_prayer",
+      "title": "Effects of Remote Retroactive Intercessory Prayer on Outcomes in Patients with Bloodstream Infection",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "mobbs_2011_nothing_paranormal",
+      "title": "There Is Nothing Paranormal About Near-Death Experiences",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "mossbridge_2015_we_did_see_coming",
+      "title": "We Did See This Coming: Response to Schwarzkopf",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed fabricated cites link to spottiswoode_2003_skin (not in PDF references)"
+      ]
+    },
+    {
+      "id": "peres_2012_neuroimaging_trance",
+      "title": "Neuroimaging During Trance State",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Removed chronologically impossible cites link to cardena_2014_handbook (2012 paper cannot cite 2014 work)"
+      ]
+    },
+    {
+      "id": "radin_2007_toward",
+      "title": "Toward Understanding the Placebo Effect: Investigating a Possible Retrocausal Factor",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2008_compassionate",
+      "title": "Compassionate Intention as a Therapeutic Intervention",
+      "checked": "2026-03-27",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2008_nonlocal_observation",
+      "title": "Testing Nonlocal Observation as a Source of Intuitive Knowledge",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Fixed inverted z-score signs: nonmeditators z=-0.29 -> z=0.29, control z=-1.50 -> z=1.50 in catalog abstract and 04_double_slit_pk.md"
+      ]
+    },
+    {
+      "id": "radin_2011_predicting",
+      "title": "Predicting the Unpredictable: Critical Analysis and Practical Implications of Predictive Anticipatory Activity",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Fixed Bayes Factor from 'nearly 3 trillion' to 'about 29 trillion' (was off by 10x; PDF says 2.9x10^13)"
+      ]
+    },
+    {
+      "id": "schwartz_2010_nonlocality",
+      "title": "Nonlocality, Intention, and Observer Effects in Healing Studies",
+      "checked": "2026-03-27",
+      "result": "fixed",
+      "fixes": [
+        "Fixed 'brain imaging of healers' to 'brain imaging of recipients' and 'healer fMRI study' to 'recipient fMRI study' in catalog and controversy file (Achterberg scanned recipients, not healers)"
+      ]
     }
   ]
 }
