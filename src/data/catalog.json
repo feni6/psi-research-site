@@ -2764,8 +2764,8 @@
                   "psi_domain": "skeptical",
                   "open_access": false,
                   "source_url": "",
-                  "abstract": "Landmark statistical critique of ESP research by Harvard statistician Persi Diaconis, published in Science (Vol. 201, No. 4351, pp. 131–136). Analyzes four classes of methodological problems that generate spurious positive results: (1) optional stopping — analyzing data repeatedly and halting collection when significance is reached, without a pre-specified stopping rule; (2) multiple testing — examining many subjects, conditions, and measures then reporting only significant outcomes; (3) inadequate randomization — pseudo-random target sequences in Rhine-era experiments had detectable statistical regularities that subjects' guessing strategies exploited; and (4) sensory leakage — insufficient physical isolation in card-guessing paradigms provided olfactory, visual, and auditory cues. Concludes that better-controlled experiments consistently yield weaker or null results, and that statistical analysis alone cannot validate ESP claims without rigorous experimental design. Directly motivated methodological reforms including pre-registration, automated randomization, and double-blind protocols.",
-                  "notes": "Foundational skeptical paper by a Harvard statistician who was also a former professional magician — dual expertise that gave the critique unusual specificity regarding both statistical artifacts and physical mechanisms for sensory leakage. One of the most influential criticisms of Rhine-era ESP research. Directly cited in debates that produced the Hyman-Honorton Joint Communiqué (1986). Pairs with kennedy_1981_skepticism_negative_results and the modern reproducibility-crisis literature (Simmons 2011, Ioannidis 2005, Button 2013).",
+                  "abstract": "Landmark statistical critique of ESP research by Stanford statistician Persi Diaconis, published in Science (Vol. 201, No. 4351, pp. 131–136). Analyzes four classes of methodological problems that generate spurious positive results: (1) optional stopping — analyzing data repeatedly and halting collection when significance is reached, without a pre-specified stopping rule; (2) multiple testing — examining many subjects, conditions, and measures then reporting only significant outcomes; (3) inadequate randomization — pseudo-random target sequences in Rhine-era experiments had detectable statistical regularities that subjects' guessing strategies exploited; and (4) sensory leakage — insufficient physical isolation in card-guessing paradigms provided olfactory, visual, and auditory cues. Concludes that better-controlled experiments consistently yield weaker or null results, and that statistical analysis alone cannot validate ESP claims without rigorous experimental design. Directly motivated methodological reforms including pre-registration, automated randomization, and double-blind protocols.",
+                  "notes": "Foundational skeptical paper by a Stanford statistician who was also a former professional magician — dual expertise that gave the critique unusual specificity regarding both statistical artifacts and physical mechanisms for sensory leakage. One of the most influential criticisms of Rhine-era ESP research. Directly cited in debates that produced the Hyman-Honorton Joint Communiqué (1986). Pairs with kennedy_1981_skepticism_negative_results and the modern reproducibility-crisis literature (Simmons 2011, Ioannidis 2005, Button 2013).",
                   "related_papers": {
                         "same_research_program": [
                               "kennedy_1981_skepticism_negative_results",
@@ -2793,7 +2793,7 @@
                         "blinding": null,
                         "notes": "Methodological critique; no empirical data collected. Analysis of published Rhine-era ESP experiments using probability theory and combinatorics."
                   },
-                  "plain_summary": "Back in 1978, Harvard statistician Persi Diaconis -- who also happened to be a former professional magician -- took a hard look at decades of ESP research and found it riddled with problems. His unique combo of statistical chops and stage-magic know-how let him spot both number-crunching tricks and physical ways information might leak to subjects. He nailed four big culprits: researchers stopping data collection the moment results looked good; testing tons of conditions but only reporting the hits; using \"random\" card sequences with detectable patterns clever guessers could exploit; and plain old sensory leakage through subtle visual, sound, or smell cues. The kicker? When experiments actually plugged these holes, the impressive ESP effects shrank or vanished. This hugely influential paper directly shaped the famous Hyman-Honorton debate and pushed the field toward pre-registration, computer randomization, and double-blind designs -- reforms echoed in today's broader reproducibility crisis across all of science."
+                  "plain_summary": "Back in 1978, Stanford statistician Persi Diaconis -- who also happened to be a former professional magician -- took a hard look at decades of ESP research and found it riddled with problems. His unique combo of statistical chops and stage-magic know-how let him spot both number-crunching tricks and physical ways information might leak to subjects. He nailed four big culprits: researchers stopping data collection the moment results looked good; testing tons of conditions but only reporting the hits; using \"random\" card sequences with detectable patterns clever guessers could exploit; and plain old sensory leakage through subtle visual, sound, or smell cues. The kicker? When experiments actually plugged these holes, the impressive ESP effects shrank or vanished. This hugely influential paper directly shaped the famous Hyman-Honorton debate and pushed the field toward pre-registration, computer randomization, and double-blind designs -- reforms echoed in today's broader reproducibility crisis across all of science."
             },
             {
                   "id": "dobyns_2004_megareg",
@@ -7348,7 +7348,7 @@
                   "authors": [
                         "Liu, Yawen"
                   ],
-                  "year": 2023,
+                  "year": 2021,
                   "journal": "Advances in Social Science, Education and Humanities Research",
                   "doi": "",
                   "folder": "01_Meta-Analyses",
@@ -7603,7 +7603,7 @@
                   "psi_domain": "nde",
                   "open_access": true,
                   "source_url": "https://digital.library.unt.edu/ark:/67531/metadc799298/",
-                  "abstract": "A detailed 35-page critique of Nelson, Mattingly, Lee, and Schmitt's (2006) Neurology paper proposing that NDEs result from REM-intrusion via arousal-system dysfunction, and their 2007 follow-up linking OBEs to the same system. Long and Holden identify eight major weaknesses: (1) 40% of NDErs denied any REM-intrusion experiences; (2) survey questions lacked validity — 'yes' answers may reflect post-NDE aftereffects rather than pre-existing diathesis; (3) the control group (medical personnel) likely underreported REM intrusion due to awareness of pathological implications (7% vs. 19-28% general population prevalence); (4) the control group was not matched for life-threatening event exposure; (5) NDEs occur when REM is suppressed (general anesthesia, barbiturate overdose, congenital blindness without REM); (6) NDE features (coherent narrative, profound peace, veridical perception) differ fundamentally from REM intrusion (brief, terrifying, bizarre hallucinations); (7) NDERF data show 73.5% of NDErs report the experience as 'more real than real' vs. dreams; (8) NDEs have a consistent deep structure across cultures, whereas REM dreams do not.",
+                  "abstract": "A detailed 35-page critique of Nelson, Mattingly, Lee, and Schmitt's (2006) Neurology paper proposing that NDEs result from REM-intrusion via arousal-system dysfunction, and their 2007 follow-up linking OBEs to the same system. Long and Holden identify major weaknesses: (1) 40% of NDErs denied any REM-intrusion experiences; (2) survey questions lacked validity — 'yes' answers may reflect post-NDE aftereffects rather than pre-existing diathesis; (3) the control group (medical personnel) likely underreported REM intrusion due to awareness of pathological implications (7% vs. 19-28% general population prevalence); (4) the control group was not matched for life-threatening event exposure; (5) NDEs occur when REM is suppressed (general anesthesia, barbiturate overdose, congenital blindness without REM); (6) NDE features (coherent narrative, profound peace, veridical perception) differ fundamentally from REM intrusion (brief, terrifying, bizarre hallucinations); (7) NDErs typically report the experience as 'more real than real' vs. dreams, and NDERF survey data (n=397) show only 22% reported any subsequent experience reproducing their NDE; (8) NDEs have a consistent deep structure across cultures, whereas REM dreams do not.",
                   "notes": "The most comprehensive published rebuttal of the Nelson et al. REM-intrusion hypothesis for NDEs, which became one of the most widely cited neuroscientific NDE explanations. Important for Controversy #7 as it challenges a key reductionist account on methodological grounds. The paper's critique of unvalidated instruments, inadequate controls, and temporal ambiguity (pre- vs. post-NDE REM intrusion) sets a standard for evaluating reductionist NDE hypotheses.",
                   "related_papers": {
                         "companion": [
@@ -7615,7 +7615,7 @@
                         ]
                   },
                   "methodology": {
-                        "n": 613,
+                        "n": "N/A (commentary citing NDERF survey data: n=397 for reproducibility question, n=465 for NDE elements)",
                         "n_studies": null,
                         "pre_registered": null,
                         "effect_size": null,
@@ -7624,7 +7624,7 @@
                         "blinding": null,
                         "study_type": "commentary"
                   },
-                  "plain_summary": "When a 2006 paper in the journal Neurology claimed that near-death experiences are basically just dreams leaking into waking life — a phenomenon called REM intrusion, where dream-state brain activity pops up when you're awake — it became one of the most cited scientific explanations for NDEs. Jeffrey Long and Janice Holden wrote this thorough 35-page takedown showing the explanation doesn't hold up. Their critique lands eight solid punches. First, 40% of people who had NDEs never experienced anything resembling REM intrusion at all. The survey questions were flawed — a 'yes' answer might reflect changes that happened after the NDE, not some pre-existing brain quirk. The comparison group was made up of medical professionals who likely underreported their own dream-like experiences because they knew it could sound pathological, and they weren't even matched for having faced life-threatening situations. Perhaps most damaging: NDEs happen under conditions where REM activity is actually suppressed, like during general anesthesia or barbiturate overdose. And the experiences themselves look nothing like REM dreams — NDEs feature coherent stories, deep peace, and sometimes verifiable perceptions of real events, while REM intrusions tend to be brief, frightening, and bizarre. A striking 73.5% of people who had NDEs described them as feeling 'more real than real,' which is the opposite of dreamy. NDEs also share a remarkably consistent structure across cultures, while ordinary dreams do not. This paper set a high bar for anyone trying to explain away NDEs with simple brain-based theories.",
+                  "plain_summary": "When a 2006 paper in the journal Neurology claimed that near-death experiences are basically just dreams leaking into waking life — a phenomenon called REM intrusion, where dream-state brain activity pops up when you're awake — it became one of the most cited scientific explanations for NDEs. Jeffrey Long and Janice Holden wrote this thorough 35-page takedown showing the explanation doesn't hold up. Their critique lands eight solid punches. First, 40% of people who had NDEs never experienced anything resembling REM intrusion at all. The survey questions were flawed — a 'yes' answer might reflect changes that happened after the NDE, not some pre-existing brain quirk. The comparison group was made up of medical professionals who likely underreported their own dream-like experiences because they knew it could sound pathological, and they weren't even matched for having faced life-threatening situations. Perhaps most damaging: NDEs happen under conditions where REM activity is actually suppressed, like during general anesthesia or barbiturate overdose. And the experiences themselves look nothing like REM dreams — NDEs feature coherent stories, deep peace, and sometimes verifiable perceptions of real events, while REM intrusions tend to be brief, frightening, and bizarre. People who had NDEs consistently described them as feeling 'more real than real,' which is the opposite of dreamy, and NDERF survey data showed virtually no NDErs reported any subsequent experience (including REM intrusion) that reproduced their NDE. NDEs also share a remarkably consistent structure across cultures, while ordinary dreams do not. This paper set a high bar for anyone trying to explain away NDEs with simple brain-based theories.",
                   "actual_abstract": "In April 2006, an important article appeared in a respected medical journal suggesting a relationship between near-death experiences (NDEs) and the body's arousal system, specifically the phenomenon of rapid eye movement (REM) intrusion. In March 2007, the same authors published another article in the same journal, expanding on the previous article's findings and suggesting a relationship between out-of-body experiences (OBEs) and the arousal system. These articles presented lines of evidence and a study to support the hypothesized relationship. In this paper, we acknowledge the viability and potential value of the hypothesis underlying both articles, but identify substantial weaknesses in both the presented lines of evidence and the studies. We conclude with recommendations for future research that would address the hypothesis and would promote a better overall understanding of NDEs and OBEs."
             },
             {
@@ -7856,16 +7856,13 @@
                   "notes": "Critical replication failure paper in micro-PK literature. Demonstrates the elusive decline effect pattern that MPI predicts but cannot distinguish from null results. Connects to PEAR replication failures and ongoing debates about whether micro-PK is inherently unreplicable or non-existent. Unconscious desire manipulation was theoretically innovative. Cites Bösch et al. 2006 meta-analysis and Radin & Nelson work extensively.",
                   "related_papers": {
                         "cites": [
-                              "bosch_2006_examining",
-                              "schmidt_1987_strange"
+                              "bosch_2006_examining"
                         ],
                         "companion": [
                               "maier_2018_intentional_observer",
                               "tiller_1990_gas_discharge"
                         ],
-                        "extends": [
-                              "bancel_2017_global_consciousness"
-                        ],
+                        "extends": [],
                         "same_research_program": [
                               "maier_2020_preregistered"
                         ]
@@ -10132,8 +10129,7 @@
                               "walleczek_2019_false_positive_amp"
                         ],
                         "critiques": [
-                              "radin_2008_nonlocal_observation",
-                              "radin_2016_double_slit"
+                              "radin_2012_consciousness"
                         ]
                   },
                   "methodology": {
@@ -10861,7 +10857,7 @@
                   "psi_domain": "psychokinesis",
                   "open_access": true,
                   "source_url": "https://noosphere.princeton.edu/papers/pdf/scex-20-03-02_361..374.pdf",
-                  "abstract": "Responding to critiques by Schub, Scargle, Ehm, and Bösch et al. of the Radin & Nelson (1989, 2003) RNG meta-analyses, this commentary challenges the 'influence-per-bit' assumption — that mind-matter interaction (MMI) operates uniformly on each random bit regardless of bit rate, sample size, or psychological conditions. With bit rates spanning six orders of magnitude across experiments, the authors argue this assumption is unjustified. Funnel-plot asymmetry is shown to reflect genuine heterogeneity rather than publication bias via simulated constant-z data. A researcher survey found ~1 unreported study per investigator, far fewer than the thousands needed to explain the cumulative results. Bösch et al.'s own random effects model yielded z = 4.08 for pre-planned studies.",
+                  "abstract": "Responding to critiques by Schub, Scargle, Ehm, and Bösch et al. of the Radin & Nelson (1989, 2003) RNG meta-analyses, this commentary challenges the 'influence-per-bit' assumption — that mind-matter interaction (MMI) operates uniformly on each random bit regardless of bit rate, sample size, or psychological conditions. With bit rates spanning six orders of magnitude across experiments, the authors argue this assumption is unjustified. Funnel-plot asymmetry is shown to reflect genuine heterogeneity rather than publication bias via simulated constant-z data. A researcher survey found ~1 unreported study per investigator, far fewer than the thousands needed to explain the cumulative results. Bösch et al.'s own random effects model yielded an overall z = 4.08 after excluding three outlier studies, and separately found evidence significantly in favor of MMI for the pre-planned subset (N = 253).",
                   "notes": "Most comprehensive single defense against simultaneous critiques of RNG/PK meta-analytic evidence. Companion to radin_2006_reexamining in JSE Vol. 20 No. 3. Introduces Collins's Experimenters' Regress into the MMI debate and proposes alternative effect-size models (constant-z, goal-oriented, time-normalized yield).",
                   "related_papers": {
                         "cites": [
@@ -10894,7 +10890,7 @@
                         "blinding": null,
                         "study_type": "commentary"
                   },
-                  "plain_summary": "Can your mind nudge a random number generator (basically a digital coin-flipper)? Critics said the evidence from decades of these experiments was inflated by publication bias -- researchers only publishing exciting results. This rebuttal punches back hard. The authors point out that critics assumed the mind would influence each individual random bit equally, regardless of whether the machine was spitting out ten bits per second or millions. That assumption spans six orders of magnitude and is, they argue, simply unjustified. The suspicious funnel-plot pattern (a graph used to sniff out bias) actually matches what you'd expect from genuinely varied experiments, not hidden negative results. A survey of researchers turned up roughly one unpublished study per person -- far fewer than the thousands needed to sink the findings. Even the critics' own stricter statistical model still yielded a significant result for pre-planned studies.",
+                  "plain_summary": "Can your mind nudge a random number generator (basically a digital coin-flipper)? Critics said the evidence from decades of these experiments was inflated by publication bias -- researchers only publishing exciting results. This rebuttal punches back hard. The authors point out that critics assumed the mind would influence each individual random bit equally, regardless of whether the machine was spitting out ten bits per second or millions. That assumption spans six orders of magnitude and is, they argue, simply unjustified. The suspicious funnel-plot pattern (a graph used to sniff out bias) actually matches what you'd expect from genuinely varied experiments, not hidden negative results. A survey of researchers turned up roughly one unpublished study per person -- far fewer than the thousands needed to sink the findings. Even the critics' own stricter statistical model still yielded an overall z = 4.08 after excluding three outlier studies, and their pre-planned subset was separately significant.",
                   "actual_abstract": "Experiments suggesting the existence of mind-matter interaction (MMI) effects on the outputs of random number generators (RNG) have been criticized based on the questionable assumption that MMI effects operate uniformly on each random bit, independent of the number of bits used per sample, the rate at which bits are generated, or the psychological conditions of the task. This ''influence-per-bit'' assumption invariably leads to the conclusion that the significant cumulative results of these experiments, as demonstrated in meta-analyses, are due not to MMI effects but rather to publication biases. We discuss why this assumption is doubtful, and why publication bias and other common criticisms of MMI-RNG studies are implausible."
             },
             {
@@ -14184,7 +14180,7 @@
                   "psi_domain": "telepathy",
                   "open_access": true,
                   "source_url": "https://doi.org/10.2466/PR0.104.3.957-970",
-                  "abstract": "In an automated online telepathy test, each participant had four senders (two actual, two virtual). Computer selected one sender at random per trial; sender composed message for 30 sec, then participant guessed sender identity. In 6,000 trials across 500 tests, hit rate was 26.7%, significantly above 25% chance (p=0.002, d=0.03). Videotaped tests showed similar results (27.3%, p<0.01). Hit rate with actual senders was 33.7% vs. 19.5% with virtual senders, but strong guessing bias toward actual senders (62.9% of guesses) eliminated this difference when corrected. Hit rates declined with repeated testing (45.2% → 35.2% → 24.4% → 15.5%). Highest hit rates occurred at distances >500 miles. One exceptional subject (AF) maintained above-chance performance across multiple filmed tests.",
+                  "abstract": "In an automated online telepathy test, each participant had four senders (two actual, two virtual). Computer selected one sender at random per trial; sender composed message for 30 sec, then participant guessed sender identity. In 6,000 trials across 500 tests, hit rate was 26.7%, significantly above 25% chance (p=0.002, d=0.03). Videotaped tests showed a similar hit rate (27.3% in 468 filmed trials). Hit rate with actual senders was 33.7% vs. 19.5% with virtual senders, but strong guessing bias toward actual senders (62.9% of guesses) eliminated this difference when corrected. Hit rates declined with repeated testing (45.2% → 35.2% → 24.4% → 15.5%). Highest hit rates occurred at distances >500 miles. One exceptional subject (AF) maintained above-chance performance across multiple filmed tests.",
                   "notes": "Replicates and extends Sheldrake & Lambert (2007) with larger sample (6,000 vs. 1,980 trials) and faster 30-sec procedure. Much smaller effect size (d=0.03) than telephone/e-mail telepathy tests (d=0.46-0.50), suggesting rapid procedure requiring continuous sender attention dilutes effect. Demonstrates above-chance results in automated unsupervised setting with videotaped subset confirming no cheating. Decline with repeated testing illustrates 'elusiveness' problem: sensitivity appears inhibited by nervousness/self-consciousness. Distance-independent effect supports non-local nature of telepathy.",
                   "related_papers": {
                         "extends": [
@@ -14193,7 +14189,7 @@
                         "cites": [
                               "sheldrake_smart_2003_experimental_tests_telephone",
                               "sheldrake_2003_videotaped",
-                              "sheldrake_smart_2005_email_telepathy",
+                              "sheldrake_2005_email_telepathy",
                               "sheldrake_lambert_2007_online_telepathy"
                         ],
                         "meta_analyzed_by": [
@@ -17203,7 +17199,7 @@
                   "open_access": true,
                   "source_url": "https://f1000research.com/articles/6-1416/pdf",
                   "abstract": "Secondary analysis of survey data from 3,023 participants (mean age 51, 70% female, 85% Caucasian). Mediumship experiences endorsed by 42%; 81% began in childhood; 53% had family history. Mean DES-T dissociation scores: all participants 14.4, mediums 18.2±19.3, non-mediums 11.8±15.2 (t=-10.3, p<0.0005). Both groups below clinical cut-off (30) for pathological dissociation, though 22% of mediums vs. 11% of non-mediums exceeded threshold (χ²=63.0, p<0.0005). Mediumship claimants scored higher on all 8 DES-T items. Education and income significant covariates. Results support non-pathological model: mediums show elevated but sub-clinical dissociation.",
-                  "notes": "Largest mediumship-dissociation survey (N=3,023). Key finding: mediums score higher than non-mediums but below clinical cut-off — counters psychiatric pathologization of mediumship. Convenience sample (IONS members) limits generalizability. Part of Wahbeh's mediumship research program. Open peer review (2 approved, 1 not — Parker criticized sample bias and narrow dissociation conceptualization). Relevant to Controversy #6 (Mediumship) Con position on psychopathology.",
+                  "notes": "Largest mediumship-dissociation survey (N=3,023). Key finding: mediums score higher than non-mediums but below clinical cut-off — counters psychiatric pathologization of mediumship. Convenience sample (IONS members) limits generalizability. Part of Wahbeh's mediumship research program. Open peer review (2 approved, 1 not — Cardeña gave X on Version 1 citing poor writing, inadequate literature coverage, and statistical issues; Parker had reservations on Version 2 about sample bias and narrow dissociation conceptualization but approved Version 3). Relevant to Controversy #6 (Mediumship) Con position on psychopathology.",
                   "related_papers": {
                         "companion": [
                               "wahbeh_2018_mixed",
@@ -17909,8 +17905,7 @@
                         "companion": [
                               "schooler_2018_entertaining",
                               "mossbridge_2018_precognition",
-                              "houran_2018_crossexamining",
-                              "duggan_2018_paa_update"
+                              "houran_2018_crossexamining"
                         ]
                   },
                   "methodology": {
@@ -18230,12 +18225,12 @@
                         "companion": [
                               "storm_2017_correspondence"
                         ],
-                        "precursor": [
-                              "hyman_honorton_1986_joint_communique"
-                        ],
+                        "precursor": [],
                         "critiques": [
-                              "hyman_1986_parapsychological_tutorial",
                               "alcock_2003_give"
+                        ],
+                        "critiqued_by": [
+                              "hyman_1986_parapsychological_tutorial"
                         ]
                   },
                   "methodology": {
@@ -20171,7 +20166,7 @@
                   "psi_domain": "nde",
                   "open_access": true,
                   "source_url": "https://med.virginia.edu/perceptual-studies/.../NDE37_PTSD-AJO.pdf",
-                  "abstract": "A cross-sectional survey compared posttraumatic stress symptoms in 148 near-death experiencers and 46 individuals who came close to death without NDEs, using the Impact of Event Scale (IES). NDErs scored 9.0 points higher on the overall IES (95% CI = 3.4–13.7), but the elevation was confined to intrusive re-experiencing symptoms; avoidance symptoms did not differ between groups. Multiple regression confirmed NDEs as a significant predictor of intrusion (B = 7.59, p < 0.001) but not avoidance, after controlling for demographics and event characteristics. NDErs' scores fell 1.2 SD below a clinical PTSD criterion sample, suggesting a nonspecific stress response rather than clinical PTSD.",
+                  "abstract": "A cross-sectional survey compared posttraumatic stress symptoms in 148 near-death experiencers and 46 individuals who came close to death without NDEs, using the Impact of Event Scale (IES). NDErs scored 9.0 points higher on the overall IES (95% CI = 4.3–13.7), but the elevation was confined to intrusive re-experiencing symptoms; avoidance symptoms did not differ between groups. Multiple regression confirmed NDEs as a significant predictor of overall IES scores (B = 7.59, 95% CI = 2.78–12.39, p < 0.001) and of the intrusion subscale specifically (B = 7.02, 95% CI = 4.08–9.97, p < 0.001), but not avoidance, after controlling for demographics and event characteristics. NDErs' scores fell 1.2 SD below a clinical PTSD criterion sample, suggesting a nonspecific stress response rather than clinical PTSD.",
                   "notes": "Only study in the library directly measuring PTSD symptom profiles in NDErs. Supports the view that NDEs produce vivid, intrusive memories through their positive-affect quality rather than the fear-driven avoidance seen in PTSD — relevant to Controversy #7 (NDE consciousness/survival) and to the broader question of whether NDEs are pathological dissociative events or transformative experiences.",
                   "related_papers": {
                         "cites": [
@@ -20194,8 +20189,8 @@
                         "n": 194,
                         "n_studies": null,
                         "pre_registered": false,
-                        "effect_size": "NDErs scored 9.0 points higher on IES (95% CI = 3.4–13.7); intrusion B = 7.59 (95% CI = 2.78–12.39, p < 0.001)",
-                        "ci_95": "[3.4, 13.7] for overall IES group difference",
+                        "effect_size": "NDErs scored 9.0 points higher on IES (95% CI = 4.3–13.7); overall IES B = 7.59 (95% CI = 2.78–12.39, p < 0.001); intrusion B = 7.02 (95% CI = 4.08–9.97, p < 0.001)",
+                        "ci_95": "[4.3, 13.7] for overall IES group difference",
                         "bayes_factor": null,
                         "blinding": "not applicable (survey study)",
                         "study_type": "observational/correlational"

@@ -437,8 +437,8 @@
         },
         {
           "id": "schlitz_2012_distant",
-          "result": "success",
-          "description": "Exploratory study investigating distant healing effects on surgical wound recovery."
+          "result": "failure",
+          "description": "3-arm RCT (N=72) found no significant group differences on the primary outcome of collagen deposition (F(2,62)=0.79, P=.46) or secondary subjective measures; post-hoc analyses found significant effects only in a breast-cancer subgroup."
         }
       ],
       "conceptual_replications": [

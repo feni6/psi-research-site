@@ -1,7 +1,7 @@
 {
   "description": "Tracks which papers have been fact-checked against their original PDFs in the Psi Research Library. Each entry records the paper ID, the date it was last verified, and any issues found and fixed.",
-  "last_updated": "2026-03-27",
-  "total_checked": 228,
+  "last_updated": "2026-03-28",
+  "total_checked": 306,
   "checks": [
     {
       "id": "bem_1994_does",
@@ -1848,6 +1848,582 @@
       "fixes": [
         "Fixed 'brain imaging of healers' to 'brain imaging of recipients' and 'healer fMRI study' to 'recipient fMRI study' in catalog and controversy file (Achterberg scanned recipients, not healers)"
       ]
+    },
+    {
+      "id": "tressoldi_2010_extrasensory",
+      "title": "Extrasensory Perception and Quantum Models of Cognition",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "tressoldi_2011_mental_connection",
+      "title": "Mental Connection at Distance",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "tressoldi_2012_replication",
+      "title": "Replication Unreliability in Psi",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "van_lommel_2013_nonlocal_consciousness",
+      "title": "Non-local Consciousness: A Concept Based on Scientific Research on NDE",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "walach_2014_entanglement",
+      "title": "Generalized Entanglement and Psi",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "marks_1982_remote_viewing_revisited",
+      "title": "Remote Viewing Revisited",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "braud_1993_remote_mental_influence_eda",
+      "title": "Remote Mental Influence of Electrodermal Activity",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "diaconis_1978_statistical_esp",
+      "title": "Statistical Problems in ESP Research",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Changed 'Harvard statistician' to 'Stanford statistician' in catalog.json (abstract, notes, plain_summary), era_3_ganzfeld.md (2 locations), and controversies/10_meta_debate.md \u2014 PDF author footnote lists Stanford University affiliation"
+      ]
+    },
+    {
+      "id": "grinberg_zylberbaum_1987_interhemispheric",
+      "title": "Interhemispheric Correlation of Brain Activity",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "hyman_honorton_1986_joint_communique",
+      "title": "A Joint Communiqu\u00e9: The Psi Ganzfeld Controversy",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "ibison_jeffers_1998_double_slit",
+      "title": "A Double-Slit Diffraction Experiment to Investigate Claims of Consciousness-Related Anomalies",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "tiller_1990_gas_discharge",
+      "title": "New Experimental Data Revealing an Unexpected Dimension to Materials Science and Engineering",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "byrd_1988_prayer",
+      "title": "Positive Therapeutic Effects of Intercessory Prayer",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "alcock_2011_back_from_future",
+      "title": "Back from the Future: Parapsychology and the Bem Affair",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "bem_utts_johnson_2011_must_psychologists",
+      "title": "Must Psychologists Change the Way They Analyze Their Data?",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "bierman_2016_questionable_practices",
+      "title": "Testing for Questionable Research Practices in a Meta-Analysis",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kugel_2011_faulty_pk_meta",
+      "title": "A Faulty PK Meta-Analysis",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2006_assessing",
+      "title": "Assessing the Evidence for Mind-Matter Interaction Effects",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Corrected z=4.08 attribution in catalog.json and controversies/08_global_consciousness_project.md \u2014 was misattributed to 'pre-planned studies (N=253)' but is actually the overall REM excluding 3 outlier studies per PDF p.369"
+      ]
+    },
+    {
+      "id": "child_1985_psychology_anomalous",
+      "title": "Psychology and Anomalous Observations: The Question of ESP in Dreams",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Removed chronologically impossible precursor link (hyman_honorton_1986_joint_communique, 1986, cannot precede 1985 paper)",
+        "Moved hyman_1986_parapsychological_tutorial from critiques to critiqued_by (direction was inverted)"
+      ]
+    },
+    {
+      "id": "jefferys_1990_bayesian_rng",
+      "title": "Bayesian Analysis of Random Event Generator Data",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "braud_schlitz_1991_consciousness_interactions",
+      "title": "Consciousness Interactions with Remote Biological Systems",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2002_telepathy_babies",
+      "title": "Apparent Telepathy Between Babies and Nursing Mothers",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "schlitz_2012_distant",
+      "title": "Distant Healing of Surgical Wounds",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Changed result code from 'success' to 'failure' in replication_map.json \u2014 primary outcome was null (F(2,62)=0.79, P=.46); abstract states 'No differences in the main measures'"
+      ]
+    },
+    {
+      "id": "nelson_2014_gcp_invited",
+      "title": "The Global Consciousness Project: Identifying the Source of Psi",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "mossbridge_2025_future_dreams",
+      "title": "Do Future Dreams Dream of Electric Sheep?",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "dunne_jahn_2003_pear",
+      "title": "Information and Uncertainty in Remote Perception Research",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "utts_2016_appreciating",
+      "title": "Appreciating Statistics",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "wahbeh_2018_people",
+      "title": "People Reporting Experiences of Mediumship Have Higher Dissociation Scores",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Corrected peer review attribution in notes: the 'not approved' reviewer was Carde\u00f1a (not Parker); Parker approved final version"
+      ]
+    },
+    {
+      "id": "woody_2018_perspectives",
+      "title": "Perspectives on Precognition",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Removed duggan_2018_paa_update from companion list \u2014 not a companion article in the special issue; correct fifth companion (Mossbridge & Radin 2018a response) not yet in catalog"
+      ]
+    },
+    {
+      "id": "acunzo_2013_neuroimaging_psi",
+      "title": "Anomalous Experiences, Psi, and Functional Neuroimaging",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "cardena_2014_handbook",
+      "title": "A Call for an Open, Informed Study of All Aspects of Consciousness",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "henry_2005_mental",
+      "title": "The Mental Universe",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "long_2007_arousal_nde_response",
+      "title": "Does the Arousal System Contribute to NDE? Summary and Response",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Removed fabricated 73.5% 'more real than real' figure from abstract, plain_summary, and controversies/07 \u2014 not found in the 35-page PDF",
+        "Fixed n=613 to reflect commentary nature of paper",
+        "Corrected catalog ID reference in controversies/07 from long_holden_2007 to long_2007"
+      ]
+    },
+    {
+      "id": "nosek_2014_registered",
+      "title": "Registered Reports: A Method to Increase the Credibility of Published Results",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "radin_2005_feelings",
+      "title": "Gut Feelings, Intuition, and Emotions",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "atmanspacher_2002_weak_quantum",
+      "title": "Weak Quantum Theory: Complementarity and Entanglement in Physics and Beyond",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "mumford_1995_evaluation_remote_viewing",
+      "title": "An Evaluation of Remote Viewing: Research and Applications",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "spottiswoode_1997_apparent",
+      "title": "Apparent Association Between Effect Size and Local Sidereal Time",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "mossbridge_2025_mindfield_nonspeakers",
+      "title": "Taking the Mindfield Literally: Discovering Minds by Assuming Competence Among Nonspeakers",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "button_2013_power_failure",
+      "title": "Power Failure: Why Small Sample Size Undermines the Reliability of Neuroscience",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "dean_2022_paranormal_beliefs_cognition",
+      "title": "Paranormal Beliefs and Cognitive Function",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_1981_skepticism_negative_results",
+      "title": "Skepticism and Negative Results",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2001_psi_elusive",
+      "title": "Why Is Psi So Elusive?",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2004_proposal",
+      "title": "A Proposal and Challenge for Proponents and Skeptics of Psi",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2006_spirituality",
+      "title": "Spirituality and Psychical Research (Review of Irreducible Mind)",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2013_beyond_meta_analyses",
+      "title": "Beyond Retrospective Meta-Analyses",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kennedy_2016_psi_research_ready",
+      "title": "Is the Methodological Revolution in Psychology Over or Just Beginning?",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "kramer_2022_counseling_anomalous",
+      "title": "When the Truth Is Out There: Counseling People Who Report Anomalous Experiences",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "lindahl_2017_varieties_contemplative",
+      "title": "The Varieties of Contemplative Experience",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2021_sun_conscious",
+      "title": "Is the Sun Conscious?",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "van_elk_2015_registered_replications",
+      "title": "Registered Replications: A Skeptical Analysis",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "wagenmakers_2012_agenda",
+      "title": "An Agenda for Purely Confirmatory Research",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "walach_2020_inner_experience",
+      "title": "Inner Experience \u2013 Direct Access and the Lazy Goat Problem",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "ioannidis_2012_science_not_self_correcting",
+      "title": "Why Science Is Not Necessarily Self-Correcting",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "watt_kennedy_2017_prospective_meta",
+      "title": "Options for Prospective Meta-Analysis",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "maier_dechamps_2018_smoker_micro_pk",
+      "title": "Observer Effects on Quantum Randomness: Testing Micro-PK Effects of Smokers",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Removed incorrect 'schmidt_1987_strange' from cites (not in PDF reference list)",
+        "Removed incorrect 'bancel_2017_global_consciousness' from extends (PDF cites Bancel 2014, extends von Lucadou's MPI)"
+      ]
+    },
+    {
+      "id": "pitkanen_2017_radin_double_slit_critique",
+      "title": "On the Double-Slit Experiment of Dean Radin",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Replaced incorrect critiques entries (radin_2008, radin_2016) with correct radin_2012_consciousness (the only Radin paper cited in PDF)"
+      ]
+    },
+    {
+      "id": "radin_2020_commentary_ds_false_positive",
+      "title": "Commentary: False-Positive Effect in the Radin Double-Slit Experiment",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "greyson_2003_incidence_nde_cardiac",
+      "title": "Incidence and Correlates of Near-Death Experiences in a Cardiac Care Unit",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "moody_1977_reflections",
+      "title": "Reflections on Life After Life",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "woollacott_2020_mystical_neural_correlates",
+      "title": "The Mystical Experience and Its Neural Correlates",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "blanke_2004_oobe_neurological",
+      "title": "Out-of-Body Experience and Autoscopy of Neurological Origin",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "nahm_2012_terminal_lucidity",
+      "title": "Terminal Lucidity: A Review and a Case Collection",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "nichols_2017_endogenous_dmt",
+      "title": "N,N-Dimethyltryptamine and the Pineal Gland: Separating Fact from Fiction",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "cassol_2019_distressing_nde",
+      "title": "Systematic Analysis of Distressing Near-Death Experiences",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "greyson_2001_ptsd",
+      "title": "Posttraumatic Stress Symptoms Following Near-Death Experiences",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Fixed CI lower bound from 3.4 to 4.3 (digit transposition) in catalog abstract, methodology, and controversy file",
+        "Fixed B=7.59 mislabeled as intrusion subscale; correctly attributed to overall IES, added intrusion B=7.02 in catalog and controversy file"
+      ]
+    },
+    {
+      "id": "kelly_2001_nde_meeting_deceased",
+      "title": "Near-Death Experiences with Reports of Meeting Deceased People",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "winer_2002_misunderstanding_visual",
+      "title": "Fundamentally Misunderstanding Visual Perception",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "liu_2023_detecting_telepathy_meta",
+      "title": "Detecting Telepathy: A Meta-Analysis",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Fixed year from 2023 to 2021 (PDF is from MMET 2021 proceedings, copyright 2021)"
+      ]
+    },
+    {
+      "id": "sheldrake_2009_automated_email",
+      "title": "Automated Test for Telepathy in Connection with Emails",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_2009_online_telepathy",
+      "title": "A Rapid Online Telepathy Test",
+      "checked": "2026-03-28",
+      "result": "fixed",
+      "fixes": [
+        "Removed fabricated p<0.01 for videotaped subset (27.3% in 468 trials; no p-value in PDF, calculated p~0.12)",
+        "Fixed broken cites ID from sheldrake_smart_2005_email_telepathy to sheldrake_2005_email_telepathy"
+      ]
+    },
+    {
+      "id": "sheldrake_2009_sms_telepathy",
+      "title": "Telepathy in Connection with Telephone Calls, Text Messages and Emails",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_lambert_2007_online_telepathy",
+      "title": "An Automated Online Telepathy Test",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "wahbeh_2024_who_calling_accuracy",
+      "title": "Who's Calling: Evaluating Accuracy of Telepathic and Precognitive Identification",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sheldrake_stedall_2024_automated_telephone",
+      "title": "Comparison of Four New Automated Telephone Telepathy Tests",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "harris_1999_prayer",
+      "title": "A Randomized, Controlled Trial of the Effects of Remote, Intercessory Prayer",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "sicher_1998_distant_healing",
+      "title": "A Randomized Double-Blind Study of the Effect of Distant Healing",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
+    },
+    {
+      "id": "roberts_2009_intercessory_prayer_cochrane",
+      "title": "Intercessory Prayer for the Alleviation of Ill Health",
+      "checked": "2026-03-28",
+      "result": "clean",
+      "fixes": []
     }
   ]
 }
