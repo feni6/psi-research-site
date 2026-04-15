@@ -85,6 +85,103 @@ const randomAuthorIds = uniqueAuthors.filter((_: any, i: number) => i % 7 === 0)
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-500/5 rounded-full blur-3xl animate-pulse pointer-events-none" aria-hidden="true"></div>
     <div class="absolute bottom-0 right-0 w-[600px] h-[400px] bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-700 pointer-events-none" aria-hidden="true"></div>
 
+    <!-- Hero Illustration — Cosmic Eye -->
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none" aria-hidden="true">
+      <svg viewBox="0 0 800 500" class="w-full max-w-4xl opacity-20 sm:opacity-30" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer glow halo -->
+        <circle cx="400" cy="250" r="220" fill="url(#hero-outer-glow)" opacity="0.25" />
+        <!-- Outer radiating lines -->
+        <g stroke="url(#hero-gold)" stroke-width="0.7" opacity="0.7">
+          {Array.from({ length: 36 }).map((_, i) => {
+            const angle = (i * 10) * Math.PI / 180;
+            const x1 = 400 + Math.cos(angle) * 120;
+            const y1 = 250 + Math.sin(angle) * 120;
+            const x2 = 400 + Math.cos(angle) * 240;
+            const y2 = 250 + Math.sin(angle) * 240;
+            return <line x1={x1} y1={y1} x2={x2} y2={y2} />;
+          })}
+        </g>
+        <!-- Concentric rings — multi-color -->
+        <circle cx="400" cy="250" r="200" fill="none" stroke="#a78bfa" stroke-width="0.6" opacity="0.4" />
+        <circle cx="400" cy="250" r="160" fill="none" stroke="#38bdf8" stroke-width="0.8" opacity="0.5" />
+        <circle cx="400" cy="250" r="120" fill="none" stroke="url(#hero-gold)" stroke-width="1" opacity="0.6" />
+        <!-- Eye shape -->
+        <path d="M200,250 Q400,120 600,250 Q400,380 200,250 Z" fill="url(#hero-eye-fill)" opacity="0.08" />
+        <path d="M200,250 Q400,120 600,250 Q400,380 200,250 Z" fill="none" stroke="url(#hero-eye-stroke)" stroke-width="2" opacity="0.8" />
+        <path d="M240,250 Q400,150 560,250 Q400,350 240,250 Z" fill="none" stroke="#a78bfa" stroke-width="1" opacity="0.4" />
+        <!-- Iris — richer fill -->
+        <circle cx="400" cy="250" r="70" fill="url(#hero-iris)" opacity="0.3" />
+        <circle cx="400" cy="250" r="70" fill="none" stroke="url(#hero-iris-stroke)" stroke-width="2" opacity="0.9" />
+        <!-- Pupil — brighter -->
+        <circle cx="400" cy="250" r="28" fill="url(#hero-pupil)" opacity="0.5" />
+        <circle cx="400" cy="250" r="28" fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="1" />
+        <!-- Pupil highlight -->
+        <circle cx="390" cy="240" r="8" fill="#fff" opacity="0.15" />
+        <!-- Inner iris detail lines — multi-color alternating -->
+        <g stroke-width="0.5" opacity="0.6">
+          {Array.from({ length: 24 }).map((_, i) => {
+            const angle = (i * 15) * Math.PI / 180;
+            const x1 = 400 + Math.cos(angle) * 30;
+            const y1 = 250 + Math.sin(angle) * 30;
+            const x2 = 400 + Math.cos(angle) * 68;
+            const y2 = 250 + Math.sin(angle) * 68;
+            const color = i % 3 === 0 ? '#fbbf24' : i % 3 === 1 ? '#a78bfa' : '#38bdf8';
+            return <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} />;
+          })}
+        </g>
+        <!-- Scattered particles — colorful -->
+        <g opacity="0.8">
+          <circle cx="180" cy="150" r="2" fill="#fbbf24" /><circle cx="620" cy="340" r="2" fill="#a78bfa" />
+          <circle cx="310" cy="100" r="1.5" fill="#38bdf8" /><circle cx="500" cy="400" r="1.5" fill="#fbbf24" />
+          <circle cx="150" cy="280" r="1.8" fill="#a78bfa" /><circle cx="650" cy="200" r="1.8" fill="#38bdf8" />
+          <circle cx="250" cy="380" r="1.2" fill="#fbbf24" /><circle cx="550" cy="120" r="1.2" fill="#a78bfa" />
+          <circle cx="350" cy="420" r="1.5" fill="#38bdf8" /><circle cx="460" cy="80" r="1.5" fill="#fbbf24" />
+          <circle cx="130" cy="200" r="1" fill="#38bdf8" /><circle cx="670" cy="300" r="1" fill="#a78bfa" />
+          <circle cx="280" cy="140" r="2" fill="#fbbf24" /><circle cx="520" cy="360" r="2" fill="#38bdf8" />
+          <circle cx="700" cy="160" r="1.3" fill="#a78bfa" /><circle cx="100" cy="340" r="1.3" fill="#fbbf24" />
+        </g>
+        <!-- Wave arcs — colored -->
+        <path d="M150,250 Q275,180 400,200 Q525,220 650,160" fill="none" stroke="#a78bfa" stroke-width="0.8" opacity="0.4" />
+        <path d="M150,250 Q275,320 400,300 Q525,280 650,340" fill="none" stroke="#38bdf8" stroke-width="0.8" opacity="0.4" />
+        <!-- Defs -->
+        <defs>
+          <radialGradient id="hero-gold" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fbbf24" />
+            <stop offset="100%" stop-color="#f59e0b" />
+          </radialGradient>
+          <radialGradient id="hero-outer-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fbbf24" />
+            <stop offset="50%" stop-color="#a78bfa" stop-opacity="0.3" />
+            <stop offset="100%" stop-color="transparent" />
+          </radialGradient>
+          <radialGradient id="hero-iris" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fbbf24" />
+            <stop offset="50%" stop-color="#d97706" />
+            <stop offset="100%" stop-color="#a78bfa" stop-opacity="0.2" />
+          </radialGradient>
+          <radialGradient id="hero-iris-stroke" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fbbf24" />
+            <stop offset="100%" stop-color="#a78bfa" />
+          </radialGradient>
+          <linearGradient id="hero-eye-stroke" x1="0%" y1="50%" x2="100%" y2="50%">
+            <stop offset="0%" stop-color="#38bdf8" />
+            <stop offset="50%" stop-color="#fbbf24" />
+            <stop offset="100%" stop-color="#a78bfa" />
+          </linearGradient>
+          <linearGradient id="hero-eye-fill" x1="0%" y1="50%" x2="100%" y2="50%">
+            <stop offset="0%" stop-color="#38bdf8" />
+            <stop offset="50%" stop-color="#fbbf24" />
+            <stop offset="100%" stop-color="#a78bfa" />
+          </linearGradient>
+          <radialGradient id="hero-pupil" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fef3c7" />
+            <stop offset="60%" stop-color="#fbbf24" />
+            <stop offset="100%" stop-color="#b45309" />
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+
     <div class="relative z-10 max-w-4xl mx-auto px-4">
       <a href="/about" class="inline-block mb-4 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold tracking-wide uppercase hover:bg-amber-500/20 transition-colors">
         Epistemically Responsible Archive
